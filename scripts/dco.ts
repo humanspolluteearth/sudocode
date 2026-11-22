@@ -10,8 +10,13 @@ export interface Commit {
   message: string;
 }
 
-const isBot = (c: Commit): boolean =>
-  c.authorName.endsWith("[bot]") || c.authorEmail.endsWith("[bot]@users.noreply.github.com");
+// Bots that cannot sign off. Matched on the exact author email, which a person can't use unless they control
+// that account (a name or email merely ending in "[bot]" is not enough).
+const BOT_EMAILS = new Set([
+  "49699333+dependabot[bot]@users.noreply.github.com",
+  "41898282+github-actions[bot]@users.noreply.github.com",
+]);
+const isBot = (c: Commit): boolean => BOT_EMAILS.has(c.authorEmail.toLowerCase());
 
 /** Returns one plain-language problem per commit that is missing a matching sign-off. */
 export function unsignedCommits(commits: readonly Commit[]): string[] {

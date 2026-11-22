@@ -44,6 +44,12 @@ describe("MISC DCO sign-off check", () => {
     expect(unsignedCommits([merge, bot])).toEqual([]);
   });
 
+  it("MISC does not trust a name or email that only looks like a bot", () => {
+    const fakeName = commit({ authorName: "someone[bot]", message: "chore: x" });
+    const fakeEmail = commit({ authorEmail: "me+fake[bot]@users.noreply.github.com", message: "chore: x" });
+    expect(unsignedCommits([fakeName, fakeEmail])).toHaveLength(2);
+  });
+
   it("MISC parses git log records", () => {
     const out =
       "aaa\x1fAda\x1fada@example.com\x1fp1\x1ffeat: one\n\nSigned-off-by: Ada <ada@example.com>\n\x1e\n" +
