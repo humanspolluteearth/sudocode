@@ -56,7 +56,7 @@ export default tseslint.config(
           patterns: [
             { regex: referenceImportPattern, message: referenceImportMessage },
             {
-              regex: "^(react|react-dom|@codemirror/.*|@sudocode/ui)(/|$)",
+              regex: "^(react|react-dom|@codemirror/.*|@sudocode/(ui|web))(/|$)",
               message: "packages/core cannot use UI code. The UI talks to core through the Runner interface.",
             },
             {
@@ -73,6 +73,34 @@ export default tseslint.config(
         ),
       ],
     },
+  },
+  {
+    // Dependencies point one way: apps -> ui -> core (CLAUDE.md). The UI uses core's public entry only (the
+    // Runner interface and plain types), never parser or runtime internals.
+    files: ["packages/ui/**/*.{ts,tsx}"],
+    languageOptions: { globals: { ...globals.browser } },
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            { regex: referenceImportPattern, message: referenceImportMessage },
+            {
+              regex: "^@sudocode/web(/|$)|(^|/)apps/",
+              message: "packages/ui cannot import an app: apps depend on ui, not the reverse.",
+            },
+            {
+              regex: "^@sudocode/core/|(^|/)packages/core/|^\\.\\./(\\.\\./)*core/",
+              message: 'Import from "@sudocode/core" only: the UI talks to the engine through the Runner interface.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["apps/**/*.{ts,tsx}"],
+    languageOptions: { globals: { ...globals.browser } },
   },
   {
     // Plain JavaScript files (configs, Claude Code hooks) are not type-checked.

@@ -16,7 +16,9 @@
     "test:core": "vitest run --project core",
     "spec:coverage": "node scripts/spec-coverage.ts",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm spec:coverage",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "dev": "pnpm --filter @sudocode/web dev",
+    "build": "pnpm -r build"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

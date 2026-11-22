@@ -59,3 +59,34 @@ describe("MISC packages/core source stays portable (Node and Web Worker)", () =>
     expect(await ruleIds('import { lex } from "./lexer.ts";\nexport const x = lex;')).toEqual([]);
   });
 });
+
+describe("MISC dependencies point apps -> ui -> core", () => {
+  async function ruleIds(code: string, filePath: string): Promise<string[]> {
+    const [result] = await eslint.lintText(code, { filePath });
+    return (result?.messages ?? []).map((m) => m.ruleId ?? "").filter((r) => r.startsWith("no-restricted"));
+  }
+  const core = "packages/core/src/index.ts";
+  const ui = "packages/ui/src/index.ts";
+  const app = "apps/web/src/main.tsx";
+
+  it.each([
+    [core, 'import { App } from "@sudocode/ui";\nexport const x = App;'],
+    [core, 'import { x } from "@sudocode/web";\nexport const y = x;'],
+    [ui, 'import { x } from "@sudocode/web";\nexport const y = x;'],
+    [ui, 'import { x } from "../../../apps/web/src/main.tsx";\nexport const y = x;'],
+    [ui, 'import { lex } from "@sudocode/core/src/lexer.ts";\nexport const x = lex;'],
+    [ui, 'import { lex } from "../../core/src/lexer.ts";\nexport const x = lex;'],
+  ])("MISC %s rejects %s", async (file, code) => {
+    expect(await ruleIds(code, file)).toEqual(["no-restricted-imports"]);
+  });
+
+  it.each([
+    [ui, 'import { LANGUAGES } from "@sudocode/core";\nexport const x = LANGUAGES;'],
+    [
+      app,
+      'import { App } from "@sudocode/ui";\nimport { LANGUAGES } from "@sudocode/core";\nexport const x = [App, LANGUAGES];',
+    ],
+  ])("MISC %s allows %s", async (file, code) => {
+    expect(await ruleIds(code, file)).toEqual([]);
+  });
+});
