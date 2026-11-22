@@ -27,7 +27,10 @@ expected file says now; if you agree, write "yes"; if not, the M1 session correc
    (`['a', 'b']` or `[a, b]`; `[TRUE]` or `[True]`)? Proposed: `['a', 'b']` and `[TRUE]`. Only the INTEGER case is
    tested so far.
    Tests: `harvested/edexcel/EDX-50-example-bubble-sort`.
-   - Answer (23 Nov 2026): **Yes, as proposed**: `[4, 8, 15]`, `['a', 'b']`, `[TRUE]`. Add a spec row for it.
+   - Answer (23 Nov 2026): **Not as proposed: a whole array can't be output in Edexcel.** `SEND <array> TO DISPLAY`
+     (or `&` with an array) is a checker error with a hint to print the elements one by one with a loop. Add a spec
+     row for it, and correct `harvested/edexcel/EDX-50-example-bubble-sort` so the program prints each element in a
+     FOR loop (one per line) instead of the whole array (M1, small PR).
 5. **CIE multi-name DECLARE:** is `DECLARE Temp, Index, Last : INTEGER` allowed? The spec only shows one name per
    DECLARE. Proposed: yes.
    Tests: `harvested/cie/CIE-20-example-bubble-sort`, `CIE-120-example-string-functions`, `CIE-30-example-records-and-byref`.
@@ -71,3 +74,26 @@ expected file says now; if you agree, write "yes"; if not, the M1 session correc
     - Answer (23 Nov 2026): **Let CI check it.** Downloads are blocked on my machine. In M8 the `python-sample` job
       (Python 3.12 via `actions/setup-python`) must run the oracle `--check` on these 8 files; if it reports
       differences, regenerate them with 3.12 in a small PR. Keep the 3.14 note until then.
+
+## From M1 (23 Nov 2026)
+
+13. **Q4 conflict (M1 question 1):** PR #10's first draft said "print the array"; the M1 goal said checker error.
+    - Answer (23 Nov 2026): **Checker error is correct** (EDX-75, as merged). The Q4 answer above is the final one.
+14. **Rename `EDX-50-example-bubble-sort` (M1 question 2):** it now proves EDX-75. May it be renamed `EDX-75-...`,
+    its `spec` trimmed, and a new runnable bubble-sort golden added that sends elements one at a time?
+    - Answer (23 Nov 2026): **Yes.** This is an authorised edit of a merged expected file (rename + `spec` only).
+15. **Rename the `MISC-precedence-*` probes (M1 question 3)** to `EDX-34-...` with `spec` `["EDX-34", ...]`?
+    - Answer (23 Nov 2026): **Yes.** Authorised edit (rename + `spec` only).
+16. **Stale Q5 markers (M1 question 4):** remove `openQuestions: ["Q5"]` and add CIE-15 to `spec` in
+    `cie/CIE-20-example-bubble-sort`, `cie/CIE-120-example-string-functions`, `cie/CIE-30-example-records-and-byref`?
+    - Answer (23 Nov 2026): **Yes.** Authorised edit (marker + `spec` only; expected values unchanged).
+17. **EDX-34 wording (M1 question 5):** same-level operators work left to right, except `^` (right to left)?
+    - Answer (23 Nov 2026): **Yes, correct** (`10 - 3 - 2` = 5; `2 ^ 3 ^ 2` = 512).
+18. **SH-03 edge cases (M1 question 6):**
+    - a negative REAL that rounds to zero (`-0.00000000001`): **prints `0`** (never `-0`).
+    - very large REALs: **print all digits, never exponent form** (`10 ^ 21` as a REAL prints
+      `1000000000000000000000`). Add both to SH-03.
+    - Answer (23 Nov 2026): as above.
+19. **EDX-75 scope (M1 question 7):** is writing a whole array to a file (`WRITE Scores.txt Scores`) also an error?
+    - Answer (23 Nov 2026): **Yes, a checker error too**, with the same hint (write the elements one at a time in a
+      loop). Extend EDX-75 to cover `WRITE <File>`.
