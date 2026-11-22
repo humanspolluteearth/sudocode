@@ -8,11 +8,15 @@ It records stdout and, if the program raised, the exception as `E-PY-<Name>` at 
   python3.12 scripts/python-oracle.py --check FILES...   # compare with the expected files; exit 1 on any difference
   python3.12 scripts/python-oracle.py --write FILES...   # fill in `expect` (stdout, errors) and `notes`
 
-Only CPython 3.12 is an oracle (PY-01). `--write` refuses other versions unless `--allow-version` is given, and
-then says so in `notes` so the reviewer can see it.
+Only CPython 3.12 is an oracle (PY-01). Both modes refuse other versions unless `--allow-version` is given; then
+`--write` says so in `notes` and `--check` prints a warning, so a non-3.12 check can't be mistaken for confirmation.
+
+Programs run with PYTHONHASHSEED=0 (so set and dict-of-set output is repeatable) and stdout is read as raw bytes
+(a printed "\r" stays "\r").
 """
 
 import json
+import os
 import platform
 import subprocess
 import sys
@@ -33,7 +37,9 @@ except BaseException as exc:
     else:
         frames = [f for f in traceback.extract_tb(exc.__traceback__) if f.filename == path]
         last = frames[-1]
-        line, col = last.lineno, (last.colno or 0) + 1
+        if last.colno is None:
+            raise RuntimeError("CPython gave no column for this error")
+        line, col = last.lineno, last.colno + 1
     sys.stdout.flush()
     sys.stderr.write("\n@@ORACLE@@" + json.dumps({"code": "E-PY-" + type(exc).__name__, "line": line, "column": col}))
     sys.exit(1)
@@ -43,21 +49,23 @@ MARKER = "@@ORACLE@@"
 
 
 def run(program: Path, inputs: list[str], seed: int | None) -> dict:
-    stdin = "".join(line + "\n" for line in inputs)
+    stdin = "".join(line + "\n" for line in inputs).encode("utf-8")
+    # -s: no user site-packages; -P: don't put the script's folder on sys.path. Not -I/-E, which would drop
+    # PYTHONHASHSEED.
     proc = subprocess.run(
-        [sys.executable, "-I", "-c", RUNNER, str(program), "" if seed is None else str(seed)],
+        [sys.executable, "-s", "-P", "-c", RUNNER, str(program), "" if seed is None else str(seed)],
         input=stdin,
         capture_output=True,
-        text=True,
-        encoding="utf-8",
+        env={"PYTHONHASHSEED": "0", "PYTHONIOENCODING": "utf-8", "PATH": os.environ.get("PATH", "")},
         timeout=60,
     )
+    stdout, stderr = proc.stdout.decode("utf-8"), proc.stderr.decode("utf-8")
     errors = []
-    if MARKER in proc.stderr:
-        errors.append(json.loads(proc.stderr.split(MARKER, 1)[1]))
+    if MARKER in stderr:
+        errors.append(json.loads(stderr.split(MARKER, 1)[1]))
     elif proc.returncode != 0:
-        raise RuntimeError(f"{program}: oracle failed\n{proc.stderr}")
-    return {"stdout": proc.stdout, "errors": errors}
+        raise RuntimeError(f"{program}: oracle failed\n{stderr}")
+    return {"stdout": stdout, "errors": errors}
 
 
 def main(argv: list[str]) -> int:
@@ -69,9 +77,11 @@ def main(argv: list[str]) -> int:
         return 2
     version = platform.python_version()
     is_312 = sys.version_info[:2] == (3, 12) and platform.python_implementation() == "CPython"
-    if mode == "--write" and not is_312 and not allow:
-        print(f"Refusing to write: this is {platform.python_implementation()} {version}, not CPython 3.12.")
-        return 2
+    if not is_312:
+        if not allow:
+            print(f"Refusing: this is {platform.python_implementation()} {version}, not CPython 3.12.")
+            return 2
+        print(f"WARNING: {platform.python_implementation()} {version} is not the oracle (CPython 3.12).")
     differences = 0
     for program in files:
         expected_path = program.with_suffix(".expected.json")

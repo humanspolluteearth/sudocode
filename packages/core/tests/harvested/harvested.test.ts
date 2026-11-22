@@ -45,6 +45,28 @@ const specIdExists = (id: string): boolean => new RegExp(`\\| ${id} \\|`).test(s
 const questionsText = readFileSync(join(repoDir, "docs", "review", "QUESTIONS.md"), "utf8");
 const questionExists = (q: string): boolean => new RegExp(`^${q.slice(1)}\\. `, "m").test(questionsText);
 
+// Codes from the table in harvested/README.md; Python exceptions are E-PY-<Name>.
+const readmeText = readFileSync(join(harvestedDir, "README.md"), "utf8");
+const knownCodes = new Set([...readmeText.matchAll(/^\| `([EWI]-[A-Z0-9-]+)` *\|/gm)].map((m) => m[1]));
+const codeIsKnown = (code: string): boolean => knownCodes.has(code) || /^E-PY-[A-Z][A-Za-z]*$/.test(code);
+
+// Positions of Edexcel double-quoted string literals (EDX-07), skipping comments and single-quoted strings.
+function doubleQuotedStrings(source: string): { line: number; column: number }[] {
+  return source.split("\n").flatMap((text, i) => {
+    const found: { line: number; column: number }[] = [];
+    let quote: string | null = null;
+    Array.from(text).every((ch, c) => {
+      if (quote === null && ch === "#") return false;
+      if (quote === null && (ch === '"' || ch === "'")) {
+        quote = ch;
+        if (ch === '"') found.push({ line: i + 1, column: c + 1 });
+      } else if (ch === quote) quote = null;
+      return true;
+    });
+    return found;
+  });
+}
+
 const pending = JSON.parse(readFileSync(join(testsDir, "pending.json"), "utf8")) as { tests: string[] };
 
 const examples = (lang: string): string[] =>
@@ -89,10 +111,31 @@ describe.each(programs.map((p) => [testId(p), p] as const))("MISC harvested test
       const sorted = [...list].sort((a, b) => a.line - b.line || a.column - b.column);
       expect(list).toEqual(sorted);
       for (const d of list) {
+        const chars = Array.from(lines[d.line - 1] ?? "");
         expect(d.line).toBeLessThanOrEqual(lines.length);
-        expect(d.column).toBeLessThanOrEqual(Array.from(lines[d.line - 1] ?? "").length);
+        // One past the end is allowed for "something is missing at the end of the line".
+        expect(d.column).toBeLessThanOrEqual(chars.length + 1);
+        expect(/\s/.test(chars[d.column - 1] ?? "x")).toBe(false);
       }
     }
+  });
+
+  it("MISC uses only diagnostic codes listed in harvested/README.md", () => {
+    const { errors, warnings, info = [] } = readExpected(program).expect;
+    expect([...errors, ...warnings, ...info].map((d) => d.code).filter((c) => !codeIsKnown(c))).toEqual([]);
+  });
+
+  it("MISC stops at the first runtime error", () => {
+    const runtime = readExpected(program).expect.errors.filter((e) => /^E-(RUN|PY)-/.test(e.code));
+    expect(runtime.length).toBeLessThanOrEqual(1);
+  });
+
+  it("MISC warns once for every double-quoted Edexcel string (EDX-07)", () => {
+    const source = readFileSync(program, "utf8");
+    const warned = readExpected(program)
+      .expect.warnings.filter((w) => w.code === "W-EDX-DOUBLE-QUOTES")
+      .map(({ line, column }) => ({ line, column }));
+    expect(warned).toEqual(ext === "epc" ? doubleQuotedStrings(source) : []);
   });
 
   it("MISC prints nothing when the checker rejects the program", () => {
