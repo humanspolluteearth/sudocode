@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-62", "CIE-50", "CIE-44", "CIE-80", "CIE-82"],
+  "language": "cie",
+  "inputs": ["150", "-3", "42"],
+  "expect": {
+    "stdout": "Enter an age from 0 to 120\nOut of range, try again\nEnter an age from 0 to 120\nOut of range, try again\nEnter an age from 0 to 120\nAge accepted: 42\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

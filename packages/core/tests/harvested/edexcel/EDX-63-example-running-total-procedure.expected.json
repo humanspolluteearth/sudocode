@@ -1,0 +1,30 @@
+{
+  "spec": ["EDX-63", "EDX-60", "EDX-64", "EDX-57", "EDX-16", "EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Added 10, total is now 10\nAdded 25, total is now 35\nAdded 5, total is now 40\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 7,
+        "column": 10
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 7,
+        "column": 30
+      }
+    ],
+    "info": [
+      {
+        "code": "I-EDX-GLOBAL-UPDATE",
+        "line": 6,
+        "column": 9
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Line 6 assigns to the global total inside a procedure: the global is updated, with an info note (EDX-63, Q-EDX-3)."
+}

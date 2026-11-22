@@ -1,0 +1,33 @@
+{
+  "spec": ["EDX-51", "EDX-40", "EDX-41", "EDX-72", "EDX-16", "EDX-07"],
+  "language": "edexcel",
+  "inputs": ["3", "9", "7"],
+  "expect": {
+    "stdout": "Too low\nToo high\nGot it in 3 tries\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 8,
+        "column": 14
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 11,
+        "column": 18
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 15,
+        "column": 6
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 15,
+        "column": 29
+      }
+    ],
+    "files": null,
+    "trace": null
+  }
+}

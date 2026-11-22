@@ -1,0 +1,15 @@
+# Guessing game
+SET secret TO 7
+SET tries TO 0
+REPEAT
+    RECEIVE guess FROM (INTEGER) KEYBOARD
+    SET tries TO tries + 1
+    IF guess < secret THEN
+        SEND "Too low" TO DISPLAY
+    ELSE
+        IF guess > secret THEN
+            SEND "Too high" TO DISPLAY
+        END IF
+    END IF
+UNTIL guess = secret
+SEND "Got it in " & tries & " tries" TO DISPLAY

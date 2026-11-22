@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-72", "CIE-74", "CIE-77", "CIE-20", "CIE-60", "CIE-82"],
+  "language": "cie",
+  "inputs": ["Kofi"],
+  "expect": {
+    "stdout": "Kofi is at position 4\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

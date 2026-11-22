@@ -1,0 +1,13 @@
+{
+  "spec": ["EDX-50", "EDX-53", "EDX-21", "EDX-22", "EDX-23", "EDX-90", "EDX-08"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "[4, 8, 15, 17, 29, 42]\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "openQuestions": ["Q4"],
+  "notes": "The spec does not say how SEND prints a whole array (Q4). Proposed: like a Python list."
+}

@@ -1,0 +1,5 @@
+# Times table
+RECEIVE n FROM (INTEGER) KEYBOARD
+FOR i FROM 1 TO 12 DO
+    SEND i & " x " & n & " = " & i * n TO DISPLAY
+END FOR

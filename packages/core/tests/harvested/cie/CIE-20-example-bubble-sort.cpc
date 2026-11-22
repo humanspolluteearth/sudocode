@@ -1,0 +1,30 @@
+// Bubble sort with a swap flag
+DECLARE Numbers : ARRAY[1:6] OF INTEGER
+DECLARE Swapped : BOOLEAN
+DECLARE Temp, Index, Last : INTEGER
+
+Numbers[1] ← 31
+Numbers[2] ← 7
+Numbers[3] ← 19
+Numbers[4] ← 2
+Numbers[5] ← 25
+Numbers[6] ← 11
+
+Last ← 5
+REPEAT
+    Swapped ← FALSE
+    FOR Index ← 1 TO Last
+        IF Numbers[Index] > Numbers[Index + 1]
+          THEN
+            Temp ← Numbers[Index]
+            Numbers[Index] ← Numbers[Index + 1]
+            Numbers[Index + 1] ← Temp
+            Swapped ← TRUE
+        ENDIF
+    NEXT Index
+    Last ← Last - 1
+UNTIL NOT Swapped
+
+FOR Index ← 1 TO 6
+    OUTPUT Numbers[Index]
+NEXT Index

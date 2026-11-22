@@ -1,0 +1,30 @@
+{
+  "description": "Tests the harness expects to FAIL. A pending test that passes fails CI until it is removed here (docs/TEST-PLAN.md section 5). IDs are paths from packages/core/tests/ without the extension.",
+  "tests": [
+    "harvested/cie/CIE-120-example-string-functions",
+    "harvested/cie/CIE-20-example-bubble-sort",
+    "harvested/cie/CIE-22-example-find-the-bug",
+    "harvested/cie/CIE-30-example-records-and-byref",
+    "harvested/cie/CIE-50-example-grade-checker",
+    "harvested/cie/CIE-52-example-case-menu",
+    "harvested/cie/CIE-60-example-times-table",
+    "harvested/cie/CIE-62-example-range-check",
+    "harvested/cie/CIE-72-example-linear-search-function",
+    "harvested/cie/CIE-92-example-text-files",
+    "harvested/edexcel/EDX-27-example-find-the-bug-average",
+    "harvested/edexcel/EDX-40-example-grade-checker",
+    "harvested/edexcel/EDX-50-example-bubble-sort",
+    "harvested/edexcel/EDX-51-example-guessing-game",
+    "harvested/edexcel/EDX-53-example-times-table",
+    "harvested/edexcel/EDX-61-example-linear-search-function",
+    "harvested/edexcel/EDX-63-example-running-total-procedure",
+    "harvested/python/PY-03-example-find-the-bug",
+    "harvested/python/PY-12-example-grade-checker",
+    "harvested/python/PY-15-example-bubble-sort",
+    "harvested/python/PY-16-example-word-counter",
+    "harvested/python/PY-18-example-linear-search-function",
+    "harvested/python/PY-20-example-input-validation",
+    "harvested/python/PY-30-example-times-table",
+    "harvested/python/PY-41-example-guessing-game"
+  ]
+}
