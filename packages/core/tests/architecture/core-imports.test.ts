@@ -13,7 +13,8 @@ function sourceFiles(dir: string): string[] {
   });
 }
 
-const forbiddenImport = /\bfrom\s+["'](react|react-dom|@codemirror\/[^"']*|@sudocode\/ui|[^"']*packages\/ui[^"']*)["']/;
+const forbiddenImport =
+  /(\bfrom\s+|\bimport\s*\(?\s*|\brequire\s*\(\s*)["'](react|react-dom|@codemirror\/[^"']*|@sudocode\/ui|[^"']*packages\/ui[^"']*)["']/;
 const forbiddenGlobal = /\b(window|document|localStorage|sessionStorage|navigator)\s*\./;
 
 describe("MISC packages/core stays free of UI and browser code", () => {
@@ -37,6 +38,9 @@ describe("MISC packages/core stays free of UI and browser code", () => {
     ['import { useState } from "react";', true],
     ['import { EditorView } from "@codemirror/view";', true],
     ['import { App } from "@sudocode/ui";', true],
+    ['import "react";', true],
+    ['const r = require("react");', true],
+    ['const m = await import("@codemirror/view");', true],
     ['import { lex } from "./lexer.ts";', false],
   ])("MISC the import guard classifies %s as forbidden=%s", (line, forbidden) => {
     expect(forbiddenImport.test(line)).toBe(forbidden);
