@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  # Stage 1: these three run in parallel and are the required checks on main.
+  # Stage 1: these jobs run in parallel. lint, typecheck and test-core are required checks on main.
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -45,5 +45,15 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup
       - run: pnpm test
-      # Stub until milestone M1 gives spec coverage its own job.
+
+  # Lists every spec ID with the tests that prove it (table in the job summary). Fails if an ID in
+  # packages/core/tests/scope.json has no test. Report-only in M1: scope.json is empty and the check isn't required.
+  spec-coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
       - run: pnpm spec:coverage

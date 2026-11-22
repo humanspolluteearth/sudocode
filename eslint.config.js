@@ -56,7 +56,7 @@ export default tseslint.config(
           patterns: [
             { regex: referenceImportPattern, message: referenceImportMessage },
             {
-              regex: "^(react|react-dom|@codemirror/.*|@sudocode/ui)(/|$)",
+              regex: "^(react|react-dom|@codemirror/.*|@sudocode/(ui|web))(/|$)",
               message: "packages/core cannot use UI code. The UI talks to core through the Runner interface.",
             },
             {
@@ -71,6 +71,78 @@ export default tseslint.config(
         ...["window", "document", "localStorage", "sessionStorage", "navigator", "process", "Buffer", "require"].map(
           (name) => ({ name, message: "packages/core must run in Node and in a Web Worker; pass this in instead." }),
         ),
+      ],
+    },
+  },
+  {
+    // Dependencies point one way: apps -> ui -> core (CLAUDE.md). The UI uses core's public entry only (the
+    // Runner interface and plain types), never parser or runtime internals.
+    files: ["packages/ui/**/*.{ts,tsx}"],
+    languageOptions: { globals: { ...globals.browser } },
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            { regex: referenceImportPattern, message: referenceImportMessage },
+            {
+              regex: "^@sudocode/web(/|$)|(^|/)apps/",
+              message: "packages/ui cannot import an app: apps depend on ui, not the reverse.",
+            },
+            {
+              // Only the public entry and the two worker entry files (optionally with Vite's ?worker suffix).
+              regex: "^@sudocode/core/(?!(run|check)-worker(\\?worker)?$)|(^|/)packages/core/|^\\.\\./(\\.\\./)*core/",
+              message:
+                'Import "@sudocode/core" (or its run-worker/check-worker entries) only: the UI talks to the engine through the Runner interface.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // Apps are thin shells: the same rule as the UI for reaching into core.
+    files: ["apps/**/*.{ts,tsx}"],
+    languageOptions: { globals: { ...globals.browser } },
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            { regex: referenceImportPattern, message: referenceImportMessage },
+            {
+              regex: "^@sudocode/core/(?!(run|check)-worker(\\?worker)?$)|(^|/)packages/core/",
+              message: 'Import "@sudocode/core" (or its run-worker/check-worker entries) only.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // Tests are never skipped, focused or left as todo (CLAUDE.md: never skip a test to make it pass).
+    files: ["**/*.test.ts", "**/*.test.tsx"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: `CallExpression[callee.name='require'] > Literal[value=/${referenceImportPattern}/]`,
+          message: referenceImportMessage,
+        },
+        {
+          selector: `ImportExpression > Literal[value=/${referenceImportPattern}/]`,
+          message: referenceImportMessage,
+        },
+        {
+          selector:
+            "MemberExpression[object.name=/^(it|test|describe|suite)$/][property.name=/^(skip|only|todo|skipIf|runIf)$/]",
+          message: "Tests are never skipped, focused or left as todo. A test that can't pass yet goes in pending.json.",
+        },
+        {
+          selector:
+            "MemberExpression[object.name=/^(xit|xdescribe|fit|fdescribe)$/], Identifier[name=/^(xit|xdescribe|fit|fdescribe)$/]",
+          message: "Tests are never skipped or focused.",
+        },
       ],
     },
   },

@@ -2,12 +2,11 @@
   "spec": ["SH-03", "EDX-14"],
   "language": "edexcel",
   "expect": {
-    "stdout": "0.30000000000000004\n3.5\n3\n",
+    "stdout": "0.3\n3.5\n3\n",
     "errors": [],
     "warnings": [],
     "files": null,
     "trace": null
   },
-  "openQuestions": ["Q1"],
-  "notes": "SH-03 'shortest exact form' (Q1 default). Prototype probe: \"SH-03 float output\"."
+  "notes": "SH-03 (changed for Q1): a REAL is rounded to 10 decimal places, then printed in its shortest form. Prototype probe: \"SH-03 float output\"."
 }

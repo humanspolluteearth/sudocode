@@ -59,3 +59,60 @@ describe("MISC packages/core source stays portable (Node and Web Worker)", () =>
     expect(await ruleIds('import { lex } from "./lexer.ts";\nexport const x = lex;')).toEqual([]);
   });
 });
+
+describe("MISC dependencies point apps -> ui -> core", () => {
+  async function ruleIds(code: string, filePath: string): Promise<string[]> {
+    const [result] = await eslint.lintText(code, { filePath });
+    return (result?.messages ?? []).map((m) => m.ruleId ?? "").filter((r) => r.startsWith("no-restricted"));
+  }
+  const core = "packages/core/src/index.ts";
+  const ui = "packages/ui/src/index.ts";
+  const app = "apps/web/src/main.tsx";
+
+  it.each([
+    [core, 'import { App } from "@sudocode/ui";\nexport const x = App;'],
+    [core, 'import { x } from "@sudocode/web";\nexport const y = x;'],
+    [ui, 'import { x } from "@sudocode/web";\nexport const y = x;'],
+    [ui, 'import { x } from "../../../apps/web/src/main.tsx";\nexport const y = x;'],
+    [ui, 'import { lex } from "@sudocode/core/src/lexer.ts";\nexport const x = lex;'],
+    [ui, 'import { lex } from "../../core/src/lexer.ts";\nexport const x = lex;'],
+    [ui, 'import { ENGINES } from "@sudocode/core/engine";\nexport const x = ENGINES;'],
+    [app, 'import { ENGINES } from "@sudocode/core/engine";\nexport const x = ENGINES;'],
+    [app, 'import { lex } from "@sudocode/core/src/lexer.ts";\nexport const x = lex;'],
+  ])("MISC %s rejects %s", async (file, code) => {
+    expect(await ruleIds(code, file)).toEqual(["no-restricted-imports"]);
+  });
+
+  it.each([
+    [ui, 'import { LANGUAGES } from "@sudocode/core";\nexport const x = LANGUAGES;'],
+    [
+      app,
+      'import { App } from "@sudocode/ui";\nimport { LANGUAGES } from "@sudocode/core";\nexport const x = [App, LANGUAGES];',
+    ],
+    [app, 'import RunWorker from "@sudocode/core/run-worker?worker";\nexport const x = RunWorker;'],
+    [ui, 'import CheckWorker from "@sudocode/core/check-worker?worker";\nexport const x = CheckWorker;'],
+  ])("MISC %s allows %s", async (file, code) => {
+    expect(await ruleIds(code, file)).toEqual([]);
+  });
+});
+
+describe("MISC tests are never skipped, focused or left as todo", () => {
+  async function ruleIds(code: string): Promise<string[]> {
+    const [result] = await eslint.lintText(code, { filePath: "scripts/dco.test.ts" });
+    return (result?.messages ?? []).map((m) => m.ruleId ?? "").filter((r) => r.startsWith("no-restricted"));
+  }
+
+  it.each([
+    'import { it } from "vitest";\nit.skip("EDX-54 x", () => undefined);',
+    'import { it } from "vitest";\nit.only("EDX-54 x", () => undefined);',
+    'import { it } from "vitest";\nit.todo("EDX-54 x");',
+    'import { describe } from "vitest";\ndescribe.skip("x", () => undefined);',
+    'import { test } from "vitest";\ntest.skipIf(true)("x", () => undefined);',
+  ])("MISC rejects %s", async (code) => {
+    expect(await ruleIds(code)).toEqual(["no-restricted-syntax"]);
+  });
+
+  it("MISC allows it.each", async () => {
+    expect(await ruleIds('import { it } from "vitest";\nit.each([1])("MISC %i", () => undefined);')).toEqual([]);
+  });
+});

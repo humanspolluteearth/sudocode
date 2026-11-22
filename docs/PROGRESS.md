@@ -2,6 +2,20 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 23 Nov 2026: M1 skeleton merged
+
+- Done (PRs #11-#20, all merged with CI green): your answers Q1/Q4/Q5/Q9 applied (SH-03 changed; EDX-34, EDX-75,
+  CIE-15, CIE-97 added; three harvested expected files corrected), `diagnostics.ts`, `protocol.ts` (Runner and every
+  worker message), message catalogue (64 codes, per-language wording), run/check workers around an engine-neutral
+  Runner, golden test runner enforcing `pending.json`, `scope.json`, `pnpm spec:coverage` + CI job,
+  `packages/ui` + `apps/web` (apps -> ui -> core enforced by lint), review follow-ups.
+- State: `pnpm check` exits 0 on `main` (1057 tests). All 66 harvested goldens run through the Runner and fail as
+  expected (pending). Spec coverage: 0 of 210 (no language engine yet).
+- Decisions and questions: `docs/review/M1.md`. Most urgent: the Q4 conflict between PR #10 and the M1 goal, and
+  merging PR #10 so the answers are on `main`.
+- Environment (unchanged): installs need `npx pnpm@11.28.13 install` on this machine (pnpm 12 has no IPv4 fallback).
+- Next step: answer the M1 questions, then start M2 with its line from `docs/milestones/PROMPTS.md`.
+
 ## 23 Nov 2026: M0 merged
 
 - PRs #1 to #7 squash-merged with CI green, after you added the `workflow` scope and pushed the workflow commits.
