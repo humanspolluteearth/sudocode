@@ -1,0 +1,15 @@
+# Grade checker
+RECEIVE name FROM (STRING) KEYBOARD
+RECEIVE mark FROM (INTEGER) KEYBOARD
+
+IF mark >= 70 THEN
+    SET grade TO "A"
+ELSE
+    IF mark >= 50 THEN
+        SET grade TO "B"
+    ELSE
+        SET grade TO "C"
+    END IF
+END IF
+
+SEND name & " got grade " & grade TO DISPLAY

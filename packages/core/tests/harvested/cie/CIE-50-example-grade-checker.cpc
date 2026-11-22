@@ -1,0 +1,22 @@
+// Grade checker
+DECLARE Name : STRING
+DECLARE Mark : INTEGER
+DECLARE Grade : CHAR
+
+OUTPUT "Enter name and mark"
+INPUT Name
+INPUT Mark
+
+IF Mark >= 70
+  THEN
+    Grade ← 'A'
+  ELSE
+    IF Mark >= 50
+      THEN
+        Grade ← 'B'
+      ELSE
+        Grade ← 'C'
+    ENDIF
+ENDIF
+
+OUTPUT Name, " got grade ", Grade

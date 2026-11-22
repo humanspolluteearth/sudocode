@@ -1,0 +1,19 @@
+# Linear search
+FUNCTION search(list, target)
+BEGIN FUNCTION
+    FOR i FROM 0 TO LENGTH(list) - 1 DO
+        IF list[i] = target THEN
+            RETURN i
+        END IF
+    END FOR
+    RETURN -1
+END FUNCTION
+
+SET names TO ["Ali", "Bea", "Cal", "Dev"]
+RECEIVE wanted FROM (STRING) KEYBOARD
+SET pos TO search(names, wanted)
+IF pos = -1 THEN
+    SEND wanted & " was not found" TO DISPLAY
+ELSE
+    SEND wanted & " is at index " & pos TO DISPLAY
+END IF

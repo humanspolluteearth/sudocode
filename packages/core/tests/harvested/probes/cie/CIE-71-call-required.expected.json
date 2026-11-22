@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-71"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CALL-REQUIRED",
+        "line": 4,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"CIE-71 CALL required\"."
+}

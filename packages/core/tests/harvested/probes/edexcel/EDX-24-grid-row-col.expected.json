@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-24", "EDX-22"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "3\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "g[1, 0] is row 1, column 0 (0-based). Prototype probe: \"EDX-24 Grid[r, c]\"."
+}

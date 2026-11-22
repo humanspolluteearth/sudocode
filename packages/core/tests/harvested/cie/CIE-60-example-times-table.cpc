@@ -1,0 +1,8 @@
+// Times table
+DECLARE Number : INTEGER
+DECLARE Count : INTEGER
+
+INPUT Number
+FOR Count ← 1 TO 12
+    OUTPUT Count, " x ", Number, " = ", Count * Number
+NEXT Count

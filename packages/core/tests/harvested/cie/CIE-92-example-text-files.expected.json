@@ -1,0 +1,14 @@
+{
+  "spec": ["CIE-90", "CIE-91", "CIE-92", "CIE-130", "CIE-63", "SH-11"],
+  "language": "cie",
+  "expect": {
+    "stdout": "1: Ama,61\n2: Ben,74\n3: Chen,58\n",
+    "errors": [],
+    "warnings": [],
+    "files": {
+      "scores.txt": "Ama,61\nBen,74\nChen,58\n"
+    },
+    "trace": null
+  },
+  "notes": "Each WRITEFILE writes one line ending in a newline (CIE-92)."
+}

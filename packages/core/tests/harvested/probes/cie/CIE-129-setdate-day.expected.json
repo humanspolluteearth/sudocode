@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-129", "CIE-10"],
+  "language": "cie",
+  "expect": {
+    "stdout": "23\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"date\"."
+}

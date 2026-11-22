@@ -1,0 +1,23 @@
+{
+  "spec": ["CIE-02", "CIE-03"],
+  "language": "cie",
+  "expect": {
+    "stdout": "5\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-CIE-NAME-CASE",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 3,
+        "column": 1
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "x and X are the same name (CIE-03) with a casing warning; lowercase output is a warning (CIE-02). Prototype probe: \"CIE-02 lowercase (warn)\"."
+}

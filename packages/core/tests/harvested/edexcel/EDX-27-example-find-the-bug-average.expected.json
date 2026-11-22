@@ -1,0 +1,24 @@
+{
+  "spec": ["EDX-27", "EDX-53", "EDX-90", "EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INDEX-RANGE",
+        "line": 5,
+        "column": 26
+      }
+    ],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 7,
+        "column": 6
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The loop runs i = 0 to 4 (inclusive, EDX-53); scores has 4 elements, so reading scores[4] is a runtime error (EDX-27). Nothing is printed before it."
+}

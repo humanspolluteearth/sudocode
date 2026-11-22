@@ -1,0 +1,13 @@
+{
+  "spec": ["CIE-31"],
+  "language": "cie",
+  "expect": {
+    "stdout": "Summer\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "openQuestions": ["Q10"],
+  "notes": "Prototype probe: \"CIE-31 enum\"."
+}

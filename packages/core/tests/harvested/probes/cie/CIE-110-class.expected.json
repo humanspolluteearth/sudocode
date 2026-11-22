@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-110", "CIE-111", "CIE-112", "CIE-113"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A class with no objects created: runs and prints nothing. Prototype probe: \"CIE-110 CLASS\"."
+}

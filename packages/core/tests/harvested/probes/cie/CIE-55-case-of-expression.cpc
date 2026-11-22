@@ -1,0 +1,6 @@
+DECLARE X : INTEGER
+X <- 2
+CASE OF X + 1
+  3 : OUTPUT "three"
+  OTHERWISE : OUTPUT "other"
+ENDCASE

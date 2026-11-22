@@ -1,0 +1,30 @@
+// Linear search in a FUNCTION
+DECLARE Names : ARRAY[1:5] OF STRING
+DECLARE Target : STRING
+DECLARE Position : INTEGER
+
+FUNCTION Find(Wanted : STRING) RETURNS INTEGER
+    DECLARE i : INTEGER
+    FOR i ← 1 TO 5
+        IF Names[i] = Wanted
+          THEN
+            RETURN i
+        ENDIF
+    NEXT i
+    RETURN -1
+ENDFUNCTION
+
+Names[1] ← "Ama"
+Names[2] ← "Ben"
+Names[3] ← "Chen"
+Names[4] ← "Kofi"
+Names[5] ← "Lina"
+
+INPUT Target
+Position ← Find(Target)
+IF Position = -1
+  THEN
+    OUTPUT Target, " not found"
+  ELSE
+    OUTPUT Target, " is at position ", Position
+ENDIF

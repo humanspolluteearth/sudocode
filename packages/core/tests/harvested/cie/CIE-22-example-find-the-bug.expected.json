@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-22", "CIE-20", "CIE-60", "CIE-13"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INDEX-RANGE",
+        "line": 13,
+        "column": 21
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The loop starts at 0 but Temps is ARRAY[1:4], so Temps[0] is outside the bounds: a runtime error naming the bounds (CIE-22). Nothing is printed before it."
+}

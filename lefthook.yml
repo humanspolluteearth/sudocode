@@ -1,0 +1,8 @@
+# Git hooks (https://lefthook.dev). Installed by `pnpm install` via the `prepare` script.
+pre-commit:
+  commands:
+    prettier:
+      # Formats staged files only, then re-stages them. Unknown file types are skipped.
+      glob: "*.{ts,tsx,js,mjs,cjs,json,css,md,yml,yaml,html}"
+      run: pnpm exec prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true

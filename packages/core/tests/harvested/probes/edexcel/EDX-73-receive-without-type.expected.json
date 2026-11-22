@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-73"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-RECEIVE-NO-TYPE",
+        "line": 1,
+        "column": 16
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"EDX-73 RECEIVE without type is error\"."
+}
