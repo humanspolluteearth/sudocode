@@ -10,3 +10,4 @@ export { ENGINES } from "./runner/engines.ts";
 export type { WorkerHandle, WorkerScope } from "./worker/scope.ts";
 export { serveChecker, serveRunner } from "./worker/serve.ts";
 export { createWorkerRunner } from "./worker/worker-runner.ts";
+export { runHeadless, type HeadlessResult } from "./runner/headless.ts";
