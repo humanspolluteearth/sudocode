@@ -45,6 +45,36 @@ export default tseslint.config(
     },
   },
   {
+    // packages/core must run in Node AND in a Web Worker (CLAUDE.md, .claude/rules/core.md):
+    // no React, CodeMirror or UI package, no Node built-ins, no DOM or Node globals in its source.
+    files: ["packages/core/src/**/*.ts"],
+    ignores: ["packages/core/src/**/*.test.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            { regex: referenceImportPattern, message: referenceImportMessage },
+            {
+              regex: "^(react|react-dom|@codemirror/.*|@sudocode/ui)(/|$)",
+              message: "packages/core cannot use UI code. The UI talks to core through the Runner interface.",
+            },
+            {
+              regex: "^node:",
+              message: "packages/core must also run in a Web Worker, so it cannot use Node built-ins.",
+            },
+          ],
+        },
+      ],
+      "no-restricted-globals": [
+        "error",
+        ...["window", "document", "localStorage", "sessionStorage", "navigator", "process", "Buffer", "require"].map(
+          (name) => ({ name, message: "packages/core must run in Node and in a Web Worker; pass this in instead." }),
+        ),
+      ],
+    },
+  },
+  {
     // Plain JavaScript files (configs, Claude Code hooks) are not type-checked.
     files: ["**/*.js", "**/*.mjs", "**/*.cjs"],
     ...tseslint.configs.disableTypeChecked,

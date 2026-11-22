@@ -1,0 +1,16 @@
+name: Set up Node and pnpm
+description: Installs Node (from .nvmrc) and pnpm, restores the pnpm store cache, then runs a frozen-lockfile install.
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      with:
+        # Same pnpm as local development. No `packageManager` field: see docs/review/M0.md.
+        version: 12.22.0
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version-file: .nvmrc
+        cache: pnpm
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
