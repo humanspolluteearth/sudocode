@@ -5,3 +5,5 @@ CHANGELOG.md
 packages/core/tests/**/*.epc
 packages/core/tests/**/*.cpc
 packages/core/tests/**/*.py
+# The language spec is hand-maintained; keep its tables byte-for-byte so diffs show only rule changes.
+docs/language-spec/
