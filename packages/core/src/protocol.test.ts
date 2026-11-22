@@ -123,8 +123,32 @@ describe("MISC protocol guards reject malformed messages", () => {
     ["diagnostic without a hint", { type: "diagnostics", diagnostics: [{ ...diagnostic, hint: undefined }] }],
     ["done with an unknown status", { type: "done", status: "crashed" }],
     ["a command sent as an event", { type: "stop" }],
+    ["input request without a prompt", { type: "inputRequest" }],
+    ["file write without contents", { type: "fileWrite", name: "a.txt" }],
+    ["paused at column 0", { type: "paused", reason: "step", line: 1, column: 0, stack: [] }],
+    [
+      "a stack frame at line 0",
+      { type: "paused", reason: "step", line: 1, column: 1, stack: [{ name: "f", line: 0, variables: [] }] },
+    ],
+    ["diagnostic at column 0", { type: "error", diagnostic: { ...diagnostic, column: 0 } }],
+    [
+      "diagnostic whose severity doesn't match its code",
+      { type: "error", diagnostic: { ...diagnostic, code: "W-EDX-ENDIF" } },
+    ],
+    [
+      "diagnostic with a malformed fix",
+      { type: "error", diagnostic: { ...diagnostic, fix: { label: "x", edits: [{ start: 0 }] } } },
+    ],
+    [
+      "diagnostic with a malformed span",
+      { type: "error", diagnostic: { ...diagnostic, span: { line: 1, column: 1, start: -1, end: 0 } } },
+    ],
   ])("MISC event: %s", (_why, message) => {
     expect(isRunnerEvent(message)).toBe(false);
+  });
+
+  it("MISC check request for an unknown language", () => {
+    expect(isCheckRequest({ ...checkRequest, language: "java" })).toBe(false);
   });
 
   it("MISC check messages with a negative id or wrong type", () => {

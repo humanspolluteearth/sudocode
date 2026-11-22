@@ -103,6 +103,33 @@ export default tseslint.config(
     languageOptions: { globals: { ...globals.browser } },
   },
   {
+    // Tests are never skipped, focused or left as todo (CLAUDE.md: never skip a test to make it pass).
+    files: ["**/*.test.ts", "**/*.test.tsx"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: `CallExpression[callee.name='require'] > Literal[value=/${referenceImportPattern}/]`,
+          message: referenceImportMessage,
+        },
+        {
+          selector: `ImportExpression > Literal[value=/${referenceImportPattern}/]`,
+          message: referenceImportMessage,
+        },
+        {
+          selector:
+            "MemberExpression[object.name=/^(it|test|describe|suite)$/][property.name=/^(skip|only|todo|skipIf|runIf)$/]",
+          message: "Tests are never skipped, focused or left as todo. A test that can't pass yet goes in pending.json.",
+        },
+        {
+          selector:
+            "MemberExpression[object.name=/^(xit|xdescribe|fit|fdescribe)$/], Identifier[name=/^(xit|xdescribe|fit|fdescribe)$/]",
+          message: "Tests are never skipped or focused.",
+        },
+      ],
+    },
+  },
+  {
     // Plain JavaScript files (configs, Claude Code hooks) are not type-checked.
     files: ["**/*.js", "**/*.mjs", "**/*.cjs"],
     ...tseslint.configs.disableTypeChecked,

@@ -53,16 +53,15 @@ describe("MISC run worker across the worker boundary", () => {
     expect(heard).toEqual([{ type: "output", text: "ok\n" }]);
   });
 
-  it("MISC dispose terminates the worker and stops sending", async () => {
+  it("MISC dispose terminates the worker and stops sending", () => {
     const channel = fakeChannel();
-    const seen: unknown[] = [];
-    channel.worker.addEventListener("message", ({ data }) => seen.push(data));
-    const runner = createWorkerRunner(channel.ui);
+    const posted: unknown[] = [];
+    const runner = createWorkerRunner({ ...channel.ui, postMessage: (m) => posted.push(m) });
+    runner.send({ type: "pause" });
     runner.dispose();
     runner.send({ type: "stop" });
-    await new Promise((r) => setTimeout(r, 0));
     expect(channel.terminated()).toBe(true);
-    expect(seen).toEqual([]);
+    expect(posted).toEqual([{ type: "pause" }]);
   });
 });
 

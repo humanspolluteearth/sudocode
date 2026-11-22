@@ -90,6 +90,20 @@ describe("MISC golden runner: comparing a run with its expected file", () => {
     expect(compareRun(expect0({ trace: [] }), run)).toHaveLength(1);
   });
 
+  it("MISC fails a run that was stopped, or ended in error without saying why", () => {
+    expect(compareRun(expect0(), result({ status: "stopped" }))).toEqual(["the run was stopped before it finished"]);
+    expect(compareRun(expect0(), result({ status: "error" }))).toEqual([
+      "the run ended with an error but reported no error diagnostic",
+    ]);
+    const failed = result({ status: "error", errors: [d("E-RUN-DIV-ZERO", 1, 6)] });
+    expect(compareRun(expect0({ errors: [{ code: "E-RUN-DIV-ZERO", line: 1, column: 6 }] }), failed)).toEqual([]);
+  });
+
+  it("MISC compares the trace by value, not by key order", () => {
+    const run = result({ trace: [{ kind: "assign", line: 2, variable: "x", value: "1" }] });
+    expect(compareRun(expect0({ trace: [{ line: 2, value: "1", variable: "x", kind: "assign" }] }), run)).toEqual([]);
+  });
+
   it("MISC fails a run that ran out of input or hit the step limit", () => {
     expect(compareRun(expect0(), result({ inputStarved: true }))).toEqual([
       "the program asked for more input than the test gives",
@@ -157,6 +171,26 @@ describe("MISC golden runner: running programs headlessly", () => {
     const run = await runHeadless(createLocalRunner({ edexcel: engine }), req, []);
     expect(run.inputStarved).toBe(true);
     expect(run.status).toBe("stopped");
+  });
+
+  it("MISC stops a run that pauses for the step limit (SH-14) and says so", async () => {
+    const sent: string[] = [];
+    const looping: Engine = {
+      check: () => [],
+      start(_r, emit) {
+        emit({ type: "paused", reason: "stepLimit", line: 3, column: 1, stack: [] });
+        return {
+          command(c) {
+            sent.push(c.type);
+            if (c.type === "stop") emit({ type: "done", status: "stopped" });
+          },
+        };
+      },
+    };
+    const run = await runHeadless(createLocalRunner({ edexcel: looping }), req, []);
+    expect(sent).toEqual(["stop"]);
+    expect(run.stepLimitReached).toBe(true);
+    expect(compareRun(expect0(), run)).toEqual(["the program reached the step limit (possible infinite loop)"]);
   });
 
   it("MISC with no engine, every program fails with E-INTERNAL-NO-ENGINE", async () => {

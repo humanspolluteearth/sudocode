@@ -100,16 +100,26 @@ describe("MISC local runner with an engine", () => {
     expect(log).toEqual(["stop"]);
   });
 
-  it("MISC stops delivering after unsubscribe or dispose", async () => {
+  it("MISC stops delivering to a listener after it unsubscribes", async () => {
     const heard: string[] = [];
     const runner = createLocalRunner({ edexcel: echoEngine([]) });
     const unsubscribe = runner.subscribe((e) => heard.push(`a:${e.type}`));
-    runner.subscribe((e) => heard.push(`b:${e.type}`));
     unsubscribe();
+    const events = await runToDone(runner, [{ type: "run", request: request() }, { type: "stop" }]);
+    expect(events.map((e) => e.type)).toEqual(["output", "inputRequest", "done"]);
+    expect(heard).toEqual([]);
+  });
+
+  it("MISC stops delivering and ignores commands after dispose", async () => {
+    const heard: string[] = [];
+    const log: string[] = [];
+    const runner = createLocalRunner({ edexcel: echoEngine(log) });
+    runner.subscribe((e) => heard.push(e.type));
     runner.send({ type: "run", request: request() });
     runner.dispose();
     runner.send({ type: "stop" });
     await new Promise((r) => setTimeout(r, 0));
     expect(heard).toEqual([]);
+    expect(log).toEqual([]);
   });
 });

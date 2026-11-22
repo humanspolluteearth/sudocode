@@ -90,3 +90,24 @@ describe("MISC dependencies point apps -> ui -> core", () => {
     expect(await ruleIds(code, file)).toEqual([]);
   });
 });
+
+describe("MISC tests are never skipped, focused or left as todo", () => {
+  async function ruleIds(code: string): Promise<string[]> {
+    const [result] = await eslint.lintText(code, { filePath: "scripts/dco.test.ts" });
+    return (result?.messages ?? []).map((m) => m.ruleId ?? "").filter((r) => r.startsWith("no-restricted"));
+  }
+
+  it.each([
+    'import { it } from "vitest";\nit.skip("EDX-54 x", () => undefined);',
+    'import { it } from "vitest";\nit.only("EDX-54 x", () => undefined);',
+    'import { it } from "vitest";\nit.todo("EDX-54 x");',
+    'import { describe } from "vitest";\ndescribe.skip("x", () => undefined);',
+    'import { test } from "vitest";\ntest.skipIf(true)("x", () => undefined);',
+  ])("MISC rejects %s", async (code) => {
+    expect(await ruleIds(code)).toEqual(["no-restricted-syntax"]);
+  });
+
+  it("MISC allows it.each", async () => {
+    expect(await ruleIds('import { it } from "vitest";\nit.each([1])("MISC %i", () => undefined);')).toEqual([]);
+  });
+});
