@@ -35,6 +35,7 @@ describe("golden programs", () => {
         files: expected.files ?? {},
         seed: expected.seed ?? 1,
         breakpoints: [],
+        trace: expected.expect.trace !== null,
       },
       expected.inputs ?? [],
     );

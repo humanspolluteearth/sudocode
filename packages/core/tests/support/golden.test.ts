@@ -143,7 +143,7 @@ describe("MISC golden runner: running programs headlessly", () => {
           if (c.type === "input") {
             emit({ type: "output", text: `${c.text}!\n` });
             emit({ type: "fileWrite", name: "out.txt", contents: `${c.text}\n` });
-            emit({ type: "traceRow", row: { kind: "output", line: 2, text: `${c.text}!` } });
+            emit({ type: "traceRows", rows: [{ kind: "output", line: 2, text: `${c.text}!` }] });
             emit({ type: "error", diagnostic: d("I-B", 2, 1, "info") });
             emit({ type: "done", status: "finished" });
           }
@@ -152,7 +152,14 @@ describe("MISC golden runner: running programs headlessly", () => {
       };
     },
   };
-  const req: RunRequest = { language: "edexcel", source: "", files: { "in.txt": "1\n" }, seed: 1, breakpoints: [] };
+  const req: RunRequest = {
+    language: "edexcel",
+    source: "",
+    files: { "in.txt": "1\n" },
+    seed: 1,
+    breakpoints: [],
+    trace: false,
+  };
 
   it("MISC feeds the inputs and collects output, diagnostics by severity, files and trace", async () => {
     const run = await runHeadless(createLocalRunner({ edexcel: engine }), req, ["hi"]);

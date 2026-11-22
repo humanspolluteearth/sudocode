@@ -42,6 +42,7 @@ export function runHeadless(runner: Runner, request: RunRequest, inputs: readonl
         case "output":
           result.stdout += event.text;
           break;
+        // The prompt itself arrives as an `output` event (protocol.ts), so it is already in stdout.
         case "inputRequest": {
           const next = queue.shift();
           if (next === undefined) {
@@ -57,8 +58,8 @@ export function runHeadless(runner: Runner, request: RunRequest, inputs: readonl
           if (event.reason === "stepLimit") result.stepLimitReached = true;
           runner.send(event.reason === "stepLimit" ? { type: "stop" } : { type: "continue" });
           break;
-        case "traceRow":
-          result.trace.push(event.row);
+        case "traceRows":
+          result.trace.push(...event.rows);
           break;
         case "fileWrite":
           result.files[event.name] = event.contents;

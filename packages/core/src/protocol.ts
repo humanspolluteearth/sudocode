@@ -23,6 +23,8 @@ export interface RunRequest {
   seed: number;
   /** 1-based source lines with a breakpoint. */
   breakpoints: number[];
+  /** Record trace rows (SH-17). Off when the trace panel is hidden, to save memory on small devices. */
+  trace: boolean;
 }
 
 // ---------- UI -> run worker
@@ -68,11 +70,16 @@ export type RunStatus = "finished" | "stopped" | "error";
 export type RunnerEvent =
   /** Text the program printed, including any newline it ends with. */
   | { type: "output"; text: string }
-  /** The program waits for a line of input. `device` is set for Edexcel devices other than KEYBOARD (EDX-74). */
+  /**
+   * The program waits for a line of input (SH-05). Any prompt text is ALSO printed: the engine sends it as an
+   * `output` event first (docs/TEST-PLAN.md section 3: prompts are part of stdout). `prompt` repeats it for the
+   * input box; `device` is set for Edexcel devices other than KEYBOARD and is shown only there (EDX-74, Q8).
+   */
   | { type: "inputRequest"; prompt: string; device?: string }
   /** Paused before running `line`; `stack[0]` is the innermost frame. `stepLimit` is SH-14's 10-million-step pause. */
   | { type: "paused"; reason: PauseReason; line: number; column: number; stack: StackFrame[] }
-  | { type: "traceRow"; row: TraceRow }
+  /** New trace rows since the last batch (only when `RunRequest.trace` is on). Batched to keep messages few. */
+  | { type: "traceRows"; rows: TraceRow[] }
   /** A virtual file's whole new contents after the program wrote to it. */
   | { type: "fileWrite"; name: string; contents: string }
   /** Checker results (errors stop the run before it starts; warnings and info notes don't). */

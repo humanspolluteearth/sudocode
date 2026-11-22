@@ -6,7 +6,10 @@
   "license": "AGPL-3.0-only",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./engine": "./src/engine.ts",
+    "./run-worker": "./src/worker/run-worker.ts",
+    "./check-worker": "./src/worker/check-worker.ts"
   },
   "scripts": {
     "test": "vitest run",

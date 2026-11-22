@@ -90,8 +90,10 @@ export default tseslint.config(
               message: "packages/ui cannot import an app: apps depend on ui, not the reverse.",
             },
             {
-              regex: "^@sudocode/core/|(^|/)packages/core/|^\\.\\./(\\.\\./)*core/",
-              message: 'Import from "@sudocode/core" only: the UI talks to the engine through the Runner interface.',
+              // Only the public entry and the two worker entry files (optionally with Vite's ?worker suffix).
+              regex: "^@sudocode/core/(?!(run|check)-worker(\\?worker)?$)|(^|/)packages/core/|^\\.\\./(\\.\\./)*core/",
+              message:
+                'Import "@sudocode/core" (or its run-worker/check-worker entries) only: the UI talks to the engine through the Runner interface.',
             },
           ],
         },
@@ -99,8 +101,23 @@ export default tseslint.config(
     },
   },
   {
+    // Apps are thin shells: the same rule as the UI for reaching into core.
     files: ["apps/**/*.{ts,tsx}"],
     languageOptions: { globals: { ...globals.browser } },
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            { regex: referenceImportPattern, message: referenceImportMessage },
+            {
+              regex: "^@sudocode/core/(?!(run|check)-worker(\\?worker)?$)|(^|/)packages/core/",
+              message: 'Import "@sudocode/core" (or its run-worker/check-worker entries) only.',
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     // Tests are never skipped, focused or left as todo (CLAUDE.md: never skip a test to make it pass).
