@@ -1,0 +1,451 @@
+[
+ {
+  "language": "edexcel",
+  "probe": "SH-10 DIV/MOD negatives",
+  "code": "SEND -7 DIV 2 TO DISPLAY\nSEND -7 MOD 2 TO DISPLAY",
+  "spec_expectation": "-4 | 1",
+  "old_result": {
+   "ok": [
+    "-4",
+    "1"
+   ]
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "SH-03 float output",
+  "code": "SEND 0.1 + 0.2 TO DISPLAY\nSEND 7 / 2 TO DISPLAY\nSEND 6 / 2 TO DISPLAY",
+  "spec_expectation": "(spec: shortest exact) | 3.5 | 3",
+  "old_result": {
+   "ok": [
+    "0.3",
+    "3.5",
+    "3"
+   ]
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "precedence & below +",
+  "code": "SEND 'Total: ' & 3 + 4 TO DISPLAY",
+  "spec_expectation": "Total: 7",
+  "old_result": {
+   "phase": "runtime",
+   "error": "Cannot add text and a number with +",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "precedence ^ above unary minus",
+  "code": "SEND -2 ^ 2 TO DISPLAY",
+  "spec_expectation": "-4",
+  "old_result": {
+   "ok": [
+    "4"
+   ]
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-05 lowercase keywords (warn)",
+  "code": "set x to 5\nsend x to display",
+  "spec_expectation": "5 + warning",
+  "old_result": {
+   "phase": "compile",
+   "error": "Keywords must be written in capitals",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-08 lowercase true accepted",
+  "code": "SET f TO true\nSEND f TO DISPLAY",
+  "spec_expectation": "TRUE",
+  "old_result": {
+   "phase": "compile",
+   "error": "true must be written in capitals",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-17 CONST",
+  "code": "CONST INTEGER Max\nSET Max TO 5\nSEND Max TO DISPLAY",
+  "spec_expectation": "5",
+  "old_result": {
+   "phase": "compile",
+   "error": "Unknown statement starting with CONST",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-24 Grid[r, c]",
+  "code": "SET g TO [[1, 2], [3, 4]]\nSEND g[1, 0] TO DISPLAY",
+  "spec_expectation": "3",
+  "old_result": {
+   "phase": "compile",
+   "error": "Expected ] but found ,",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-26 & on arrays is error",
+  "code": "SET a TO [1] & [2]\nSEND a TO DISPLAY",
+  "spec_expectation": "checker error",
+  "old_result": {
+   "ok": [
+    "[1][2]"
+   ]
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "Q-EDX-1 write past end grows",
+  "code": "SET a TO [1, 2]\nSET a[3] TO 9\nSEND a[3] TO DISPLAY",
+  "spec_expectation": "9",
+  "old_result": {
+   "phase": "runtime",
+   "error": "Index 3 is out of range for a (length 2)",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-42 ELSE IF chain (warn)",
+  "code": "SET x TO 2\nIF x = 1 THEN\n  SEND 1 TO DISPLAY\nELSE IF x = 2 THEN\n  SEND 2 TO DISPLAY\nEND IF",
+  "spec_expectation": "2 + warning",
+  "old_result": {
+   "phase": "compile",
+   "error": "ELSE IF is not part of Edexcel pseudocode",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-44 ENDIF (warn)",
+  "code": "IF TRUE THEN\n  SEND 1 TO DISPLAY\nENDIF",
+  "spec_expectation": "1 + warning",
+  "old_result": {
+   "phase": "compile",
+   "error": "ENDIF is not an Edexcel statement",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-52 REPEAT -1 TIMES runs 0",
+  "code": "REPEAT -1 TIMES\n  SEND 1 TO DISPLAY\nEND REPEAT\nSEND \"done\" TO DISPLAY",
+  "spec_expectation": "done",
+  "old_result": {
+   "phase": "runtime",
+   "error": "REPEAT ... TIMES needs a whole number, got -1",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-56 FOR var after loop",
+  "code": "FOR i FROM 1 TO 10 DO\nEND FOR\nSEND i TO DISPLAY",
+  "spec_expectation": "10",
+  "old_result": {
+   "ok": [
+    "10"
+   ]
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-58 FOREACH one word (warn)",
+  "code": "FOREACH c FROM \"ab\" DO\n  SEND c TO DISPLAY\nEND FOREACH",
+  "spec_expectation": "a | b + warning",
+  "old_result": {
+   "phase": "compile",
+   "error": "FOREACH cannot start a line",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-66 PROCEDURE without () is error",
+  "code": "PROCEDURE Hi\nBEGIN PROCEDURE\n  SEND \"hi\" TO DISPLAY\nEND PROCEDURE\nHi()",
+  "spec_expectation": "checker error",
+  "old_result": {
+   "ok": [
+    "hi"
+   ]
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-71 SEND with commas is error",
+  "code": "SEND 1, 2 TO DISPLAY",
+  "spec_expectation": "checker error",
+  "old_result": {
+   "ok": [
+    "1 2"
+   ]
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-73 RECEIVE without type is error",
+  "code": "RECEIVE x FROM KEYBOARD",
+  "spec_expectation": "checker error",
+  "old_result": {
+   "ok": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-74 other devices",
+  "code": "RECEIVE x FROM (INTEGER) CARD_READER\nSEND x TO MOTOR",
+  "spec_expectation": "[MOTOR] 5",
+  "old_result": {
+   "phase": "compile",
+   "error": "Expected KEYBOARD but found CARD_READER",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-81 WRITE file",
+  "code": "WRITE Scores.txt \"a\"",
+  "spec_expectation": "supported",
+  "old_result": {
+   "phase": "compile",
+   "error": "Unexpected character .",
+   "out": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "Q-EDX-4 no INT builtin",
+  "code": "SEND INT(3.7) TO DISPLAY",
+  "spec_expectation": "error (not Edexcel)",
+  "old_result": {
+   "ok": [
+    "3"
+   ]
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-12 type change is error",
+  "code": "SET x TO 5\nSET x TO \"a\"",
+  "spec_expectation": "checker error",
+  "old_result": {
+   "ok": []
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "EDX-31 DIV needs integers",
+  "code": "SEND 7.5 DIV 2 TO DISPLAY",
+  "spec_expectation": "error",
+  "old_result": {
+   "ok": [
+    "3"
+   ]
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "SH-07 overflow",
+  "code": "SET x TO 9007199254740991\nSET y TO x + 2\nSEND y TO DISPLAY",
+  "spec_expectation": "runtime error",
+  "old_result": {
+   "ok": [
+    "9007199254740992"
+   ]
+  }
+ },
+ {
+  "language": "edexcel",
+  "probe": "SH-13 recursion 500 deep",
+  "code": "FUNCTION R(n)\nBEGIN FUNCTION\n  IF n = 0 THEN\n    RETURN 0\n  END IF\n  RETURN 1 + R(n - 1)\nEND FUNCTION\nSEND R(500) TO DISPLAY",
+  "spec_expectation": "500",
+  "old_result": {
+   "phase": "runtime",
+   "error": "Too many nested calls: the recursion never stops",
+   "out": []
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "SH-10 DIV/MOD",
+  "code": "OUTPUT -7 DIV 2\nOUTPUT -7 MOD 2",
+  "spec_expectation": "-4 | 1",
+  "old_result": {
+   "ok": [
+    "-3",
+    "-1"
+   ]
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-127 INT negative",
+  "code": "OUTPUT INT(-2.5)",
+  "spec_expectation": "-2",
+  "old_result": {
+   "ok": [
+    "-2"
+   ]
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-11 undeclared is error",
+  "code": "X <- 5\nOUTPUT X",
+  "spec_expectation": "checker error",
+  "old_result": {
+   "ok": [
+    "5"
+   ]
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-06 <- accepted",
+  "code": "DECLARE X : INTEGER\nX <- 5\nOUTPUT X",
+  "spec_expectation": "5",
+  "old_result": {
+   "ok": [
+    "5"
+   ]
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-02 lowercase (warn)",
+  "code": "DECLARE X : INTEGER\nx <- 5\noutput X",
+  "spec_expectation": "5 + warning (or name error)",
+  "old_result": {
+   "phase": "compile",
+   "error": "Keywords are written in capitals",
+   "out": []
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-71 CALL required",
+  "code": "PROCEDURE P()\n  OUTPUT \"p\"\nENDPROCEDURE\nP()",
+  "spec_expectation": "checker error",
+  "old_result": {
+   "phase": "compile",
+   "error": "To run a procedure, start the line with CALL",
+   "out": []
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-43 exponent",
+  "code": "OUTPUT 2 ^ 3",
+  "spec_expectation": "8",
+  "old_result": {
+   "ok": [
+    "8"
+   ]
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-55 CASE OF expression",
+  "code": "DECLARE X : INTEGER\nX <- 2\nCASE OF X + 1\n  3 : OUTPUT \"three\"\n  OTHERWISE : OUTPUT \"other\"\nENDCASE",
+  "spec_expectation": "three",
+  "old_result": {
+   "ok": [
+    "three"
+   ]
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-101 TRY/EXCEPT",
+  "code": "TRY\n  OUTPUT 1 / 0\nEXCEPT\n  OUTPUT \"caught\"\nENDTRY",
+  "spec_expectation": "caught",
+  "old_result": {
+   "phase": "compile",
+   "error": "TRY on its own does nothing",
+   "out": []
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-110 CLASS",
+  "code": "CLASS Pet\n  PRIVATE Name : STRING\n  PUBLIC PROCEDURE NEW(N : STRING)\n    Name <- N\n  ENDPROCEDURE\nENDCLASS",
+  "spec_expectation": "supported",
+  "old_result": {
+   "phase": "compile",
+   "error": "Expected ← after CLASS",
+   "out": []
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-94 random files",
+  "code": "DECLARE R : INTEGER\nOPENFILE \"d.dat\" FOR RANDOM",
+  "spec_expectation": "supported",
+  "old_result": {
+   "phase": "compile",
+   "error": "Expected READ, WRITE or APPEND",
+   "out": []
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-96 file left open is error",
+  "code": "OPENFILE \"f.txt\" FOR WRITE\nWRITEFILE \"f.txt\", \"a\"",
+  "spec_expectation": "runtime error",
+  "old_result": {
+   "ok": []
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-45 & with number",
+  "code": "DECLARE N : INTEGER\nN <- 3\nOUTPUT \"n=\" & N",
+  "spec_expectation": "checker error, hint NUM_TO_STR",
+  "old_result": {
+   "phase": "runtime",
+   "error": "& joins strings, but 3 is INTEGER",
+   "out": []
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-14 no value yet",
+  "code": "DECLARE T : INTEGER\nOUTPUT T",
+  "spec_expectation": "runtime error",
+  "old_result": {
+   "phase": "runtime",
+   "error": "T has no value yet",
+   "out": []
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "CIE-31 enum",
+  "code": "TYPE Season = (Spring, Summer)\nDECLARE S : Season\nS <- Summer\nOUTPUT S",
+  "spec_expectation": "Summer",
+  "old_result": {
+   "phase": "compile",
+   "error": "Enumerated and pointer types are not supported in this simulator",
+   "out": []
+  }
+ },
+ {
+  "language": "cambridge",
+  "probe": "date",
+  "code": "DECLARE D : DATE\nD <- SETDATE(23, 11, 2026)\nOUTPUT DAY(D)",
+  "spec_expectation": "23",
+  "old_result": {
+   "ok": [
+    "23"
+   ]
+  }
+ }
+]

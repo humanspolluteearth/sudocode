@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cambridge Pseudocode Guide</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.th{--bg:#FFFFFF;--chrome:#F5F5F5;--status:#F0F0F0;--tabbar:#ECECEC;--gutter:#F7F7F7;--subtle:#FAFAFA;--errsoft:#FDF6F5;--fg:#1A1A1A;--fg2:#333333;--fg3:#3A3A3A;--fg4:#4A4A4A;--muted:#555555;--muted2:#6A6A6A;--lnum:#707070;--faint:#767676;--disabled:#9A9A9A;--line:#C9C9C9;--field:#ABABAB;--line2:#DDDDDD;--line3:#EFEFEF;--hover:#DEDEDE;--hoverline:#C2C2C2;--press:#D5D5D5;--link:#1F4E8C;--linkhover:#0E2A52;--menuhi:#2F4A6B;--red:#B3362C;--green:#2F6A31;--cur:#FBF3CF;--curgut:#F3E7B3;--errline:#FBE1DE;--errgut:#F4CFCA;--lint:#FDF0EE;--staterr:#F6DCD8;--kw:#1E3A6E;--str:#2F6B2F;--num:#8A3B12;--bi:#5B3F86;color-scheme:light}
+.th.dark{--bg:#1E1E1E;--chrome:#2B2B2B;--status:#252526;--tabbar:#252526;--gutter:#222222;--subtle:#262626;--errsoft:#3A2523;--fg:#D4D4D4;--fg2:#C8C8C8;--fg3:#BDBDBD;--fg4:#B0B0B0;--muted:#A6A6A6;--muted2:#9C9C9C;--lnum:#8A8A8A;--faint:#8F8F8F;--disabled:#6A6A6A;--line:#3C3C3C;--field:#5A5A5A;--line2:#333333;--line3:#2C2C2C;--hover:#3A3A3A;--hoverline:#4E4E4E;--press:#454545;--link:#82AADD;--linkhover:#AFCBEE;--menuhi:#3A5578;--red:#E0675B;--green:#7DB877;--cur:#3A3520;--curgut:#4A4428;--errline:#45231F;--errgut:#5A2B27;--lint:#3A2523;--staterr:#5A2B27;--kw:#8FB4E3;--str:#A3C78F;--num:#D9A47E;--bi:#C3A6E3;color-scheme:dark}
+@media (prefers-color-scheme: dark){.th.sys{--bg:#1E1E1E;--chrome:#2B2B2B;--status:#252526;--tabbar:#252526;--gutter:#222222;--subtle:#262626;--errsoft:#3A2523;--fg:#D4D4D4;--fg2:#C8C8C8;--fg3:#BDBDBD;--fg4:#B0B0B0;--muted:#A6A6A6;--muted2:#9C9C9C;--lnum:#8A8A8A;--faint:#8F8F8F;--disabled:#6A6A6A;--line:#3C3C3C;--field:#5A5A5A;--line2:#333333;--line3:#2C2C2C;--hover:#3A3A3A;--hoverline:#4E4E4E;--press:#454545;--link:#82AADD;--linkhover:#AFCBEE;--menuhi:#3A5578;--red:#E0675B;--green:#7DB877;--cur:#3A3520;--curgut:#4A4428;--errline:#45231F;--errgut:#5A2B27;--lint:#3A2523;--staterr:#5A2B27;--kw:#8FB4E3;--str:#A3C78F;--num:#D9A47E;--bi:#C3A6E3;color-scheme:dark}}
+
+a{color:var(--link)}a:hover{color:var(--linkhover)}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="min-height: 100vh; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.55">
+
+<div style="border-bottom: 1px solid var(--line); background: var(--chrome)">
+  <div style="max-width: 1080px; margin: 0 auto; padding: 8px 24px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 12px; color: var(--fg4)">
+    <a href="Main.dc.html">IDE</a><span aria-hidden="true">/</span><span>Cambridge guide</span>
+    <nav aria-label="Guide language" style="margin-left: auto; display: flex; border: 1px solid var(--line); background: var(--chrome)"><a href="Guide.dc.html" style="padding: 3px 10px; border-left: 0; text-decoration: none">Edexcel</a><span aria-current="page" style="padding: 3px 10px; background: var(--bg); color: var(--fg); font-weight: 600; border-left: 1px solid var(--line)">Cambridge</span><a href="PythonGuide.dc.html" style="padding: 3px 10px; border-left: 1px solid var(--line); text-decoration: none">Python</a></nav>
+  </div>
+</div>
+
+<div style="max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+
+  <nav aria-label="Contents" style="flex: 1 1 180px; max-width: 220px; font-size: 13px">
+    <div style="font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--fg); margin-bottom: 6px">Contents</div>
+    <ol style="margin: 0; padding-left: 20px; line-height: 1.9">
+      <li><a href="#s1">Variables and data types</a></li>
+      <li><a href="#s2">Input and output</a></li>
+      <li><a href="#s3">Selection</a></li>
+      <li><a href="#s4">Iteration</a></li>
+      <li><a href="#s5">Arrays</a></li>
+      <li><a href="#s6">Procedures and functions</a></li>
+      <li><a href="#s7">Records and text files (9618)</a></li>
+      <li><a href="#s8">Operators</a></li>
+      <li><a href="#s9">Built-in functions</a></li>
+      <li><a href="#s10">Debugger</a></li>
+      <li><a href="#s11">Error messages</a></li>
+    </ol>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 36px">
+    <header style="display: flex; flex-direction: column; gap: 8px">
+      <h1 style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600">Cambridge pseudocode reference</h1>
+      <p style="margin: 0; color: var(--fg3); max-width: 660px">What the IDE accepts for Cambridge IGCSE (0478), O Level (2210) and International AS &amp; A Level (9618). Keywords and built-in functions are in capitals, variables are declared with a type, and assignment uses ←.</p>
+    </header>
+
+    <section id="s1" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">1. Variables and data types</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">DECLARE Total : INTEGER
+DECLARE Price : REAL
+DECLARE Initial : CHAR
+DECLARE Name : STRING
+DECLARE Found : BOOLEAN
+DECLARE Today : DATE
+
+Total ← 0
+Name ← "Sam"
+CONSTANT VAT ← 0.2</pre>
+<div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 18%">Type</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Holds</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 30%">Literal</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">INTEGER</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Whole numbers</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">42   -7</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">REAL</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Numbers with a decimal part</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">3.5   -0.25</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">CHAR</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Exactly one character</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">'A'</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">STRING</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Text of any length</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">"Hello"</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">BOOLEAN</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">TRUE or FALSE</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">TRUE</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">DATE</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">A calendar date</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">SETDATE(25, 12, 2025)</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; color: var(--fg3)">Assign with the arrow ←. You can type <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">&lt;-</code> instead; the IDE treats them the same. 0478/2210 writes constants with ←, 9618 with =, and both are accepted. Names are not case-sensitive in Cambridge pseudocode, so <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">Total</code> and <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">TOTAL</code> are the same variable, but keep one spelling. A value must match the declared type: storing 3.5 in an INTEGER is an error.</p>
+    </section>
+
+    <section id="s2" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">2. Input and output</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">OUTPUT "Enter your name"
+INPUT Name
+OUTPUT "Hello ", Name, ", you are ", Age
+// a comment runs to the end of the line</pre>
+<p style="margin: 0; color: var(--fg3)">OUTPUT prints the items you list, joined with no spaces added. When INPUT runs, the console waits for you to type a value and press Enter, then converts it to the variable's declared type. To show a prompt, OUTPUT it on the line before INPUT.</p>
+    </section>
+
+    <section id="s3" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">3. Selection</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">IF Mark &gt;= 50
+  THEN
+    OUTPUT "Pass"
+  ELSE
+    OUTPUT "Fail"
+ENDIF
+
+IF Mark &gt;= 70 THEN
+    Grade ← 'A'
+ENDIF</pre>
+<p style="margin: 0; color: var(--fg3)">THEN can sit on its own line (the Cambridge layout) or at the end of the IF line. There is no ELSE IF. For more outcomes, put another IF with its own ENDIF inside the ELSE, or use CASE.</p>
+<pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">CASE OF Choice
+    1 : OUTPUT "Add"
+    2 : OUTPUT "Delete"
+    3 TO 5 : OUTPUT "Other"
+    OTHERWISE : OUTPUT "Invalid choice"
+ENDCASE</pre>
+<p style="margin: 0; color: var(--fg3)">Each branch is a value or a range with TO, then a colon and a statement. A branch may continue on the following lines. OTHERWISE is optional and must be last.</p>
+    </section>
+
+    <section id="s4" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">4. Iteration</h2>
+      <div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 20%">Loop</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Form</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%">Notes</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Count-controlled</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre">FOR Count ← 1 TO 10
+    OUTPUT Count
+NEXT Count</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Add <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">STEP 2</code> or <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">STEP -1</code> after the end value. NEXT names the loop variable.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Pre-condition</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre">WHILE Total &lt; 100 DO
+    Total ← Total + 10
+ENDWHILE</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Checked first, so the body may not run at all. DO is optional: 9618 leaves it out.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Post-condition</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre">REPEAT
+    INPUT Age
+UNTIL Age &gt;= 0</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Checked last, so the body always runs at least once.</td></tr>
+</tbody>
+</table>
+</div>
+    </section>
+
+    <section id="s5" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">5. Arrays</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">DECLARE Scores : ARRAY[1:5] OF INTEGER
+Scores[1] ← 12
+
+DECLARE Grid : ARRAY[1:3, 1:4] OF CHAR
+Grid[2, 3] ← 'X'
+
+Total ← 0
+FOR i ← 1 TO 5
+    Total ← Total + Scores[i]
+NEXT i</pre>
+<p style="margin: 0; color: var(--fg3)">The bounds are set in the DECLARE, as lower:upper. Cambridge arrays usually start at 1. A 2D array takes the row, then the column, separated by a comma. Every element starts with no value: reading one before you assign it is reported as an error, which catches loops that miss an element.</p>
+    </section>
+
+    <section id="s6" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">6. Procedures and functions</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">PROCEDURE ShowLine(Size : INTEGER, Symbol : CHAR)
+    DECLARE i : INTEGER
+    FOR i ← 1 TO Size
+        OUTPUT Symbol
+    NEXT i
+ENDPROCEDURE
+
+FUNCTION Square(N : INTEGER) RETURNS INTEGER
+    RETURN N * N
+ENDFUNCTION
+
+CALL ShowLine(3, '*')
+Area ← Square(4)</pre>
+<p style="margin: 0; color: var(--fg3)">Run a procedure with CALL. A function states its RETURNS type, must reach a RETURN, and its result has to be used. Each parameter has a type. Variables declared inside a subroutine are local to it.</p>
+<pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">PROCEDURE Swap(BYREF X : INTEGER, Y : INTEGER)
+    DECLARE Temp : INTEGER
+    Temp ← X
+    X ← Y
+    Y ← Temp
+ENDPROCEDURE</pre>
+<p style="margin: 0; color: var(--fg3)">BYVAL (the default) passes a copy. BYREF passes the variable itself, so changes are seen by the caller. A BYREF or BYVAL keyword applies to every parameter after it until the other keyword appears, so both X and Y above are BYREF. The arguments for BYREF parameters must be variables.</p>
+    </section>
+
+    <section id="s7" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">7. Records and text files (9618)</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">TYPE Student
+    DECLARE Name : STRING
+    DECLARE Score : INTEGER
+ENDTYPE
+
+DECLARE Class : ARRAY[1:30] OF Student
+Class[1].Name ← "Ama"
+Class[1].Score ← 61</pre>
+<pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">OPENFILE "scores.txt" FOR WRITE
+WRITEFILE "scores.txt", "Ama,61"
+CLOSEFILE "scores.txt"
+
+OPENFILE "scores.txt" FOR READ
+WHILE NOT EOF("scores.txt")
+    READFILE "scores.txt", LineOfText
+    OUTPUT LineOfText
+ENDWHILE
+CLOSEFILE "scores.txt"</pre>
+<p style="margin: 0; color: var(--fg3)">Modes are READ, WRITE (starts an empty file) and APPEND. In this IDE files live in memory while the program runs, and each one appears in the Variables pane with its lines. Enumerated and pointer types, and random-access files, are not supported.</p>
+    </section>
+
+    <section id="s8" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">8. Operators</h2>
+      <div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%">Kind</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 30%">Operators</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Notes</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Arithmetic</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">+ - * / ^</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">/ always gives a REAL. ^ is power.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Integer division</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">DIV(17, 5)  MOD(17, 5)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Give 3 and 2. 17 DIV 5 and 17 MOD 5 also work.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Comparison</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">= &lt;&gt; &lt; &lt;= &gt; &gt;=</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">One = compares. &lt;&gt; means not equal. == and != are rejected.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Logic</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">AND OR NOT</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Write a full comparison on each side: Age &gt; 12 AND Age &lt; 20.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Strings</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">&amp;</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Joins STRING and CHAR values. Convert numbers with NUM_TO_STR first.</td></tr>
+</tbody>
+</table>
+</div>
+    </section>
+
+    <section id="s9" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">9. Built-in functions</h2>
+      <div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 32%">Function</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 15%">Syllabus</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Result</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">LENGTH(S)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Both</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Number of characters in S. LENGTH("Happy") is 5.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">UCASE(S)  LCASE(S)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Both</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Upper or lower case. 0478/2210 uses them on strings, 9618 on a CHAR.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">SUBSTRING(S, Start, Len)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">0478 / 2210</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Len characters from position Start (from 1). SUBSTRING("Happy Days", 1, 5) is "Happy".</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">ROUND(X, Places)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">0478 / 2210</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">X rounded to Places decimal places. ROUND(6.97354, 2) is 6.97.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">RANDOM()</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">0478 / 2210</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A random REAL from 0 to 1.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">DIV(X, Y)  MOD(X, Y)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Both</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Whole-number quotient and remainder.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">LEFT(S, N)  RIGHT(S, N)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The first or last N characters.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">MID(S, Start, Len)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Len characters from position Start. MID("ABCDEF", 2, 3) is "BCD".</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">TO_UPPER(X)  TO_LOWER(X)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Change case of a STRING or CHAR.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">NUM_TO_STR(X)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A number as a STRING.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">STR_TO_NUM(S)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A STRING such as "42" as a number. Check it with IS_NUM first.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">IS_NUM(S)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">TRUE if S holds a valid number.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">ASC(C)  CHR(X)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Character code and back. ASC('A') is 65, CHR(66) is 'B'.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">INT(X)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The whole-number part. INT(7.9) is 7.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">RAND(X)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A random REAL from 0 up to, but not including, X.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">SETDATE(D, M, Y)  NOW()</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Make a DATE, or get today's date.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">DAY(D)  MONTH(D)  YEAR(D)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Parts of a DATE.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">DAYINDEX(D)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Day of the week: 1 is Sunday, 7 is Saturday.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">EOF(FileName)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">9618</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">TRUE when a file open for READ has no more lines.</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; color: var(--fg3)">Built-in names are written in capitals. The IDE accepts every function in both lists whichever syllabus you follow, so check which list your exam uses.</p>
+    </section>
+
+    <section id="s10" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">10. Debugger</h2>
+      <div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%">Command</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 14%">Key</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">What it does</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Run</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">F5</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Starts from the top. Stops at the end or at a breakpoint.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Step</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">F10</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Runs one line. The yellow line is the one that runs next.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Continue</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">F8</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">While paused, runs to the next breakpoint or the end.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Reset</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">Shift+F5</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Stops the program so you can edit and start again.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Breakpoint</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">click</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Click a line number to add or remove a red breakpoint dot.</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; color: var(--fg3)">Each program opens in its own editor tab. Convert to (in the toolbar and the Convert menu) translates the current program into one of the other two languages and opens the result in a new tab, so the original stays as it was. Statements with no direct equivalent, such as Python dictionaries or Cambridge record types, are kept as TODO comments for you to finish by hand.</p>
+<p style="margin: 0; color: var(--fg3)">Save and Save as use the <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">.cpc</code> extension for this language, or plain <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">.txt</code>. Ctrl+S saves the current tab.</p>
+<p style="margin: 0; color: var(--fg3)">While paused, Variables lists each value with its declared type. Elements with no value yet show as —. A value that changed on the last step is shown in red. Inside a procedure or function, local variables are marked and the Call stack shows where it was called from.</p>
+    </section>
+
+    <section id="s11" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">11. Error messages</h2>
+      <div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 36%">Message</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%">Usual cause</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Fix</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Index 0 is outside Temps[1:4]</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A loop starts at 0 or ends one past the upper bound.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">FOR i ← 1 TO 4</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Total has no value yet</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The variable was declared but never assigned.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">Total ← 0 before the loop</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Use ← to assign, not =</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Python or Edexcel habits.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">Total ← Total + 1</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">&amp; joins strings, but 5 is INTEGER</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A number joined to text with &amp;.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">OUTPUT "Total: ", Total</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Cannot store REAL 3.5 in N, which is INTEGER</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The value does not match the declared type.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">DECLARE N : REAL</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">N is an INTEGER, but the input was "abc"</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The value typed in the console is the wrong kind.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">Type a whole number</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">ENDFOR is not Cambridge pseudocode</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">FOR loops close with NEXT.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">NEXT i</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">NEXT i does not match FOR j</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Nested loops closed in the wrong order.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">Close the inner loop first</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">To run a procedure, start the line with CALL</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A procedure name used on its own.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">CALL ShowMenu()</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">ELSE IF is not Cambridge pseudocode</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Several conditions chained on one ELSE line.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">Nested IF, or CASE OF</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">FUNCTION F ended without a RETURN</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A path through the function misses RETURN.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">RETURN after the loop</td></tr>
+</tbody>
+</table>
+</div>
+    </section>
+
+    <p style="margin: 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted)">Based on the pseudocode guides published for Cambridge IGCSE and O Level Computer Science (0478, 2210) and International AS &amp; A Level Computer Science (9618). Check the guide for your own syllabus year.</p>
+  </main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system","section":"Appearance"},"$preview":{"width":1280,"height":2200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var t = this.props.theme || 'system';
+    return { themeClass: t === 'dark' ? 'dark' : t === 'light' ? 'light' : 'sys' };
+  }
+}
+</script>
+</body>
+</html>

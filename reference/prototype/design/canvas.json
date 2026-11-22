@@ -1,0 +1,65 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "IDE",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    {
+      "file": "Guide.dc.html",
+      "x": 1520,
+      "y": 0,
+      "w": 1280,
+      "h": 2200,
+      "title": "Edexcel guide",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    {
+      "file": "CambridgeGuide.dc.html",
+      "x": 2880,
+      "y": 0,
+      "w": 1280,
+      "h": 2600,
+      "title": "Cambridge guide",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    {
+      "file": "PythonGuide.dc.html",
+      "x": 4240,
+      "y": 0,
+      "w": 1280,
+      "h": 2600,
+      "title": "Python guide",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    {
+      "file": "Tablet.dc.html",
+      "x": 0,
+      "y": 1020,
+      "w": 834,
+      "h": 1194,
+      "title": "IDE · Tablet (Cambridge)",
+      "is_interactive": true
+    },
+    {
+      "file": "Mobile.dc.html",
+      "x": 914,
+      "y": 1020,
+      "w": 390,
+      "h": 844,
+      "title": "IDE · Mobile (Python)",
+      "is_interactive": true
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

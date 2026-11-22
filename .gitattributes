@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.png binary
+*.ico binary
+*.icns binary
+*.woff2 binary
+# Golden test files must keep exact bytes (line endings matter to interpreters)
+packages/core/tests/golden/** text eol=lf

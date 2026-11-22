@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pseudocode Guide</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.th{--bg:#FFFFFF;--chrome:#F5F5F5;--status:#F0F0F0;--tabbar:#ECECEC;--gutter:#F7F7F7;--subtle:#FAFAFA;--errsoft:#FDF6F5;--fg:#1A1A1A;--fg2:#333333;--fg3:#3A3A3A;--fg4:#4A4A4A;--muted:#555555;--muted2:#6A6A6A;--lnum:#707070;--faint:#767676;--disabled:#9A9A9A;--line:#C9C9C9;--field:#ABABAB;--line2:#DDDDDD;--line3:#EFEFEF;--hover:#DEDEDE;--hoverline:#C2C2C2;--press:#D5D5D5;--link:#1F4E8C;--linkhover:#0E2A52;--menuhi:#2F4A6B;--red:#B3362C;--green:#2F6A31;--cur:#FBF3CF;--curgut:#F3E7B3;--errline:#FBE1DE;--errgut:#F4CFCA;--lint:#FDF0EE;--staterr:#F6DCD8;--kw:#1E3A6E;--str:#2F6B2F;--num:#8A3B12;--bi:#5B3F86;color-scheme:light}
+.th.dark{--bg:#1E1E1E;--chrome:#2B2B2B;--status:#252526;--tabbar:#252526;--gutter:#222222;--subtle:#262626;--errsoft:#3A2523;--fg:#D4D4D4;--fg2:#C8C8C8;--fg3:#BDBDBD;--fg4:#B0B0B0;--muted:#A6A6A6;--muted2:#9C9C9C;--lnum:#8A8A8A;--faint:#8F8F8F;--disabled:#6A6A6A;--line:#3C3C3C;--field:#5A5A5A;--line2:#333333;--line3:#2C2C2C;--hover:#3A3A3A;--hoverline:#4E4E4E;--press:#454545;--link:#82AADD;--linkhover:#AFCBEE;--menuhi:#3A5578;--red:#E0675B;--green:#7DB877;--cur:#3A3520;--curgut:#4A4428;--errline:#45231F;--errgut:#5A2B27;--lint:#3A2523;--staterr:#5A2B27;--kw:#8FB4E3;--str:#A3C78F;--num:#D9A47E;--bi:#C3A6E3;color-scheme:dark}
+@media (prefers-color-scheme: dark){.th.sys{--bg:#1E1E1E;--chrome:#2B2B2B;--status:#252526;--tabbar:#252526;--gutter:#222222;--subtle:#262626;--errsoft:#3A2523;--fg:#D4D4D4;--fg2:#C8C8C8;--fg3:#BDBDBD;--fg4:#B0B0B0;--muted:#A6A6A6;--muted2:#9C9C9C;--lnum:#8A8A8A;--faint:#8F8F8F;--disabled:#6A6A6A;--line:#3C3C3C;--field:#5A5A5A;--line2:#333333;--line3:#2C2C2C;--hover:#3A3A3A;--hoverline:#4E4E4E;--press:#454545;--link:#82AADD;--linkhover:#AFCBEE;--menuhi:#3A5578;--red:#E0675B;--green:#7DB877;--cur:#3A3520;--curgut:#4A4428;--errline:#45231F;--errgut:#5A2B27;--lint:#3A2523;--staterr:#5A2B27;--kw:#8FB4E3;--str:#A3C78F;--num:#D9A47E;--bi:#C3A6E3;color-scheme:dark}}
+
+a{color:var(--link)}a:hover{color:var(--linkhover)}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="min-height: 100vh; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.55">
+
+<div style="border-bottom: 1px solid var(--line); background: var(--chrome)">
+  <div style="max-width: 1080px; margin: 0 auto; padding: 8px 24px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 12px; color: var(--fg4)">
+    <a href="Main.dc.html">IDE</a><span aria-hidden="true">/</span><span>Edexcel guide</span>
+    <nav aria-label="Guide language" style="margin-left: auto; display: flex; border: 1px solid var(--line); background: var(--chrome)"><span aria-current="page" style="padding: 3px 10px; background: var(--bg); color: var(--fg); font-weight: 600; border-left: 0">Edexcel</span><a href="CambridgeGuide.dc.html" style="padding: 3px 10px; border-left: 1px solid var(--line); text-decoration: none">Cambridge</a><a href="PythonGuide.dc.html" style="padding: 3px 10px; border-left: 1px solid var(--line); text-decoration: none">Python</a></nav>
+  </div>
+</div>
+
+<div style="max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+
+  <nav aria-label="Contents" style="flex: 1 1 180px; max-width: 220px; font-size: 13px">
+    <div style="font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--fg); margin-bottom: 6px">Contents</div>
+    <ol style="margin: 0; padding-left: 20px; line-height: 1.9">
+      <li><a href="#s1">Variables and I/O</a></li>
+      <li><a href="#s2">Selection</a></li>
+      <li><a href="#s3">Iteration</a></li>
+      <li><a href="#s4">Subprograms</a></li>
+      <li><a href="#s5">Arrays and strings</a></li>
+      <li><a href="#s6">Operators</a></li>
+      <li><a href="#s7">Built-in functions</a></li>
+      <li><a href="#s8">Debugger</a></li>
+      <li><a href="#s9">Error messages</a></li>
+    </ol>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 36px">
+    <header style="display: flex; flex-direction: column; gap: 8px">
+      <h1 style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600">Edexcel pseudocode reference</h1>
+      <p style="margin: 0; color: var(--fg3); max-width: 640px">For Edexcel GCSE and International GCSE Computer Science. What the IDE accepts, written the way exam answers expect it. Keywords are in capitals. Every block is closed with END or UNTIL. Indent with four spaces.</p>
+    </header>
+
+    <section id="s1" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">1. Variables and I/O</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">SET score TO 0
+SET name TO "Sam"
+RECEIVE age FROM (INTEGER) KEYBOARD
+SEND "Hello " &amp; name TO DISPLAY
+# everything after # is a comment</pre>
+      <p style="margin: 0; color: var(--fg3)">SET creates or updates a variable. Names are case-sensitive, so <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">Score</code> and <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">score</code> are different. RECEIVE takes one of INTEGER, REAL, STRING, BOOLEAN or CHARACTER. In the IDE, the console waits for you to type each value when RECEIVE runs.</p>
+    </section>
+
+    <section id="s2" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">2. Selection</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">IF mark &gt;= 70 THEN
+    SET grade TO "A"
+ELSE
+    IF mark &gt;= 50 THEN
+        SET grade TO "B"
+    ELSE
+        SET grade TO "C"
+    END IF
+END IF</pre>
+      <p style="margin: 0; color: var(--fg3)">ELSE is optional. There is no ELSE IF: for more than two outcomes, nest another IF inside ELSE. Each IF has its own END IF.</p>
+    </section>
+
+    <section id="s3" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">3. Iteration</h2>
+      <div style="overflow-x: auto">
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px">
+        <thead>
+          <tr style="background: var(--chrome)">
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 26%">Loop</th>
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Form</th>
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 30%">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top">Count-controlled</td>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top"><pre style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; line-height: 19px">FOR i FROM 1 TO 10 STEP 2 DO
+    SEND i TO DISPLAY
+END FOR</pre></td>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">STEP is optional (default 1) and may be negative.</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top">Fixed repeats</td>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top"><pre style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; line-height: 19px">REPEAT 3 TIMES
+    SEND "Hello" TO DISPLAY
+END REPEAT</pre></td>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The count must be a whole number.</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top">Condition first</td>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top"><pre style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; line-height: 19px">WHILE count &lt; 5 DO
+    SET count TO count + 1
+END WHILE</pre></td>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The body may run zero times.</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top">Condition last</td>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top"><pre style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; line-height: 19px">REPEAT
+    RECEIVE guess FROM (INTEGER) KEYBOARD
+UNTIL guess = 7</pre></td>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The body always runs at least once.</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top">Each element</td>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top"><pre style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; line-height: 19px">FOR EACH item FROM basket DO
+    SEND item TO DISPLAY
+END FOREACH</pre></td>
+            <td style="padding: 8px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Works on arrays and on the characters of a string.</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <section id="s4" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">4. Subprograms</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">PROCEDURE greet(name)
+BEGIN PROCEDURE
+    SEND "Hi " &amp; name TO DISPLAY
+END PROCEDURE
+
+FUNCTION square(n)
+BEGIN FUNCTION
+    RETURN n * n
+END FUNCTION
+
+greet("Ava")
+SET area TO square(4)</pre>
+      <p style="margin: 0; color: var(--fg3)">A procedure is called on its own line and gives nothing back. A function must RETURN a value and is used inside an expression. Both can read and change variables from the main program. New variables made inside them are local.</p>
+    </section>
+
+    <section id="s5" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">5. Arrays and strings</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">SET scores TO [12, 18, 9]
+SET scores[1] TO 20
+FOR i FROM 0 TO LENGTH(scores) - 1 DO
+    SEND scores[i] TO DISPLAY
+END FOR
+
+SET grid TO [[1, 2], [3, 4]]
+SEND grid[1][0] TO DISPLAY      # 3
+
+SET word TO "code"
+SEND word[0] TO DISPLAY         # c</pre>
+      <p style="margin: 0; color: var(--fg3)">Indexes start at 0, so the last valid index is LENGTH(scores) - 1. In a 2D array the row comes first. Strings can be read by index but not changed one character at a time.</p>
+    </section>
+
+    <section id="s6" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">6. Operators</h2>
+      <div style="overflow-x: auto">
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px">
+        <thead>
+          <tr style="background: var(--chrome)">
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%">Kind</th>
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 30%">Operators</th>
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line)">Arithmetic</td><td style="padding: 6px 10px; border: 1px solid var(--line); font-family: 'IBM Plex Mono', ui-monospace, monospace">+ - * / ^</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">/ always gives a real result. ^ is power.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line)">Integer division</td><td style="padding: 6px 10px; border: 1px solid var(--line); font-family: 'IBM Plex Mono', ui-monospace, monospace">DIV MOD</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">7 DIV 2 is 3. 7 MOD 2 is 1.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line)">Comparison</td><td style="padding: 6px 10px; border: 1px solid var(--line); font-family: 'IBM Plex Mono', ui-monospace, monospace">= &lt;&gt; &lt; &lt;= &gt; &gt;=</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">One = compares. &lt;&gt; is not equal. == and != are rejected.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line)">Logic</td><td style="padding: 6px 10px; border: 1px solid var(--line); font-family: 'IBM Plex Mono', ui-monospace, monospace">AND OR NOT</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">Write a full comparison on each side: x &gt; 0 AND x &lt; 10.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line)">Text</td><td style="padding: 6px 10px; border: 1px solid var(--line); font-family: 'IBM Plex Mono', ui-monospace, monospace">&amp;</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">Joins text and values: "Total: " &amp; total.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <section id="s7" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">7. Built-in functions</h2>
+      <dl style="margin: 0; display: grid; grid-template-columns: minmax(0, 160px) minmax(0, 1fr); gap: 6px 16px">
+        <dt style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">LENGTH(x)</dt><dd style="margin: 0; color: var(--fg3)">Number of items in an array, or characters in a string.</dd>
+        <dt style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">RANDOM(n)</dt><dd style="margin: 0; color: var(--fg3)">A random whole number from 0 to n inclusive.</dd>
+        <dt style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">INT(x)</dt><dd style="margin: 0; color: var(--fg3)">Turns a number or numeric text into a whole number. Helper provided by this IDE.</dd>
+        <dt style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">STR(x)</dt><dd style="margin: 0; color: var(--fg3)">Turns a value into text. Helper provided by this IDE.</dd>
+      </dl>
+    </section>
+
+    <section id="s8" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">8. Debugger</h2>
+      <div style="overflow-x: auto">
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px">
+        <thead>
+          <tr style="background: var(--chrome)">
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%">Command</th>
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 14%">Key</th>
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">What it does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line)">Run</td><td style="padding: 6px 10px; border: 1px solid var(--line); font-family: 'IBM Plex Mono', ui-monospace, monospace">F5</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">Starts from the top. Stops at the end or at a breakpoint.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line)">Step</td><td style="padding: 6px 10px; border: 1px solid var(--line); font-family: 'IBM Plex Mono', ui-monospace, monospace">F10</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">Runs one line. The yellow line is the one that runs next.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line)">Continue</td><td style="padding: 6px 10px; border: 1px solid var(--line); font-family: 'IBM Plex Mono', ui-monospace, monospace">F8</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">While paused, runs to the next breakpoint or the end.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line)">Reset</td><td style="padding: 6px 10px; border: 1px solid var(--line); font-family: 'IBM Plex Mono', ui-monospace, monospace">Shift+F5</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">Stops the program so you can edit and start again.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line)">Breakpoint</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">click</td><td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--fg3)">Click a line number to add or remove a red breakpoint dot.</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p style="margin: 0; color: var(--fg3)">Each program opens in its own editor tab. Convert to (in the toolbar and the Convert menu) translates the current program into one of the other two languages and opens the result in a new tab, so the original stays as it was. Statements with no direct equivalent, such as Python dictionaries or Cambridge record types, are kept as TODO comments for you to finish by hand.</p>
+      <p style="margin: 0; color: var(--fg3)">Save and Save as use the <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">.epc</code> extension for this language, or plain <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">.txt</code>. Ctrl+S saves the current tab.</p>
+      <p style="margin: 0; color: var(--fg3)">While paused, the Variables pane lists each value and its type. A value that changed on the last step is shown in red. Inside a subprogram, local variables are marked and the Call stack shows where it was called from. Syntax is checked as you type, and the first problem appears in Problems and the status bar.</p>
+    </section>
+
+    <section id="s9" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">9. Error messages</h2>
+      <div style="overflow-x: auto">
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px">
+        <thead>
+          <tr style="background: var(--chrome)">
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%">Message</th>
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 33%">Usual cause</th>
+            <th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Fix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Index 4 is out of range</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A loop goes FROM 0 TO LENGTH(list), one past the end.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">TO LENGTH(list) - 1</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Variable has not been given a value</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Spelling or capitals differ, or it is read before SET.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Match the name exactly and SET it first.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Cannot add text and a number with +</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A message built with + instead of &amp;.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">"Total: " &amp; total</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Cannot compare STRING with INTEGER</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A number was received as text.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">FROM (INTEGER) KEYBOARD</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Expected THEN / Expected DO</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">An IF, WHILE or FOR line is missing its last keyword.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">IF x &gt; 1 THEN</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">IF on line 3 is never closed</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A block is missing its END line.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Add END IF, END WHILE, END FOR as needed.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">END WHILE found, but the open block is IF</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Blocks closed in the wrong order.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Close the innermost block first.</td></tr>
+          <tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">print is not an Edexcel statement</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Habits from Python or another language.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">SEND x TO DISPLAY</td></tr>
+                    <tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">This looks like an infinite loop</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The loop condition never becomes false.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Update the counter or flag inside the loop.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <p style="margin: 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted)">Based on the pseudocode conventions in Pearson Edexcel Computer Science specifications. Check your own specification for the exact wording your exam expects.</p>
+  </main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system","section":"Appearance"},"$preview":{"width":1280,"height":2200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var t = this.props.theme || 'system';
+    return { themeClass: t === 'dark' ? 'dark' : t === 'light' ? 'light' : 'sys' };
+  }
+}
+</script>
+</body>
+</html>

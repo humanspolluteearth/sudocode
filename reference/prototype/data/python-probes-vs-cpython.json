@@ -1,0 +1,340 @@
+{
+ "ints_big": {
+  "old": {
+   "stdout": "1267650600228229401496703205376\n-4 1 -4\n2.5 2.0 0.3333333333333333\n0.30000000000000004\n1e+20 1e+16 123456789.0\n2 4 0 2.67\n(-4, 1) 1024 3.5\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "1267650600228229401496703205376\n-4 1 -4\n2.5 2.0 0.3333333333333333\n0.30000000000000004\n1e+20 1e+16 123456789.0\n2 4 0 2.67\n(-4, 1) 1024 3.5\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "fstrings": {
+  "old": {
+   "stdout": "3.14|   42|42   |   42|  42   |     3.142|00042|1,234,567\n***hi*** 42 n=42\n     a    bb\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "3.14|   42|42   |   42|  42   |     3.142|00042|1,234,567\n***hi*** 42 n=42\n     a    bb\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "strings": {
+  "old": {
+   "stdout": "HELLO WORLD hello world H d ell dlroW olleH HloWrd\n['Hello', 'World'] ['Hell', ' W', 'rld'] a-b 4 3 HeLLo WorLd\nTrue False True True x| 11\nababab False 65 B\n",
+   "exc": "ValueError",
+   "msg": "substring not found"
+  },
+  "cpython": {
+   "stdout": "HELLO WORLD hello world H d ell dlroW olleH HloWrd\n['Hello', 'World'] ['Hell', ' W', 'rld'] a-b 4 3 HeLLo WorLd\nTrue False True True x| 11\nababab False 65 B\n",
+   "exc": "ValueError",
+   "msg": "substring not found"
+  },
+  "same": true
+ },
+ "lists": {
+  "old": {
+   "stdout": "[9, 3, 1, 2, 5]\n[2, 3, 5] [9, 5, 3, 2, 1] 9 1 [2, 3, 5]\n[[0, 5, 0], [0, 0, 0]]\n[0, 0, 0] 3 10 2 5\n1 1 [5, 3, 2]\n[3, 5]\n[0, 4, 16]\n[('b', 2), ('a', 3)]\n[(0, 'a'), (1, 'b')] [(1, 'x'), (2, 'y')]\n",
+   "exc": "IndexError",
+   "msg": "list index out of range"
+  },
+  "cpython": {
+   "stdout": "[9, 3, 1, 2, 5]\n[2, 3, 5] [9, 5, 3, 2, 1] 9 1 [2, 3, 5]\n[[0, 5, 0], [0, 0, 0]]\n[0, 0, 0] 3 10 2 5\n1 1 [5, 3, 2]\n[3, 5]\n[0, 4, 16]\n[('b', 2), ('a', 3)]\n[(0, 'a'), (1, 'b')] [(1, 'x'), (2, 'y')]\n",
+   "exc": "IndexError",
+   "msg": "list index out of range"
+  },
+  "same": true
+ },
+ "control": {
+  "old": {
+   "stdout": "10 7 4 1 \n1\n3\n4\nempty else\nTrue False None 0 x\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "10 7 4 1 \n1\n3\n4\nempty else\nTrue False None 0 x\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "functions": {
+  "old": {
+   "stdout": "6 9 13\n1 2\n5\n265252859812191058636308480000000\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "6 9 13\n1 2\n5\n265252859812191058636308480000000\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "exceptions": {
+  "old": {
+   "stdout": "VE invalid literal for int() with base 10: 'abc'\nfin\nzero\ncaught bad value\n",
+   "exc": "IndexError",
+   "msg": "list index out of range"
+  },
+  "cpython": {
+   "stdout": "VE invalid literal for int() with base 10: 'abc'\nfin\nzero\ncaught bad value\n",
+   "exc": "IndexError",
+   "msg": "list index out of range"
+  },
+  "same": true
+ },
+ "classes": {
+  "old": {
+   "stdout": "",
+   "exc": "SyntaxError",
+   "msg": "classes are not supported in this simulator"
+  },
+  "cpython": {
+   "stdout": "Rex Woof Animal Rex True\ncaught custom\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": false
+ },
+ "files": {
+  "old": {
+   "stdout": "",
+   "exc": "SyntaxError",
+   "msg": "'with' is not supported in this simulator"
+  },
+  "cpython": {
+   "stdout": "a\nb\n['a\\n', 'b\\n', 'c\\n']\n'a\\n' 'b\\n' 'c\\n' ''\n",
+   "exc": "FileNotFoundError",
+   "msg": "[Errno 2] No such file or directory: 'missing.txt'"
+  },
+  "same": false
+ },
+ "misc": {
+  "old": {
+   "stdout": "True 8 2.5 3! False ['a', 'b'] (1, 2)\n2 1\n3 -3 1 2 0.5 ababab\na-b!\nTrue True\n0 c 1\nTrue True\nnum: 42\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "True 8 2.5 3! False ['a', 'b'] (1, 2)\n2 1\n3 -3 1 2 0.5 ababab\na-b!\nTrue True\n0 c 1\nTrue True\nnum: 42\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "unsupported": {
+  "old": {
+   "stdout": "",
+   "exc": "SyntaxError",
+   "msg": "invalid syntax. Perhaps you forgot a comma?"
+  },
+  "cpython": {
+   "stdout": "three\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": false
+ },
+ "lambda_walrus": {
+  "old": {
+   "stdout": "3\n[2, 4]\n{'a': 1}\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "3\n[2, 4]\n{'a': 1}\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "format_builtin": {
+  "old": {
+   "stdout": "",
+   "exc": "NameError",
+   "msg": "name 'format' is not defined"
+  },
+  "cpython": {
+   "stdout": "3.5 101010\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": false
+ },
+ "dicts": {
+  "old": {
+   "stdout": "{'a': 1, 'b': 2, 'c': 3} None 0 ['a', 'b', 'c'] [1, 2, 3] [('a', 1), ('b', 2), ('c', 3)]\na 1\nb 2\nc 3\n{'b': 2, 'c': 3} True 2\n",
+   "exc": "KeyError",
+   "msg": "'zz'"
+  },
+  "cpython": {
+   "stdout": "{'a': 1, 'b': 2, 'c': 3} None 0 ['a', 'b', 'c'] [1, 2, 3] [('a', 1), ('b', 2), ('c', 3)]\na 1\nb 2\nc 3\n{'b': 2, 'c': 3} True 2\n",
+   "exc": "KeyError",
+   "msg": "'zz'"
+  },
+  "same": true
+ },
+ "sets": {
+  "old": {
+   "stdout": "{2, 3, 4} True\n",
+   "exc": "TypeError",
+   "msg": "unsupported operand type(s) for |: 'set' and 'set'"
+  },
+  "cpython": {
+   "stdout": "{2, 3, 4} True\n{9, 2, 3, 4}\n{2, 3}\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": false
+ },
+ "recursion_900": {
+  "old": {
+   "stdout": "",
+   "exc": "RecursionError",
+   "msg": "maximum recursion depth exceeded"
+  },
+  "cpython": {
+   "stdout": "900\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": false
+ },
+ "recursion_inf": {
+  "old": {
+   "stdout": "",
+   "exc": "RecursionError",
+   "msg": "maximum recursion depth exceeded"
+  },
+  "cpython": {
+   "stdout": "",
+   "exc": "RecursionError",
+   "msg": "maximum recursion depth exceeded"
+  },
+  "same": true
+ },
+ "type_name": {
+  "old": {
+   "stdout": "",
+   "exc": "AttributeError",
+   "msg": "'type' object has no attribute '__name__'"
+  },
+  "cpython": {
+   "stdout": "int\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": false
+ },
+ "type_print": {
+  "old": {
+   "stdout": "<class 'int'>\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "<class 'int'>\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "random_seed": {
+  "old": {
+   "stdout": "85 0.2005563678561333\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "18 0.5692038748222122\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": false
+ },
+ "math": {
+  "old": {
+   "stdout": "4.0 1.4142135623730951 -3 3 3.141592653589793 -2 3.0 1.0\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "4.0 1.4142135623730951 -3 3 3.141592653589793 -2 3.0 1.0\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "datetime": {
+  "old": {
+   "stdout": "",
+   "exc": "ModuleNotFoundError",
+   "msg": "No module named 'datetime'"
+  },
+  "cpython": {
+   "stdout": "2026-11-23 2026 2026-12-03 23/11/2026\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": false
+ },
+ "time": {
+  "old": {
+   "stdout": "True\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "True\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "int_input_bad": {
+  "old": {
+   "stdout": "",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "float_repr": {
+  "old": {
+   "stdout": "0.3333333333333333 0.6666666666666666 1e+16 1e-05 1.2345678901234568e+17 0.30000000000000004 100.0 -0.0 inf\n",
+   "exc": null,
+   "msg": null
+  },
+  "cpython": {
+   "stdout": "0.3333333333333333 0.6666666666666666 1e+16 1e-05 1.2345678901234568e+17 0.30000000000000004 100.0 -0.0 inf\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": true
+ },
+ "write_file_simple": {
+  "old": {
+   "stdout": "",
+   "exc": "NameError",
+   "msg": "name 'open' is not defined"
+  },
+  "cpython": {
+   "stdout": "a\n\n",
+   "exc": null,
+   "msg": null
+  },
+  "same": false
+ }
+}

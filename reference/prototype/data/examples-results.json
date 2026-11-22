@@ -1,0 +1,453 @@
+[
+ {
+  "lang": "edexcel",
+  "id": "grade",
+  "name": "Grade checker",
+  "code": "# Grade checker\nRECEIVE name FROM (STRING) KEYBOARD\nRECEIVE mark FROM (INTEGER) KEYBOARD\n\nIF mark >= 70 THEN\n    SET grade TO \"A\"\nELSE\n    IF mark >= 50 THEN\n        SET grade TO \"B\"\n    ELSE\n        SET grade TO \"C\"\n    END IF\nEND IF\n\nSEND name & \" got grade \" & grade TO DISPLAY\n",
+  "inputs": [
+   "Amira",
+   "64"
+  ],
+  "phase": "ok",
+  "out": [
+   "Amira got grade B"
+  ],
+  "steps": 9
+ },
+ {
+  "lang": "edexcel",
+  "id": "times",
+  "name": "Times table",
+  "code": "# Times table\nRECEIVE n FROM (INTEGER) KEYBOARD\nFOR i FROM 1 TO 12 DO\n    SEND i & \" x \" & n & \" = \" & i * n TO DISPLAY\nEND FOR\n",
+  "inputs": [
+   "7"
+  ],
+  "phase": "ok",
+  "out": [
+   "1 x 7 = 7",
+   "2 x 7 = 14",
+   "3 x 7 = 21",
+   "4 x 7 = 28",
+   "5 x 7 = 35",
+   "6 x 7 = 42",
+   "7 x 7 = 49",
+   "8 x 7 = 56",
+   "9 x 7 = 63",
+   "10 x 7 = 70",
+   "11 x 7 = 77",
+   "12 x 7 = 84"
+  ],
+  "steps": 27
+ },
+ {
+  "lang": "edexcel",
+  "id": "guess",
+  "name": "Guessing game",
+  "code": "# Guessing game\nSET secret TO 7\nSET tries TO 0\nREPEAT\n    RECEIVE guess FROM (INTEGER) KEYBOARD\n    SET tries TO tries + 1\n    IF guess < secret THEN\n        SEND \"Too low\" TO DISPLAY\n    ELSE\n        IF guess > secret THEN\n            SEND \"Too high\" TO DISPLAY\n        END IF\n    END IF\nUNTIL guess = secret\nSEND \"Got it in \" & tries & \" tries\" TO DISPLAY\n",
+  "inputs": [
+   "3",
+   "9",
+   "7"
+  ],
+  "phase": "ok",
+  "out": [
+   "Too low",
+   "Too high",
+   "Got it in 3 tries"
+  ],
+  "steps": 24
+ },
+ {
+  "lang": "edexcel",
+  "id": "bubble",
+  "name": "Bubble sort",
+  "code": "# Bubble sort\nSET nums TO [29, 4, 17, 8, 42, 15]\nSET swapped TO TRUE\nWHILE swapped = TRUE DO\n    SET swapped TO FALSE\n    FOR i FROM 0 TO LENGTH(nums) - 2 DO\n        IF nums[i] > nums[i + 1] THEN\n            SET temp TO nums[i]\n            SET nums[i] TO nums[i + 1]\n            SET nums[i + 1] TO temp\n            SET swapped TO TRUE\n        END IF\n    END FOR\nEND WHILE\nSEND nums TO DISPLAY\n",
+  "inputs": [],
+  "phase": "ok",
+  "out": [
+   "[4, 8, 15, 17, 29, 42]"
+  ],
+  "steps": 81
+ },
+ {
+  "lang": "edexcel",
+  "id": "search",
+  "name": "Linear search (function)",
+  "code": "# Linear search\nFUNCTION search(list, target)\nBEGIN FUNCTION\n    FOR i FROM 0 TO LENGTH(list) - 1 DO\n        IF list[i] = target THEN\n            RETURN i\n        END IF\n    END FOR\n    RETURN -1\nEND FUNCTION\n\nSET names TO [\"Ali\", \"Bea\", \"Cal\", \"Dev\"]\nRECEIVE wanted FROM (STRING) KEYBOARD\nSET pos TO search(names, wanted)\nIF pos = -1 THEN\n    SEND wanted & \" was not found\" TO DISPLAY\nELSE\n    SEND wanted & \" is at index \" & pos TO DISPLAY\nEND IF\n",
+  "inputs": [
+   "Cal"
+  ],
+  "phase": "ok",
+  "out": [
+   "Cal is at index 2"
+  ],
+  "steps": 14
+ },
+ {
+  "lang": "edexcel",
+  "id": "total",
+  "name": "Running total (procedure)",
+  "code": "# Running total\nSET total TO 0\n\nPROCEDURE addScore(points)\nBEGIN PROCEDURE\n    SET total TO total + points\n    SEND \"Added \" & points & \", total is now \" & total TO DISPLAY\nEND PROCEDURE\n\nFOR EACH s FROM [10, 25, 5] DO\n    addScore(s)\nEND FOREACH\n",
+  "inputs": [],
+  "phase": "ok",
+  "out": [
+   "Added 10, total is now 10",
+   "Added 25, total is now 35",
+   "Added 5, total is now 40"
+  ],
+  "steps": 14
+ },
+ {
+  "lang": "edexcel",
+  "id": "bug",
+  "name": "Find the bug: average",
+  "code": "# Find the bug: this crashes. Step through it to see why.\nSET scores TO [12, 18, 9, 15]\nSET total TO 0\nFOR i FROM 0 TO LENGTH(scores) DO\n    SET total TO total + scores[i]\nEND FOR\nSEND \"Average: \" & total / LENGTH(scores) TO DISPLAY\n",
+  "inputs": [],
+  "phase": "runtime",
+  "error": {
+   "line": 5,
+   "msg": "Index 4 is out of range for scores (length 4)",
+   "hint": "Indexes start at 0, so valid indexes are 0 to 3. In a FOR loop use TO LENGTH(scores) - 1."
+  },
+  "out": [],
+  "steps": 12
+ },
+ {
+  "lang": "cambridge",
+  "id": "grade",
+  "name": "Grade checker",
+  "code": "// Grade checker\nDECLARE Name : STRING\nDECLARE Mark : INTEGER\nDECLARE Grade : CHAR\n\nOUTPUT \"Enter name and mark\"\nINPUT Name\nINPUT Mark\n\nIF Mark >= 70\n  THEN\n    Grade ← 'A'\n  ELSE\n    IF Mark >= 50\n      THEN\n        Grade ← 'B'\n      ELSE\n        Grade ← 'C'\n    ENDIF\nENDIF\n\nOUTPUT Name, \" got grade \", Grade\n",
+  "inputs": [
+   "Amira",
+   "64"
+  ],
+  "phase": "ok",
+  "out": [
+   "Enter name and mark",
+   "Amira got grade B"
+  ],
+  "steps": 13
+ },
+ {
+  "lang": "cambridge",
+  "id": "times",
+  "name": "Times table",
+  "code": "// Times table\nDECLARE Number : INTEGER\nDECLARE Count : INTEGER\n\nINPUT Number\nFOR Count ← 1 TO 12\n    OUTPUT Count, \" x \", Number, \" = \", Count * Number\nNEXT Count\n",
+  "inputs": [
+   "7"
+  ],
+  "phase": "ok",
+  "out": [
+   "1 x 7 = 7",
+   "2 x 7 = 14",
+   "3 x 7 = 21",
+   "4 x 7 = 28",
+   "5 x 7 = 35",
+   "6 x 7 = 42",
+   "7 x 7 = 49",
+   "8 x 7 = 56",
+   "9 x 7 = 63",
+   "10 x 7 = 70",
+   "11 x 7 = 77",
+   "12 x 7 = 84"
+  ],
+  "steps": 29
+ },
+ {
+  "lang": "cambridge",
+  "id": "validate",
+  "name": "Range check",
+  "code": "// Keep asking until the age is in range\nDECLARE Age : INTEGER\n\nREPEAT\n    OUTPUT \"Enter an age from 0 to 120\"\n    INPUT Age\n    IF Age < 0 OR Age > 120\n      THEN\n        OUTPUT \"Out of range, try again\"\n    ENDIF\nUNTIL Age >= 0 AND Age <= 120\n\nOUTPUT \"Age accepted: \", Age\n",
+  "inputs": [
+   "150",
+   "-3",
+   "42"
+  ],
+  "phase": "ok",
+  "out": [
+   "Enter an age from 0 to 120",
+   "Out of range, try again",
+   "Enter an age from 0 to 120",
+   "Out of range, try again",
+   "Enter an age from 0 to 120",
+   "Age accepted: 42"
+  ],
+  "steps": 21
+ },
+ {
+  "lang": "cambridge",
+  "id": "bubble",
+  "name": "Bubble sort",
+  "code": "// Bubble sort with a swap flag\nDECLARE Numbers : ARRAY[1:6] OF INTEGER\nDECLARE Swapped : BOOLEAN\nDECLARE Temp, Index, Last : INTEGER\n\nNumbers[1] ← 31\nNumbers[2] ← 7\nNumbers[3] ← 19\nNumbers[4] ← 2\nNumbers[5] ← 25\nNumbers[6] ← 11\n\nLast ← 5\nREPEAT\n    Swapped ← FALSE\n    FOR Index ← 1 TO Last\n        IF Numbers[Index] > Numbers[Index + 1]\n          THEN\n            Temp ← Numbers[Index]\n            Numbers[Index] ← Numbers[Index + 1]\n            Numbers[Index + 1] ← Temp\n            Swapped ← TRUE\n        ENDIF\n    NEXT Index\n    Last ← Last - 1\nUNTIL NOT Swapped\n\nFOR Index ← 1 TO 6\n    OUTPUT Numbers[Index]\nNEXT Index\n",
+  "inputs": [],
+  "phase": "ok",
+  "out": [
+   "2",
+   "7",
+   "11",
+   "19",
+   "25",
+   "31"
+  ],
+  "steps": 100
+ },
+ {
+  "lang": "cambridge",
+  "id": "search",
+  "name": "Linear search function",
+  "code": "// Linear search in a FUNCTION\nDECLARE Names : ARRAY[1:5] OF STRING\nDECLARE Target : STRING\nDECLARE Position : INTEGER\n\nFUNCTION Find(Wanted : STRING) RETURNS INTEGER\n    DECLARE i : INTEGER\n    FOR i ← 1 TO 5\n        IF Names[i] = Wanted\n          THEN\n            RETURN i\n        ENDIF\n    NEXT i\n    RETURN -1\nENDFUNCTION\n\nNames[1] ← \"Ama\"\nNames[2] ← \"Ben\"\nNames[3] ← \"Chen\"\nNames[4] ← \"Kofi\"\nNames[5] ← \"Lina\"\n\nINPUT Target\nPosition ← Find(Target)\nIF Position = -1\n  THEN\n    OUTPUT Target, \" not found\"\n  ELSE\n    OUTPUT Target, \" is at position \", Position\nENDIF\n",
+  "inputs": [
+   "Kofi"
+  ],
+  "phase": "ok",
+  "out": [
+   "Kofi is at position 4"
+  ],
+  "steps": 24
+ },
+ {
+  "lang": "cambridge",
+  "id": "strings",
+  "name": "String functions",
+  "code": "// Count the vowels in a word\nDECLARE Word, Letter : STRING\nDECLARE Vowels, i : INTEGER\n\nINPUT Word\nVowels ← 0\nFOR i ← 1 TO LENGTH(Word)\n    Letter ← LCASE(SUBSTRING(Word, i, 1))\n    IF Letter = \"a\" OR Letter = \"e\" OR Letter = \"i\" OR Letter = \"o\" OR Letter = \"u\"\n      THEN\n        Vowels ← Vowels + 1\n    ENDIF\nNEXT i\n\nOUTPUT UCASE(Word), \" has \", Vowels, \" vowels\"\n// 9618 versions of the same functions:\nOUTPUT LEFT(Word, 3), \" ... \", RIGHT(Word, 3), \" ... \", MID(Word, 4, 4)\n",
+  "inputs": [
+   "Programming"
+  ],
+  "phase": "ok",
+  "out": [
+   "PROGRAMMING has 3 vowels",
+   "Pro ... ing ... gram"
+  ],
+  "steps": 44
+ },
+ {
+  "lang": "cambridge",
+  "id": "menu",
+  "name": "CASE menu",
+  "code": "// Menu choice with CASE OF\nDECLARE Choice : INTEGER\nDECLARE Total : REAL\n\nTotal ← 0\nREPEAT\n    INPUT Choice\n    CASE OF Choice\n        1 : Total ← Total + 2.50\n        2 : Total ← Total + 1.75\n        3 : OUTPUT \"Done\"\n        OTHERWISE : OUTPUT \"Choose 1, 2 or 3\"\n    ENDCASE\nUNTIL Choice = 3\n\nOUTPUT \"Total: \", ROUND(Total, 2)\n",
+  "inputs": [
+   "2",
+   "6",
+   "3"
+  ],
+  "phase": "ok",
+  "out": [
+   "Choose 1, 2 or 3",
+   "Done",
+   "Total: 1.75"
+  ],
+  "steps": 21
+ },
+ {
+  "lang": "cambridge",
+  "id": "records",
+  "name": "Records and BYREF (9618)",
+  "code": "// A record type and a BYREF parameter\nTYPE Student\n    DECLARE Name : STRING\n    DECLARE Score : INTEGER\nENDTYPE\n\nDECLARE Class : ARRAY[1:3] OF Student\nDECLARE Best, i : INTEGER\n\nPROCEDURE Raise(Bonus : INTEGER, BYREF Mark : INTEGER)\n    Mark ← Mark + Bonus\nENDPROCEDURE\n\nClass[1].Name ← \"Ama\"\nClass[1].Score ← 61\nClass[2].Name ← \"Ben\"\nClass[2].Score ← 74\nClass[3].Name ← \"Chen\"\nClass[3].Score ← 58\n\nCALL Raise(5, Class[3].Score)\nBest ← 1\nFOR i ← 2 TO 3\n    IF Class[i].Score > Class[Best].Score\n      THEN\n        Best ← i\n    ENDIF\nNEXT i\nOUTPUT \"Top: \", Class[Best].Name, \" with \", Class[Best].Score\n",
+  "inputs": [],
+  "phase": "ok",
+  "out": [
+   "Top: Ben with 74"
+  ],
+  "steps": 18
+ },
+ {
+  "lang": "cambridge",
+  "id": "files",
+  "name": "Text files (9618)",
+  "code": "// Write lines to a file, then read them back\nDECLARE LineOfText : STRING\nDECLARE Count : INTEGER\n\nOPENFILE \"scores.txt\" FOR WRITE\nWRITEFILE \"scores.txt\", \"Ama,61\"\nWRITEFILE \"scores.txt\", \"Ben,74\"\nWRITEFILE \"scores.txt\", \"Chen,58\"\nCLOSEFILE \"scores.txt\"\n\nCount ← 0\nOPENFILE \"scores.txt\" FOR READ\nWHILE NOT EOF(\"scores.txt\")\n    READFILE \"scores.txt\", LineOfText\n    Count ← Count + 1\n    OUTPUT Count, \": \", LineOfText\nENDWHILE\nCLOSEFILE \"scores.txt\"\n",
+  "inputs": [],
+  "phase": "ok",
+  "out": [
+   "1: Ama,61",
+   "2: Ben,74",
+   "3: Chen,58"
+  ],
+  "steps": 24
+ },
+ {
+  "lang": "cambridge",
+  "id": "bug",
+  "name": "Find the bug",
+  "code": "// This program has a bug. Run it, then use the debugger.\nDECLARE Temps : ARRAY[1:4] OF REAL\nDECLARE Total : REAL\nDECLARE i : INTEGER\n\nTemps[1] ← 18.5\nTemps[2] ← 21.0\nTemps[3] ← 19.5\nTemps[4] ← 23.0\n\nTotal ← 0\nFOR i ← 0 TO 4\n    Total ← Total + Temps[i]\nNEXT i\nOUTPUT \"Average: \", Total / 4\n",
+  "inputs": [],
+  "phase": "runtime",
+  "error": {
+   "line": 13,
+   "msg": "Index 0 is outside Temps[1:4]",
+   "hint": "Valid indexes are 1 to 4. Check the loop limits."
+  },
+  "out": [],
+  "steps": 10
+ },
+ {
+  "lang": "python",
+  "id": "grade",
+  "name": "Grade checker",
+  "code": "# Grade checker\nname = input(\"Name: \")\nmark = int(input(\"Mark: \"))\n\nif mark >= 70:\n    grade = \"A\"\nelif mark >= 50:\n    grade = \"B\"\nelse:\n    grade = \"C\"\n\nprint(f\"{name} got grade {grade}\")\n",
+  "inputs": [
+   "Amira",
+   "64"
+  ],
+  "phase": "ok",
+  "out": [
+   "Name: ",
+   "Mark: ",
+   "Amira got grade B"
+  ],
+  "steps": 9
+ },
+ {
+  "lang": "python",
+  "id": "times",
+  "name": "Times table",
+  "code": "# Times table\nnumber = int(input(\"Which table? \"))\n\nfor count in range(1, 13):\n    print(count, \"x\", number, \"=\", count * number)\n",
+  "inputs": [
+   "7"
+  ],
+  "phase": "ok",
+  "out": [
+   "Which table? ",
+   "1 x 7 = 7",
+   "2 x 7 = 14",
+   "3 x 7 = 21",
+   "4 x 7 = 28",
+   "5 x 7 = 35",
+   "6 x 7 = 42",
+   "7 x 7 = 49",
+   "8 x 7 = 56",
+   "9 x 7 = 63",
+   "10 x 7 = 70",
+   "11 x 7 = 77",
+   "12 x 7 = 84"
+  ],
+  "steps": 27
+ },
+ {
+  "lang": "python",
+  "id": "guess",
+  "name": "Guessing game",
+  "code": "# Guess the number from 1 to 10\nimport random\n\nsecret = random.randint(1, 10)\nguesses = 0\nguess = 0\n\nwhile guess != secret:\n    guess = int(input(\"Guess: \"))\n    guesses += 1\n    if guess < secret:\n        print(\"Too low\")\n    elif guess > secret:\n        print(\"Too high\")\n\nprint(\"Correct in\", guesses, \"guesses\")\n",
+  "inputs": [
+   "5",
+   "3",
+   "8",
+   "1",
+   "2",
+   "4",
+   "6",
+   "7",
+   "9",
+   "10"
+  ],
+  "phase": "ok",
+  "out": [
+   "Guess: ",
+   "Too low",
+   "Guess: ",
+   "Too low",
+   "Guess: ",
+   "Too low",
+   "Guess: ",
+   "Too low",
+   "Guess: ",
+   "Too low",
+   "Guess: ",
+   "Too low",
+   "Guess: ",
+   "Too low",
+   "Guess: ",
+   "Too low",
+   "Guess: ",
+   "Correct in 9 guesses"
+  ],
+  "steps": 61
+ },
+ {
+  "lang": "python",
+  "id": "bubble",
+  "name": "Bubble sort",
+  "code": "# Bubble sort with a swap flag\nnumbers = [31, 7, 19, 2, 25, 11]\nlast = len(numbers) - 1\nswapped = True\n\nwhile swapped:\n    swapped = False\n    for i in range(last):\n        if numbers[i] > numbers[i + 1]:\n            numbers[i], numbers[i + 1] = numbers[i + 1], numbers[i]\n            swapped = True\n    last -= 1\n\nprint(numbers)\n",
+  "inputs": [],
+  "phase": "ok",
+  "out": [
+   "[2, 7, 11, 19, 25, 31]"
+  ],
+  "steps": 64
+ },
+ {
+  "lang": "python",
+  "id": "search",
+  "name": "Linear search function",
+  "code": "# Linear search in a function\ndef find(items, wanted):\n    for i in range(len(items)):\n        if items[i] == wanted:\n            return i\n    return -1\n\nnames = [\"Ama\", \"Ben\", \"Chen\", \"Kofi\", \"Lina\"]\ntarget = input(\"Name to find: \")\nposition = find(names, target)\n\nif position == -1:\n    print(target, \"not found\")\nelse:\n    print(target, \"is at index\", position)\n",
+  "inputs": [
+   "Kofi"
+  ],
+  "phase": "ok",
+  "out": [
+   "Name to find: ",
+   "Kofi is at index 3"
+  ],
+  "steps": 17
+ },
+ {
+  "lang": "python",
+  "id": "validate",
+  "name": "Input validation",
+  "code": "# Keep asking until the input is a valid age\nwhile True:\n    try:\n        age = int(input(\"Age: \"))\n    except ValueError:\n        print(\"Please type a whole number\")\n        continue\n    if 0 <= age <= 120:\n        break\n    print(\"Out of range, try again\")\n\nprint(\"Age accepted:\", age)\n",
+  "inputs": [
+   "twelve",
+   "150",
+   "42"
+  ],
+  "phase": "ok",
+  "out": [
+   "Age: ",
+   "Please type a whole number",
+   "Age: ",
+   "Out of range, try again",
+   "Age: ",
+   "Age accepted: 42"
+  ],
+  "steps": 21
+ },
+ {
+  "lang": "python",
+  "id": "words",
+  "name": "Word counter",
+  "code": "# Count words with a dictionary\ntext = input(\"Sentence: \").lower()\ncounts = {}\n\nfor word in text.split():\n    counts[word] = counts.get(word, 0) + 1\n\nfor word, n in sorted(counts.items()):\n    print(f\"{word:<6}{n:>3}\")\n",
+  "inputs": [
+   "the cat sat on the mat the end"
+  ],
+  "phase": "ok",
+  "out": [
+   "Sentence: ",
+   "cat     1",
+   "end     1",
+   "mat     1",
+   "on      1",
+   "sat     1",
+   "the     3"
+  ],
+  "steps": 32
+ },
+ {
+  "lang": "python",
+  "id": "bug",
+  "name": "Find the bug",
+  "code": "# This program has a bug. Run it, then use the debugger.\ntemps = []\nfor i in range(4):\n    temps.append(float(input()))\n\ntotal = 0\nfor t in temps:\n    total = total + t\n\naverage = total / len(temps)\nprint(\"Average: \" + average)\n",
+  "inputs": [
+   "18.5",
+   "21",
+   "19.5",
+   "23"
+  ],
+  "phase": "runtime",
+  "error": {
+   "line": 11,
+   "msg": "TypeError: can only concatenate str (not \"float\") to str",
+   "hint": "Convert the number with str(...): \"Total: \" + str(total). Or use an f-string: f\"Total: {total}\""
+  },
+  "out": [],
+  "steps": 24
+ }
+]

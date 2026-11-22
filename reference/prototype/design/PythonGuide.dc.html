@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python Guide</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.th{--bg:#FFFFFF;--chrome:#F5F5F5;--status:#F0F0F0;--tabbar:#ECECEC;--gutter:#F7F7F7;--subtle:#FAFAFA;--errsoft:#FDF6F5;--fg:#1A1A1A;--fg2:#333333;--fg3:#3A3A3A;--fg4:#4A4A4A;--muted:#555555;--muted2:#6A6A6A;--lnum:#707070;--faint:#767676;--disabled:#9A9A9A;--line:#C9C9C9;--field:#ABABAB;--line2:#DDDDDD;--line3:#EFEFEF;--hover:#DEDEDE;--hoverline:#C2C2C2;--press:#D5D5D5;--link:#1F4E8C;--linkhover:#0E2A52;--menuhi:#2F4A6B;--red:#B3362C;--green:#2F6A31;--cur:#FBF3CF;--curgut:#F3E7B3;--errline:#FBE1DE;--errgut:#F4CFCA;--lint:#FDF0EE;--staterr:#F6DCD8;--kw:#1E3A6E;--str:#2F6B2F;--num:#8A3B12;--bi:#5B3F86;color-scheme:light}
+.th.dark{--bg:#1E1E1E;--chrome:#2B2B2B;--status:#252526;--tabbar:#252526;--gutter:#222222;--subtle:#262626;--errsoft:#3A2523;--fg:#D4D4D4;--fg2:#C8C8C8;--fg3:#BDBDBD;--fg4:#B0B0B0;--muted:#A6A6A6;--muted2:#9C9C9C;--lnum:#8A8A8A;--faint:#8F8F8F;--disabled:#6A6A6A;--line:#3C3C3C;--field:#5A5A5A;--line2:#333333;--line3:#2C2C2C;--hover:#3A3A3A;--hoverline:#4E4E4E;--press:#454545;--link:#82AADD;--linkhover:#AFCBEE;--menuhi:#3A5578;--red:#E0675B;--green:#7DB877;--cur:#3A3520;--curgut:#4A4428;--errline:#45231F;--errgut:#5A2B27;--lint:#3A2523;--staterr:#5A2B27;--kw:#8FB4E3;--str:#A3C78F;--num:#D9A47E;--bi:#C3A6E3;color-scheme:dark}
+@media (prefers-color-scheme: dark){.th.sys{--bg:#1E1E1E;--chrome:#2B2B2B;--status:#252526;--tabbar:#252526;--gutter:#222222;--subtle:#262626;--errsoft:#3A2523;--fg:#D4D4D4;--fg2:#C8C8C8;--fg3:#BDBDBD;--fg4:#B0B0B0;--muted:#A6A6A6;--muted2:#9C9C9C;--lnum:#8A8A8A;--faint:#8F8F8F;--disabled:#6A6A6A;--line:#3C3C3C;--field:#5A5A5A;--line2:#333333;--line3:#2C2C2C;--hover:#3A3A3A;--hoverline:#4E4E4E;--press:#454545;--link:#82AADD;--linkhover:#AFCBEE;--menuhi:#3A5578;--red:#E0675B;--green:#7DB877;--cur:#3A3520;--curgut:#4A4428;--errline:#45231F;--errgut:#5A2B27;--lint:#3A2523;--staterr:#5A2B27;--kw:#8FB4E3;--str:#A3C78F;--num:#D9A47E;--bi:#C3A6E3;color-scheme:dark}}
+
+a{color:var(--link)}a:hover{color:var(--linkhover)}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="min-height: 100vh; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.55">
+
+<div style="border-bottom: 1px solid var(--line); background: var(--chrome)">
+  <div style="max-width: 1080px; margin: 0 auto; padding: 8px 24px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 12px; color: var(--fg4)">
+    <a href="Main.dc.html">IDE</a><span aria-hidden="true">/</span><span>Python guide</span>
+    <nav aria-label="Guide language" style="margin-left: auto; display: flex; border: 1px solid var(--line); background: var(--chrome)"><a href="Guide.dc.html" style="padding: 3px 10px; border-left: 0; text-decoration: none">Edexcel</a><a href="CambridgeGuide.dc.html" style="padding: 3px 10px; border-left: 1px solid var(--line); text-decoration: none">Cambridge</a><span aria-current="page" style="padding: 3px 10px; background: var(--bg); color: var(--fg); font-weight: 600; border-left: 1px solid var(--line)">Python</span></nav>
+  </div>
+</div>
+
+<div style="max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+
+  <nav aria-label="Contents" style="flex: 1 1 180px; max-width: 220px; font-size: 13px">
+    <div style="font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--fg); margin-bottom: 6px">Contents</div>
+    <ol style="margin: 0; padding-left: 20px; line-height: 1.9">
+      <li><a href="#s1">Variables and data types</a></li>
+      <li><a href="#s2">Input and output</a></li>
+      <li><a href="#s3">Selection</a></li>
+      <li><a href="#s4">Iteration</a></li>
+      <li><a href="#s5">Functions</a></li>
+      <li><a href="#s6">Lists and strings</a></li>
+      <li><a href="#s7">Dictionaries</a></li>
+      <li><a href="#s8">Validation with try and except</a></li>
+      <li><a href="#s9">Built-in functions and modules</a></li>
+      <li><a href="#s10">What the simulator supports</a></li>
+      <li><a href="#s11">Debugger</a></li>
+      <li><a href="#s12">Error messages</a></li>
+    </ol>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 36px">
+    <header style="display: flex; flex-direction: column; gap: 8px">
+      <h1 style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600">Python reference</h1>
+      <p style="margin: 0; color: var(--fg3); max-width: 660px">The Python 3 the IDE runs, with the error messages you will see and what usually causes them. Blocks are marked by a colon and four spaces of indentation.</p>
+    </header>
+
+    <section id="s1" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">1. Variables and data types</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">score = 0
+price = 2.5
+name = "Sam"
+found = False
+scores = [12, 18, 9]
+ages = {"Ama": 15, "Ben": 16}</pre>
+<div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 16%">Type</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Holds</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%">Example</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">int</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Whole numbers, any size</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">42   -7   10 ** 30</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">float</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Numbers with a decimal part</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">3.5   7 / 2</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">str</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Text</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">"Hello"   'A'</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">bool</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">True or False</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">True</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">list</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">An ordered, changeable sequence</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">[1, 2, 3]</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">tuple</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">An ordered sequence that cannot change</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">(3, 4)</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">dict</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Key and value pairs</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">{"a": 1}</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; color: var(--fg3)">A variable is created the first time you assign it. Names are case-sensitive, so <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">Score</code> and <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">score</code> are different. <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">/</code> always gives a float, so <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">6 / 2</code> is <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">3.0</code>. Use <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">//</code> for whole-number division.</p>
+    </section>
+
+    <section id="s2" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">2. Input and output</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">name = input("Name: ")
+age = int(input("Age: "))
+height = float(input("Height in m: "))
+
+print("Hello", name)
+print("Next year you will be", age + 1)
+print(f"{name} is {height:.2f} m tall")
+print("a", "b", sep="-", end="!\n")</pre>
+<p style="margin: 0; color: var(--fg3)"><code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">input()</code> always returns text. Convert it with <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">int()</code> or <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">float()</code> before doing maths or comparing with numbers. In the IDE, <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">input()</code> shows its prompt in the console and waits for you to type a value and press Enter.</p>
+<div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%">f-string format</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%">Result</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Meaning</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">f"{3.14159:.2f}"</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">3.14</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Two decimal places</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">f"{42:5}"</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">   42</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Width 5, numbers line up right</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">f"{'hi':&lt;6}|"</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">hi    |</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Width 6, aligned left</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">f"{1234567:,}"</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">1,234,567</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Thousands separators</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">f"{7:03d}"</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">007</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Pad with zeros</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">f"{0.25:.0%}"</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">25%</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">As a percentage</td></tr>
+</tbody>
+</table>
+</div>
+    </section>
+
+    <section id="s3" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">3. Selection</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">if mark &gt;= 70:
+    grade = "A"
+elif mark &gt;= 50:
+    grade = "B"
+else:
+    grade = "C"
+
+if 0 &lt;= age &lt;= 120 and name != "":
+    print("Valid")</pre>
+<p style="margin: 0; color: var(--fg3)">Lines that start a block end with a colon, and the block is indented by four spaces. Compare with <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">==</code> and <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">!=</code>, combine conditions with <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">and</code>, <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">or</code> and <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">not</code>. Python allows chained comparisons such as <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">0 &lt;= age &lt;= 120</code>.</p>
+    </section>
+
+    <section id="s4" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">4. Iteration</h2>
+      <div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 20%">Loop</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Form</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 36%">Notes</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Count-controlled</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre">for i in range(1, 11):
+    print(i)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"><code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">range(1, 11)</code> counts 1 to 10: the end value is not included. <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">range(10, 0, -1)</code> counts down.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Over a sequence</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre">for name in names:
+    print(name)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Works for lists, strings, tuples, dictionary keys and ranges.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Condition-controlled</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre">while guess != secret:
+    guess = int(input())</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Checked before each pass. <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">while True:</code> with <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">break</code> gives a check-last loop.</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; color: var(--fg3)"><code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">break</code> leaves the loop straight away. <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">continue</code> skips to the next pass. <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">for i, item in enumerate(items):</code> gives each index with its item.</p>
+    </section>
+
+    <section id="s5" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">5. Functions</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">def square(n):
+    return n * n
+
+def greet(name, greeting="Hello"):
+    print(greeting, name)
+
+area = square(4)
+greet("Ava")
+greet("Ben", "Hi")</pre>
+<p style="margin: 0; color: var(--fg3)">A function without <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">return</code> gives back <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">None</code>. Parameters can have default values. Variables assigned inside a function are local to it.</p>
+<pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">count = 0
+
+def add_one():
+    global count
+    count += 1</pre>
+<p style="margin: 0; color: var(--fg3)">Without <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">global count</code>, the line <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">count += 1</code> would make <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">count</code> local to the function and fail with UnboundLocalError. Passing values in and returning results is usually clearer than using global.</p>
+    </section>
+
+    <section id="s6" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">6. Lists and strings</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">scores = [12, 18, 9]
+scores.append(20)        # [12, 18, 9, 20]
+scores.insert(0, 5)      # [5, 12, 18, 9, 20]
+scores.remove(18)        # removes the first 18
+last = scores.pop()      # removes and returns 20
+print(scores[0], scores[-1], len(scores))
+
+grid = [[1, 2], [3, 4]]
+print(grid[1][0])        # 3
+
+word = "Python"
+print(word[0:3], word[::-1], word.upper())</pre>
+<div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 38%">Method</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Result</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">s.upper()  s.lower()</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A new string in upper or lower case</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">s.strip()</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Removes spaces from both ends</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">s.split(",")</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A list of the parts between commas</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">", ".join(items)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Joins a list of strings into one</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">s.replace("a", "b")</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Every "a" changed to "b"</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">s.find("x")</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Position of "x", or -1</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">s.isdigit()  s.isalpha()</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">True if every character is a digit or a letter</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">items.sort()  sorted(items)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Sort in place, or get a new sorted list</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">items.index(x)  items.count(x)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Position of x, and how many times it appears</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; color: var(--fg3)">Indexes start at 0, and negative indexes count from the end. Slices <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">[start:end]</code> stop before <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">end</code>. Strings cannot be changed in place: string methods return a new string.</p>
+    </section>
+
+    <section id="s7" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">7. Dictionaries</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">ages = {"Ama": 15, "Ben": 16}
+ages["Chen"] = 15
+print(ages["Ama"], ages.get("Dan", 0))
+
+for name, age in ages.items():
+    print(name, age)
+
+if "Ben" in ages:
+    del ages["Ben"]</pre>
+<p style="margin: 0; color: var(--fg3)">Reading a missing key with <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">[]</code> raises KeyError. <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">get()</code> returns a default instead. <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">in</code> checks the keys.</p>
+    </section>
+
+    <section id="s8" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">8. Validation with try and except</h2>
+      <pre style="margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px">while True:
+    try:
+        age = int(input("Age: "))
+    except ValueError:
+        print("Please type a whole number")
+        continue
+    if 0 &lt;= age &lt;= 120:
+        break
+    print("Out of range")</pre>
+<p style="margin: 0; color: var(--fg3)">The <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">except</code> block runs only when the matching error happens inside <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">try</code>. <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">except ValueError as e:</code> also gives you the message as <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">e</code>.</p>
+    </section>
+
+    <section id="s9" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">9. Built-in functions and modules</h2>
+      <div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 42%">Name</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">What it does</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">print  input</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Output and input</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">int  float  str  bool</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Convert between types</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">len  range</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Length of a sequence, and number sequences for loops</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">abs  round  min  max  sum</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Maths on numbers and lists. round(2.5) is 2, as in real Python.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">sorted  reversed  enumerate  zip</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Work with sequences</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">list  tuple  dict  set</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Make collections</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">ord  chr  bin  hex</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Character codes and number bases</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">type  isinstance</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Check a value's type</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">random.randint(a, b)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A random whole number from a to b, both included</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">random.choice(seq)  random.shuffle(list)</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Pick or shuffle</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">math.sqrt  math.floor  math.ceil  math.pi</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Maths functions and constants</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; color: var(--fg3)"><code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">import random</code>, <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">import math</code> and <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">import time</code> work, as does <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">from random import randint</code>. <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">time.sleep</code> returns straight away.</p>
+    </section>
+
+    <section id="s10" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">10. What the simulator supports</h2>
+      <p style="margin: 0; color: var(--fg3)">The IDE runs the parts of Python 3 used in GCSE and International GCSE courses: variables, all the control structures above, functions with default and keyword arguments, lambda, lists, tuples, dictionaries, sets, list comprehensions, f-strings, <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">str.format</code> and <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">%</code> formatting, <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">try</code> / <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">except</code> / <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">finally</code>, and the random, math and time modules. Whole numbers have no size limit.</p>
+<p style="margin: 0; color: var(--fg3)">Not supported: classes, <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">with</code> and file access, generators and <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">yield</code>, <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">*args</code> and <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">**kwargs</code> in definitions, and other modules. Using one of these is reported as an error on its line.</p>
+    </section>
+
+    <section id="s11" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">11. Debugger</h2>
+      <div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%">Command</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 14%">Key</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">What it does</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Run</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">F5</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Starts from the top. Stops at the end or at a breakpoint.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Step</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">F10</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Runs one line. The yellow line is the one that runs next.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Continue</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">F8</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">While paused, runs to the next breakpoint or the end.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Reset</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">Shift+F5</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Stops the program so you can edit and start again.</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">Breakpoint</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">click</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Click a line number to add or remove a red breakpoint dot.</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; color: var(--fg3)">Each program opens in its own editor tab. Convert to (in the toolbar and the Convert menu) translates the current program into one of the other two languages and opens the result in a new tab, so the original stays as it was. Statements with no direct equivalent, such as Python dictionaries or Cambridge record types, are kept as TODO comments for you to finish by hand.</p>
+<p style="margin: 0; color: var(--fg3)">Save and Save as use the <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">.py</code> extension for this language, or plain <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">.txt</code>. Ctrl+S saves the current tab.</p>
+<p style="margin: 0; color: var(--fg3)">While paused, Variables lists each value with its Python type and repr, so text shows in quotes. Functions and imported modules are hidden. A value that changed on the last step is shown in red. Inside a function, local variables are marked and the Call stack shows the calls back to <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px">&lt;module&gt;</code>.</p>
+    </section>
+
+    <section id="s12" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)">12. Error messages</h2>
+      <div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: var(--chrome)"><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 42%">Message</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 32%">Usual cause</th><th scope="col" style="text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)">Fix</th></tr></thead>
+<tbody>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">TypeError: can only concatenate str (not "int") to str</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">Text and a number joined with +.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">f"Total: {total}"</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">TypeError: '&gt;' not supported between instances of 'str' and 'int'</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">input() was not converted to a number.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">age = int(input())</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">NameError: name 'totl' is not defined</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A typo, wrong capitals, or used before it was assigned.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">Match the name exactly</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">IndexError: list index out of range</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A loop goes one past the end of the list.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">range(len(items))</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">ValueError: invalid literal for int() with base 10: 'abc'</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The input is not a whole number.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">try / except ValueError</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">UnboundLocalError: cannot access local variable 'count'</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A global changed inside a function.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">global count</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">SyntaxError: expected ':'</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">An if, for, while or def line has no colon.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">if x &gt; 5:</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">SyntaxError: invalid syntax. Maybe you meant '=='</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">One = used in a condition.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">if x == 5:</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">IndentationError: expected an indented block</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">The body of a block is not indented.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">Indent by 4 spaces</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">ZeroDivisionError: division by zero</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A divisor that can be 0.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">if count &gt; 0:</td></tr>
+<tr><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top">AttributeError: 'list' object has no attribute 'push'</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)">A method name from another language.</td><td style="padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px">items.append(x)</td></tr>
+</tbody>
+</table>
+</div>
+    </section>
+
+    <p style="margin: 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted)">The simulator follows Python 3.12 behaviour and messages for the features it supports. Programs that use unsupported features need a full Python install.</p>
+  </main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system","section":"Appearance"},"$preview":{"width":1280,"height":2200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var t = this.props.theme || 'system';
+    return { themeClass: t === 'dark' ? 'dark' : t === 'light' ? 'light' : 'sys' };
+  }
+}
+</script>
+</body>
+</html>
