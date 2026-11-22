@@ -3,3 +3,4 @@
 export * from "./language.ts";
 export * from "./diagnostics.ts";
 export * from "./protocol.ts";
+export * from "./messages/index.ts";
