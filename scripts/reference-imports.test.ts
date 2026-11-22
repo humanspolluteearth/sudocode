@@ -31,3 +31,31 @@ describe("MISC reference/ is never imported", () => {
     expect(await eslint.isPathIgnored("reference/prototype/harness/run.cjs")).toBe(true);
   });
 });
+
+describe("MISC packages/core source stays portable (Node and Web Worker)", () => {
+  // Linted as the real core entry file so the type-aware parser accepts it; only the text is replaced.
+  async function ruleIds(code: string): Promise<string[]> {
+    const [result] = await eslint.lintText(code, { filePath: "packages/core/src/index.ts" });
+    return (result?.messages ?? []).map((m) => m.ruleId ?? "").filter((r) => r.startsWith("no-restricted"));
+  }
+
+  it.each([
+    'import { useState } from "react";\nexport const x = useState;',
+    'import { EditorView } from "@codemirror/view";\nexport const x = EditorView;',
+    'import { App } from "@sudocode/ui";\nexport const x = App;',
+    'import { readFileSync } from "node:fs";\nexport const x = readFileSync;',
+  ])("MISC rejects %s", async (code) => {
+    expect(await ruleIds(code)).toEqual(["no-restricted-imports"]);
+  });
+
+  it.each(["export const w = window.location;", "export const d = document.title;", "export const e = process.env;"])(
+    "MISC rejects the global in %s",
+    async (code) => {
+      expect(await ruleIds(code)).toEqual(["no-restricted-globals"]);
+    },
+  );
+
+  it("MISC allows relative imports inside core", async () => {
+    expect(await ruleIds('import { lex } from "./lexer.ts";\nexport const x = lex;')).toEqual([]);
+  });
+});
