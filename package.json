@@ -1,5 +1,6 @@
 {
   "name": "sudocode",
+  "version": "0.0.0",
   "private": true,
   "description": "IDE, interpreter and converter for Edexcel IGCSE pseudocode, Cambridge 9618 pseudocode and syllabus Python",
   "license": "AGPL-3.0-only",

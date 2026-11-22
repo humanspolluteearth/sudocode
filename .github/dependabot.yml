@@ -1,0 +1,31 @@
+# Weekly dependency updates, grouped so each ecosystem opens at most one PR a week (docs/TEST-PLAN.md section 6).
+# Cargo (Tauri) is added in milestone M11 when apps/desktop exists.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      npm-development:
+        dependency-type: development
+      npm-production:
+        dependency-type: production
+
+  - package-ecosystem: github-actions
+    directories:
+      - /
+      - /.github/actions/*
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: ci
+    groups:
+      github-actions:
+        patterns: ["*"]
