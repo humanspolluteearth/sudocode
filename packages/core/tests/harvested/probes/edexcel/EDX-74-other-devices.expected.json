@@ -1,0 +1,14 @@
+{
+  "spec": ["EDX-74", "EDX-72"],
+  "language": "edexcel",
+  "inputs": ["5"],
+  "expect": {
+    "stdout": "[MOTOR] 5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "openQuestions": ["Q8"],
+  "notes": "The probe had no input; 5 is typed. Whether the CARD_READER prompt is printed depends on Q8 (proposed: no). Prototype probe: \"EDX-74 other devices\"."
+}

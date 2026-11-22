@@ -1,0 +1,3 @@
+SET a TO [1, 2]
+SET a[3] TO 9
+SEND a[3] TO DISPLAY

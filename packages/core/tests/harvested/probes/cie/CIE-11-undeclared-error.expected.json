@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-11"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-UNDECLARED",
+        "line": 1,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Reported once, at the first use. Prototype probe: \"CIE-11 undeclared is error\"."
+}

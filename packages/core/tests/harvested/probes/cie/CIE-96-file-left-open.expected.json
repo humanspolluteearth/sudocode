@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-96"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-FILE-LEFT-OPEN",
+        "line": 1,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"CIE-96 file left open is error\"."
+}

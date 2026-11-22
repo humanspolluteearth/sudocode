@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-08", "SH-04"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "TRUE\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Booleans are accepted in any case with no warning (EDX-08 is DECIDED, not LENIENT); output is TRUE (SH-04). Prototype probe: \"EDX-08 lowercase true accepted\"."
+}

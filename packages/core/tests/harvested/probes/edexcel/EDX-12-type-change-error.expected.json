@@ -1,0 +1,24 @@
+{
+  "spec": ["EDX-12", "EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-TYPE-CHANGE",
+        "line": 2,
+        "column": 10
+      }
+    ],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 2,
+        "column": 10
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"EDX-12 type change is error\"."
+}

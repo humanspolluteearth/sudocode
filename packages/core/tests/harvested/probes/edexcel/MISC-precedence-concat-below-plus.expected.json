@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-16"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Total: 7\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "& binds looser than + (edexcel.md 2.4, level 6 vs 5), so 3 + 4 is added first. Prototype probe: \"precedence & below +\"."
+}

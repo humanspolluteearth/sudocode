@@ -1,0 +1,2 @@
+SET f TO true
+SEND f TO DISPLAY

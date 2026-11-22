@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-10", "EDX-31"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "-4\n1\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Unary minus binds tighter than DIV and MOD (edexcel.md 2.4), so this is (-7) DIV 2 and (-7) MOD 2 with floor rules. Prototype probe: \"SH-10 DIV/MOD negatives\"."
+}

@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-45"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CONCAT-NUMBER",
+        "line": 3,
+        "column": 13
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"CIE-45 & with number\"."
+}

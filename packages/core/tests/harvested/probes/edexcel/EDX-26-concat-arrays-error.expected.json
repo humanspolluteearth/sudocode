@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-26"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CONCAT-ARRAY",
+        "line": 1,
+        "column": 14
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"EDX-26 & on arrays is error\"."
+}

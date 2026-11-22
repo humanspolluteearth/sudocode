@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-06"],
+  "language": "cie",
+  "expect": {
+    "stdout": "5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "<- is accepted silently: no warning. Prototype probe: \"CIE-06 <- accepted\"."
+}

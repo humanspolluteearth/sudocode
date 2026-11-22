@@ -1,0 +1,39 @@
+{
+  "spec": ["EDX-05", "EDX-10"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "5\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 7
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 8
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 11
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "openQuestions": ["Q7"],
+  "notes": "One warning per lowercase keyword. Treating `display` as DISPLAY depends on Q7. Prototype probe: \"EDX-05 lowercase keywords (warn)\"."
+}
