@@ -1,0 +1,4 @@
+{
+  "description": "Spec IDs in scope so far: `pnpm spec:coverage` fails if any of them has no (non-pending) test. Each milestone adds the IDs it implements.",
+  "ids": []
+}
