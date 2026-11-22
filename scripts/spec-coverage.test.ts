@@ -96,13 +96,37 @@ describe("MISC spec coverage: the table and the scope check", () => {
     expect(unknownScopeIds(rows, new Set(["EDX-54", "EDX-999"]))).toEqual(["EDX-999"]);
   });
 
-  it("MISC reads test titles from Vitest's JSON report, skipping excluded files", () => {
+  it("MISC reads passed test titles from Vitest's JSON report, skipping excluded files", () => {
     const report = {
       testResults: [
-        { name: "/r/src/a.test.ts", assertionResults: [{ title: "SH-01 one" }, { title: "MISC two" }] },
-        { name: "/r/tests/golden.test.ts", assertionResults: [{ title: "SH-10-x (harvested/x)" }] },
+        {
+          name: "/r/src/a.test.ts",
+          assertionResults: [
+            { title: "SH-01 one", status: "passed" },
+            { title: "MISC two", status: "passed" },
+          ],
+        },
+        { name: "/r/tests/golden.test.ts", assertionResults: [{ title: "SH-10-x (harvested/x)", status: "passed" }] },
       ],
     };
     expect(vitestTitles(report, (p) => p.endsWith("golden.test.ts"))).toEqual(["SH-01 one", "MISC two"]);
   });
+
+  it.each(["skipped", "todo", "failed", "pending"])(
+    "MISC a %s test does not count as covering its spec ID",
+    (status) => {
+      const report = {
+        testResults: [{ name: "/r/a.test.ts", assertionResults: [{ title: "EDX-54 STEP 0", status }] }],
+      };
+      const titles = vitestTitles(report, () => false);
+      expect(titles).toEqual([]);
+      const rows = [{ id: "EDX-54", file: "e.md", status: "SOURCE" }];
+      const table = coverage(
+        rows,
+        titles.map((name) => ({ name, pending: false })),
+        new Set(["EDX-54"]),
+      );
+      expect(missingInScope(table)).toEqual(["EDX-54"]);
+    },
+  );
 });

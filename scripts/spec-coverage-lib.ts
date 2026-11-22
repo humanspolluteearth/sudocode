@@ -91,10 +91,15 @@ export function markdownReport(table: readonly CoverageRow[]): string {
 }
 
 interface VitestJson {
-  testResults: { name: string; assertionResults: { title: string }[] }[];
+  testResults: { name: string; assertionResults: { title: string; status: string }[] }[];
 }
 
-/** Test titles from Vitest's JSON report, leaving out files whose names come from elsewhere. */
+/**
+ * Titles of the tests that PASSED in Vitest's JSON report, leaving out files whose names come from elsewhere.
+ * Skipped, todo and failing tests prove nothing, so they never count as covering a spec ID.
+ */
 export function vitestTitles(report: VitestJson, excludeFile: (path: string) => boolean): string[] {
-  return report.testResults.filter((f) => !excludeFile(f.name)).flatMap((f) => f.assertionResults.map((a) => a.title));
+  return report.testResults
+    .filter((f) => !excludeFile(f.name))
+    .flatMap((f) => f.assertionResults.filter((a) => a.status === "passed").map((a) => a.title));
 }

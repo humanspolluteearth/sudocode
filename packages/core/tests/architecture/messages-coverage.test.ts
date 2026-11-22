@@ -30,16 +30,16 @@ const specText = readdirSync(join(repoDir, "docs", "language-spec"))
   .map((f) => readFileSync(join(repoDir, "docs", "language-spec", f), "utf8"))
   .join("\n");
 
-describe("SH-15 message catalogue coverage", () => {
-  it("SH-15 finds the codes used by golden files", () => {
+describe("MISC message catalogue coverage", () => {
+  it("MISC finds the codes used by golden files", () => {
     expect(expectedCodes.size).toBeGreaterThan(20);
   });
 
-  it.each([...expectedCodes].sort())("SH-15 %s has wording", (code) => {
+  it.each([...expectedCodes].sort())("MISC %s has wording", (code) => {
     expect(() => catalogueEntry(code)).not.toThrow();
   });
 
-  it("SH-15 every spec ID the catalogue cites exists", () => {
+  it("MISC every spec ID the catalogue cites exists", () => {
     const cited = new Set(Object.values(MESSAGES).flatMap((e) => e.spec));
     expect([...cited].filter((id) => !specText.includes(`| ${id} |`))).toEqual([]);
   });

@@ -2,6 +2,7 @@
 // through the Runner, compares what happened with what the file expects, and applies pending.json.
 import { readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
+import { isDeepStrictEqual } from "node:util";
 import { Ajv2020 } from "ajv/dist/2020.js";
 import type { Diagnostic } from "../../src/diagnostics.ts";
 import type { Language } from "../../src/language.ts";
@@ -137,10 +138,16 @@ export function compareRun(expected: ExpectedFile["expect"], result: HeadlessRes
   problems.push(...compareDiagnostics("warnings", expected.warnings, result.warnings));
   problems.push(...compareDiagnostics("info", expected.info ?? [], result.info));
   if (expected.files !== null) problems.push(...compareFiles(expected.files, result.files));
-  if (expected.trace !== null && JSON.stringify(expected.trace) !== JSON.stringify(result.trace)) {
+  if (expected.trace !== null && !isDeepStrictEqual(expected.trace, result.trace)) {
     problems.push(`trace: expected ${JSON.stringify(expected.trace)} but got ${JSON.stringify(result.trace)}`);
   }
   if (result.inputStarved) problems.push("the program asked for more input than the test gives");
+  if (result.status === "stopped" && !result.inputStarved && !result.stepLimitReached) {
+    problems.push("the run was stopped before it finished");
+  }
+  if (result.status === "error" && result.errors.length === 0) {
+    problems.push("the run ended with an error but reported no error diagnostic");
+  }
   if (result.stepLimitReached) problems.push("the program reached the step limit (possible infinite loop)");
   return problems;
 }

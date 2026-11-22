@@ -1,6 +1,6 @@
 // Runtime checks for messages that cross a worker boundary. TypeScript types vanish at run time, so a worker
 // checks what it receives before acting on it.
-import { isDiagnosticCode, type Diagnostic } from "./diagnostics.ts";
+import { isDiagnosticCode, severityOf, type Diagnostic } from "./diagnostics.ts";
 import { isLanguage } from "./language.ts";
 import type {
   CheckRequest,
@@ -45,7 +45,7 @@ export function isDiagnostic(v: unknown): v is Diagnostic {
     isPosInt(v["column"]) &&
     isStr(v["message"]) &&
     isStr(v["hint"]) &&
-    (v["severity"] === "error" || v["severity"] === "warning" || v["severity"] === "info") &&
+    v["severity"] === severityOf(v["code"]) &&
     (v["fix"] === undefined || isFix(v["fix"])) &&
     (v["span"] === undefined || isSpan(v["span"]))
   );

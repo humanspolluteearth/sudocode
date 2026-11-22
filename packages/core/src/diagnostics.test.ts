@@ -19,19 +19,19 @@ const diag = (over: Partial<Diagnostic>): Diagnostic => ({
   ...over,
 });
 
-describe("SH-15 diagnostic codes", () => {
+describe("MISC diagnostic codes", () => {
   it.each([
     ["E-RUN-DIV-ZERO", "error"],
     ["E-CHK-SEND-ARRAY", "error"],
     ["E-PY-ZeroDivisionError", "error"],
     ["W-EDX-DOUBLE-QUOTES", "warning"],
     ["I-EDX-ARRAY-GROWS", "info"],
-  ])("SH-15 %s has severity %s", (code, severity) => {
+  ])("MISC %s has severity %s", (code, severity) => {
     expect(severityOf(code)).toBe(severity);
   });
 
   it.each(["", "E", "X-RUN-DIV-ZERO", "E-run-div-zero", "E-RUN-", "W-PY-SyntaxWarning", "E-RUN--ZERO"])(
-    "SH-15 rejects the malformed code %j",
+    "MISC rejects the malformed code %j",
     (code) => {
       expect(isDiagnosticCode(code)).toBe(false);
       expect(() => severityOf(code)).toThrow(/Not a diagnostic code/);
@@ -39,7 +39,7 @@ describe("SH-15 diagnostic codes", () => {
   );
 });
 
-describe("SH-01 positions in the student's source", () => {
+describe("MISC positions in the student's source", () => {
   const source = "SET a TO 1\nSEND a TO DISPLAY\n";
 
   it.each([
@@ -49,11 +49,11 @@ describe("SH-01 positions in the student's source", () => {
     [11, 2, 1],
     [16, 2, 6],
     [source.length, 3, 1],
-  ])("SH-01 offset %i is line %i, column %i", (offset, line, column) => {
+  ])("MISC offset %i is line %i, column %i", (offset, line, column) => {
     expect(positionAt(source, offset)).toEqual({ line, column });
   });
 
-  it("SH-01 treats \\r\\n as one line break", () => {
+  it("MISC treats \\r\\n as one line break", () => {
     const crlf = "SET a TO 1\r\nSEND a TO DISPLAY";
     expect(positionAt(crlf, 12)).toEqual({ line: 2, column: 1 });
     expect(positionAt(crlf, 17)).toEqual({ line: 2, column: 6 });
@@ -62,7 +62,7 @@ describe("SH-01 positions in the student's source", () => {
     expect(positionAt(crlf, 11)).toEqual({ line: 1, column: 11 });
   });
 
-  it("SH-01 counts columns in characters, not UTF-16 units", () => {
+  it("MISC counts columns in characters, not UTF-16 units", () => {
     // "😀" is two UTF-16 units but one character on screen.
     const s = "x ← '😀' & y";
     // x, space, ←, space, ', 😀, ', space, &: the & is the 9th character, at UTF-16 offset 9 (the emoji is 2 units).
@@ -70,24 +70,24 @@ describe("SH-01 positions in the student's source", () => {
     expect(s.indexOf("&")).toBe(9);
   });
 
-  it("SH-01 rejects offsets outside the source", () => {
+  it("MISC rejects offsets outside the source", () => {
     expect(() => positionAt(source, -1)).toThrow(RangeError);
     expect(() => positionAt(source, source.length + 1)).toThrow(RangeError);
     expect(() => positionAt(source, 1.5)).toThrow(RangeError);
   });
 
-  it("SH-15 a span starts at the line and column of its first character", () => {
+  it("MISC a span starts at the line and column of its first character", () => {
     expect(spanOf(source, 16, 17)).toEqual({ line: 2, column: 6, start: 16, end: 17 });
   });
 
-  it("SH-15 a span cannot end before it starts or past the source", () => {
+  it("MISC a span cannot end before it starts or past the source", () => {
     expect(() => spanOf(source, 5, 4)).toThrow(RangeError);
     expect(() => spanOf(source, 0, source.length + 1)).toThrow(RangeError);
   });
 });
 
-describe("SH-15 diagnostic order", () => {
-  it("SH-15 sorts by line, then column, then severity, then code", () => {
+describe("MISC diagnostic order", () => {
+  it("MISC sorts by line, then column, then severity, then code", () => {
     const list = [
       diag({ code: "W-B", line: 2, column: 1, severity: "warning" }),
       diag({ code: "I-A", line: 1, column: 5, severity: "info" }),
@@ -99,7 +99,7 @@ describe("SH-15 diagnostic order", () => {
     expect(list[0]?.code).toBe("W-B"); // the input is not modified
   });
 
-  it("SH-15 equal diagnostics compare as equal", () => {
+  it("MISC equal diagnostics compare as equal", () => {
     expect(compareDiagnostics(diag({}), diag({}))).toBe(0);
   });
 });
