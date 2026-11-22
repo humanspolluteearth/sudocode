@@ -1,3 +1,5 @@
-// @sudocode/core: the interpreter. Nothing here yet; milestone M1 adds the protocol and diagnostics.
+// @sudocode/core: lexers, parsers, checker, core IR, runtime, debugger and converter.
 // Rule for this package: no DOM, React or browser APIs. It must run in Node and in a Web Worker.
-export {};
+export * from "./language.ts";
+export * from "./diagnostics.ts";
+export * from "./protocol.ts";
