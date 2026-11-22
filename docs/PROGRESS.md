@@ -2,7 +2,19 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 23 Nov 2026: M0 merged
+
+- PRs #1 to #7 squash-merged with CI green, after you added the `workflow` scope and pushed the workflow commits.
+  Stacked branches were updated by merging `main` in (no force-push).
+- `pnpm check` exits 0 on `main` (698 tests; all 66 harvested golden tests pending). Required checks to add:
+  `lint`, `typecheck`, `test-core`, `pr-title`, `dco`.
+- Bot PRs left open for you: #9 release-please `1.0.0` (never merged by Claude; consider `initial-version` 0.1.0),
+  #8 Dependabot TypeScript 7 (breaks typescript-eslint; close or ignore majors).
+- Open questions 1-12 in `docs/review/QUESTIONS.md`.
+- Next step: answer the questions you can, then start M1 with its line from `docs/milestones/PROMPTS.md`.
+
 ## 23 Nov 2026: M0 built; waiting on CI to merge
+
 - Done (PRs #1-#7, all open): monorepo tooling, `pnpm check`, lefthook, the `reference/` import ban, core portability
   lint, CI stage 1, Dependabot, release-please, PR title and DCO checks, `docs/messages-harvest.md` (400 messages),
   66 pending golden tests harvested from the prototype (`packages/core/tests/harvested/`), expected-file schema,
@@ -17,6 +29,7 @@ Newest entry first. Updated at the end of each milestone (and each session).
   start M1."
 
 ## 23 Nov 2026: planning finished
+
 - Language spec approved and split into `docs/language-spec/`. Architecture confirmed. Licence AGPL-3.0.
 - Prototype audited (`docs/AUDIT.md`): rewrite to the confirmed architecture, keep the knowledge; runtime needs an
   explicit call stack for 1,000-deep recursion.
