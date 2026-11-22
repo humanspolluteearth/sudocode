@@ -7,7 +7,7 @@ Newest entry first. Updated at the end of each milestone (and each session).
   lint, CI stage 1, Dependabot, release-please, PR title and DCO checks, `docs/messages-harvest.md` (400 messages),
   66 pending golden tests harvested from the prototype (`packages/core/tests/harvested/`), expected-file schema,
   `scripts/python-oracle.py`.
-- State: `pnpm check` exits 0 on the combined branch (679 tests). Nothing merged: GitHub refuses workflow files from
+- State: `pnpm check` exits 0 on the combined branch (698 tests). Nothing merged: GitHub refuses workflow files from
   this token (no `workflow` scope), so CI has never run. Both review agents ran; their MUST FIX items are fixed.
 - Environment: pnpm 12 and uv can't reach the network on this machine (no IPv6 route and no IPv4 fallback), so installs
   use `npx pnpm@11.28.13 install`. CPython 3.12 isn't installed; the Python expected files came from 3.14 (Q12).
