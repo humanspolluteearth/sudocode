@@ -1,0 +1,7 @@
+# Find the bug: this crashes. Step through it to see why.
+SET scores TO [12, 18, 9, 15]
+SET total TO 0
+FOR i FROM 0 TO LENGTH(scores) DO
+    SET total TO total + scores[i]
+END FOR
+SEND "Average: " & total / LENGTH(scores) TO DISPLAY

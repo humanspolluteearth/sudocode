@@ -1,0 +1,15 @@
+// This program has a bug. Run it, then use the debugger.
+DECLARE Temps : ARRAY[1:4] OF REAL
+DECLARE Total : REAL
+DECLARE i : INTEGER
+
+Temps[1] ← 18.5
+Temps[2] ← 21.0
+Temps[3] ← 19.5
+Temps[4] ← 23.0
+
+Total ← 0
+FOR i ← 0 TO 4
+    Total ← Total + Temps[i]
+NEXT i
+OUTPUT "Average: ", Total / 4

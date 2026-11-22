@@ -1,0 +1,43 @@
+{
+  "spec": ["EDX-61", "EDX-62", "EDX-64", "EDX-65", "EDX-53", "EDX-90", "EDX-16", "EDX-07"],
+  "language": "edexcel",
+  "inputs": ["Cal"],
+  "expect": {
+    "stdout": "Cal is at index 2\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 12,
+        "column": 15
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 12,
+        "column": 22
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 12,
+        "column": 29
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 12,
+        "column": 36
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 16,
+        "column": 19
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 18,
+        "column": 19
+      }
+    ],
+    "files": null,
+    "trace": null
+  }
+}

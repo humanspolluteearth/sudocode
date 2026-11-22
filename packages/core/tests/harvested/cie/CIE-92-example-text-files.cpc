@@ -1,0 +1,18 @@
+// Write lines to a file, then read them back
+DECLARE LineOfText : STRING
+DECLARE Count : INTEGER
+
+OPENFILE "scores.txt" FOR WRITE
+WRITEFILE "scores.txt", "Ama,61"
+WRITEFILE "scores.txt", "Ben,74"
+WRITEFILE "scores.txt", "Chen,58"
+CLOSEFILE "scores.txt"
+
+Count ← 0
+OPENFILE "scores.txt" FOR READ
+WHILE NOT EOF("scores.txt")
+    READFILE "scores.txt", LineOfText
+    Count ← Count + 1
+    OUTPUT Count, ": ", LineOfText
+ENDWHILE
+CLOSEFILE "scores.txt"

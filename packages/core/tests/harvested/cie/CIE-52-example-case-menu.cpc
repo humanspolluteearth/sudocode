@@ -1,0 +1,16 @@
+// Menu choice with CASE OF
+DECLARE Choice : INTEGER
+DECLARE Total : REAL
+
+Total ← 0
+REPEAT
+    INPUT Choice
+    CASE OF Choice
+        1 : Total ← Total + 2.50
+        2 : Total ← Total + 1.75
+        3 : OUTPUT "Done"
+        OTHERWISE : OUTPUT "Choose 1, 2 or 3"
+    ENDCASE
+UNTIL Choice = 3
+
+OUTPUT "Total: ", ROUND(Total, 2)

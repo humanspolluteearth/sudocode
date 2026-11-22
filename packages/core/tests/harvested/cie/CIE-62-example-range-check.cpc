@@ -1,0 +1,13 @@
+// Keep asking until the age is in range
+DECLARE Age : INTEGER
+
+REPEAT
+    OUTPUT "Enter an age from 0 to 120"
+    INPUT Age
+    IF Age < 0 OR Age > 120
+      THEN
+        OUTPUT "Out of range, try again"
+    ENDIF
+UNTIL Age >= 0 AND Age <= 120
+
+OUTPUT "Age accepted: ", Age

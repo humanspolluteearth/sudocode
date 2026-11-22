@@ -1,0 +1,19 @@
+{
+  "spec": ["CIE-52", "CIE-53", "CIE-62", "CIE-13"],
+  "language": "cie",
+  "inputs": ["2", "6", "3"],
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-UNKNOWN-FUNCTION",
+        "line": 16,
+        "column": 19
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "ROUND is not one of the CIE built-ins (CIE-120 to CIE-130), so the checker rejects the program before it runs."
+}

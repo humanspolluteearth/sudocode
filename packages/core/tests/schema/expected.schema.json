@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sudocode.dev/schema/expected.schema.json",
+  "title": "Sudocode golden test: expected result of running one program",
+  "description": "Format in docs/TEST-PLAN.md section 4. Conventions for positions and codes: packages/core/tests/harvested/README.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["spec", "language", "expect"],
+  "properties": {
+    "spec": {
+      "description": "Spec rows this program proves (docs/language-spec/), or resolved question IDs such as Q-EDX-4. Empty only for MISC tests.",
+      "type": "array",
+      "items": { "type": "string", "pattern": "^(Q-)?(SH|EDX|CIE|PY)-[0-9]+$" },
+      "uniqueItems": true
+    },
+    "language": { "enum": ["edexcel", "cie", "python"] },
+    "inputs": {
+      "description": "Lines typed at the keyboard, in order, without newlines.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "seed": {
+      "description": "Random seed for the run (SH-12). For Python it is the value passed to random.seed() before the program starts.",
+      "type": "integer"
+    },
+    "files": {
+      "description": "Virtual files that exist before the run: name -> contents.",
+      "$ref": "#/$defs/fileMap"
+    },
+    "expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stdout", "errors", "warnings", "files", "trace"],
+      "properties": {
+        "stdout": {
+          "description": "Everything printed, exactly. Input prompts appear without a newline and typed text is not echoed.",
+          "type": "string"
+        },
+        "errors": {
+          "description": "Every error, ordered by line then column. Checker errors mean the program never runs (stdout is empty).",
+          "type": "array",
+          "items": { "$ref": "#/$defs/diagnostic" }
+        },
+        "warnings": {
+          "description": "Every warning, ordered by line then column.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/diagnostic" }
+        },
+        "info": {
+          "description": "Info notes (for example EDX-27, EDX-63), ordered by line then column. Omitted means none.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/diagnostic" }
+        },
+        "files": {
+          "description": "Virtual files after the run (name -> contents), or null when the test does not check files.",
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/fileMap" }]
+        },
+        "trace": {
+          "description": "Trace table rows (SH-17), or null when the test does not check the trace. Format defined in M4.",
+          "oneOf": [{ "type": "null" }, { "type": "array" }]
+        }
+      }
+    },
+    "openQuestions": {
+      "description": "Questions in docs/review/QUESTIONS.md this expected answer depends on. The test stays pending until they are answered.",
+      "type": "array",
+      "items": { "type": "string", "pattern": "^Q[0-9]+$" },
+      "uniqueItems": true
+    },
+    "notes": {
+      "description": "Why the expected answer is what it is, for the reviewer.",
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "line", "column"],
+      "properties": {
+        "code": {
+          "description": "E- error, W- warning, I- info. Python exceptions are E-PY-<ExceptionName>.",
+          "type": "string",
+          "pattern": "^([EWI]-[A-Z][A-Z0-9]*(-[A-Z0-9]+)*|E-PY-[A-Z][A-Za-z]*)$"
+        },
+        "line": { "type": "integer", "minimum": 1 },
+        "column": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "fileMap": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

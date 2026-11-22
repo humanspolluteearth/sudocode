@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-50", "CIE-80", "CIE-82", "CIE-04"],
+  "language": "cie",
+  "inputs": ["Amira", "64"],
+  "expect": {
+    "stdout": "Enter name and mark\nAmira got grade B\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

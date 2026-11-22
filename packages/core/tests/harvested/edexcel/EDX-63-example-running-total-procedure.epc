@@ -1,0 +1,12 @@
+# Running total
+SET total TO 0
+
+PROCEDURE addScore(points)
+BEGIN PROCEDURE
+    SET total TO total + points
+    SEND "Added " & points & ", total is now " & total TO DISPLAY
+END PROCEDURE
+
+FOR EACH s FROM [10, 25, 5] DO
+    addScore(s)
+END FOREACH

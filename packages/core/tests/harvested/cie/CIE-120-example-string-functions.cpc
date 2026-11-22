@@ -1,0 +1,17 @@
+// Count the vowels in a word
+DECLARE Word, Letter : STRING
+DECLARE Vowels, i : INTEGER
+
+INPUT Word
+Vowels ← 0
+FOR i ← 1 TO LENGTH(Word)
+    Letter ← LCASE(SUBSTRING(Word, i, 1))
+    IF Letter = "a" OR Letter = "e" OR Letter = "i" OR Letter = "o" OR Letter = "u"
+      THEN
+        Vowels ← Vowels + 1
+    ENDIF
+NEXT i
+
+OUTPUT UCASE(Word), " has ", Vowels, " vowels"
+// 9618 versions of the same functions:
+OUTPUT LEFT(Word, 3), " ... ", RIGHT(Word, 3), " ... ", MID(Word, 4, 4)
