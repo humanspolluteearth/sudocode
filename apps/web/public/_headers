@@ -1,0 +1,4 @@
+# Cloudflare static-asset headers: cross-origin isolation (docs/TEST-PLAN.md section 6).
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
