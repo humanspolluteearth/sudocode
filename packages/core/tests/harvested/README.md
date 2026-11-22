@@ -42,6 +42,8 @@ The column points at the first character of the part of the program the message 
 | `RECEIVE x FROM KEYBOARD` with no type (EDX-73)                                     | Where the type should be (`KEYBOARD`)                                   |
 | Has no value yet (CIE-14)                                                           | The variable                                                            |
 | File still open at the end (CIE-96)                                                 | `OPENFILE` in the statement that opened it                              |
+| File not found (SH-11, CIE-97)                                                      | `OPENFILE` in the statement that tried to open it                       |
+| Whole array sent (EDX-75)                                                           | The array expression                                                    |
 | Python exceptions                                                                   | CPython's own traceback position for the innermost frame in the program |
 
 **How many.** One diagnostic per occurrence (three double-quoted strings give three warnings). A keyword used as a name gives one error where it is declared and nothing else for that name: no error and no lowercase-keyword warning at its later uses (Q6). A program stops at its first runtime error, so there is at most one. An undeclared
@@ -71,6 +73,7 @@ plus the CPython exception name, `W-` warnings, `I-` info notes.
 | `E-CHK-DIV-MOD-INTEGER`  | EDX-31                  | `DIV` or `MOD` with a non-INTEGER operand                      |
 | `E-CHK-MISSING-PARENS`   | EDX-66                  | A subprogram with no parameters defined or called without `()` |
 | `E-CHK-SEND-COMMA`       | EDX-71                  | `SEND` with a comma list                                       |
+| `E-CHK-SEND-ARRAY`       | EDX-75                  | `SEND` with a whole array                                      |
 | `E-CHK-RECEIVE-NO-TYPE`  | EDX-73                  | `RECEIVE ... FROM` without `(type)`                            |
 | `E-CHK-UNDECLARED`       | CIE-11                  | A variable used without `DECLARE`                              |
 | `E-CHK-CALL-REQUIRED`    | CIE-71                  | A procedure called without `CALL`                              |
@@ -78,6 +81,7 @@ plus the CPython exception name, `W-` warnings, `I-` info notes.
 | `E-RUN-NUMBER-TOO-LARGE` | SH-07                   | An INTEGER result outside the safe range                       |
 | `E-RUN-NO-VALUE`         | CIE-14                  | A variable used before it has a value                          |
 | `E-RUN-FILE-LEFT-OPEN`   | CIE-96                  | A file still open when the program ends                        |
+| `E-RUN-FILE-NOT-FOUND`   | SH-11, CIE-97           | Opening a file that doesn't exist                              |
 | `W-EDX-DOUBLE-QUOTES`    | EDX-07                  | `"text"` instead of `'text'`                                   |
 | `W-LOWERCASE-KEYWORD`    | EDX-05, CIE-02          | A keyword not in upper case                                    |
 | `W-EDX-ELSE-IF`          | EDX-42                  | `ELSE IF` chain instead of nesting                             |
