@@ -15,5 +15,5 @@
     "trace": null
   },
   "openQuestions": ["Q6", "Q5"],
-  "notes": "`Class` is the keyword CLASS (CIE-110) in mixed case; identifiers are not case-sensitive and keywords cannot be identifiers (CIE-03). Proposed (Q6): one error where the name is declared; later uses are not reported again. If Q6 is answered the other way, the expected stdout is 'Top: Ben with 74' with no errors. Line 8 uses multi-name DECLARE (Q5)."
+  "notes": "`Class` is the keyword CLASS (CIE-110) in mixed case; identifiers are not case-sensitive and keywords cannot be identifiers (CIE-03). Proposed (Q6): one error where the name is declared; its later uses give no further error and no lowercase-keyword warning (CIE-02). If Q6 is answered the other way, the expected stdout is 'Top: Ben with 74' with no errors. Line 8 uses multi-name DECLARE (Q5)."
 }

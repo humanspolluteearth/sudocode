@@ -23,7 +23,7 @@ A test's ID is its path from `packages/core/tests/` without the extension, for e
 
 ## Conventions these expected files use (proposed in M0; review in `docs/review/M0.md`)
 
-**Positions.** `line` and `column` are 1-based and count characters (Unicode code points; tabs count as one).
+**Positions.** `line` and `column` are 1-based (a diagnostic about a missing word at the end of a line may point one past its last character) and count characters (Unicode code points; tabs count as one).
 The column points at the first character of the part of the program the message is about:
 
 | Diagnostic                                                                          | Column points at                                                        |
@@ -44,18 +44,18 @@ The column points at the first character of the part of the program the message 
 | File still open at the end (CIE-96)                                                 | `OPENFILE` in the statement that opened it                              |
 | Python exceptions                                                                   | CPython's own traceback position for the innermost frame in the program |
 
-**How many.** One diagnostic per occurrence (three double-quoted strings give three warnings). An undeclared
+**How many.** One diagnostic per occurrence (three double-quoted strings give three warnings). A keyword used as a name gives one error where it is declared and nothing else for that name: no error and no lowercase-keyword warning at its later uses (Q6). A program stops at its first runtime error, so there is at most one. An undeclared
 name is reported once, at its first use. After an error in a declaration, later uses of that name are not
 reported again. Lists are ordered by line, then column.
 
 **Checker vs runtime.** Checker errors (`E-CHK-`, `E-SYN-`) stop the program before it runs, so `stdout` is
 empty. Runtime errors (`E-RUN-`, `E-PY-`) stop it where they happen; `stdout` holds what was printed before.
-Warnings and info notes are listed whether or not the program runs.
+Checker warnings and info notes (found before the run, such as EDX-07 or EDX-63) are listed whether or not the program runs. Runtime info notes (EDX-27 array growth) appear only if the run reaches them. EDX-63's note is a checker note: one per assignment in a subprogram, however often it runs.
 
 **Input.** `RECEIVE ... KEYBOARD` (Edexcel) and `INPUT` without a prompt (CIE) print nothing. Typed input is
 not echoed (docs/TEST-PLAN.md section 3).
 
-**Files.** A line written to a file ends with `\n`.
+**Files.** A line written to a file ends with `\n`. File names keep the case they were written in; because names are not case-sensitive (SH-11), the harness compares `files` keys ignoring case.
 
 **Codes.** Proposed codes for the M1 catalogue: `E-SYN-` syntax, `E-CHK-` checker, `E-RUN-` runtime, `E-PY-`
 plus the CPython exception name, `W-` warnings, `I-` info notes.

@@ -20,7 +20,9 @@ Each answer decides an expected result. The tests named stay pending until you a
 expected file says now; if you agree, write "yes"; if not, the M1 session corrects the file in a small PR.
 
 4. **Edexcel array output:** the spec doesn't say how `SEND nums TO DISPLAY` prints a whole array.
-   Proposed: like a Python list, `[4, 8, 15, 17, 29, 42]`.
+   Proposed: like a Python list, `[4, 8, 15, 17, 29, 42]`. Also: how do STRING and BOOLEAN elements look inside it
+   (`['a', 'b']` or `[a, b]`; `[TRUE]` or `[True]`)? Proposed: `['a', 'b']` and `[TRUE]`. Only the INTEGER case is
+   tested so far.
    Tests: `harvested/edexcel/EDX-50-example-bubble-sort`.
    - Answer:
 5. **CIE multi-name DECLARE:** is `DECLARE Temp, Index, Last : INTEGER` allowed? The spec only shows one name per
@@ -29,7 +31,9 @@ expected file says now; if you agree, write "yes"; if not, the M1 session correc
    - Answer:
 6. **CIE name that is a keyword in another case:** the records example declares `Class`. CIE-03 says names are not
    case-sensitive and keywords can't be names, and CLASS is a keyword (CIE-110). Proposed: an error
-   (`E-SYN-KEYWORD-AS-NAME`) where it is declared, reported once. The alternative (allowed) prints `Top: Ben with 74`.
+   (`E-SYN-KEYWORD-AS-NAME`) where it is declared, reported once: the later uses of `Class` give no further error and no
+   lowercase-keyword warning (CIE-02), because they are treated as that (failed) name. The alternative (allowed as a
+   name) prints `Top: Ben with 74`; if so, should each `Class` still get a warning?
    Tests: `harvested/cie/CIE-30-example-records-and-byref`.
    - Answer:
 7. **Edexcel lowercase device names:** in `send x to display`, devices are UPPER CASE identifiers (EDX-10) and
