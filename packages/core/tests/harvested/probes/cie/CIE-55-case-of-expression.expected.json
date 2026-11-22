@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-55", "CIE-52", "CIE-53"],
+  "language": "cie",
+  "expect": {
+    "stdout": "three\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"CIE-55 CASE OF expression\"."
+}

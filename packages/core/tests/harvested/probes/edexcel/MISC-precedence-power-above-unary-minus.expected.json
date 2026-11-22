@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-30"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "-4\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "^ binds tighter than unary minus (edexcel.md 2.4), so -2 ^ 2 is -(2 ^ 2). Prototype probe: \"precedence ^ above unary minus\"."
+}

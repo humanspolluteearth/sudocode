@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-58", "EDX-57", "EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "a\nb\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-FOREACH",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 1,
+        "column": 16
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"EDX-58 FOREACH one word (warn)\"."
+}

@@ -1,0 +1,19 @@
+{
+  "spec": ["EDX-27", "Q-EDX-1"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "9\n",
+    "errors": [],
+    "warnings": [],
+    "info": [
+      {
+        "code": "I-EDX-ARRAY-GROWS",
+        "line": 2,
+        "column": 5
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Writing a[3] grows the array to [1, 2, <no value>, 9] with an info note; reading a[3] gives 9. Prototype probe: \"Q-EDX-1 write past end grows\"."
+}

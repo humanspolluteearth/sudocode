@@ -1,0 +1,24 @@
+{
+  "spec": ["EDX-66", "EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-MISSING-PARENS",
+        "line": 1,
+        "column": 11
+      }
+    ],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 3,
+        "column": 8
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"EDX-66 PROCEDURE without () is error\"."
+}

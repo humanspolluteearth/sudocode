@@ -1,0 +1,2 @@
+SET g TO [[1, 2], [3, 4]]
+SEND g[1, 0] TO DISPLAY

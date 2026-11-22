@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-56", "EDX-53"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "10\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The loop body is empty; the spec does not forbid empty blocks. Prototype probe: \"EDX-56 FOR var after loop\"."
+}

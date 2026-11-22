@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-100", "CIE-101", "SH-09"],
+  "language": "cie",
+  "expect": {
+    "stdout": "caught\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "1 / 0 is a runtime error (SH-09), so the EXCEPT part runs. Prototype probe: \"CIE-101 TRY/EXCEPT\"."
+}

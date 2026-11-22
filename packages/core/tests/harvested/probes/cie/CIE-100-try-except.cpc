@@ -1,0 +1,5 @@
+TRY
+  OUTPUT 1 / 0
+EXCEPT
+  OUTPUT "caught"
+ENDTRY

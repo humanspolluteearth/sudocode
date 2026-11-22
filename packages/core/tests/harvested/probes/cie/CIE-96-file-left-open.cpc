@@ -1,0 +1,2 @@
+OPENFILE "f.txt" FOR WRITE
+WRITEFILE "f.txt", "a"

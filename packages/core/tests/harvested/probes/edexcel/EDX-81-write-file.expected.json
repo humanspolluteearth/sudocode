@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-80", "EDX-81", "EDX-83", "EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 1,
+        "column": 18
+      }
+    ],
+    "files": {
+      "Scores.txt": "a\n"
+    },
+    "trace": null
+  },
+  "notes": "The first WRITE in a run creates the file (EDX-83); each record is one line. Prototype probe: \"EDX-81 WRITE file\"."
+}

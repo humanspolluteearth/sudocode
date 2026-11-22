@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-52", "EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "done\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 4,
+        "column": 6
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Prototype probe: \"EDX-52 REPEAT -1 TIMES runs 0\"."
+}

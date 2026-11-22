@@ -1,0 +1,19 @@
+{
+  "spec": ["CIE-94", "CIE-96"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-FILE-LEFT-OPEN",
+        "line": 2,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "openQuestions": ["Q9"],
+  "notes": "Opening is fine if FOR RANDOM creates a missing file (Q9); the file is never closed, so the program ends with CIE-96's runtime error. Prototype probe: \"CIE-94 random files\"."
+}

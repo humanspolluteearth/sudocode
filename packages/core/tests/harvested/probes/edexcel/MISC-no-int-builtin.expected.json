@@ -1,0 +1,18 @@
+{
+  "spec": ["Q-EDX-4"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-UNKNOWN-FUNCTION",
+        "line": 1,
+        "column": 6
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Edexcel has only LENGTH and RANDOM (edexcel.md 2.10, Q-EDX-4). Prototype probe: \"Q-EDX-4 no INT builtin\"."
+}

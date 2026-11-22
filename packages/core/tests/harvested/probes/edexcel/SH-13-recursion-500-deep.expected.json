@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-13", "EDX-61", "EDX-65"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "500\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "500 calls deep is within the 1,000 limit. Prototype probe: \"SH-13 recursion 500 deep\"."
+}
