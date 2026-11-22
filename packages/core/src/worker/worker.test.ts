@@ -7,7 +7,7 @@ import { runToDone } from "../../tests/support/run-to-done.ts";
 import { serveChecker, serveRunner } from "./serve.ts";
 import { createWorkerRunner } from "./worker-runner.ts";
 
-const request: RunRequest = { language: "cie", source: "OUTPUT 1", files: {}, seed: 7, breakpoints: [] };
+const request: RunRequest = { language: "cie", source: "OUTPUT 1", files: {}, seed: 7, breakpoints: [], trace: false };
 const warning: Diagnostic = {
   code: "W-LOWERCASE-KEYWORD",
   line: 1,

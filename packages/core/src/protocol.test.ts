@@ -26,7 +26,14 @@ const diagnostic: Diagnostic = {
 const commands: RunnerCommand[] = [
   {
     type: "run",
-    request: { language: "edexcel", source: "SEND 1 TO DISPLAY", files: { "a.txt": "1\n" }, seed: 1, breakpoints: [1] },
+    request: {
+      language: "edexcel",
+      source: "SEND 1 TO DISPLAY",
+      files: { "a.txt": "1\n" },
+      seed: 1,
+      breakpoints: [1],
+      trace: false,
+    },
   },
   { type: "input", text: "42" },
   { type: "pause" },
@@ -49,8 +56,14 @@ const events: RunnerEvent[] = [
     column: 5,
     stack: [{ name: "(main program)", line: 4, variables: [{ name: "Total", type: "INTEGER", value: "7" }] }],
   },
-  { type: "traceRow", row: { kind: "assign", line: 2, variable: "Total", value: "7" } },
-  { type: "traceRow", row: { kind: "output", line: 3, text: "7" } },
+  {
+    type: "traceRows",
+    rows: [
+      { kind: "assign", line: 2, variable: "Total", value: "7" },
+      { kind: "output", line: 3, text: "7" },
+    ],
+  },
+  { type: "traceRows", rows: [] },
   { type: "fileWrite", name: "Scores.txt", contents: "10\n" },
   { type: "diagnostics", diagnostics: [diagnostic] },
   { type: "error", diagnostic },
@@ -93,19 +106,26 @@ describe("MISC protocol guards reject malformed messages", () => {
     ["unknown type", { type: "launch" }],
     [
       "run with unknown language",
-      { type: "run", request: { language: "java", source: "", files: {}, seed: 1, breakpoints: [] } },
+      { type: "run", request: { language: "java", source: "", files: {}, seed: 1, breakpoints: [], trace: false } },
     ],
     [
       "run with non-string file",
-      { type: "run", request: { language: "cie", source: "", files: { a: 1 }, seed: 1, breakpoints: [] } },
+      {
+        type: "run",
+        request: { language: "cie", source: "", files: { a: 1 }, seed: 1, breakpoints: [], trace: false },
+      },
     ],
     [
       "run with fractional seed",
-      { type: "run", request: { language: "cie", source: "", files: {}, seed: 1.5, breakpoints: [] } },
+      { type: "run", request: { language: "cie", source: "", files: {}, seed: 1.5, breakpoints: [], trace: false } },
     ],
     [
       "run with breakpoint line 0",
-      { type: "run", request: { language: "cie", source: "", files: {}, seed: 1, breakpoints: [0] } },
+      { type: "run", request: { language: "cie", source: "", files: {}, seed: 1, breakpoints: [0], trace: false } },
+    ],
+    [
+      "run without the trace flag",
+      { type: "run", request: { language: "cie", source: "", files: {}, seed: 1, breakpoints: [] } },
     ],
     ["input without text", { type: "input" }],
     ["breakpoints not numbers", { type: "setBreakpoints", lines: ["3"] }],
@@ -117,7 +137,8 @@ describe("MISC protocol guards reject malformed messages", () => {
     ["output without text", { type: "output" }],
     ["paused with unknown reason", { type: "paused", reason: "nap", line: 1, column: 1, stack: [] }],
     ["paused at line 0", { type: "paused", reason: "step", line: 0, column: 1, stack: [] }],
-    ["trace row of unknown kind", { type: "traceRow", row: { kind: "read", line: 1 } }],
+    ["trace row of unknown kind", { type: "traceRows", rows: [{ kind: "read", line: 1 }] }],
+    ["a single trace row instead of a batch", { type: "traceRows", row: { kind: "output", line: 1, text: "x" } }],
     ["diagnostic with a bad code", { type: "error", diagnostic: { ...diagnostic, code: "oops" } }],
     ["diagnostic with an unknown severity", { type: "error", diagnostic: { ...diagnostic, severity: "fatal" } }],
     ["diagnostic without a hint", { type: "diagnostics", diagnostics: [{ ...diagnostic, hint: undefined }] }],

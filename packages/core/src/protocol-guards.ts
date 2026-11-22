@@ -75,7 +75,8 @@ export function isRunnerCommand(v: unknown): v is RunnerCommand {
         isStr(r["source"]) &&
         isStringMap(r["files"]) &&
         Number.isInteger(r["seed"]) &&
-        isArrayOf(r["breakpoints"], isPosInt)
+        isArrayOf(r["breakpoints"], isPosInt) &&
+        typeof r["trace"] === "boolean"
       );
     }
     case "input":
@@ -108,8 +109,8 @@ export function isRunnerEvent(v: unknown): v is RunnerEvent {
         isPosInt(v["column"]) &&
         isArrayOf(v["stack"], isStackFrame)
       );
-    case "traceRow":
-      return isTraceRow(v["row"]);
+    case "traceRows":
+      return isArrayOf(v["rows"], isTraceRow);
     case "fileWrite":
       return isStr(v["name"]) && isStr(v["contents"]);
     case "diagnostics":

@@ -76,6 +76,9 @@ describe("MISC dependencies point apps -> ui -> core", () => {
     [ui, 'import { x } from "../../../apps/web/src/main.tsx";\nexport const y = x;'],
     [ui, 'import { lex } from "@sudocode/core/src/lexer.ts";\nexport const x = lex;'],
     [ui, 'import { lex } from "../../core/src/lexer.ts";\nexport const x = lex;'],
+    [ui, 'import { ENGINES } from "@sudocode/core/engine";\nexport const x = ENGINES;'],
+    [app, 'import { ENGINES } from "@sudocode/core/engine";\nexport const x = ENGINES;'],
+    [app, 'import { lex } from "@sudocode/core/src/lexer.ts";\nexport const x = lex;'],
   ])("MISC %s rejects %s", async (file, code) => {
     expect(await ruleIds(code, file)).toEqual(["no-restricted-imports"]);
   });
@@ -86,6 +89,8 @@ describe("MISC dependencies point apps -> ui -> core", () => {
       app,
       'import { App } from "@sudocode/ui";\nimport { LANGUAGES } from "@sudocode/core";\nexport const x = [App, LANGUAGES];',
     ],
+    [app, 'import RunWorker from "@sudocode/core/run-worker?worker";\nexport const x = RunWorker;'],
+    [ui, 'import CheckWorker from "@sudocode/core/check-worker?worker";\nexport const x = CheckWorker;'],
   ])("MISC %s allows %s", async (file, code) => {
     expect(await ruleIds(code, file)).toEqual([]);
   });

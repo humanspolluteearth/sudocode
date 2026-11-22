@@ -12,6 +12,7 @@ const LANGUAGE_NAMES = { edexcel: "Edexcel pseudocode", cie: "Cambridge pseudoco
 export function createLocalRunner(engines: EngineRegistry = {}): Runner {
   const listeners = new Set<RunnerListener>();
   let run: EngineRun | undefined;
+  let language: RunRequest["language"] = "edexcel";
   let started = false;
   let finished = false;
   let disposed = false;
@@ -37,7 +38,23 @@ export function createLocalRunner(engines: EngineRegistry = {}): Runner {
       emit({ type: "done", status: "error" });
       return;
     }
-    run = engine.start(request, emit);
+    try {
+      run = engine.start(request, emit);
+    } catch (error) {
+      crashed(error, request.language);
+    }
+  };
+
+  // An engine bug must never leave the UI waiting: report it plainly and end the run.
+  const crashed = (error: unknown, language: RunRequest["language"]): void => {
+    if (finished) return;
+    const detail = error instanceof Error ? error.message : String(error);
+    const span = { line: 1, column: 1, start: 0, end: 0 };
+    emit({
+      type: "error",
+      diagnostic: makeDiagnostic({ code: "E-INTERNAL-ENGINE", language, span, args: { detail } }),
+    });
+    emit({ type: "done", status: "error" });
   };
 
   return {
@@ -46,12 +63,17 @@ export function createLocalRunner(engines: EngineRegistry = {}): Runner {
       if (command.type === "run") {
         if (started) return;
         started = true;
+        language = command.request.language;
         start(command.request);
         return;
       }
       if (finished) return;
       if (run !== undefined) {
-        run.command(command);
+        try {
+          run.command(command);
+        } catch (error) {
+          crashed(error, language);
+        }
       } else if (command.type === "stop" && started) {
         emit({ type: "done", status: "stopped" });
       }

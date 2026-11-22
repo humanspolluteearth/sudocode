@@ -79,6 +79,13 @@ export const runtimeMessages: Catalogue = {
       cie: { hint: "Loop with WHILE NOT EOF({file}) before each READFILE." },
     },
   },
+  "E-INTERNAL-ENGINE": {
+    spec: [],
+    default: {
+      message: "Sudocode itself went wrong while running this program ({detail})",
+      hint: "This is a bug in Sudocode, not in your program. Please report it with the program you ran.",
+    },
+  },
   "E-INTERNAL-NO-ENGINE": {
     spec: [],
     default: {

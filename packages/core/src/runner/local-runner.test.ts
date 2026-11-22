@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Diagnostic } from "../diagnostics.ts";
-import type { RunRequest } from "../protocol.ts";
+import type { RunnerEvent, RunRequest } from "../protocol.ts";
 import { runToDone } from "../../tests/support/run-to-done.ts";
 import type { Engine } from "./engine.ts";
 import { createLocalRunner } from "./local-runner.ts";
@@ -11,6 +11,7 @@ const request = (language: RunRequest["language"] = "edexcel"): RunRequest => ({
   files: {},
   seed: 1,
   breakpoints: [],
+  trace: false,
 });
 
 /** An engine that echoes what it is told, to show the runner relays both ways. */
@@ -121,5 +122,54 @@ describe("MISC local runner with an engine", () => {
     await new Promise((r) => setTimeout(r, 0));
     expect(heard).toEqual([]);
     expect(log).toEqual([]);
+  });
+});
+
+describe("MISC local runner when the engine itself fails", () => {
+  const internalError = (detail: string): RunnerEvent => ({
+    type: "error",
+    diagnostic: {
+      code: "E-INTERNAL-ENGINE",
+      line: 1,
+      column: 1,
+      message: `Sudocode itself went wrong while running this program (${detail})`,
+      hint: "This is a bug in Sudocode, not in your program. Please report it with the program you ran.",
+      severity: "error",
+      span: { line: 1, column: 1, start: 0, end: 0 },
+    },
+  });
+
+  it("MISC a crash while starting still ends the run with an error and done", async () => {
+    const broken: Engine = {
+      check: () => [],
+      start: () => {
+        throw new Error("boom");
+      },
+    };
+    const events = await runToDone(createLocalRunner({ cie: broken }), [{ type: "run", request: request("cie") }]);
+    expect(events).toEqual([internalError("boom"), { type: "done", status: "error" }]);
+  });
+
+  it("MISC a crash while handling a command still ends the run with an error and done", async () => {
+    const broken: Engine = {
+      check: () => [],
+      start: (_r, emit) => {
+        emit({ type: "inputRequest", prompt: "" });
+        return {
+          command: () => {
+            throw new TypeError("bad state");
+          },
+        };
+      },
+    };
+    const events = await runToDone(createLocalRunner({ python: broken }), [
+      { type: "run", request: request("python") },
+      { type: "input", text: "1" },
+    ]);
+    expect(events).toEqual([
+      { type: "inputRequest", prompt: "" },
+      internalError("bad state"),
+      { type: "done", status: "error" },
+    ]);
   });
 });
