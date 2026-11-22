@@ -1,0 +1,7 @@
+reference/
+pnpm-lock.yaml
+CHANGELOG.md
+# Program files in tests keep their exact bytes.
+packages/core/tests/**/*.epc
+packages/core/tests/**/*.cpc
+packages/core/tests/**/*.py
