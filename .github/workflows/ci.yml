@@ -9,10 +9,10 @@ on:
 permissions:
   contents: read
 
-# One run per PR (or per push to main); a newer push cancels the older run.
+# One run per PR (or per push to main). A newer push to a PR cancels its older run; runs on main always finish.
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   # Stage 1: these three run in parallel and are the required checks on main.
