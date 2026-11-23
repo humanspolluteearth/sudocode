@@ -242,3 +242,7 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
 47. **CIE-51: does `ELSE IF` stay one chain with one `ENDIF`, or open a nested IF needing its own `ENDIF`?** The spec
     says "ELSE IF chains accepted with warnings". No ELSE IF test is written until you decide. My suggestion: a
     single chain, one `ENDIF`, one `W-CIE-ELSE-IF` warning at the ELSE.
+48. **Web size budget (M7).** The CIE front end adds about 8 kB gzipped to the web build (247.9 kB against the 240 kB
+    budget in `scripts/size-budget.json`), so `build-web` fails on PR #68. I did not raise the budget because I may
+    never loosen a CI check. Please either raise it (my suggestion: 270 kB, since a whole language needs room, and
+    Python in M8 will need more) or tell me what to cut. PR #68 stays open until then.
