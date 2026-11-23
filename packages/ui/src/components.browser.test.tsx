@@ -125,7 +125,7 @@ describe("MISC Editor", () => {
     const screen = await render(<Editor value={"SEND 'hi' TO DISPLAY\n"} onChange={onChange} diagnostics={[]} />);
     await expect.element(screen.getByText("SEND 'hi' TO DISPLAY")).toBeVisible();
     await screen.getByRole("textbox", { name: "Program editor" }).fill("SEND 1 TO DISPLAY");
-    expect(onChange).toHaveBeenCalled();
+    expect(onChange).toHaveBeenLastCalledWith("SEND 1 TO DISPLAY");
   });
 
   it("MISC underlines a diagnostic's line", async () => {

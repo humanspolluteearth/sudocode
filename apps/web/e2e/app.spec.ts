@@ -23,9 +23,15 @@ test("Stop ends a WHILE TRUE loop", async ({ page }) => {
   await page.getByRole("button", { name: "Run" }).click();
   const stop = page.getByRole("button", { name: "Stop" });
   await expect(stop).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Run" })).toBeDisabled();
   await stop.click();
   await expect(page.getByRole("button", { name: "Run" })).toBeEnabled();
   await expect(stop).toBeDisabled();
+  await expect(page.getByRole("log")).toContainText("Stopped.");
+  // A fresh worker per run: running again after a Stop works.
+  await typeProgram(page, "SEND 'again' TO DISPLAY");
+  await page.getByRole("button", { name: "Run" }).click();
+  await expect(page.getByRole("log")).toContainText("again");
 });
 
 test("a syntax error shows in Problems", async ({ page }) => {
