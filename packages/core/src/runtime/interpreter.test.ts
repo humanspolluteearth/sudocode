@@ -45,7 +45,8 @@ describe("EDX-53 to EDX-56 forInclusive", () => {
     expect(error?.type === "error" ? error.diagnostic.column : 0).toBe(24);
   });
 
-  it("EDX-55 the loop's own counter decides the next value, whatever the body assigns", async () => {
+  // Unreviewed proposal (QUESTIONS.md Q30): EDX-55 sets no rule for what the next pass sees. Not a spec proof.
+  it("MISC the loop's own counter decides the next value, whatever the body assigns (Q30)", async () => {
     const outcome = await run(
       program([forLoop(num(1), num(3), null, [print(global("i")), set(global("i"), num(100))])]),
     );
@@ -194,7 +195,8 @@ describe("EDX-22 and EDX-27 indexing", () => {
 });
 
 describe("MISC AND and OR", () => {
-  it("MISC evaluate the right side only when it can change the answer (short-circuit)", async () => {
+  // Unreviewed proposal (QUESTIONS.md Q31): the spec is silent on short-circuit. Not a spec proof.
+  it("MISC evaluate the right side only when it can change the answer (short-circuit, Q31)", async () => {
     // The right sides would divide by zero; they are never evaluated.
     const boom: Expr = op("eq", op("divReal", num(1), num(0)), num(1));
     const and: Expr = { kind: "logical", op: "andThen", left: not(yes()), right: boom, span: at(1) };
