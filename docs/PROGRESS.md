@@ -2,6 +2,17 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 24 Nov 2026: M6 files complete (merged)
+
+- **PRs:** #58 refactor (parser and checker split), #59 docs (Stryker moved to M11), #60 tests (pending), #61 core
+  VFS plus Edexcel READ/WRITE, #62 Files panel with IndexedDB persistence and a quiet `pnpm check`; all squash-merged
+  with CI green. PRs #9 (release) and #22 (TypeScript bump) left alone.
+- **State:** both reviewers ran; no MUST FIX. SHOULD FIX fixes are in #62; the rest is listed in `docs/review/M6.md`.
+- **Needs you:** check the wording and columns of the new file errors (M6.md), update the stale `notes` in the merged
+  `EDX-24-grid-column-outside.expected.json`, and answer question 41 (globals assigned from a subprogram).
+- **Next step:** a follow-up tests PR for the file gaps in M6.md (once you approve the expected answers), then M7
+  (CIE files).
+
 ## 24 Nov 2026: M5 Edexcel complete (merged, with one item blocked)
 
 - **PRs:** #53 tests (pending), #54 subprograms/2D/RANDOM/checker, #55 step into/out and call stack, #56 property, fuzz,
