@@ -5,6 +5,7 @@ Newest entry first. Updated at the end of each milestone (and each session).
 ## 23 Nov 2026: M2 Edexcel basics (done)
 
 - M2 checklist ticked with PR numbers (#24-#28 code, #23 tests, #26 nightly); no code changed.
+- M2 second review pass (#33): architecture reviewer no MUST FIX; test reviewer 2 MUST FIX (Q30/Q31 unit tests renamed MISC), fixed. SHOULD FIX items are in `docs/review/M2.md`.
 
 - **Merged with CI green:**
   - #21: your answers 14-19.
