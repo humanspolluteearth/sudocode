@@ -92,6 +92,12 @@ function hasCall(e: Expr): boolean {
     case "arrayLiteral":
       result = e.elements.some(hasCall);
       break;
+    case "newArray":
+      result = false;
+      break;
+    case "copyArray":
+      result = hasCall(e.source);
+      break;
     case "builtin":
       result = e.args.some(hasCall);
       break;
@@ -127,6 +133,18 @@ export function indexError(node: { text: string; span: Span; base: number }, sho
   };
   const variant = target.kind === "str" ? "string" : length === 0 ? "empty" : undefined;
   return new RunError("E-RUN-INDEX-RANGE", node.span, args, variant);
+}
+
+/** CIE-20: an array of the given dimensions with no item set yet. */
+function unsetArray(dims: readonly number[]): Value {
+  const [first, ...rest] = dims;
+  if (first === undefined) throw bug("An array needs at least one dimension");
+  return array(Array.from({ length: first }, () => (rest.length === 0 ? undefined : unsetArray(rest))));
+}
+
+/** CIE-23: copies an array and any arrays inside it; other values are immutable, so they are shared. */
+function copyOf(v: Value): Value {
+  return v.kind === "array" ? array(v.elements.map((x) => (x === undefined ? undefined : copyOf(x)))) : v;
 }
 
 function element(node: Extract<Expr, { kind: "index" }>, target: Value, index: Value): Value {
@@ -180,6 +198,10 @@ function evaluate(e: Expr, env: Env): Value {
       return element(e, evaluate(e.target, env), evaluate(e.index, env));
     case "arrayLiteral":
       return array(e.elements.map((x) => evaluate(x, env)));
+    case "newArray":
+      return unsetArray(e.dims);
+    case "copyArray":
+      return copyOf(evaluate(e.source, env));
     case "builtin":
       return builtin(
         e,
@@ -219,6 +241,10 @@ export function* evaluateWithCalls(e: Expr, env: Env): Run<Value> {
     }
     case "arrayLiteral":
       return array(yield* evaluateAll(e.elements, env));
+    case "newArray":
+      return unsetArray(e.dims);
+    case "copyArray":
+      return copyOf(yield* evaluateWithCalls(e.source, env));
     case "builtin":
       return builtin(e, yield* evaluateAll(e.args, env), env);
     case "call": {

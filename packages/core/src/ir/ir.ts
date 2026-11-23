@@ -76,6 +76,13 @@ export type Expr =
    * `target[index]`. `base` is the first index (0 in Edexcel, EDX-22). `text` is the target as written, for
    * messages ("Index 3 is outside Scores"); `span` starts at the target, where index errors point.
    */
+  /**
+   * A fixed-size array whose items have no value yet (CIE-20, CIE-21). `dims` holds the length of each dimension,
+   * so `[3, 3]` is three rows of three. Reading an unset item is the "no value yet" runtime error.
+   */
+  | { kind: "newArray"; dims: number[]; span: Span }
+  /** A deep copy of an array, so changing one afterwards leaves the other alone (CIE-23). */
+  | { kind: "copyArray"; source: Expr; span: Span }
   | { kind: "index"; target: Expr; index: Expr; base: number; text: string; span: Span }
   | { kind: "arrayLiteral"; elements: Expr[]; span: Span }
   | { kind: "builtin"; name: BuiltinName; args: Expr[]; span: Span }
