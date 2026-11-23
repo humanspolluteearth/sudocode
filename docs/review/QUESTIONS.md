@@ -246,3 +246,4 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
     budget in `scripts/size-budget.json`), so `build-web` fails on PR #68. I did not raise the budget because I may
     never loosen a CI check. Please either raise it (my suggestion: 270 kB, since a whole language needs room, and
     Python in M8 will need more) or tell me what to cut. PR #68 stays open until then.
+    **Answered 24 Nov 2026: raise it.** Budget raised to 270 kB (276480 bytes) in #68 for the CIE engine.
