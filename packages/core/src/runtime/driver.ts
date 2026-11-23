@@ -16,6 +16,7 @@ import { makeDiagnostic, type MessageArgs } from "../messages/index.ts";
 import type { PauseReason, RunnerEvent, RunStatus, StackFrame, TraceRow } from "../protocol.ts";
 import type { EngineRun } from "../runner/engine.ts";
 import { formatValue, typeName } from "./format.ts";
+import { seededRandom } from "./random.ts";
 import { runMain, runSubprogram, type Body, type Machine, type Request } from "./interpreter.ts";
 import { RunError } from "./run-error.ts";
 import { str, type Value } from "./values.ts";
@@ -37,6 +38,8 @@ export interface DriverOptions {
   breakpoints?: readonly number[];
   /** Record the trace table (SH-17); off by default, as the rows use memory. */
   trace?: boolean;
+  /** Seed for RANDOM (SH-12); a fresh one when left out. */
+  seed?: number;
   /** Runs `resume` later; setTimeout by default (exists in Node and in Web Workers). */
   schedule?: (resume: () => void) => void;
 }
@@ -56,6 +59,7 @@ export function runProgram(options: DriverOptions): EngineRun {
   const { language, program, emit } = options;
   const maxCallDepth = options.maxCallDepth ?? DEFAULT_CALL_DEPTH;
   const stepLimit = options.stepLimit ?? DEFAULT_STEP_LIMIT;
+  const nextRandom = seededRandom(options.seed ?? Math.floor(Math.random() * 2 ** 32));
   const sliceSteps = options.sliceSteps ?? 50_000;
   const schedule = options.schedule ?? ((resume: () => void) => setTimeout(resume, 0));
 
@@ -111,6 +115,7 @@ export function runProgram(options: DriverOptions): EngineRun {
         });
       }
     },
+    random: (max) => Math.floor(nextRandom() * (max + 1)),
     note: (code, span, args) => {
       if (noted.has(code)) return; // "an info note appears the first time" (EDX-27)
       noted.add(code);

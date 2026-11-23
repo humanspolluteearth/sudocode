@@ -24,7 +24,7 @@ export function analyse(source: string): Analysis {
   const checked = checkProgram(parsed.program, source);
   const diagnostics = sortDiagnostics([...parsed.diagnostics, ...checked.diagnostics]);
   if (diagnostics.some((d) => d.severity === "error")) return { diagnostics, program: null };
-  return { diagnostics, program: lowerProgram(parsed.program, source, checked.types) };
+  return { diagnostics, program: lowerProgram(parsed.program, source, checked.types, checked.locals) };
 }
 
 export const edexcelEngine: Engine = {

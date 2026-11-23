@@ -36,20 +36,30 @@ function* assign(target: AssignTarget, value: Value, env: Env): Run<undefined> {
     setVariable(target, value, env, target.span);
     return undefined;
   }
-  const arr = read(target.array, env);
-  const shown = asIndex(yield* evaluateWithCalls(target.index, env));
-  const i = shown - target.base;
+  const whole = read(target.array, env);
+  let arr = whole;
+  let shown = asIndex(yield* evaluateWithCalls(target.index, env));
+  let i = shown - target.base;
   if (arr.kind !== "array") throw bug(`Element assignment got ${arr.kind}`);
-  if (i < 0 || (i >= arr.elements.length && !target.growOnWrite)) {
-    throw indexError({ text: target.text, span: target.span, base: target.base }, shown, arr);
+  const where = { text: target.text, span: target.span, base: target.base };
+  if (target.index2 !== undefined) {
+    // EDX-24: grid[row, col] first finds the row, which must already exist, then the item inside it.
+    if (i < 0 || i >= arr.elements.length) throw indexError(where, shown, arr);
+    const row = arr.elements[i];
+    if (row === undefined) throw new RunError("E-RUN-ARRAY-GAP", target.span, { array: target.text, index: shown });
+    if (row.kind !== "array") throw bug(`A grid row is ${row.kind}`);
+    arr = row;
+    shown = asIndex(yield* evaluateWithCalls(target.index2, env));
+    i = shown - target.base;
   }
+  if (i < 0 || (i >= arr.elements.length && !target.growOnWrite)) throw indexError(where, shown, arr);
   if (i >= arr.elements.length) {
     // EDX-27: writing past the end grows the array; the gap has no value until it is set.
     while (arr.elements.length <= i) arr.elements.push(undefined);
     env.machine.note("I-EDX-ARRAY-GROWS", target.span, { array: target.text, length: i + 1, index: shown });
   }
   arr.elements[i] = value;
-  env.machine.assigned(target.array.name, arr, target.span); // D5: the trace records the whole array
+  env.machine.assigned(target.array.name, whole, target.span); // D5: the trace records the whole array
   return undefined;
 }
 

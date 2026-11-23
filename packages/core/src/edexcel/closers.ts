@@ -3,7 +3,16 @@
 import { Cursor } from "./cursor.ts";
 import type { Token } from "./tokens.ts";
 
-export type Closer = "ELSE" | "END IF" | "END WHILE" | "UNTIL" | "END REPEAT" | "END FOR" | "END FOREACH";
+export type Closer =
+  | "ELSE"
+  | "END IF"
+  | "END WHILE"
+  | "UNTIL"
+  | "END REPEAT"
+  | "END FOR"
+  | "END FOREACH"
+  | "END PROCEDURE"
+  | "END FUNCTION";
 
 export interface Block {
   /** As the student reads it in messages: IF, WHILE, REPEAT, FOR, FOR EACH. */
@@ -43,6 +52,8 @@ function closerAhead(c: Cursor): FoundCloser | null {
     ENDREPEAT: "END REPEAT",
     ENDFOR: "END FOR",
     ENDFOREACH: "END FOREACH",
+    ENDPROCEDURE: "END PROCEDURE",
+    ENDFUNCTION: "END FUNCTION",
   };
   const single = one[upper];
   if (single !== undefined) return { closer: single, token: t };
@@ -54,6 +65,8 @@ function closerAhead(c: Cursor): FoundCloser | null {
     REPEAT: "END REPEAT",
     FOR: "END FOR",
     FOREACH: "END FOREACH",
+    PROCEDURE: "END PROCEDURE",
+    FUNCTION: "END FUNCTION",
   };
   if (second === "FOR" && Cursor.isWord(c.peek(2), "EACH")) return { closer: "END FOREACH", token: t };
   const closer = two[second];

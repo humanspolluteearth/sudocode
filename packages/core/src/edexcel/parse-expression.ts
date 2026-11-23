@@ -176,12 +176,13 @@ function postfix(c: Cursor, target: Expr): Expr {
     c.next();
     const index = parseExpression(c);
     if (c.isSymbol(",")) {
-      // EDX-24 (2D arrays, Grid[row, col]) arrives with M5.
-      c.report("E-SYN-NOT-SUPPORTED", c.peek().span, {
-        feature: "A 2D array index such as Grid[row, col]",
-        advice: "2D arrays arrive in a later version of Sudocode.",
-      });
-      throw new Abandon();
+      // EDX-24: Grid[row, col] is the row's item, written as an index of an index (marked `grid`).
+      c.next();
+      const col = parseExpression(c);
+      const close = c.expectSymbol("]", "]", "Close the index with ].");
+      const row: Expr = { kind: "index", target: e, index, span: joinSpans(e.span, close.span) };
+      e = { kind: "index", target: row, index: col, grid: true, span: joinSpans(e.span, close.span) };
+      continue;
     }
     const close = c.expectSymbol("]", "]", "Close the index with ].");
     e = { kind: "index", target: e, index, span: joinSpans(e.span, close.span) };

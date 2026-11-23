@@ -29,7 +29,21 @@ export function parse(source: string): ParseResult {
 }
 
 /** Words that start a statement, so `SEND [1, 2][0] TO ...` is a SEND, not a bare `name[i] = ...`. */
-const STATEMENT_WORDS = new Set(["SET", "SEND", "RECEIVE", "IF", "WHILE", "REPEAT", "FOR", "FOREACH", "CONST"]);
+const STATEMENT_WORDS = new Set([
+  "SET",
+  "SEND",
+  "RECEIVE",
+  "IF",
+  "WHILE",
+  "REPEAT",
+  "FOR",
+  "FOREACH",
+  "CONST",
+  "PROCEDURE",
+  "FUNCTION",
+  "RETURN",
+  "BEGIN",
+]);
 
 class Parser {
   readonly c: Cursor;
@@ -165,7 +179,13 @@ class Parser {
         return this.forEach();
       case "CONST":
         return this.constant();
+      case "PROCEDURE":
+      case "FUNCTION":
+        return this.subprogram();
+      case "RETURN":
+        return this.returnStatement();
       default:
+        if (this.c.isSymbol("(", 1) && !RESERVED.has(t.text)) return this.callStatement();
         otherStatement(this.c, t, upper);
         return null;
     }
@@ -191,15 +211,24 @@ class Parser {
     if (!this.c.isSymbol("[")) return { kind: "name", name: n.text, span: n.span };
     this.c.next();
     const index = parseExpression(this.c);
+    let index2: Expr | null = null;
     if (this.c.isSymbol(",")) {
-      this.c.report("E-SYN-NOT-SUPPORTED", this.c.peek().span, {
-        feature: "A 2D array index such as Grid[row, col]",
-        advice: "2D arrays arrive in a later version of Sudocode.",
-      });
-      throw new Abandon();
+      // EDX-24: Grid[row, col]
+      this.c.next();
+      index2 = parseExpression(this.c);
     }
     const close = this.c.expectSymbol("]", "]", "Close the index with ].");
-    return { kind: "element", name: n.text, nameSpan: n.span, index, span: { ...n.span, end: close.span.end } };
+    const span = { ...n.span, end: close.span.end };
+    if (index2 === null && this.c.isSymbol("[")) {
+      // Grid[row][col] on the left: the official form is Grid[row, col], so warn, and take it as that (EDX-24).
+      this.c.next();
+      index2 = parseExpression(this.c);
+      const close2 = this.c.expectSymbol("]", "]", "Close the index with ].");
+      const official = `${n.text}[${this.c.text(index.span)}, ${this.c.text(index2.span)}]`;
+      this.c.report("W-EDX-GRID-BRACKETS", n.span, { official });
+      span.end = close2.span.end;
+    }
+    return { kind: "element", name: n.text, nameSpan: n.span, index, index2, span };
   }
 
   private set(): Stmt {
@@ -396,6 +425,100 @@ class Parser {
     this.close(result.end);
     const p = parts ?? { n: first, iterable: this.placeholder(first) };
     return { kind: "forEach", name: p.n.text, nameSpan: p.n.span, iterable: p.iterable, body: result.stmts, span };
+  }
+
+  /**
+   * PROCEDURE name(params) / BEGIN PROCEDURE / ... / END PROCEDURE, and the same for FUNCTION (EDX-60, EDX-61).
+   * Compiler concept: a *subprogram definition* is a declaration; the checker gives its body its own scope.
+   */
+  private subprogram(): Stmt {
+    const first = this.c.next();
+    const sub = first.text.toUpperCase() === "PROCEDURE" ? "procedure" : "function";
+    const word = sub.toUpperCase();
+    this.c.warnCase(first, word);
+    if (this.open.length > 0) {
+      this.c.report("E-SYN-NOT-SUPPORTED", first.span, {
+        feature: `A ${sub} written inside another block`,
+        advice: `Write the ${sub} on its own, outside every IF, loop and other subprogram.`,
+      });
+      throw new Abandon();
+    }
+    const advice = `Write ${word} <name>(<parameters>).`;
+    const head = this.header(() => {
+      const n = this.name(advice);
+      const params: { name: string; span: Token["span"] }[] = [];
+      if (!this.c.isSymbol("(")) {
+        // EDX-66: the brackets are required, even with no parameters.
+        this.c.report("E-CHK-MISSING-PARENS", n.span, { name: n.text }, undefined, [
+          { start: n.span.end, end: n.span.end, replacement: "()" },
+        ]);
+      } else {
+        this.c.next();
+        if (!this.c.isSymbol(")")) {
+          for (;;) {
+            const p = this.name(advice);
+            params.push({ name: p.text, span: p.span });
+            if (!this.c.isSymbol(",")) break;
+            this.c.next();
+          }
+        }
+        this.c.expectSymbol(")", ") or ,", "Separate the parameters with commas and close them with ).");
+      }
+      return { n, params };
+    }, null);
+    // BEGIN PROCEDURE / BEGIN FUNCTION is the next line.
+    this.skipBlankLines();
+    const begin = this.c.peek();
+    if (Cursor.isWord(begin, "BEGIN")) {
+      this.c.next();
+      this.c.warnCase(begin, "BEGIN");
+      const kind = this.c.peek();
+      if (Cursor.isWord(kind, word)) {
+        this.c.next();
+        this.c.warnCase(kind, word);
+      } else {
+        this.c.fail(word, `Write BEGIN ${word}.`);
+      }
+      this.c.endStatement();
+    } else {
+      this.c.report("E-SYN-EXPECTED", begin.span, {
+        expected: `BEGIN ${word}`,
+        found: begin.kind === "eof" ? "the end of the program" : begin.text,
+        advice: `Write BEGIN ${word} on the line after the ${sub}'s name.`,
+      });
+    }
+    const span = { ...first.span, end: this.c.last.span.end };
+    const result = this.body(makeBlock(word, first, [`END ${word}` as "END PROCEDURE" | "END FUNCTION"]));
+    this.close(result.end);
+    const h = head ?? { n: first, params: [] };
+    return { kind: "subprogram", sub, name: h.n.text, nameSpan: h.n.span, params: h.params, body: result.stmts, span };
+  }
+
+  private returnStatement(): Stmt {
+    const first = this.c.next();
+    this.c.warnCase(first, "RETURN");
+    const value = this.c.atLineEnd() ? null : parseExpression(this.c);
+    const span = this.c.spanFrom(first);
+    this.c.endStatement();
+    return { kind: "return", value, span };
+  }
+
+  /** `name(args)` on its own line: a call to a procedure (EDX-64). */
+  private callStatement(): Stmt {
+    const n = this.c.next();
+    this.c.next(); // (
+    const args: Expr[] = [];
+    if (!this.c.isSymbol(")")) {
+      for (;;) {
+        args.push(parseExpression(this.c));
+        if (!this.c.isSymbol(",")) break;
+        this.c.next();
+      }
+    }
+    this.c.expectSymbol(")", ") or ,", "Separate the arguments with commas and close them with ).");
+    const span = this.c.spanFrom(n);
+    this.c.endStatement();
+    return { kind: "callStatement", name: n.text, nameSpan: n.span, args, span };
   }
 
   private constant(): Stmt {

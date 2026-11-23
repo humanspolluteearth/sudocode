@@ -46,7 +46,7 @@ export type LogicalOp = "andThen" | "orElse";
 
 export type UnaryOp = "negate" | "not";
 
-export type BuiltinName = "length";
+export type BuiltinName = "length" | "random";
 
 /** Where a variable lives. Lowering decides; the runtime never guesses. */
 export type Scope = "global" | "local";
@@ -90,7 +90,17 @@ export type AssignTarget =
    * `array[index]`. `growOnWrite`: writing past the end grows the array, filling gaps with "no value" (EDX-27);
    * otherwise it is an index error.
    */
-  | { kind: "element"; array: VarRef; index: Expr; base: number; growOnWrite: boolean; text: string; span: Span };
+  | {
+      kind: "element";
+      array: VarRef;
+      index: Expr;
+      /** The second index of `grid[row, col]` (EDX-24): `index` picks the row, `index2` the item in it. */
+      index2?: Expr;
+      base: number;
+      growOnWrite: boolean;
+      text: string;
+      span: Span;
+    };
 
 export type Stmt =
   | { kind: "assign"; target: AssignTarget; value: Expr; span: Span }
