@@ -1,5 +1,5 @@
 {
-  "spec": ["CIE-20", "CIE-22", "CIE-60", "CIE-62", "CIE-44"],
+  "spec": ["CIE-15", "CIE-20", "CIE-22", "CIE-60", "CIE-62", "CIE-44"],
   "language": "cie",
   "expect": {
     "stdout": "2\n7\n11\n19\n25\n31\n",
@@ -8,6 +8,5 @@
     "files": null,
     "trace": null
   },
-  "openQuestions": ["Q5"],
   "notes": "Line 4 declares three variables in one DECLARE (`DECLARE Temp, Index, Last : INTEGER`); the spec has no row for this (Q5). Proposed: accepted."
 }

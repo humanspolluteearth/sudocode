@@ -18,8 +18,8 @@ Every test here is listed in `../pending.json`: nothing can run them until the f
 
 A test's ID is its path from `packages/core/tests/` without the extension, for example
 `harvested/probes/edexcel/SH-10-div-mod-negatives`. File names start with the spec ID they mainly prove; the
-`spec` field lists every row involved. `MISC` marks a probe whose rule has no spec ID (the precedence table in
-`edexcel.md` section 2.4).
+`spec` field lists every row involved. `MISC` marks a probe whose rule has no spec ID (`MISC-no-int-builtin`). The two
+precedence probes were `MISC-` until EDX-34 gave the precedence table an ID (QUESTIONS.md 15).
 
 ## Conventions these expected files use (proposed in M0; review in `docs/review/M0.md`)
 

@@ -10,7 +10,7 @@ These rules apply everywhere unless a language section overrides them; all were 
 | --- | --- | --- |
 | SH-01 | Source files are UTF-8. Windows (`\r\n`) and Unix (`\n`) line endings are both accepted | DECIDED |
 | SH-02 | Each output statement writes one line to the console, unless the language says otherwise (Python `end=`) | DECIDED |
-| SH-03 | Number output: pseudocode rounds a REAL to 10 decimal places, then prints the shortest form (`7 / 2` gives `3.5`, `6 / 2` gives `3`, `0.1 + 0.2` gives `0.3`); Python prints exactly as CPython does (`3.0`, `0.30000000000000004`) | DECIDED (changed 23 Nov 2026, Q1) |
+| SH-03 | Number output: pseudocode rounds a REAL to 10 decimal places, then prints the shortest form (`7 / 2` gives `3.5`, `6 / 2` gives `3`, `0.1 + 0.2` gives `0.3`). A negative REAL that rounds to zero prints `0`, never `-0` (`-0.00000000001` gives `0`). Very large REALs print all their digits, never exponent form (`10 ^ 21` as a REAL gives `1000000000000000000000`). Python prints exactly as CPython does (`3.0`, `0.30000000000000004`) | DECIDED (changed 23 Nov 2026, Q1, Q18) |
 | SH-04 | Boolean output: pseudocode prints `TRUE` / `FALSE`; Python prints `True` / `False` | DECIDED |
 | SH-05 | Input: the console shows an input box when the program waits; the typed line (without the newline) is the input. Cancel or Stop ends the program | DECIDED |
 | SH-06 | Invalid typed input for a typed request (e.g. letters when an INTEGER is expected) is a runtime error with a kid-friendly message, not a silent 0 | DECIDED |

@@ -1,0 +1,17 @@
+# Bubble sort, sending the sorted numbers one at a time (EDX-75)
+SET nums TO [29, 4, 17, 8, 42, 15]
+SET swapped TO TRUE
+WHILE swapped = TRUE DO
+    SET swapped TO FALSE
+    FOR i FROM 0 TO LENGTH(nums) - 2 DO
+        IF nums[i] > nums[i + 1] THEN
+            SET temp TO nums[i]
+            SET nums[i] TO nums[i + 1]
+            SET nums[i + 1] TO temp
+            SET swapped TO TRUE
+        END IF
+    END FOR
+END WHILE
+FOR EACH n FROM nums DO
+    SEND n TO DISPLAY
+END FOREACH

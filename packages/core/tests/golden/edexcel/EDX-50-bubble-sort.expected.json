@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-50", "EDX-53", "EDX-57", "EDX-21", "EDX-22", "EDX-23", "EDX-40", "EDX-90", "EDX-70", "EDX-08"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "4\n8\n15\n17\n29\n42\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The harvested bubble sort (harvested/edexcel/EDX-75-example-bubble-sort) with its last line, SEND nums TO DISPLAY, replaced by a FOR EACH loop that sends each element (EDX-75's hint, QUESTIONS.md 14). WHILE repeats until a pass makes no swap (EDX-50); FOR runs i from 0 to LENGTH(nums) - 2 inclusive (EDX-53, EDX-90); elements are read and written by index from 0 (EDX-22, EDX-23). Each SEND prints one line (EDX-70)."
+}

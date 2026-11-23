@@ -55,6 +55,13 @@ export const checkerMessages: Catalogue = {
       message: "SEND can't send a whole array",
       hint: "Send each element in a loop: FOR EACH Item FROM {name} DO ... END FOREACH.",
     },
+    // EDX-75 also covers WRITE <File> (QUESTIONS.md 19).
+    variants: {
+      write: {
+        message: "WRITE can't write a whole array to a file",
+        hint: "Write each element in a loop: FOR EACH Item FROM {name} DO ... END FOREACH.",
+      },
+    },
   },
   "E-CHK-RECEIVE-NO-TYPE": {
     spec: ["EDX-73"],

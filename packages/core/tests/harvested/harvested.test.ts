@@ -150,7 +150,9 @@ describe.each(programs.map((p) => [testId(p), p] as const))("MISC harvested test
 
 describe("MISC pending.json", () => {
   it("MISC lists only tests that exist, once each, in sorted order", () => {
-    const missing = pending.tests.filter((id) => !programs.some((p) => testId(p) === id));
+    // Any golden program under tests/ can be pending (golden/, conformance/, errors/), not only harvested ones.
+    const everyProgram = walk(testsDir).filter((f) => /\.(epc|cpc|py)$/.test(f));
+    const missing = pending.tests.filter((id) => !everyProgram.some((p) => testId(p) === id));
     expect(missing).toEqual([]);
     expect(pending.tests).toEqual([...new Set(pending.tests)].sort());
   });

@@ -118,7 +118,7 @@ Arithmetic `+ - * / ^ MOD DIV`; relational `= <> < <= > >=`; logical `AND OR NOT
 | EDX-72 | `RECEIVE <name> FROM (<type>) KEYBOARD` reads a line and converts it to the type; failure is a runtime error (SH-06) | SOURCE |
 | EDX-73 | `RECEIVE … FROM (type)` must include the type. Leaving it out is a checker error | DECIDED (changed 23 Nov 2026) |
 | EDX-74 | Other input devices (e.g. `CARD_READER`) behave like the keyboard, with the device name shown in the input prompt. Other output devices (e.g. `MOTOR`) print `[MOTOR] <value>` to the console | DECIDED |
-| EDX-75 | Sending a whole array (`SEND Scores TO DISPLAY`) is a checker error with the hint to send each element in a `FOR EACH` loop. Single elements (`SEND Scores[0] TO DISPLAY`) are fine | DECIDED (23 Nov 2026, Q4) |
+| EDX-75 | Sending a whole array (`SEND Scores TO DISPLAY`) is a checker error with the hint to send each element in a `FOR EACH` loop. Writing a whole array to a file (`WRITE Scores.txt Scores`) is the same checker error, with the hint to write each element in a loop. Single elements (`SEND Scores[0] TO DISPLAY`, `WRITE Scores.txt Scores[0]`) are fine | DECIDED (23 Nov 2026, Q4, Q19) |
 
 ### 2.9 Files
 
