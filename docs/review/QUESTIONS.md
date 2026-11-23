@@ -157,3 +157,10 @@ Tests named here stay pending (`openQuestions`) until you answer; the others sho
     decides (Python), or always worked out? Proposed: skipped, as in Python.
     Tests: none depend on it.
     - Answer:
+32. **The merged M0 check "MISC is pending" (`packages/core/tests/harvested/harvested.test.ts`) blocks the engine PR
+    (#28).** It requires every harvested test to be in `pending.json`. 21 harvested Edexcel tests now pass, and a
+    passing test can't stay pending (CI fails it). Proposed: replace the check with the harvested README's own rule,
+    "stays pending while one of its open questions is unanswered" (exact diff in #28). It is a merged test, so the
+    hook stops me: may I make the change, or will you?
+    Tests: PR #28 (red on exactly these 21 checks).
+    - Answer: Yes: change the harvested check so a harvested test stays pending only while one of its open questions is unanswered (the exact diff in #28). This authorises editing `packages/core/tests/harvested/harvested.test.ts` for that change only.
