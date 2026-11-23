@@ -6,8 +6,8 @@ Newest entry first. Updated at the end of each milestone (and each session).
 
 - **PRs:** #53 tests (pending), #54 subprograms/2D/RANDOM/checker, #55 step into/out and call stack, #56 property, fuzz,
   corpus and nightly jobs, plus the review-fix PR; all merged with CI green.
-- **Blocked:** the first Stryker run and release threshold. Stryker (and fast-check) could not be installed because the
-  sandbox has no network. No score recorded; checkbox left unticked with the reason.
+- **Deferred to M11:** the first Stryker run and release threshold ("run Stryker locally before release"). Stryker
+  could not be installed in the sandbox; the owner moved the item to the M11 checklist, so it no longer blocks M5.
 - **State:** both reviewers ran; MUST FIX fixed. SHOULD FIX list and decisions in `docs/review/M5.md`.
 - **Next step:** M6, after you check the 24 corpus answers, then a follow-up tests PR for the SHOULD FIX gaps.
 
