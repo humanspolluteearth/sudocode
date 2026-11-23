@@ -2,6 +2,10 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 24 Nov 2026: open questions answered
+
+- Q20-31, 34-39 and 41-45 answered and written into the spec (#64); tests for them added, 5 pending until a code PR (#65): EDX-21 empty array, SH-03 large and too-large REAL, blank file line, CHARACTER wording. Still to do by hand: the `notes` in `errors/edexcel/EDX-24-grid-column-outside.expected.json`.
+
 ## 24 Nov 2026: M6 files complete (merged)
 
 - **PRs:** #58 refactor (parser and checker split), #59 docs (Stryker moved to M11), #60 tests (pending), #61 core
