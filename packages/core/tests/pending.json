@@ -1,8 +1,13 @@
 {
   "description": "Tests the harness expects to FAIL. A pending test that passes fails CI until it is removed here (docs/TEST-PLAN.md section 5). IDs are paths from packages/core/tests/ without the extension.",
   "tests": [
+    "conformance/edexcel/EDX-21-empty-array",
+    "conformance/edexcel/SH-03-real-large-shortest-form",
     "conformance/edexcel/SH-03-real-small-no-exponent",
+    "conformance/edexcel/SH-03-real-too-large-is-an-error",
     "errors/edexcel/EDX-23-string-element",
+    "errors/edexcel/EDX-82-blank-line-is-not-an-integer",
+    "errors/edexcel/EDX-82-character-line-is-too-long",
     "harvested/cie/CIE-120-example-string-functions",
     "harvested/cie/CIE-20-example-bubble-sort",
     "harvested/cie/CIE-22-example-find-the-bug",

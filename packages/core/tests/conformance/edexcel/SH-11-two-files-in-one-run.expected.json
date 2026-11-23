@@ -1,0 +1,16 @@
+{
+  "spec": ["SH-11", "EDX-83"],
+  "language": "edexcel",
+  "files": {
+    "a.txt": "1\n",
+    "b.txt": "2\n"
+  },
+  "expect": {
+    "stdout": "3\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Each file keeps its own read position: 1 + 2 = 3."
+}

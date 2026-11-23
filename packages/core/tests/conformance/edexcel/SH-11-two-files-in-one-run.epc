@@ -1,0 +1,5 @@
+SET n TO 0
+SET m TO 0
+READ a.txt n
+READ b.txt m
+SEND n + m TO DISPLAY

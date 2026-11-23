@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-55", "EDX-56"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1\n2\n3\n13\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-FOR-VAR-SET",
+        "line": 3,
+        "column": 7
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q30: each pass continues from the loop's own count (1, 2, 3); after the loop i holds the last body value, 3 + 10 = 13."
+}

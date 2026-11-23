@@ -1,0 +1,3 @@
+READ d.txt a
+READ d.txt b
+SEND a & b TO DISPLAY

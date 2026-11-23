@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-03"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "100000000000000000000000\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q21: shortest form written out, not the exact stored value 99999999999999991611392."
+}

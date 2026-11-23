@@ -1,0 +1,15 @@
+{
+  "spec": ["EDX-82"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "TRUE\n"
+  },
+  "expect": {
+    "stdout": "TRUE\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A BOOLEAN variable receives the line TRUE converted to TRUE."
+}

@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-03", "SH-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-NUMBER-TOO-LARGE",
+        "line": 1,
+        "column": 11
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q22: a REAL too large to hold is the SH-07 error, at the ^ (as SH-07-overflow-power)."
+}

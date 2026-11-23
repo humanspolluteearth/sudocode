@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-25", "EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "5.5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q23: [1, 2.5] is an array of REAL and 3 may be set into it: 3 + 2.5 = 5.5."
+}

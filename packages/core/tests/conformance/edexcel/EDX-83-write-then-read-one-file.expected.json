@@ -1,0 +1,14 @@
+{
+  "spec": ["EDX-83"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "hello\n",
+    "errors": [],
+    "warnings": [],
+    "files": {
+      "d.txt": "hello\n"
+    },
+    "trace": null
+  },
+  "notes": "A file written in a run is read from its first line in the same run. Proposed from EDX-83; owner to check."
+}

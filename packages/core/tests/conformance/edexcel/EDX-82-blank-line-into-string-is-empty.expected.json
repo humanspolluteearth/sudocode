@@ -1,0 +1,15 @@
+{
+  "spec": ["EDX-82"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "a\n\nb\n"
+  },
+  "expect": {
+    "stdout": "a||b\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q45: a blank line READ into a STRING gives an empty STRING, so a, empty, b joins as a||b."
+}

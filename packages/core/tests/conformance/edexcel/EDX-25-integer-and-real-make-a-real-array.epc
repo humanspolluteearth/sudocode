@@ -1,0 +1,3 @@
+SET Prices TO [1, 2.5]
+SET Prices[0] TO 3
+SEND Prices[0] + Prices[1] TO DISPLAY

@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-34"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "no\nok\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q31: 5 < 2 is false so a[5] is never read (AND); 5 >= 0 is true so a[5] is never read (OR)."
+}

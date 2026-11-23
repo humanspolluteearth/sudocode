@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-21"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "0\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q25: [] is allowed, LENGTH is 0 and FOR EACH runs zero times."
+}

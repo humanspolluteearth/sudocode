@@ -1,0 +1,17 @@
+{
+  "spec": ["SH-11", "EDX-83"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "old\n"
+  },
+  "expect": {
+    "stdout": "",
+    "errors": [],
+    "warnings": [],
+    "files": {
+      "d.txt": "x\n"
+    },
+    "trace": null
+  },
+  "notes": "File names ignore case (SH-11): the existing d.txt is replaced (first WRITE), no second file D.TXT appears."
+}

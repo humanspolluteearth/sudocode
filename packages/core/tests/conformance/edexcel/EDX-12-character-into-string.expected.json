@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "A\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q24: a CHARACTER may go into a STRING variable; name[0] is A (EDX-22, 0-based)."
+}
