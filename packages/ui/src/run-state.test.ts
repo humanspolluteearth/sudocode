@@ -19,7 +19,24 @@ describe("MISC run state", () => {
     expect(view.traceRecorded).toBe(true);
   });
 
-  it("SH-05 an input request waits with the device; the typed line is echoed and the run goes on", () => {
+  it("MISC start also clears the pause, input wait and trace rows of the last run", () => {
+    const before = play(
+      { type: "start", trace: true },
+      ev({ type: "traceRows", rows: [{ kind: "assign", line: 1, variable: "x", value: "1" }] }),
+      ev({ type: "paused", reason: "breakpoint", line: 2, column: 1, stack: [frame({ x: "1" })] }),
+      ev({ type: "inputRequest", prompt: "" }),
+    );
+    const view = runReducer(before, { type: "start", trace: false });
+    expect([view.paused, view.previous, view.waiting, view.trace, view.lastFrame]).toEqual([
+      null,
+      null,
+      null,
+      [],
+      null,
+    ]);
+  });
+
+  it("SH-05 an input request waits with the device; once a line is typed the run goes on (and, D17, it is echoed)", () => {
     const waiting = play({ type: "start", trace: false }, ev({ type: "inputRequest", prompt: "", device: "SENSOR" }));
     expect(waiting.state).toBe("waiting");
     expect(waiting.waiting).toEqual({ prompt: "", device: "SENSOR" });

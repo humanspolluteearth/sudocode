@@ -472,3 +472,18 @@ body {
   gap: 8px;
   justify-content: flex-end;
 }
+
+/* Touch screens: every control is at least 44x44 px (ui rules); mouse users keep the compact desktop sizes. */
+@media (pointer: coarse) {
+  .sc-tb,
+  .sc-tab,
+  .sc-input input,
+  .sc-input button,
+  .sc-dialog-buttons button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .sc-bp-gutter .cm-gutterElement {
+    min-width: 24px;
+  }
+}

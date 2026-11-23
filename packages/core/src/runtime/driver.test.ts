@@ -145,6 +145,21 @@ describe("SH-14 the step limit", () => {
     ]);
   });
 
+  it("SH-14 Continue after the step limit gives the program another full budget of steps", async () => {
+    const counts: number[] = [];
+    await run(forever, { stepLimit: 1000, sliceSteps: 300 }, (event, send) => {
+      if (event.type !== "paused") return;
+      const n = event.stack[0]?.variables.find((v) => v.name === "n");
+      counts.push(Number(n?.value));
+      send(counts.length < 2 ? { type: "continue" } : { type: "stop" });
+    });
+    const [first = 0, second = 0] = counts;
+    // The loop does the same work every pass, so the same budget adds the same amount to n (give or take the
+    // two statements before the loop, which only the first budget pays for).
+    expect(first).toBeGreaterThan(100);
+    expect(Math.abs(second - first - first)).toBeLessThanOrEqual(1);
+  });
+
   it("MISC an empty loop still counts steps, so it reaches the limit too", async () => {
     const empty = program([loopWhile(yes(1), [], 1)]);
     const outcome = await run(empty, { stepLimit: 500 }, (event, send) => {
@@ -220,6 +235,41 @@ describe("MISC driver commands", () => {
     expect(events.filter((e) => e.type === "output")).toEqual([{ type: "output", text: "1000.5\n" }]);
     expect(events.at(-1)).toEqual({ type: "done", status: "finished" });
   });
+
+  it("MISC Pause sent while a loop runs stops inside the loop, with the variables as they are there", async () => {
+    // x counts up and is printed each pass, so the output so far tells us how far the run got.
+    const counting = program([
+      set(global("x"), num(0), 1),
+      loopWhile(
+        op("lt", global("x"), num(1000), 2),
+        [set(global("x"), op("add", global("x"), num(1), 3), 3), print(global("x"), 4)],
+        2,
+      ),
+    ]);
+    let asked = false;
+    const outcome = await run(counting, { sliceSteps: 10 }, (event, send) => {
+      if (event.type === "output" && !asked) {
+        asked = true;
+        send({ type: "pause" });
+      }
+      if (event.type === "paused") send({ type: "continue" });
+    });
+    const index = outcome.events.findIndex((e) => e.type === "paused");
+    const pause = outcome.events[index];
+    if (pause?.type !== "paused") throw new Error("No pause");
+    expect(pause.reason).toBe("pause");
+    expect([2, 3, 4]).toContain(pause.line);
+    const printed = outcome.events
+      .slice(0, index)
+      .flatMap((e) => (e.type === "output" ? e.text.split("\n").filter((l) => l !== "") : []));
+    const x = Number(pause.stack[0]?.variables.find((v) => v.name === "x")?.value);
+    expect(x).toBeGreaterThan(0);
+    expect(x).toBeLessThan(1000);
+    // Paused before line 4, x is one ahead of the last print; anywhere else, x has just been printed.
+    expect(x - Number(printed.at(-1))).toBe(pause.line === 4 ? 1 : 0);
+    expect(outcome.stdout.split("\n").filter((l) => l !== "")).toHaveLength(1000);
+    expect(outcome.status).toBe("finished");
+  });
 });
 
 describe("SH-17 driver: the trace table", () => {
@@ -238,6 +288,7 @@ describe("SH-17 driver: the trace table", () => {
       { kind: "output", line: 2, text: "6" },
     ]);
     const lastRows = outcome.events.findLastIndex((e) => e.type === "traceRows");
+    expect(lastRows).toBeGreaterThanOrEqual(0);
     expect(lastRows).toBeLessThan(outcome.events.findIndex((e) => e.type === "done"));
   });
 });

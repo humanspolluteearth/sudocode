@@ -53,6 +53,51 @@ describe("MISC console input box", () => {
     await expect.element(screen.getByRole("textbox", { name: "Input from SENSOR" })).toBeVisible();
   });
 
+  it('EDX-74 input from KEYBOARD is just "Input", with no device named', async () => {
+    const screen = await render(
+      <Console output="" error={null} finishedNote={null} onClear={() => undefined} waiting={{ prompt: "" }} />,
+    );
+    await expect.element(screen.getByRole("textbox", { name: "Input" })).toBeVisible();
+    expect(screen.container.textContent).not.toContain("KEYBOARD");
+    expect(screen.container.textContent).not.toContain("Input from");
+  });
+
+  it("SH-05 Enter on an empty box sends an empty line", async () => {
+    const onInput = vi.fn();
+    const screen = await render(
+      <Console
+        output=""
+        error={null}
+        finishedNote={null}
+        onClear={() => undefined}
+        waiting={{ prompt: "" }}
+        onInput={onInput}
+      />,
+    );
+    await expect.element(screen.getByRole("textbox", { name: "Input" })).toHaveFocus();
+    await userEvent.keyboard("{Enter}");
+    expect(onInput).toHaveBeenCalledWith("");
+  });
+
+  it("SH-05 Cancel, or Escape in the box, ends the program", async () => {
+    const onCancel = vi.fn();
+    const screen = await render(
+      <Console
+        output=""
+        error={null}
+        finishedNote={null}
+        onClear={() => undefined}
+        waiting={{ prompt: "" }}
+        onCancel={onCancel}
+      />,
+    );
+    await screen.getByRole("button", { name: "Cancel" }).click();
+    expect(onCancel).toHaveBeenCalledTimes(1);
+    await screen.getByRole("textbox", { name: "Input" }).click();
+    await userEvent.keyboard("{Escape}");
+    expect(onCancel).toHaveBeenCalledTimes(2);
+  });
+
   it("MISC there is no input box when the program isn't waiting", async () => {
     const screen = await render(<Console output="x" error={null} finishedNote={null} onClear={() => undefined} />);
     expect(screen.container.querySelector("input")).toBeNull();

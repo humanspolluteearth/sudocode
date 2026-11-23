@@ -43,17 +43,23 @@ test("MISC Run pauses at a breakpoint and the Variables panel shows the values t
 
   await expect(page.getByRole("button", { name: "Continue" })).toBeEnabled();
   const vars = page.getByRole("table", { name: /^Variables in/ });
-  await expect(vars.getByRole("row", { name: /total/ })).toContainText("0");
-  await expect(vars.getByRole("row", { name: /\bi\b/ })).toContainText("1");
+  // The value is the last cell of the variable's row (Name, Type, Value).
+  const value = (name: string) =>
+    vars
+      .locator("tr", { has: page.locator("th", { hasText: new RegExp(`^${name}$`) }) })
+      .locator("td")
+      .last();
+  await expect(value("total")).toHaveText("0");
+  await expect(value("i")).toHaveText("1");
 
   // Continue: the next pause is the same line in the next iteration, with total changed.
   await page.getByRole("button", { name: "Continue" }).click();
-  await expect(vars.getByRole("row", { name: /total/ })).toContainText("1");
-  await expect(vars.getByRole("row", { name: /\bi\b/ })).toContainText("2");
+  await expect(value("total")).toHaveText(/^1/);
+  await expect(value("i")).toHaveText(/^2/);
 
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("log")).toContainText("Finished.");
-  await expect(page.getByRole("log")).toContainText("3");
+  await expect(page.getByRole("log")).toHaveText(/^3$/m);
 });
 
 test("SH-17 the trace table of a run matches the program", async ({ page }) => {

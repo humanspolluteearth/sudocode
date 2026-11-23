@@ -21,9 +21,11 @@ export interface ConsoleProps {
   waiting?: InputWait | null;
   /** The line the student typed, without a newline. */
   onInput?: (text: string) => void;
+  /** Cancel at the input box ends the program (SH-05). */
+  onCancel?: () => void;
 }
 
-export function Console({ output, error, finishedNote, onClear, waiting = null, onInput }: ConsoleProps) {
+export function Console({ output, error, finishedNote, onClear, waiting = null, onInput, onCancel }: ConsoleProps) {
   const log = useRef<HTMLDivElement>(null);
   // Keep the newest line in view as output arrives.
   useEffect(() => {
@@ -50,12 +52,18 @@ export function Console({ output, error, finishedNote, onClear, waiting = null, 
         )}
         {finishedNote !== null && <div className="sc-hint">{finishedNote}</div>}
       </div>
-      {waiting !== null && <InputBox waiting={waiting} onInput={onInput} />}
+      {waiting !== null && <InputBox waiting={waiting} onInput={onInput} onCancel={onCancel} />}
     </section>
   );
 }
 
-function InputBox({ waiting, onInput }: { waiting: InputWait; onInput: ((text: string) => void) | undefined }) {
+interface InputBoxProps {
+  waiting: InputWait;
+  onInput: ((text: string) => void) | undefined;
+  onCancel: (() => void) | undefined;
+}
+
+function InputBox({ waiting, onInput, onCancel }: InputBoxProps) {
   const [text, setText] = useState("");
   const box = useRef<HTMLInputElement>(null);
   // The program is waiting: put the cursor in the box so the student can just type.
@@ -82,10 +90,16 @@ function InputBox({ waiting, onInput }: { waiting: InputWait; onInput: ((text: s
           onChange={(e) => {
             setText(e.target.value);
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") onCancel?.();
+          }}
         />
       </label>
       <button type="submit" className="sc-tb">
         Enter
+      </button>
+      <button type="button" className="sc-tb" onClick={onCancel} title="Cancel (Esc) ends the program">
+        Cancel
       </button>
     </form>
   );

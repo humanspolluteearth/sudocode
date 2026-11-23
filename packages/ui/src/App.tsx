@@ -162,6 +162,7 @@ export function App({ workers }: AppProps) {
               dispatch({ type: "typed", text });
               send({ type: "input", text });
             }}
+            onCancel={stop}
           />
         </div>
         <SidePanel
