@@ -164,3 +164,9 @@ Tests named here stay pending (`openQuestions`) until you answer; the others sho
     hook stops me: may I make the change, or will you?
     Tests: PR #28 (red on exactly these 21 checks).
     - Answer: Yes: change the harvested check so a harvested test stays pending only while one of its open questions is unanswered (the exact diff in #28). This authorises editing `packages/core/tests/harvested/harvested.test.ts` for that change only.
+33. **M2 checklist ticked in one PR (#32), review kept in `M2.md`.** The /goal said "first unticked item only, one PR". All 11 M2
+    items were already merged (#23-#28) but unticked, so #32 ticked them together, and the second review pass went into the
+    existing `docs/review/M2.md` instead of a new file. Proposed: accept both as they are (docs only, PR numbers checked
+    against each PR's files); from M3 on, one item per PR.
+    Tests: none.
+    - Answer:
