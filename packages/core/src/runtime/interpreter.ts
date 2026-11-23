@@ -5,7 +5,8 @@
 // pause (breakpoints, stepping, Stop, the SH-14 step limit) without the interpreter knowing why. A subprogram call
 // also `yield`s, as a "call" request: the driver starts the callee on its own explicit stack and later resumes the
 // caller with the result. So interpreted calls never nest JavaScript frames (see driver.ts).
-import type { AssignTarget, Stmt, Subprogram } from "../ir/ir.ts";
+import type { Span } from "../diagnostics.ts";
+import type { AssignTarget, Stmt, Subprogram, VarRef } from "../ir/ir.ts";
 import {
   asBoolean,
   asIndex,
@@ -32,7 +33,7 @@ export type { Body, Machine, Request } from "./evaluate.ts";
 
 function* assign(target: AssignTarget, value: Value, env: Env): Run<undefined> {
   if (target.kind === "var") {
-    slot(target, env).set(target.name, value);
+    setVariable(target, value, env, target.span);
     return undefined;
   }
   const arr = read(target.array, env);
@@ -48,7 +49,14 @@ function* assign(target: AssignTarget, value: Value, env: Env): Run<undefined> {
     env.machine.note("I-EDX-ARRAY-GROWS", target.span, { array: target.text, length: i + 1, index: shown });
   }
   arr.elements[i] = value;
+  env.machine.assigned(target.array.name, arr, target.span); // D5: the trace records the whole array
   return undefined;
+}
+
+/** Sets a variable and records it in the trace table (SH-17: every assignment, with its line). */
+function setVariable(ref: VarRef, value: Value, env: Env, span: Span): void {
+  slot(ref, env).set(ref.name, value);
+  env.machine.assigned(ref.name, value, span);
 }
 
 function* block(stmts: readonly Stmt[], env: Env): Run<Returned | undefined> {
@@ -75,14 +83,14 @@ function* statement(s: Stmt, env: Env): Run<Returned | undefined> {
     }
     case "output": {
       const text = formatValue(yield* evaluateWithCalls(s.value, env), env.machine.format);
-      env.machine.output(s.device === null ? `${text}\n` : `[${s.device}] ${text}\n`);
+      env.machine.output(s.device === null ? `${text}\n` : `[${s.device}] ${text}\n`, s.span);
       return undefined;
     }
     case "input": {
       // The driver waits for the line (SH-05) and resumes this generator with it as a STRING.
       const line = (yield { type: "input", prompt: "", device: s.device, span: s.span }) as Value | undefined;
       if (line?.kind !== "str") throw bug("Input resumed without a line");
-      slot(s.target, env).set(s.target.name, convertInput(line.value, s.convert, s.span));
+      setVariable(s.target, convertInput(line.value, s.convert, s.span), env, s.span);
       return undefined;
     }
     case "if": {
@@ -146,7 +154,7 @@ function* forInclusive(s: Extract<Stmt, { kind: "forInclusive" }>, env: Env): Ru
     const v = start + k * step;
     if (step > 0 ? v > end : v < end) return undefined;
     if (k > 0) yield { type: "step", span: s.span };
-    slot(s.variable, env).set(s.variable.name, ints ? int(v) : real(v));
+    setVariable(s.variable, ints ? int(v) : real(v), env, s.span);
     const done = yield* block(s.body, env);
     if (done !== undefined) return done;
   }
@@ -175,7 +183,7 @@ function* forEach(s: Extract<Stmt, { kind: "forEach" }>, env: Env): Run<Returned
       const name = s.iterable.kind === "var" ? s.iterable.name : "the array";
       throw new RunError("E-RUN-ARRAY-GAP", s.iterable.span, { array: name, index: i });
     }
-    slot(s.variable, env).set(s.variable.name, item);
+    setVariable(s.variable, item, env, s.span);
     const done = yield* block(s.body, env);
     if (done !== undefined) return done;
   }

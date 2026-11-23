@@ -221,3 +221,23 @@ describe("MISC driver commands", () => {
     expect(events.at(-1)).toEqual({ type: "done", status: "finished" });
   });
 });
+
+describe("SH-17 driver: the trace table", () => {
+  const prog = program([set(global("x"), num(6), 1), print(global("x"), 2)]);
+
+  it("SH-17 records nothing unless the trace is turned on", async () => {
+    const outcome = await run(prog);
+    expect(outcome.events.filter((e) => e.type === "traceRows")).toEqual([]);
+  });
+
+  it("SH-17 sends each assignment and output with its line, in order, before done", async () => {
+    const outcome = await run(prog, { trace: true });
+    const rows = outcome.events.flatMap((e) => (e.type === "traceRows" ? e.rows : []));
+    expect(rows).toEqual([
+      { kind: "assign", line: 1, variable: "x", value: "6" },
+      { kind: "output", line: 2, text: "6" },
+    ]);
+    const lastRows = outcome.events.findLastIndex((e) => e.type === "traceRows");
+    expect(lastRows).toBeLessThan(outcome.events.findIndex((e) => e.type === "done"));
+  });
+});

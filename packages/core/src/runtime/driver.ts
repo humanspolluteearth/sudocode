@@ -13,7 +13,7 @@ import type { Span } from "../diagnostics.ts";
 import type { Program } from "../ir/ir.ts";
 import type { Language } from "../language.ts";
 import { makeDiagnostic, type MessageArgs } from "../messages/index.ts";
-import type { PauseReason, RunnerEvent, RunStatus, StackFrame } from "../protocol.ts";
+import type { PauseReason, RunnerEvent, RunStatus, StackFrame, TraceRow } from "../protocol.ts";
 import type { EngineRun } from "../runner/engine.ts";
 import { formatValue, typeName } from "./format.ts";
 import { runMain, runSubprogram, type Body, type Machine, type Request } from "./interpreter.ts";
@@ -33,6 +33,8 @@ export interface DriverOptions {
   stepLimit?: number;
   /** Steps run before giving the event loop a turn. */
   sliceSteps?: number;
+  /** Record the trace table (SH-17); off by default, as the rows use memory. */
+  trace?: boolean;
   /** Runs `resume` later; setTimeout by default (exists in Node and in Web Workers). */
   schedule?: (resume: () => void) => void;
 }
@@ -61,6 +63,9 @@ export function runProgram(options: DriverOptions): EngineRun {
   let steps = 0;
   let pauseRequested = false;
   let pendingOutput = "";
+  /** Trace rows not sent yet: like output, they go out in batches (protocol.ts) and always before a pause. */
+  let pendingTrace: TraceRow[] = [];
+  const tracing = options.trace ?? false;
   /** The value to resume the top frame with (a call's result or a line of input). */
   let resumeWith: Value | undefined;
   /** An error to raise in the top frame (it came from a callee, or from a call that was refused). */
@@ -68,6 +73,10 @@ export function runProgram(options: DriverOptions): EngineRun {
   const noted = new Set<string>();
 
   const flush = (): void => {
+    if (pendingTrace.length > 0) {
+      emit({ type: "traceRows", rows: pendingTrace });
+      pendingTrace = [];
+    }
     if (pendingOutput === "") return;
     emit({ type: "output", text: pendingOutput });
     pendingOutput = "";
@@ -79,8 +88,20 @@ export function runProgram(options: DriverOptions): EngineRun {
   const machine: Machine = {
     format: program.format,
     globals: new Map(),
-    output: (text) => {
+    output: (text, span) => {
       pendingOutput += text;
+      // D4: an output row holds the line as the console shows it, without its newline.
+      if (tracing) pendingTrace.push({ kind: "output", line: span.line, text: text.replace(/\n$/, "") });
+    },
+    assigned: (name, value, span) => {
+      if (tracing) {
+        pendingTrace.push({
+          kind: "assign",
+          line: span.line,
+          variable: name,
+          value: formatValue(value, program.format),
+        });
+      }
     },
     note: (code, span, args) => {
       if (noted.has(code)) return; // "an info note appears the first time" (EDX-27)
