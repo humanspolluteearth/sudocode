@@ -1,0 +1,347 @@
+/* Sudocode IDE styles. Colours come from the prototype's themes (reference/prototype/design/Main.dc.html):
+   light by default, dark when .dark is set, and the system choice when .sys is set. */
+.sc-root {
+  --bg: #ffffff;
+  --chrome: #f5f5f5;
+  --status: #f0f0f0;
+  --gutter: #f7f7f7;
+  --subtle: #fafafa;
+  --errsoft: #fdf6f5;
+  --fg: #1a1a1a;
+  --fg3: #3a3a3a;
+  --muted: #555555;
+  --muted2: #6a6a6a;
+  --lnum: #707070;
+  --faint: #767676;
+  --disabled: #767676;
+  --line: #c9c9c9;
+  --field: #ababab;
+  --line2: #dddddd;
+  --line3: #efefef;
+  --hover: #dedede;
+  --press: #d5d5d5;
+  --link: #1f4e8c;
+  --red: #b3362c;
+  --green: #2f6a31;
+  --warn: #8a5a00;
+  --info: #1f4e8c;
+  --cur: #fbf3cf;
+  --errline: #fbe1de;
+  --kw: #1e3a6e;
+  --str: #2f6b2f;
+  --num: #8a3b12;
+  --bi: #5b3f86;
+  --comment: #5d5d5d;
+  color-scheme: light;
+}
+.sc-root.dark {
+  --bg: #1e1e1e;
+  --chrome: #2b2b2b;
+  --status: #252526;
+  --gutter: #222222;
+  --subtle: #262626;
+  --errsoft: #3a2523;
+  --fg: #d4d4d4;
+  --fg3: #bdbdbd;
+  --muted: #a6a6a6;
+  --muted2: #9c9c9c;
+  --lnum: #8a8a8a;
+  --faint: #8f8f8f;
+  --disabled: #8f8f8f;
+  --line: #3c3c3c;
+  --field: #5a5a5a;
+  --line2: #333333;
+  --line3: #2c2c2c;
+  --hover: #3a3a3a;
+  --press: #454545;
+  --link: #82aadd;
+  --red: #e0675b;
+  --green: #7db877;
+  --warn: #e0b24f;
+  --info: #82aadd;
+  --cur: #3a3520;
+  --errline: #45231f;
+  --kw: #8fb4e3;
+  --str: #a3c78f;
+  --num: #d9a47e;
+  --bi: #c3a6e3;
+  --comment: #9a9a9a;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  .sc-root.sys {
+    --bg: #1e1e1e;
+    --chrome: #2b2b2b;
+    --status: #252526;
+    --gutter: #222222;
+    --subtle: #262626;
+    --errsoft: #3a2523;
+    --fg: #d4d4d4;
+    --fg3: #bdbdbd;
+    --muted: #a6a6a6;
+    --muted2: #9c9c9c;
+    --lnum: #8a8a8a;
+    --faint: #8f8f8f;
+    --disabled: #8f8f8f;
+    --line: #3c3c3c;
+    --field: #5a5a5a;
+    --line2: #333333;
+    --line3: #2c2c2c;
+    --hover: #3a3a3a;
+    --press: #454545;
+    --link: #82aadd;
+    --red: #e0675b;
+    --green: #7db877;
+    --warn: #e0b24f;
+    --info: #82aadd;
+    --cur: #3a3520;
+    --errline: #45231f;
+    --kw: #8fb4e3;
+    --str: #a3c78f;
+    --num: #d9a47e;
+    --bi: #c3a6e3;
+    --comment: #9a9a9a;
+    color-scheme: dark;
+  }
+}
+
+body {
+  margin: 0;
+}
+.sc-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    calc(12px * var(--zoom, 1)) -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    sans-serif;
+  --code-font: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+.sc-root button,
+.sc-root select {
+  font: inherit;
+  color: inherit;
+}
+.sc-root button:focus-visible,
+.sc-root select:focus-visible,
+.sc-root input:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 1px;
+}
+
+.sc-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  min-height: 34px;
+  padding: 3px 6px;
+  box-sizing: border-box;
+  background: var(--chrome);
+  border-bottom: 1px solid var(--line);
+  flex: none;
+}
+.sc-tb {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 8px 0 6px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: transparent;
+  cursor: default;
+}
+.sc-tb:hover:not(:disabled) {
+  background: var(--hover);
+}
+.sc-tb:active:not(:disabled) {
+  background: var(--press);
+}
+.sc-tb:disabled {
+  color: var(--disabled);
+}
+.sc-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--line);
+  margin: 0 6px;
+}
+.sc-toolbar select {
+  height: 26px;
+  border: 1px solid var(--field);
+  border-radius: 2px;
+  background: var(--bg);
+}
+
+.sc-main {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+}
+.sc-left {
+  flex: 3 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.sc-side {
+  flex: 1 1 280px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--line);
+}
+.sc-editor {
+  flex: 1 1 0;
+  min-height: 120px;
+  overflow: hidden;
+  background: var(--bg);
+}
+.sc-editor .cm-editor {
+  height: 100%;
+}
+
+.sc-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 22px;
+  padding: 0 8px;
+  background: var(--chrome);
+  border-bottom: 1px solid var(--line2);
+  border-top: 1px solid var(--line);
+  font-weight: 600;
+  font-size: 0.92em;
+  flex: none;
+}
+.sc-panel-title .sc-count {
+  font-weight: 400;
+  color: var(--muted2);
+}
+.sc-link {
+  margin-left: auto;
+  padding: 0 8px;
+  height: 22px;
+  border: 0;
+  background: transparent;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.sc-console {
+  flex: none;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+}
+.sc-console-log {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 4px 8px;
+  background: var(--bg);
+  font: calc(13px * var(--zoom, 1)) / 1.5 var(--code-font);
+}
+.sc-out {
+  white-space: pre-wrap;
+  margin: 0;
+  font: inherit;
+}
+.sc-hint {
+  color: var(--faint);
+}
+.sc-error {
+  white-space: pre-wrap;
+  color: var(--red);
+}
+
+.sc-problems {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sc-problem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  border: 0;
+  border-bottom: 1px solid var(--line3);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.sc-problem:hover {
+  background: var(--hover);
+}
+.sc-problem.error {
+  background: var(--errsoft);
+}
+.sc-problem .where {
+  color: var(--muted2);
+}
+.sc-problem .kind-error {
+  color: var(--red);
+  font-weight: 600;
+}
+.sc-problem .kind-warning {
+  color: var(--warn);
+  font-weight: 600;
+}
+.sc-problem .kind-info {
+  color: var(--info);
+  font-weight: 600;
+}
+.sc-empty {
+  padding: 6px 10px;
+  color: var(--muted2);
+}
+
+.sc-statusbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  min-height: 22px;
+  background: var(--status);
+  border-top: 1px solid var(--line);
+  font-size: 0.92em;
+  color: var(--fg3);
+  flex: none;
+}
+.sc-statusbar > span {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border-right: 1px solid var(--line);
+}
+.sc-statusbar .sc-grow {
+  flex: 1;
+  border-right: 0;
+}
+
+@media (max-width: 700px) {
+  .sc-main {
+    flex-direction: column;
+  }
+  .sc-side {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    flex: 0 0 140px;
+  }
+}

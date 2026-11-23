@@ -3,10 +3,11 @@ import { describe, expect, it } from "vitest";
 import { App } from "./App.tsx";
 
 describe("MISC the app shell", () => {
-  it("MISC renders the name Sudocode and the three languages", () => {
-    expect(renderToStaticMarkup(<App />)).toBe(
-      "<main><h1>Sudocode</h1><p>Write, run and debug programs in:</p><ul>" +
-        "<li>Edexcel IGCSE pseudocode</li><li>Cambridge 9618 pseudocode</li><li>Python</li></ul></main>",
-    );
+  it("MISC renders the toolbar, console, problems list and status bar", () => {
+    const html = renderToStaticMarkup(<App />);
+    expect(html).toContain('aria-label="Run controls"');
+    expect(html).toContain('aria-label="Console"');
+    expect(html).toContain("No problems.");
+    expect(html).toContain('aria-label="Status bar"');
   });
 });
