@@ -2,6 +2,25 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 23 Nov 2026: M2 Edexcel basics (done)
+
+- **Merged with CI green:**
+  - #21: your answers 14-19.
+  - #23: 194 conformance, error-wording and golden programs, reviewed before merge.
+  - #24: core IR and a trampolined, generator-based runtime.
+  - #25: lexer.
+  - #26: nightly workflow.
+  - #27: parser.
+  - #28: checker, lowering and Edexcel engine (after your yes on question 32, which changed the harvested check).
+  - It works: 214 of 227 Edexcel programs pass, and all 57 in-scope spec IDs have a passing test (62 of 210).
+- **State:** CI was green on #28 before it merged. Decisions D1-D26 and questions 20-32 are in `docs/review/M2.md` and `QUESTIONS.md`.
+- **Environment:**
+  - Pushes go over HTTPS with your `gh` login; the SSH key isn't loaded in these sessions.
+  - The scratchpad was wiped twice mid-session. The test generator scripts are kept in `.wip-m2-gen/` (untracked), and can be deleted.
+- **Next step:**
+  1. Answer 20-31, and add `spec-coverage` to the required checks.
+  2. Close #10.
+
 ## 23 Nov 2026: M1 skeleton merged
 
 - Done (PRs #11-#20, all merged with CI green): your answers Q1/Q4/Q5/Q9 applied (SH-03 changed; EDX-34, EDX-75,
