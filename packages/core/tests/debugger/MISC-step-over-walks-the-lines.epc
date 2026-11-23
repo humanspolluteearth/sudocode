@@ -1,0 +1,7 @@
+SET x TO 5
+IF x > 3 THEN
+    SEND 'big' TO DISPLAY
+ELSE
+    SEND 'small' TO DISPLAY
+END IF
+SEND 'end' TO DISPLAY

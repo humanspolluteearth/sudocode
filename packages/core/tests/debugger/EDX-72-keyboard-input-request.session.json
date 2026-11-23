@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-72", "SH-05"],
+  "language": "edexcel",
+  "breakpoints": [],
+  "inputs": ["4"],
+  "trace": false,
+  "script": [],
+  "expect": {
+    "stdout": "8\n",
+    "status": "finished",
+    "inputRequests": [
+      {
+        "prompt": ""
+      }
+    ]
+  },
+  "notes": "RECEIVE has no prompt text, so the input box shows none; KEYBOARD gives no device name."
+}

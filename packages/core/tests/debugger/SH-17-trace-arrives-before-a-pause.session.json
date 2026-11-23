@@ -1,0 +1,55 @@
+{
+  "spec": ["SH-17"],
+  "language": "edexcel",
+  "breakpoints": [3],
+  "trace": true,
+  "script": [
+    {
+      "expect": {
+        "reason": "breakpoint",
+        "line": 3,
+        "variables": {
+          "a": "1"
+        },
+        "trace": [
+          {
+            "kind": "assign",
+            "line": 1,
+            "variable": "a",
+            "value": "1"
+          },
+          {
+            "kind": "output",
+            "line": 2,
+            "text": "1"
+          }
+        ]
+      },
+      "then": "continue"
+    }
+  ],
+  "expect": {
+    "stdout": "1\n",
+    "status": "finished",
+    "trace": [
+      {
+        "kind": "assign",
+        "line": 1,
+        "variable": "a",
+        "value": "1"
+      },
+      {
+        "kind": "output",
+        "line": 2,
+        "text": "1"
+      },
+      {
+        "kind": "assign",
+        "line": 3,
+        "variable": "b",
+        "value": "2"
+      }
+    ]
+  },
+  "notes": "The trace table is up to date whenever the program pauses."
+}

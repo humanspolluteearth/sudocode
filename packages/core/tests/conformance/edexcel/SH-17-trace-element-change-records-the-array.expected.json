@@ -1,0 +1,26 @@
+{
+  "spec": ["SH-17"],
+  "language": "edexcel",
+  "inputs": [],
+  "expect": {
+    "stdout": "",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": [
+      {
+        "kind": "assign",
+        "line": 1,
+        "variable": "scores",
+        "value": "[3, 5]"
+      },
+      {
+        "kind": "assign",
+        "line": 2,
+        "variable": "scores",
+        "value": "[3, 9]"
+      }
+    ]
+  },
+  "notes": "Changing one element records the whole array under its name (D5, question 37)."
+}

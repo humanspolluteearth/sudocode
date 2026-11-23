@@ -170,3 +170,37 @@ Tests named here stay pending (`openQuestions`) until you answer; the others sho
     against each PR's files); from M3 on, one item per PR.
     Tests: none.
     - Answer: accept
+
+## From M4 (24 Nov 2026)
+
+Tests that depend on an unanswered question below stay pending after the RECEIVE code merges, so no student meets
+a rule you haven't approved. Details are in `docs/review/M4.md`.
+
+34. **SH-06 what counts as a number when typed (D1, D11).** Proposed: spaces around the number are ignored; INTEGER is
+    one optional `+`/`-` and digits; REAL also allows one point and an exponent (`2.5`, `.5`, `5.`, `1e3`), and a
+    whole number (`3` is the REAL 3). Rejected: `3.5` for INTEGER, an empty line, `1,000`, `--5`, `Infinity`, `NaN`,
+    `0x10`, `1_0` (Python's `float()` accepts the last four; we don't, as they aren't numbers a student would type).
+    Tests: `EDX-72-receive-integer-spaces-ignored`, `EDX-72-receive-real-whole-number`, `SH-05-positive-sign-integer`,
+    `SH-06-infinity-is-not-real`, `SH-06-two-signs-is-not-integer`, `SH-06-comma-number-is-not-integer`.
+    - Answer:
+35. **An INTEGER input beyond ±9,007,199,254,740,991 (D12).** Proposed: the SH-07 "number too large" error at the
+    RECEIVE, not "not an INTEGER".
+    Tests: `SH-07-integer-input-too-large`.
+    - Answer:
+36. **SH-17 trace rows (D4).** Proposed: each FOR pass records the loop variable on the FOR line; an output row holds the
+    printed line without its newline; device output reads `[MOTOR] on`, as the console shows it.
+    Tests: `SH-17-trace-assignments-and-output`, `SH-17-trace-device-output`.
+    - Answer:
+37. **SH-17 changing one array element (D5).** Proposed: the row names the array and shows the whole new array
+    (`scores = [3, 9]`), as an element is not a variable column.
+    Tests: `SH-17-trace-element-change-records-the-array`.
+    - Answer:
+38. **BOOLEAN input in any case (D2).** Proposed: `true`, `False`, `TRUE` are accepted, as Boolean literals are
+    (EDX-08). `T`, `1`, `yes` are not.
+    Tests: `EDX-72-receive-boolean-any-case`.
+    - Answer:
+39. **Debugger stepping (D6, D7).** Proposed: Step before a run starts stops before line 1; Step over stops at the next
+    statement in the same or an outer frame; each new FOR pass stops on the FOR line before the variable changes, and
+    the loop ends without stopping there again. Not a language rule, so its tests aren't held back.
+    Tests: `debugger/MISC-step-over-through-a-for-loop`, `debugger/MISC-step-over-walks-the-lines`.
+    - Answer:

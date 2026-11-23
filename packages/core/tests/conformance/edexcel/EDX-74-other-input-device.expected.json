@@ -1,0 +1,13 @@
+{
+  "spec": ["EDX-74", "EDX-72"],
+  "language": "edexcel",
+  "inputs": ["A123"],
+  "expect": {
+    "stdout": "Card A123\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The device name is shown only on the input box, never printed (Q8)."
+}

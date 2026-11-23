@@ -1,0 +1,19 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "breakpoints": [2],
+  "trace": false,
+  "script": [
+    {
+      "expect": {
+        "reason": "breakpoint",
+        "line": 2
+      },
+      "then": "stop"
+    }
+  ],
+  "expect": {
+    "stdout": "one\n",
+    "status": "stopped"
+  }
+}

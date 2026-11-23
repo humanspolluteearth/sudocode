@@ -56,8 +56,38 @@
           "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/fileMap" }]
         },
         "trace": {
-          "description": "Trace table rows (SH-17), or null when the test does not check the trace. Format defined in M4.",
-          "oneOf": [{ "type": "null" }, { "type": "array" }]
+          "description": "Trace table rows (SH-17) in order, or null when the test does not check the trace. An assignment row names the variable and its value as the debugger shows it (a changed array element records the whole array); an output row holds the printed line without its newline.",
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["kind", "line", "variable", "value"],
+                    "properties": {
+                      "kind": { "const": "assign" },
+                      "line": { "type": "integer", "minimum": 1 },
+                      "variable": { "type": "string" },
+                      "value": { "type": "string" }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["kind", "line", "text"],
+                    "properties": {
+                      "kind": { "const": "output" },
+                      "line": { "type": "integer", "minimum": 1 },
+                      "text": { "type": "string" }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
         }
       }
     },

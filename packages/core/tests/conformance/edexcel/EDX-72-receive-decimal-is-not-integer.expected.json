@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-72", "SH-06"],
+  "language": "edexcel",
+  "inputs": ["3.5"],
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INPUT-TYPE",
+        "line": 1,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

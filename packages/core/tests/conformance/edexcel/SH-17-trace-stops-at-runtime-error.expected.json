@@ -1,0 +1,30 @@
+{
+  "spec": ["SH-17", "SH-09"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-DIV-ZERO",
+        "line": 3,
+        "column": 8
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": [
+      {
+        "kind": "assign",
+        "line": 1,
+        "variable": "a",
+        "value": "10"
+      },
+      {
+        "kind": "assign",
+        "line": 2,
+        "variable": "b",
+        "value": "0"
+      }
+    ]
+  }
+}

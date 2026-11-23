@@ -1,0 +1,13 @@
+{
+  "spec": ["SH-05", "EDX-72"],
+  "language": "edexcel",
+  "inputs": ["  two  spaces "],
+  "expect": {
+    "stdout": "[  two  spaces ]\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A STRING input keeps every character typed, spaces included; nothing typed is echoed."
+}

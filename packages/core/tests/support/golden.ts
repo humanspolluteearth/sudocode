@@ -12,8 +12,8 @@ export const TESTS_DIR = join(import.meta.dirname, "..");
 
 const EXTENSIONS: Record<string, Language> = { epc: "edexcel", cpc: "cie", py: "python" };
 const PROGRAM = /\.(epc|cpc|py)$/;
-/** Folders under tests/ that hold no golden programs. */
-const SKIP_DIRS = new Set(["support", "schema", "node_modules"]);
+/** Folders under tests/ that hold no golden programs (debugger/ holds sessions: support/session.ts). */
+const SKIP_DIRS = new Set(["support", "schema", "node_modules", "debugger"]);
 
 export interface ExpectedDiagnostic {
   code: string;

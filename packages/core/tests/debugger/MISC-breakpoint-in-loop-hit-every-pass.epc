@@ -1,0 +1,5 @@
+SET n TO 0
+WHILE n < 3 DO
+    SET n TO n + 1
+END WHILE
+SEND n TO DISPLAY

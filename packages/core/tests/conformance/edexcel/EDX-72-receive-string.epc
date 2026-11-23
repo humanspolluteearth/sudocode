@@ -1,0 +1,2 @@
+RECEIVE name FROM (STRING) KEYBOARD
+SEND 'Hello ' & name TO DISPLAY

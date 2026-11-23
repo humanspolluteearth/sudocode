@@ -1,0 +1,60 @@
+{
+  "spec": ["SH-17", "EDX-53"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "6\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": [
+      {
+        "kind": "assign",
+        "line": 1,
+        "variable": "total",
+        "value": "0"
+      },
+      {
+        "kind": "assign",
+        "line": 2,
+        "variable": "i",
+        "value": "1"
+      },
+      {
+        "kind": "assign",
+        "line": 3,
+        "variable": "total",
+        "value": "1"
+      },
+      {
+        "kind": "assign",
+        "line": 2,
+        "variable": "i",
+        "value": "2"
+      },
+      {
+        "kind": "assign",
+        "line": 3,
+        "variable": "total",
+        "value": "3"
+      },
+      {
+        "kind": "assign",
+        "line": 2,
+        "variable": "i",
+        "value": "3"
+      },
+      {
+        "kind": "assign",
+        "line": 3,
+        "variable": "total",
+        "value": "6"
+      },
+      {
+        "kind": "output",
+        "line": 5,
+        "text": "6"
+      }
+    ]
+  },
+  "notes": "Each FOR pass assigns the loop variable on the FOR line. Output rows hold the printed line without its newline (D4, question 36)."
+}

@@ -1,0 +1,13 @@
+{
+  "spec": ["SH-05", "EDX-72"],
+  "language": "edexcel",
+  "inputs": [""],
+  "expect": {
+    "stdout": "0\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The typed line is the input, even when it is empty."
+}

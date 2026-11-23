@@ -6,6 +6,7 @@ import type { HeadlessResult } from "../../src/runner/headless.ts";
 import { runHeadless } from "../../src/runner/headless.ts";
 import { createLocalRunner } from "../../src/runner/local-runner.ts";
 import { compareRun, discoverGoldenCases, readPending, schemaErrors, verdict, type ExpectedFile } from "./golden.ts";
+import { discoverSessions } from "./session.ts";
 
 const d = (code: string, line: number, column: number, severity: Diagnostic["severity"] = "error"): Diagnostic => ({
   code,
@@ -254,7 +255,8 @@ describe("MISC golden runner: discovery and validation", () => {
   });
 
   it("MISC every pending ID is a golden case or another known test", () => {
-    const ids = new Set(cases.map((c) => c.id));
+    // Debugger sessions (tests/debugger/, support/session.ts) are the other kind of test that can be pending.
+    const ids = new Set([...cases.map((c) => c.id), ...discoverSessions().map((s) => s.id)]);
     expect([...readPending()].filter((id) => !ids.has(id))).toEqual([]);
   });
 

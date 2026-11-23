@@ -1,0 +1,13 @@
+{
+  "spec": ["EDX-72", "SH-05"],
+  "language": "edexcel",
+  "inputs": ["+5"],
+  "expect": {
+    "stdout": "5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "One leading + is allowed, as in Python's int() (D1, question 34)."
+}

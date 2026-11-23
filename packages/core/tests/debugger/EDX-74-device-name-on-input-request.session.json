@@ -1,0 +1,19 @@
+{
+  "spec": ["EDX-74", "SH-05"],
+  "language": "edexcel",
+  "breakpoints": [],
+  "inputs": ["A1"],
+  "trace": false,
+  "script": [],
+  "expect": {
+    "stdout": "A1\n",
+    "status": "finished",
+    "inputRequests": [
+      {
+        "prompt": "",
+        "device": "CARD_READER"
+      }
+    ]
+  },
+  "notes": "The device name goes to the input box only and is never printed (Q8)."
+}

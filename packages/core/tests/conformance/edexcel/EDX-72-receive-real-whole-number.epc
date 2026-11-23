@@ -1,0 +1,3 @@
+RECEIVE price FROM (REAL) KEYBOARD
+SET price TO price + 0.5
+SEND price TO DISPLAY

@@ -1,0 +1,28 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "breakpoints": [3],
+  "trace": false,
+  "script": [
+    {
+      "expect": {
+        "reason": "breakpoint",
+        "line": 3,
+        "variables": {
+          "a": "1",
+          "b": "2"
+        },
+        "types": {
+          "a": "INTEGER",
+          "b": "INTEGER"
+        }
+      },
+      "then": "continue"
+    }
+  ],
+  "expect": {
+    "stdout": "3\n",
+    "status": "finished"
+  },
+  "notes": "Run stops BEFORE the breakpoint's line runs, so nothing is printed yet; Continue finishes the program."
+}

@@ -1,0 +1,76 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "breakpoints": [],
+  "trace": false,
+  "pauseAtStart": true,
+  "script": [
+    {
+      "expect": {
+        "reason": "pause",
+        "line": 1,
+        "variables": {}
+      },
+      "then": "stepOver"
+    },
+    {
+      "expect": {
+        "reason": "step",
+        "line": 2,
+        "variables": {
+          "total": "0"
+        }
+      },
+      "then": "stepOver"
+    },
+    {
+      "expect": {
+        "reason": "step",
+        "line": 3,
+        "variables": {
+          "total": "0",
+          "i": "1"
+        }
+      },
+      "then": "stepOver"
+    },
+    {
+      "expect": {
+        "reason": "step",
+        "line": 2,
+        "variables": {
+          "total": "1",
+          "i": "1"
+        }
+      },
+      "then": "stepOver"
+    },
+    {
+      "expect": {
+        "reason": "step",
+        "line": 3,
+        "variables": {
+          "total": "1",
+          "i": "2"
+        }
+      },
+      "then": "stepOver"
+    },
+    {
+      "expect": {
+        "reason": "step",
+        "line": 5,
+        "variables": {
+          "total": "3",
+          "i": "2"
+        }
+      },
+      "then": "stepOver"
+    }
+  ],
+  "expect": {
+    "stdout": "3\n",
+    "status": "finished"
+  },
+  "notes": "Pausing before the run starts stops at line 1. Each new pass of a FOR loop stops on the FOR line before the loop variable changes; after the last pass the loop ends without stopping there again."
+}

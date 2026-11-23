@@ -3,7 +3,7 @@
 //
 // Test names come from two places:
 // - Vitest's JSON report (unit, conformance and error tests: `it("EDX-54 STEP 0 is a runtime error")`);
-// - golden program file names (`EDX-54-step-zero.epc`); goldens listed in pending.json don't count yet.
+// - golden program and debugger session file names (`EDX-54-step-zero.epc`); those in pending.json don't count yet.
 // Usage: node scripts/spec-coverage.ts [--report <vitest-json>]   (without --report it runs Vitest itself)
 import { execFileSync } from "node:child_process";
 import { appendFileSync, mkdtempSync, readdirSync, readFileSync } from "node:fs";
@@ -66,8 +66,10 @@ const goldens: TestRef[] = walk(testsDir)
   });
 
 const report = vitestReport() as Parameters<typeof vitestTitles>[0];
-// golden.test.ts names its tests after the golden files, which are counted above with their pending state.
-const unitTests: TestRef[] = vitestTitles(report, (path) => path.endsWith("golden.test.ts")).map((name) => ({
+// golden.test.ts and debugger.test.ts name their tests after the golden programs and debugger sessions, which are
+// counted above (from their .epc files) with their pending state.
+const fromFiles = (path: string): boolean => path.endsWith("golden.test.ts") || path.endsWith("debugger.test.ts");
+const unitTests: TestRef[] = vitestTitles(report, fromFiles).map((name) => ({
   name,
   pending: false,
 }));

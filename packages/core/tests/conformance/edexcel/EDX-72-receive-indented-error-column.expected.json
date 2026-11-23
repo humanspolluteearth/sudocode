@@ -1,0 +1,19 @@
+{
+  "spec": ["EDX-72", "SH-06", "SH-15"],
+  "language": "edexcel",
+  "inputs": ["x"],
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INPUT-TYPE",
+        "line": 3,
+        "column": 5
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The error points at the RECEIVE statement (decision in docs/review/M4.md)."
+}
