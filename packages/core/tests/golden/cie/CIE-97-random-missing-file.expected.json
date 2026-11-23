@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-97"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-FILE-NOT-FOUND",
+        "line": 1,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

@@ -1,0 +1,2 @@
+DECLARE C : CHAR
+C <- "xy"

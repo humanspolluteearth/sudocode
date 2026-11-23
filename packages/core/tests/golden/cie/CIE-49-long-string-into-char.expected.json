@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-49"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-TYPE-CHANGE",
+        "line": 2,
+        "column": 6
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

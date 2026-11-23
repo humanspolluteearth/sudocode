@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-115"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-PRIVATE-MEMBER",
+        "line": 15,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

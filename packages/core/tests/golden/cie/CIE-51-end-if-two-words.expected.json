@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-51"],
+  "language": "cie",
+  "expect": {
+    "stdout": "y\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-CIE-ENDIF",
+        "line": 3,
+        "column": 1
+      }
+    ],
+    "files": null,
+    "trace": null
+  }
+}

@@ -1,0 +1,1 @@
+OUTPUT IS_NUM("-12.36"), IS_NUM("abc")

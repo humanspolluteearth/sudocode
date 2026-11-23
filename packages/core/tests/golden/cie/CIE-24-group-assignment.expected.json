@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-24"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-GROUP-ASSIGN",
+        "line": 2,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

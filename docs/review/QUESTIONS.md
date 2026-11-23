@@ -233,3 +233,12 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
       BOOLEAN writes the same text as SEND (`3.5`, `TRUE`). **CHARACTER** from a longer line: runtime error
       "The line ab in d.txt is not a single character" (hint "Fix that line in the Files panel, or READ it into a STRING
       variable."). EDX-81/82/83 extended.
+
+## From M7 (24 Nov 2026)
+
+46. **CIE-81: where does the `INPUT "Prompt" X` prompt text go?** The spec says the prompt is "shown first" but not
+    whether it is part of stdout (and whether a newline follows it). No CIE-81 test is written; CIE-81 is left out of
+    `scope.json` until you decide. My suggestion: the prompt is console output without a newline, then the input box.
+47. **CIE-51: does `ELSE IF` stay one chain with one `ENDIF`, or open a nested IF needing its own `ENDIF`?** The spec
+    says "ELSE IF chains accepted with warnings". No ELSE IF test is written until you decide. My suggestion: a
+    single chain, one `ENDIF`, one `W-CIE-ELSE-IF` warning at the ELSE.

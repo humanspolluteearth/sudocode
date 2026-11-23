@@ -1,0 +1,2 @@
+CONSTANT Max = 10
+OUTPUT Max * 2

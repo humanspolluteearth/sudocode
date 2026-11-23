@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-61"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-STEP-ZERO",
+        "line": 2,
+        "column": 22
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

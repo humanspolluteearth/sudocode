@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-72"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-FUNCTION-CALL",
+        "line": 4,
+        "column": 6
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

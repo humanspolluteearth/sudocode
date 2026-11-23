@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-30"],
+  "language": "cie",
+  "expect": {
+    "stdout": "3\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-CIE-FIELD-DECLARE",
+        "line": 2,
+        "column": 3
+      }
+    ],
+    "files": null,
+    "trace": null
+  }
+}

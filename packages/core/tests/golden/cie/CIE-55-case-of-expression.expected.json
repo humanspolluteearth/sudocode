@@ -1,0 +1,11 @@
+{
+  "spec": ["CIE-55"],
+  "language": "cie",
+  "expect": {
+    "stdout": "even\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

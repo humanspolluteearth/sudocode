@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-03"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-KEYWORD-AS-NAME",
+        "line": 1,
+        "column": 9
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-101"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-NOT-SUPPORTED",
+        "line": 5,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

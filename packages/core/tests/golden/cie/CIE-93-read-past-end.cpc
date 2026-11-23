@@ -1,0 +1,4 @@
+DECLARE L : STRING
+OPENFILE "a.txt" FOR READ
+READFILE "a.txt", L
+READFILE "a.txt", L

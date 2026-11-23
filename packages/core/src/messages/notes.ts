@@ -66,4 +66,67 @@ export const noteMessages: Catalogue = {
       hint: "Inside a subprogram, assigning to a global updates it everywhere.",
     },
   },
+  "W-CIE-BYREF-FUNCTION": {
+    spec: ["CIE-75"],
+    default: {
+      message: "A function should not take BYREF parameters",
+      hint: "Use BYVAL, or make it a PROCEDURE.",
+    },
+  },
+  "W-CIE-DIV-FUNCTION": {
+    spec: ["CIE-42"],
+    default: {
+      message: "DIV and MOD are written between the numbers",
+      hint: "Write {official} instead.",
+      fix: "Use the operator",
+    },
+  },
+  "W-CIE-REAL-FORM": {
+    spec: ["CIE-05"],
+    default: {
+      message: "A REAL needs a digit on both sides of the point",
+      hint: "Write {official} instead.",
+      fix: "Add the missing digit",
+    },
+  },
+  "W-CIE-SINGLE-QUOTES": {
+    spec: ["CIE-07"],
+    default: {
+      message: "Text with more than one character uses double quotes",
+      hint: "Write {official} instead.",
+      fix: "Use double quotes",
+    },
+  },
+  "W-CIE-ENDIF": {
+    spec: ["CIE-51"],
+    default: {
+      message: "ENDIF is one word",
+      hint: "Write ENDIF instead of END IF.",
+      fix: "Write ENDIF",
+    },
+  },
+  "W-CIE-WHILE-DO": {
+    spec: ["CIE-63"],
+    default: {
+      message: "WHILE does not need DO",
+      hint: "Remove DO.",
+      fix: "Remove DO",
+    },
+  },
+  "W-CIE-BYVALUE": {
+    spec: ["CIE-73"],
+    default: {
+      message: "The keyword is BYVAL",
+      hint: "Write BYVAL instead of BYVALUE.",
+      fix: "Write BYVAL",
+    },
+  },
+  "W-CIE-FIELD-DECLARE": {
+    spec: ["CIE-30"],
+    default: {
+      message: "A field in a TYPE starts with DECLARE",
+      hint: "Write DECLARE before the field name.",
+      fix: "Add DECLARE",
+    },
+  },
 };

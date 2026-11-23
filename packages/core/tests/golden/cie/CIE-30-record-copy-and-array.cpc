@@ -1,0 +1,12 @@
+TYPE P
+  DECLARE Name : STRING
+  DECLARE Year : INTEGER
+ENDTYPE
+DECLARE A, B : P
+DECLARE Form : ARRAY[1:2] OF P
+A.Name <- "Ama"
+A.Year <- 9
+B <- A
+A.Year <- 10
+Form[2] <- B
+OUTPUT B.Name, B.Year, Form[2].Year

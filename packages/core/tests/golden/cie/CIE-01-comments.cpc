@@ -1,0 +1,4 @@
+// a comment
+DECLARE X : INTEGER // trailing
+X <- 4
+OUTPUT X

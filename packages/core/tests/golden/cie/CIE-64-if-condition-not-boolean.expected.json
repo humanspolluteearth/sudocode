@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-64"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CONDITION-TYPE",
+        "line": 1,
+        "column": 4
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

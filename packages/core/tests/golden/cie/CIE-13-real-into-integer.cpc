@@ -1,0 +1,2 @@
+DECLARE I : INTEGER
+I <- 2.5

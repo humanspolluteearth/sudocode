@@ -1,0 +1,1 @@
+OUTPUT TO_UPPER("abc 1"), TO_LOWER('Q')
