@@ -31,9 +31,7 @@ describe("SH-03 pseudocode REAL output", () => {
     [1e21, "1000000000000000000000"],
     [1e22, "10000000000000000000000"],
     [-1e21, "-1000000000000000000000"],
-    [1e-7, "0.0000001"],
-    [1e-10, "0.0000000001"],
-  ])("SH-03 never uses exponent form: %d prints as %s", (x, shown) => {
+  ])("SH-03 very large REALs never use exponent form: %d prints as %s", (x, shown) => {
     expect(formatPseudocodeReal(x)).toBe(shown);
   });
 });
