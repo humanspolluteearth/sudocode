@@ -1,5 +1,6 @@
 // The right-hand panel: Problems, or the Debugger (Variables and the trace table), per docs/PRODUCT.md.
 import type { Diagnostic } from "@sudocode/core";
+import { CallStack } from "./CallStack.tsx";
 import { Problems } from "./Problems.tsx";
 import type { RunView } from "./run-state.ts";
 import { TraceTable } from "./TraceTable.tsx";
@@ -44,6 +45,12 @@ export function SidePanel({ tab, onTab, diagnostics, onSelectProblem, run }: Sid
               {run.paused !== null && <span className="sc-count">{`line ${String(run.paused.line)}`}</span>}
             </div>
             <Variables frame={run.paused?.stack[0] ?? null} previous={run.previous} />
+          </section>
+          <section aria-label="Call stack" className="sc-stack-panel">
+            <div className="sc-panel-title">
+              <span>Call stack</span>
+            </div>
+            <CallStack stack={run.paused?.stack ?? []} />
           </section>
           <section aria-label="Trace table" className="sc-trace-panel">
             <div className="sc-panel-title">
