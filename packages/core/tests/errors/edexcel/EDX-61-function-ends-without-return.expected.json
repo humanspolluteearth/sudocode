@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-61"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-NO-RETURN",
+        "line": 1,
+        "column": 1,
+        "message": "FUNCTION Half ended without a RETURN",
+        "hint": "Every path through a FUNCTION must reach a RETURN."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Reaching END FUNCTION without RETURN is a runtime error (EDX-61). Position: the FUNCTION line."
+}

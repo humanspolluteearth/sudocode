@@ -1,0 +1,29 @@
+{
+  "spec": ["EDX-27"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-ARRAY-GAP",
+        "line": 3,
+        "column": 6,
+        "message": "a[2] has no value yet",
+        "hint": "Give that element a value before reading it."
+      }
+    ],
+    "warnings": [],
+    "info": [
+      {
+        "code": "I-EDX-ARRAY-GROWS",
+        "line": 2,
+        "column": 5,
+        "message": "a grew to 4 elements to make room for index 3",
+        "hint": "Any gap has no value until you set it."
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "a[3] grew the array and left a[2] with no value; reading it is a runtime error (EDX-27)."
+}

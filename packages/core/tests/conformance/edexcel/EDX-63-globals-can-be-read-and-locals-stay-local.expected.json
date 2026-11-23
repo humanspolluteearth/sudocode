@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-63", "EDX-28"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "6\n3\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "rate is read as a global; inner is first assigned in the procedure, so it is local (EDX-63). No note."
+}

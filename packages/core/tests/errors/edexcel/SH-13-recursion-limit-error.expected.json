@@ -1,0 +1,20 @@
+{
+  "spec": ["SH-13"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-RECURSION-LIMIT",
+        "line": 6,
+        "column": 16,
+        "message": "Down called itself more than 1,000 times without stopping",
+        "hint": "Make sure it has a base case that returns without calling itself again."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Down(1000) needs a 1,001st nested call: the friendly error names the procedure, at the call that went too deep (SH-13)."
+}

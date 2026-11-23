@@ -1,0 +1,7 @@
+PROCEDURE fill(list)
+BEGIN PROCEDURE
+    SET list[0] TO 99
+END PROCEDURE
+SET a TO [1, 2]
+fill(a)
+SEND a[0] TO DISPLAY

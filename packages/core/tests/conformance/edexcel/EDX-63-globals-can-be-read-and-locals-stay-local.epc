@@ -1,0 +1,8 @@
+SET rate TO 3
+PROCEDURE show()
+BEGIN PROCEDURE
+    SET inner TO rate * 2
+    SEND inner TO DISPLAY
+END PROCEDURE
+show()
+SEND rate TO DISPLAY

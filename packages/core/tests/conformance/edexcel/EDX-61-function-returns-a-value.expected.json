@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-61", "EDX-64"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "9\n12\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A function call is an expression and can be nested (EDX-61, EDX-64)."
+}

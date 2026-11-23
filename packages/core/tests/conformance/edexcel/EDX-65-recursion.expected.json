@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-65", "SH-13"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "120\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Recursion is allowed (EDX-65)."
+}

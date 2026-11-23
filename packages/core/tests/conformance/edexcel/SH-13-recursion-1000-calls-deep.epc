@@ -1,0 +1,8 @@
+FUNCTION Down(n)
+BEGIN FUNCTION
+    IF n = 0 THEN
+        RETURN 0
+    END IF
+    RETURN 1 + Down(n - 1)
+END FUNCTION
+SEND Down(999) TO DISPLAY

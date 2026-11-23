@@ -1,0 +1,19 @@
+SET ok TO TRUE
+SET sawLow TO FALSE
+SET sawHigh TO FALSE
+FOR i FROM 1 TO 500 DO
+    SET n TO RANDOM(5)
+    IF n < 0 OR n > 5 THEN
+        SET ok TO FALSE
+    END IF
+    IF n = 0 THEN
+        SET sawLow TO TRUE
+    END IF
+    IF n = 5 THEN
+        SET sawHigh TO TRUE
+    END IF
+END FOR
+SEND ok TO DISPLAY
+SEND sawLow TO DISPLAY
+SEND sawHigh TO DISPLAY
+SEND RANDOM(0) TO DISPLAY

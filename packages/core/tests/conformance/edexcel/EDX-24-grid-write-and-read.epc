@@ -1,0 +1,7 @@
+SET grid TO [[1, 2], [3, 4]]
+
+SET grid[0, 1] TO 9
+SEND grid[0, 1] TO DISPLAY
+SEND grid[1, 0] + grid[1, 1] TO DISPLAY
+SEND LENGTH(grid) TO DISPLAY
+SEND LENGTH(grid[0]) TO DISPLAY
