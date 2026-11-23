@@ -247,3 +247,8 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
     never loosen a CI check. Please either raise it (my suggestion: 270 kB, since a whole language needs room, and
     Python in M8 will need more) or tell me what to cut. PR #68 stays open until then.
     **Answered 24 Nov 2026: raise it.** Budget raised to 270 kB (276480 bytes) in #68 for the CIE engine.
+49. **CIE built-ins (M7): four spec gaps.** (a) `STR_TO_NUM` returns "INTEGER or REAL": I type it REAL, so
+    `N <- STR_TO_NUM("5")` into an INTEGER needs `INT()`. (b) `ASC`/`CHR` accept only 0 to 127 (ASCII). (c) `LEFT`,
+    `RIGHT`, `MID` asking for more characters than there are is a runtime error, not a shorter result. (d) A DATE
+    prints `dd/mm/yyyy` with zero padding, and DATEs can't be compared. Tests for these edges are `MISC`-named unit
+    tests in `src/cie/builtins.test.ts`, not goldens, until you decide.

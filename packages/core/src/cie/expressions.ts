@@ -7,6 +7,7 @@
 import type { Span } from "../diagnostics.ts";
 import type { Expr as Ir, BinaryOp } from "../ir/ir.ts";
 import type { Token } from "../edexcel/tokens.ts";
+import { BUILTINS, KIND_NAME, fitsKind, type BuiltinSignature } from "./builtins.ts";
 import { Abandon, CIE_RESERVED, joinSpans, type CieCursor } from "./cursor.ts";
 import type { Env } from "./env.ts";
 import {
@@ -359,8 +360,10 @@ export class Expressions {
     const close = c.expectSymbol(")", ") or ,", "Separate the arguments with commas and close them with ).");
     const span = joinSpans(t.span, close.span);
     const sig = this.env.subs.get(t.text);
+    const builtin = BUILTINS[t.text];
+    if (sig === undefined && builtin !== undefined) return this.builtin(t, builtin, args, span);
     if (sig === undefined) {
-      this.undeclared(t);
+      c.report("E-CHK-UNKNOWN-FUNCTION", t.span, { name: t.text });
       return typed({ kind: "call", callee: t.text, args: args.map((a) => a.ir), span }, UNKNOWN, span);
     }
     if (sig.kind === "procedure") {
@@ -369,6 +372,44 @@ export class Expressions {
     }
     this.checkArgs(sig.name, sig.params, args, t);
     return typed({ kind: "call", callee: t.text, args: args.map((a) => a.ir), span }, sig.returns ?? UNKNOWN, span);
+  }
+
+  /** A call of a built-in function (CIE-120 to CIE-129): check the argument count and kinds, then type the result. */
+  private builtin(t: Token, sig: BuiltinSignature, args: Typed[], span: Span): Typed {
+    const ir: Ir = { kind: "builtin", name: sig.ir, args: args.map((a) => a.ir), span: t.span };
+    const first = args[0];
+    const result = sig.returns === "sameAsFirst" ? (first?.ty.kind === "CHAR" ? CHAR : STRING) : sig.returns;
+    if (args.length !== sig.params.length) {
+      const n = (k: number): string => (k === 0 ? "no arguments" : k === 1 ? "1 argument" : `${String(k)} arguments`);
+      const names = sig.params.map((p) => KIND_NAME[p]).join(", ");
+      this.c.report(
+        "E-CHK-ARG-COUNT",
+        t.span,
+        { name: t.text, expected: n(sig.params.length), actual: String(args.length), signature: `${t.text}(${names})` },
+        "builtin",
+      );
+      return typed(ir, UNKNOWN, span);
+    }
+    let ok = true;
+    for (const [i, kind] of sig.params.entries()) {
+      const a = args[i];
+      if (a === undefined || isUnknown(a.ty) || fitsKind(kind, a.ty, a.oneChar)) continue;
+      ok = false;
+      const useStringVersion = sig.stringVersion !== undefined && a.ty.kind === "STRING";
+      this.c.report(
+        "E-CHK-ARG-TYPE",
+        a.span,
+        {
+          function: t.text,
+          expected: KIND_NAME[kind],
+          argument: this.text(a.span),
+          actual: typeName(a.ty),
+          alternative: sig.stringVersion ?? "",
+        },
+        useStringVersion ? "use-to-upper" : undefined,
+      );
+    }
+    return typed(ir, ok ? result : UNKNOWN, span);
   }
 
   args(): Typed[] {

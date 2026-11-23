@@ -9,6 +9,7 @@ export type Ty =
   | { kind: "CHAR" }
   | { kind: "STRING" }
   | { kind: "BOOLEAN" }
+  | { kind: "DATE" }
   /** A fixed-size array (CIE-20): `dims` is the length of each dimension, `lows` the first index of each. */
   | { kind: "ARRAY"; of: Ty; lows: number[]; dims: number[] }
   | { kind: "unknown" };
@@ -18,10 +19,11 @@ export const REAL: Ty = { kind: "REAL" };
 export const CHAR: Ty = { kind: "CHAR" };
 export const STRING: Ty = { kind: "STRING" };
 export const BOOLEAN: Ty = { kind: "BOOLEAN" };
+export const DATE: Ty = { kind: "DATE" };
 export const UNKNOWN: Ty = { kind: "unknown" };
 
 /** The scalar types a DECLARE or parameter can name in this slice, by their upper-case spelling. */
-export const SCALAR_TYPES: Readonly<Record<string, Ty>> = { INTEGER, REAL, CHAR, STRING, BOOLEAN };
+export const SCALAR_TYPES: Readonly<Record<string, Ty>> = { INTEGER, REAL, CHAR, STRING, BOOLEAN, DATE };
 
 export const isUnknown = (t: Ty): boolean => t.kind === "unknown";
 export const isNumber = (t: Ty): boolean => t.kind === "INTEGER" || t.kind === "REAL";
@@ -63,5 +65,5 @@ export function comparable(a: Ty, b: Ty): boolean {
   if (isUnknown(a) || isUnknown(b)) return true;
   if (isNumber(a) && isNumber(b)) return true;
   if (isText(a) && isText(b)) return true;
-  return a.kind === b.kind && a.kind !== "ARRAY";
+  return a.kind === b.kind && a.kind !== "ARRAY" && a.kind !== "DATE";
 }
