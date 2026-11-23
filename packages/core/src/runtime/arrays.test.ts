@@ -61,3 +61,31 @@ describe("CIE-23 copyArray", () => {
     expect(out.stdout).toBe("1\n");
   });
 });
+
+describe("CIE-80 input into an element", () => {
+  it("CIE-80 an INPUT line is converted and stored in the chosen item", async () => {
+    const read: Stmt = {
+      kind: "input",
+      target: {
+        kind: "element",
+        array: global("a", 2),
+        index: num(2),
+        base: 1,
+        growOnWrite: false,
+        text: "a",
+        span: at(2),
+      },
+      convert: "int",
+      device: null,
+      span: at(2),
+    };
+    const out = await run(
+      program([set(global("a"), fresh(3)), read, print(item("a", num(2), 3), 3)]),
+      {},
+      (event, send) => {
+        if (event.type === "inputRequest") send({ type: "input", text: "41" });
+      },
+    );
+    expect(out.stdout).toBe("41\n");
+  });
+});

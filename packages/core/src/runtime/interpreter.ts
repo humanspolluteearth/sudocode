@@ -101,7 +101,7 @@ function* statement(s: Stmt, env: Env): Run<Returned | undefined> {
       // The driver waits for the line (SH-05) and resumes this generator with it as a STRING.
       const line = (yield { type: "input", prompt: "", device: s.device, span: s.span }) as Value | undefined;
       if (line?.kind !== "str") throw bug("Input resumed without a line");
-      setVariable(s.target, convertInput(line.value, s.convert, s.span), env, s.span);
+      yield* assign(s.target, convertInput(line.value, s.convert, s.span), env);
       return undefined;
     }
     case "fileRead": {

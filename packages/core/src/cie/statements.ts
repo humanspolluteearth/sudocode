@@ -265,6 +265,7 @@ export class Statements {
       return c.fail("a variable", "Write the variable that receives the input, e.g. INPUT Age.");
     c.next();
     const v = this.env.lookup(name.text);
+    const indexes = c.isSymbol("[") ? this.x.subscripts(name, v?.ty ?? UNKNOWN).indexes : null;
     if (v === undefined) {
       this.x.undeclared(name);
       return c.failSilently();
@@ -274,8 +275,11 @@ export class Statements {
       return c.failSilently();
     }
     c.endStatement();
-    const convert = CONVERT[typeName(v.ty)] ?? "str";
-    return [{ kind: "input", target: this.ref(name), convert, device: null, span: c.spanFrom(first) }];
+    // CIE-80: the variable can be an array element; the line is converted to the item's type.
+    const item = v.ty.kind === "ARRAY" ? v.ty.of : v.ty;
+    const convert = CONVERT[typeName(item)] ?? "str";
+    const target = indexes === null ? this.ref(name) : this.elementTarget(name, v.ty, indexes, c.spanFrom(first));
+    return [{ kind: "input", target, convert, device: null, span: c.spanFrom(first) }];
   }
 
   private output(first: Token): Ir[] {
@@ -335,6 +339,22 @@ export class Statements {
     ];
   }
 
+  /** The IR target for `A[i]` or `A[i, j]`: counting starts at the declared lower bound and the length is fixed. */
+  private elementTarget(name: Token, ty: Ty, indexes: Typed[], span: Span): AssignTarget {
+    const [row, column] = indexes;
+    if (row === undefined) return this.c.failSilently();
+    return {
+      kind: "element",
+      array: this.ref(name),
+      index: row.ir,
+      ...(column === undefined ? {} : { index2: column.ir }),
+      base: ty.kind === "ARRAY" ? (ty.lows[0] ?? 1) : 1,
+      growOnWrite: false, // CIE-20
+      text: name.text,
+      span,
+    };
+  }
+
   /** `A[i] <- value` and `A[i, j] <- value` (CIE-20 to CIE-22). */
   private elementAssign(first: Token, v: Variable | undefined): Ir[] {
     const c = this.c;
@@ -357,18 +377,7 @@ export class Statements {
     const item = ty.kind === "ARRAY" ? ty.of : UNKNOWN;
     this.checkFits(first.text, item, value);
     c.endStatement();
-    const [row, column] = indexes;
-    if (row === undefined) return c.failSilently();
-    const target: AssignTarget = {
-      kind: "element",
-      array: this.ref(first),
-      index: row.ir,
-      ...(column === undefined ? {} : { index2: column.ir }),
-      base: ty.kind === "ARRAY" ? (ty.lows[0] ?? 1) : 1,
-      growOnWrite: false, // CIE-20: the length is fixed
-      text: first.text,
-      span: c.spanFrom(first),
-    };
+    const target = this.elementTarget(first, ty, indexes, c.spanFrom(first));
     return [{ kind: "assign", target, value: this.valueFor(item, value), span: c.spanFrom(first) }];
   }
 
