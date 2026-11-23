@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-16", "EDX-22"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "AB\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "& joins text: two CHARACTERs (EDX-22) make the STRING 'AB' (EDX-16)."
+}

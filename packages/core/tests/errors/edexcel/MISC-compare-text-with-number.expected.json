@@ -16,5 +16,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "Wording for E-CHK-COMPARE-TYPES in Edexcel (first version, for review in docs/review/M2.md). No spec row says what '5' = 5 does; it is a checker error at the operator rather than a silent FALSE. MISC: see docs/review/M2.md."
+  "notes": "Wording for E-CHK-COMPARE-TYPES in Edexcel (first version, for review in docs/review/M2.md). No spec row says what '5' = 5 does; it is a checker error at the operator rather than a silent FALSE. MISC: see docs/review/M2.md. Decision D4 in docs/review/M2.md."
 }

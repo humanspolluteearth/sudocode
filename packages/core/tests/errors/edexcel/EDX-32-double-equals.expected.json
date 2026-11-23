@@ -9,7 +9,8 @@
         "line": 1,
         "column": 8,
         "message": "== is not used in pseudocode",
-        "hint": "Use a single = to compare two values."
+        "hint": "Use a single = to compare two values.",
+        "fix": "Change == to ="
       }
     ],
     "warnings": [],

@@ -1,3 +1,6 @@
 CONST REAL Rate
 SET Rate TO 5
 SEND Rate * 2 TO DISPLAY
+SET copy TO Rate
+SET copy TO 0.5
+SEND copy TO DISPLAY

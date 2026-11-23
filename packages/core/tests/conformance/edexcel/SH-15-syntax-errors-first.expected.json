@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-15"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 1,
+        "column": 7
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "While a program has syntax errors only those are shown; the checker's errors (here DIV on a STRING) appear once they are fixed. Decision D1 in docs/review/M2.md."
+}

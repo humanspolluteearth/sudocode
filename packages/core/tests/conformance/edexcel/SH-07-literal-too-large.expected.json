@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "start\n",
+    "errors": [
+      {
+        "code": "E-RUN-NUMBER-TOO-LARGE",
+        "line": 2,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "An INTEGER literal beyond the range is the runtime error 'number too large' (SH-07 says exceeding the range is a runtime error), where the literal is. Decision D13 in docs/review/M2.md."
+}

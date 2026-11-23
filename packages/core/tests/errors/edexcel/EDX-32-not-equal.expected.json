@@ -9,7 +9,8 @@
         "line": 1,
         "column": 8,
         "message": "!= is not how pseudocode writes \"not equal to\"",
-        "hint": "Use <> for \"not equal to\"."
+        "hint": "Use <> for \"not equal to\".",
+        "fix": "Change != to <>"
       }
     ],
     "warnings": [],

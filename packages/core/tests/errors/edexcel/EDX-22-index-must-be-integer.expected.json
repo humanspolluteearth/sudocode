@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-22"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-NEEDS-INTEGER",
+        "line": 2,
+        "column": 13,
+        "message": "This must be an INTEGER, but it is a REAL",
+        "hint": "An index is a whole number, e.g. Scores[0]."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-NEEDS-INTEGER in Edexcel (first version, for review in docs/review/M2.md). (index variant). Indexes count elements from 0 (EDX-22), so they are whole numbers."
+}

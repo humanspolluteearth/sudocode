@@ -1,0 +1,3 @@
+foreach c from 'ab' do
+  SEND c TO DISPLAY
+end foreach

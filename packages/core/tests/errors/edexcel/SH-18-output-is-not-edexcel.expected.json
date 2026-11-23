@@ -8,7 +8,7 @@
         "code": "E-SYN-OTHER-LANGUAGE",
         "line": 1,
         "column": 1,
-        "message": "OUTPUT is not an Edexcel statement",
+        "message": "OUTPUT is not part of Edexcel pseudocode",
         "hint": "Edexcel uses SEND <value> TO DISPLAY."
       }
     ],
@@ -16,5 +16,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "Wording for E-SYN-OTHER-LANGUAGE in Edexcel (first version, for review in docs/review/M2.md)."
+  "notes": "Wording for E-SYN-OTHER-LANGUAGE in Edexcel (first version, for review in docs/review/M2.md). Decision D9 in docs/review/M2.md."
 }

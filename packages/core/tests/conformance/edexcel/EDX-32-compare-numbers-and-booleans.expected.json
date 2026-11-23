@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-32", "EDX-13"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "TRUE\nTRUE\nTRUE\nTRUE\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "An INTEGER and a REAL compare by value (EDX-13: they mix in arithmetic too); BOOLEANs compare with = and <>."
+}

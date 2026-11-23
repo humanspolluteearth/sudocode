@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-01", "SH-02"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Hi\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The last line has no line ending; it still runs, and SEND still prints a whole line (SH-02)."
+}

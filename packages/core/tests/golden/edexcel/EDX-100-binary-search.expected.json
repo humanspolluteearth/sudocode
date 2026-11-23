@@ -8,5 +8,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "The exam paper's style (EDX-100): SET found TO TRUE, NOT found, (start + end) DIV 2, IF nested in ELSE. end is a variable name here, not END. Passes: middle 3 (21 < 34, start 4), middle 5 (55 > 34, end 4), middle 4 (found). NOT found AND start <= end is (NOT found) AND (start <= end) (EDX-34)."
+  "notes": "The exam paper's style (EDX-100): SET found TO TRUE, NOT found, (start + end) DIV 2, IF nested in ELSE. end is a variable name here, not END. Passes: middle 3 (21 < 34, start 4), middle 5 (55 > 34, end 4), middle 4 (found). NOT found AND start <= end is (NOT found) AND (start <= end) (EDX-34). Decision D2 in docs/review/M2.md."
 }

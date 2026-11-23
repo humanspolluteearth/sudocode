@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-57", "EDX-41"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-WRONG-CLOSER",
+        "line": 3,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "FOR EACH closes with END FOREACH (EDX-57). END FOR matches no open block, so it is the wrong closer for the innermost one and closes it: one error. Decision D8 in docs/review/M2.md."
+}

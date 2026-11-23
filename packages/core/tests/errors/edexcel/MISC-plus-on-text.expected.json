@@ -16,5 +16,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "Wording for E-CHK-OPERAND-TYPE in Edexcel (first version, for review in docs/review/M2.md). No spec row says + on a STRING is an error; arithmetic is defined on numbers only (edexcel.md 2.4, EDX-13), so it is a checker error at the operator. MISC: see docs/review/M2.md."
+  "notes": "Wording for E-CHK-OPERAND-TYPE in Edexcel (first version, for review in docs/review/M2.md). No spec row says + on a STRING is an error; arithmetic is defined on numbers only (edexcel.md 2.4, EDX-13), so it is a checker error at the operator. MISC: see docs/review/M2.md. Decision D4 in docs/review/M2.md."
 }

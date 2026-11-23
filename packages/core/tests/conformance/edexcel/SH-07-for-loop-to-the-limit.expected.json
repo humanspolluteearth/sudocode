@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-07", "EDX-56", "EDX-53"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "9007199254740990\n9007199254740991\n9007199254740991\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A FOR loop can count up to the largest INTEGER (SH-07): it stops after the last pass without going past the range, and i holds the last value the body ran with (EDX-56)."
+}

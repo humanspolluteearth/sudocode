@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-22"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-NOT-INDEXABLE",
+        "line": 2,
+        "column": 6,
+        "message": "Only arrays and STRINGs can be indexed, but x is an INTEGER",
+        "hint": "Use [ ] after an array or a STRING, e.g. Scores[0]."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-NOT-INDEXABLE in Edexcel (first version, for review in docs/review/M2.md). EDX-22 indexes arrays and strings only."
+}

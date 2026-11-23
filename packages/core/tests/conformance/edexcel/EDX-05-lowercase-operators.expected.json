@@ -34,5 +34,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "Keyword operators in lower case work and warn (EDX-05); Boolean literals in any case don't warn (EDX-08). a = 3, so ((3 MOD 2 = 1) AND (NOT FALSE)) OR FALSE is TRUE (EDX-34)."
+  "notes": "Keyword operators in lower case work and warn (EDX-05); Boolean literals in any case don't warn (EDX-08). a = 3, so ((3 MOD 2 = 1) AND (NOT FALSE)) OR FALSE is TRUE (EDX-34). Decision D7 in docs/review/M2.md."
 }

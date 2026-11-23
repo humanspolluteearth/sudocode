@@ -1,0 +1,3 @@
+SET word TO 'Bob'
+SET letter TO word[1]
+SET letter TO 'zz'
