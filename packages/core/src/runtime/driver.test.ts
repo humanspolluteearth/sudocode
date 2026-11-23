@@ -241,3 +241,34 @@ describe("SH-17 driver: the trace table", () => {
     expect(lastRows).toBeLessThan(outcome.events.findIndex((e) => e.type === "done"));
   });
 });
+
+describe("MISC driver: breakpoints and stepping over calls", () => {
+  // 2: RETURN n * 2 (inside Double) · 5: SET x TO Double(3) · 6: SEND x TO DISPLAY
+  const double = fn("Double", ["n"], [ret(op("mul", local("n", 2), num(2, 2), 2), 2)]);
+  const prog = program([set(global("x"), call("Double", [num(3, 5)], 5), 5), print(global("x"), 6)], [double]);
+
+  /** Runs to a breakpoint on line 5, then sends `commands` one per pause; returns "reason line frame" per pause. */
+  async function pauses(commands: ("stepOver" | "stepInto" | "stepOut")[]): Promise<string[]> {
+    const seen: string[] = [];
+    const queue = [...commands];
+    const outcome = await run(prog, { breakpoints: [5] }, (event, send) => {
+      if (event.type !== "paused") return;
+      seen.push(`${event.reason} ${String(event.line)} ${event.stack[0]?.name ?? "?"}`);
+      send({ type: queue.shift() ?? "continue" });
+    });
+    expect(outcome.stdout).toBe("6\n");
+    return seen;
+  }
+
+  it("MISC Step over runs a whole call and stops at the next line", async () => {
+    expect(await pauses(["stepOver"])).toEqual(["breakpoint 5 (main program)", "step 6 (main program)"]);
+  });
+
+  it("MISC Step into stops at the first line inside the call, and Step out returns to the caller", async () => {
+    expect(await pauses(["stepInto", "stepOut"])).toEqual([
+      "breakpoint 5 (main program)",
+      "step 2 Double",
+      "step 6 (main program)",
+    ]);
+  });
+});

@@ -33,6 +33,8 @@ export interface DriverOptions {
   stepLimit?: number;
   /** Steps run before giving the event loop a turn. */
   sliceSteps?: number;
+  /** 1-based lines with a breakpoint: the run pauses before any statement that starts on one. */
+  breakpoints?: readonly number[];
   /** Record the trace table (SH-17); off by default, as the rows use memory. */
   trace?: boolean;
   /** Runs `resume` later; setTimeout by default (exists in Node and in Web Workers). */
@@ -62,6 +64,12 @@ export function runProgram(options: DriverOptions): EngineRun {
   const running = (): boolean => state === "running";
   let steps = 0;
   let pauseRequested = false;
+  let breakpoints = new Set(options.breakpoints ?? []);
+  /**
+   * While stepping: pause at the next statement run with at most this many frames on the stack. Step over keeps the
+   * depth it was sent at (so a call runs through), Step into allows any depth, Step out one fewer than now.
+   */
+  let stepDepth: number | null = null;
   let pendingOutput = "";
   /** Trace rows not sent yet: like output, they go out in batches (protocol.ts) and always before a pause. */
   let pendingTrace: TraceRow[] = [];
@@ -151,6 +159,7 @@ export function runProgram(options: DriverOptions): EngineRun {
 
   const pause = (reason: PauseReason): void => {
     state = "paused";
+    stepDepth = null;
     flush();
     const top = frames[frames.length - 1];
     emit({ type: "paused", reason, line: top?.line ?? 1, column: top?.column ?? 1, stack: stack() });
@@ -234,6 +243,10 @@ export function runProgram(options: DriverOptions): EngineRun {
         if (pauseRequested) {
           pauseRequested = false;
           pause("pause");
+        } else if (breakpoints.has(request.span.line)) {
+          pause("breakpoint");
+        } else if (stepDepth !== null && frames.length <= stepDepth) {
+          pause("step");
         } else if (steps >= stepLimit) {
           steps = 0;
           pause("stepLimit");
@@ -276,17 +289,20 @@ export function runProgram(options: DriverOptions): EngineRun {
         case "pause":
           if (state === "running") pauseRequested = true;
           return;
-        // Stepping and breakpoints arrive with the debugger (M4); until then a step simply continues.
         case "continue":
         case "stepOver":
         case "stepInto":
-        case "stepOut":
+        case "stepOut": {
           if (state !== "paused") return;
+          const depth = { continue: null, stepOver: frames.length, stepInto: Infinity, stepOut: frames.length - 1 };
+          stepDepth = depth[command.type];
           state = "running";
           schedule(slice);
           return;
+        }
         case "setBreakpoints":
-          return; // M4
+          breakpoints = new Set(command.lines);
+          return;
         default: {
           const unreachable: never = command;
           throw new Error(`Unknown command ${JSON.stringify(unreachable)}`);
