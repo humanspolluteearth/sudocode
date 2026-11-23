@@ -44,6 +44,12 @@ const specText = readdirSync(join(repoDir, "docs", "language-spec"))
 const specIdExists = (id: string): boolean => new RegExp(`\\| ${id} \\|`).test(specText);
 const questionsText = readFileSync(join(repoDir, "docs", "review", "QUESTIONS.md"), "utf8");
 const questionExists = (q: string): boolean => new RegExp(`^${q.slice(1)}\\. `, "m").test(questionsText);
+// A question is answered once its "- Answer:" line has text after the colon (it may carry a date).
+const questionAnswered = (q: string): boolean => {
+  const block =
+    new RegExp(`^${q.slice(1)}\\. [\\s\\S]*?(?=^\\d+\\. |^## |(?![\\s\\S]))`, "m").exec(questionsText)?.[0] ?? "";
+  return /- Answer[^:\n]*:[ \t]*\S/.test(block);
+};
 
 // Codes from the table in harvested/README.md; Python exceptions are E-PY-<Name>.
 const readmeText = readFileSync(join(harvestedDir, "README.md"), "utf8");
@@ -143,8 +149,11 @@ describe.each(programs.map((p) => [testId(p), p] as const))("MISC harvested test
     if (errors.some((e) => /^E-(CHK|SYN)-/.test(e.code))) expect(stdout).toBe("");
   });
 
-  it("MISC is pending", () => {
-    expect(pending.tests).toContain(testId(program));
+  // README: "A test leaves pending.json in the PR that makes it pass, and only once its openQuestions are
+  // answered." (Until M2 no engine existed, so every harvested test was pending.)
+  it("MISC stays pending while one of its open questions is unanswered", () => {
+    const { openQuestions = [] } = readExpected(program);
+    if (openQuestions.some((q) => !questionAnswered(q))) expect(pending.tests).toContain(testId(program));
   });
 });
 
