@@ -24,7 +24,8 @@ export type Expr =
   /** `opSpan` is the operator, where type and runtime errors point. */
   | { kind: "binary"; op: BinaryOperator; left: Expr; right: Expr; opSpan: Span; span: Span }
   | { kind: "unary"; op: "-" | "NOT"; operand: Expr; opSpan: Span; span: Span }
-  | { kind: "index"; target: Expr; index: Expr; span: Span }
+  /** `grid` marks the column of `Grid[row, col]` (EDX-24), so `Grid[row][col]` can be told apart and warned about. */
+  | { kind: "index"; target: Expr; index: Expr; grid?: true; span: Span }
   | { kind: "array"; elements: Expr[]; span: Span }
   /** `NAME(args)`: a built-in such as LENGTH, or a function (M5). */
   | { kind: "call"; name: string; nameSpan: Span; args: Expr[]; span: Span };
@@ -32,7 +33,13 @@ export type Expr =
 /** What an assignment writes to. */
 export type Target =
   | { kind: "name"; name: string; span: Span }
-  | { kind: "element"; name: string; nameSpan: Span; index: Expr; span: Span };
+  /** `index2` is the column of `Grid[row, col]` (EDX-24). */
+  | { kind: "element"; name: string; nameSpan: Span; index: Expr; index2: Expr | null; span: Span };
+
+export interface Param {
+  name: string;
+  span: Span;
+}
 
 export type Stmt =
   | { kind: "set"; target: Target; value: Expr; span: Span }
@@ -60,7 +67,20 @@ export type Stmt =
   | { kind: "repeatUntil"; body: Stmt[]; condition: Expr; span: Span }
   | { kind: "repeatTimes"; count: Expr; body: Stmt[]; span: Span }
   | { kind: "for"; name: string; nameSpan: Span; start: Expr; end: Expr; step: Expr | null; body: Stmt[]; span: Span }
-  | { kind: "forEach"; name: string; nameSpan: Span; iterable: Expr; body: Stmt[]; span: Span };
+  | { kind: "forEach"; name: string; nameSpan: Span; iterable: Expr; body: Stmt[]; span: Span }
+  /** A PROCEDURE or FUNCTION definition (EDX-60, EDX-61). `span` is its first line. */
+  | {
+      kind: "subprogram";
+      sub: "procedure" | "function";
+      name: string;
+      nameSpan: Span;
+      params: Param[];
+      body: Stmt[];
+      span: Span;
+    }
+  | { kind: "return"; value: Expr | null; span: Span }
+  /** `name(args)` as a statement: a procedure call (EDX-64). */
+  | { kind: "callStatement"; name: string; nameSpan: Span; args: Expr[]; span: Span };
 
 export interface Program {
   body: Stmt[];

@@ -25,6 +25,8 @@ export interface Machine {
   assigned(name: string, value: Value, span: Span): void;
   /** A runtime info note (e.g. I-EDX-ARRAY-GROWS). The driver decides how often it is shown. */
   note(code: string, span: Span, args: MessageArgs): void;
+  /** The next random whole number from 0 to `max` inclusive, from the run's seeded generator (SH-12). */
+  random(max: number): number;
 }
 
 /** One frame's view of the variables: its locals (null in the main program) and the globals. */
@@ -141,9 +143,14 @@ function element(node: Extract<Expr, { kind: "index" }>, target: Value, index: V
   throw bug(`Indexing got ${target.kind}`);
 }
 
-/** Built-in functions. Only LENGTH so far (EDX-90); RANDOM (EDX-91) arrives in M5. */
-function builtin(e: Extract<Expr, { kind: "builtin" }>, args: Value[]): Value {
+/** Built-in functions: LENGTH (EDX-90) and RANDOM (EDX-91). */
+function builtin(e: Extract<Expr, { kind: "builtin" }>, args: Value[], env: Env): Value {
   const [x] = args;
+  if (e.name === "random") {
+    if (x?.kind !== "int") throw bug(`RANDOM got ${x?.kind ?? "nothing"}`);
+    if (x.value < 0) throw new RunError("E-RUN-RANDOM-RANGE", e.span, { value: x.value });
+    return int(env.machine.random(x.value));
+  }
   if (x?.kind === "array") return int(x.elements.length);
   if (x?.kind === "str" || x?.kind === "char") return int(characterCount(x.value));
   throw bug(`${e.name} got ${x?.kind ?? "nothing"}`);
@@ -173,6 +180,7 @@ function evaluate(e: Expr, env: Env): Value {
       return builtin(
         e,
         e.args.map((x) => evaluate(x, env)),
+        env,
       );
     case "fail":
       throw new RunError(e.code, e.span, e.args);
@@ -208,7 +216,7 @@ export function* evaluateWithCalls(e: Expr, env: Env): Run<Value> {
     case "arrayLiteral":
       return array(yield* evaluateAll(e.elements, env));
     case "builtin":
-      return builtin(e, yield* evaluateAll(e.args, env));
+      return builtin(e, yield* evaluateAll(e.args, env), env);
     case "call": {
       const args = yield* evaluateAll(e.args, env);
       const result = yield { type: "call", callee: e.callee, args, span: e.span };

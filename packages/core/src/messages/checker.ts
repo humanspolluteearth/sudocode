@@ -82,6 +82,34 @@ export const checkerMessages: Catalogue = {
     default: { message: "{name} has not been declared", hint: "Declare it first: DECLARE {name} : <type>." },
     variants: { "did-you-mean": { hint: "Did you mean {suggestion}? Otherwise declare it: DECLARE {name} : <type>." } },
   },
+  "E-CHK-RETURN-OUTSIDE": {
+    spec: ["EDX-61"],
+    default: {
+      message: "RETURN only works inside a PROCEDURE or FUNCTION",
+      hint: "Put it between BEGIN FUNCTION and END FUNCTION.",
+    },
+  },
+  "E-CHK-PROCEDURE-RETURN": {
+    spec: ["EDX-60", "EDX-61"],
+    default: {
+      message: "{name} is a PROCEDURE, so it can't RETURN a value",
+      hint: "Change it to a FUNCTION if it should give a value back.",
+    },
+  },
+  "E-CHK-PROCEDURE-VALUE": {
+    spec: ["EDX-60", "EDX-61"],
+    default: {
+      message: "{name} is a PROCEDURE, so it doesn't give back a value",
+      hint: "Call it on its own line, or make it a FUNCTION that RETURNs a value.",
+    },
+  },
+  "E-CHK-DUPLICATE-SUBPROGRAM": {
+    spec: ["EDX-60", "EDX-61"],
+    default: {
+      message: "There are two subprograms called {name}",
+      hint: "The first is on line {line}. Give one of them a different name.",
+    },
+  },
   "E-CHK-UNKNOWN-FUNCTION": {
     spec: ["Q-EDX-4", "CIE-120"],
     default: {
@@ -93,7 +121,13 @@ export const checkerMessages: Catalogue = {
         hint: "Edexcel's only built-in functions are LENGTH and RANDOM; define your own with FUNCTION {name}(...).",
       },
     },
-    variants: { "did-you-mean": { hint: "Did you mean {suggestion}?" } },
+    variants: {
+      "did-you-mean": { hint: "Did you mean {suggestion}?" },
+      procedure: {
+        message: "There is no procedure called {name}",
+        hint: "Check the spelling, or define it with PROCEDURE {name}(...).",
+      },
+    },
   },
   "E-CHK-ARG-TYPE": {
     spec: ["CIE-121", "CIE-74", "EDX-90"],

@@ -37,6 +37,13 @@ export const runtimeMessages: Catalogue = {
     spec: ["EDX-27"],
     default: { message: "{array}[{index}] has no value yet", hint: "Give that element a value before reading it." },
   },
+  "E-RUN-RANDOM-RANGE": {
+    spec: ["EDX-91"],
+    default: {
+      message: "RANDOM needs a number that is 0 or more, but was given {value}",
+      hint: "Write RANDOM(n) with n from 0 upwards.",
+    },
+  },
   "E-RUN-INPUT-TYPE": {
     spec: ["SH-06", "EDX-72", "CIE-80"],
     default: { message: "The input {input} is not {expected}", hint: "Run the program again and type {example}." },

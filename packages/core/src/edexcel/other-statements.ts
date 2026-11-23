@@ -1,5 +1,5 @@
 // Lines that are not M2 Edexcel statements: other languages' statements (SH-18, edexcel.md 2.11) and Edexcel
-// statements whose engine parts arrive later (subprograms, files).
+// statements whose engine parts arrive later (files).
 import { Abandon, type Cursor } from "./cursor.ts";
 import { startsExpression } from "./parse-expression.ts";
 import type { Token } from "./tokens.ts";
@@ -22,9 +22,9 @@ export const OTHER_LANGUAGE: Readonly<Record<string, string>> = {
   ELIF: "ELSE, then a nested IF",
 };
 
-/** Edexcel statements whose engine parts arrive later (subprograms, files). */
-export const LATER = new Set(["PROCEDURE", "FUNCTION", "BEGIN", "RETURN", "READ", "WRITE"]);
-export const LATER_ADVICE = "Subprograms and files arrive in a later version of Sudocode.";
+/** Edexcel statements whose engine parts arrive later (files). */
+export const LATER = new Set(["READ", "WRITE"]);
+export const LATER_ADVICE = "Files arrive in a later version of Sudocode.";
 
 /**
  * Reports a line that is not an M2 statement: another language's (SH-18), one arriving after M2, or one Sudocode
@@ -41,13 +41,6 @@ export function otherStatement(c: Cursor, t: Token, upper: string): void {
   }
   if (LATER.has(upper)) {
     c.report("E-SYN-NOT-SUPPORTED", t.span, { feature: upper, advice: LATER_ADVICE });
-    if (upper === "PROCEDURE" || upper === "FUNCTION")
-      skipUntil(c, (first, second) => first === "END" && second === upper);
-    else throw new Abandon();
-    return;
-  }
-  if (c.isSymbol("(", 1)) {
-    c.report("E-SYN-NOT-SUPPORTED", t.span, { feature: "Calling a procedure", advice: LATER_ADVICE });
     throw new Abandon();
   }
   const variant = startsExpression(c.peek(1)) ? "missing-set" : undefined;

@@ -42,15 +42,11 @@ describe("MISC the Edexcel examples are valid programs", () => {
     const r = await run("bug");
     expect([r.status, r.errors.map((e) => [e.code, e.line])]).toEqual(["error", [["E-RUN-INDEX-RANGE", 5]]]);
   });
-  it("MISC the subprogram examples are kept out of the menu and report 'not supported yet'", async () => {
+  it("EDX-60 the subprogram examples are kept out of the menu but now run to the end", async () => {
     for (const e of SUBPROGRAM_EXAMPLES) {
       expect(EDEXCEL_EXAMPLES.map((x) => x.id)).not.toContain(e.id);
       const r = await run(e.id, SUBPROGRAM_EXAMPLES);
-      expect([e.id, r.status, r.errors.map((d) => d.code).includes("E-SYN-NOT-SUPPORTED")]).toEqual([
-        e.id,
-        "error",
-        true,
-      ]);
+      expect([e.id, r.status, r.errors.map((d) => d.code)]).toEqual([e.id, "finished", []]);
     }
   });
 });

@@ -11,6 +11,7 @@ import type {
   InputConversion,
   Program as IrProgram,
   Stmt as IrStmt,
+  Subprogram,
   VarRef,
 } from "../ir/ir.ts";
 import type { BinaryOperator, Expr, Program, Stmt, Target, TypeName } from "./ast.ts";
@@ -42,10 +43,22 @@ const CONVERT: Readonly<Record<TypeName, InputConversion>> = {
   STRING: "str",
 };
 
-export function lowerProgram(program: Program, source: string, types: ReadonlyMap<string, Ty>): IrProgram {
+export function lowerProgram(
+  program: Program,
+  source: string,
+  types: ReadonlyMap<string, Ty>,
+  localTypes: ReadonlyMap<Stmt, ReadonlyMap<string, Ty>> = new Map(),
+): IrProgram {
+  // The variables local to the subprogram being lowered (EDX-63); null while lowering the main program.
+  let locals: ReadonlyMap<string, Ty> | null = null;
   const text = (e: { span: { start: number; end: number } }): string => source.slice(e.span.start, e.span.end);
-  // In M2 every Edexcel variable is a global (EDX-28); subprograms and their locals arrive in M5.
-  const variable = (name: string, span: VarRef["span"]): VarRef => ({ kind: "var", name, scope: "global", span });
+  // Every variable is a global (EDX-28) unless it is a parameter or first set inside a subprogram (EDX-63).
+  const variable = (name: string, span: VarRef["span"]): VarRef => ({
+    kind: "var",
+    name,
+    scope: locals?.has(name) === true ? "local" : "global",
+    span,
+  });
 
   /** A one-character literal going into a CHARACTER becomes a CHARACTER value (EDX-15). */
   const valueFor = (into: Ty | undefined, value: Expr): IrExpr => {
@@ -98,8 +111,11 @@ export function lowerProgram(program: Program, source: string, types: ReadonlyMa
       case "array":
         return { kind: "arrayLiteral", elements: e.elements.map(expr), span: e.span };
       case "call":
-        if (e.name !== "LENGTH") throw new Error(`${e.name} should have been rejected by the checker`);
-        return { kind: "builtin", name: "length", args: e.args.map(expr), span: e.span };
+        if (e.name === "LENGTH" || e.name === "RANDOM") {
+          const name = e.name === "LENGTH" ? "length" : "random";
+          return { kind: "builtin", name, args: e.args.map(expr), span: e.span };
+        }
+        return { kind: "call", callee: e.name, args: e.args.map(expr), span: e.span };
       default: {
         const unreachable: never = e;
         throw new Error(`Unknown expression ${JSON.stringify(unreachable)}`);
@@ -114,6 +130,7 @@ export function lowerProgram(program: Program, source: string, types: ReadonlyMa
           kind: "element",
           array: variable(t.name, t.nameSpan),
           index: expr(t.index),
+          ...(t.index2 === null ? {} : { index2: expr(t.index2) }),
           base: 0,
           growOnWrite: true, // EDX-27
           text: t.name,
@@ -121,8 +138,9 @@ export function lowerProgram(program: Program, source: string, types: ReadonlyMa
         };
 
   const elementType = (t: Target): Ty | undefined => {
-    const ty = types.get(t.name);
+    let ty = locals?.get(t.name) ?? types.get(t.name);
     if (t.kind === "name") return ty;
+    if (ty?.kind === "ARRAY" && t.index2 !== null) ty = ty.of; // EDX-24: a grid's item is one level deeper
     return ty?.kind === "ARRAY" ? ty.of : undefined;
   };
 
@@ -179,6 +197,12 @@ export function lowerProgram(program: Program, source: string, types: ReadonlyMa
             span: s.span,
           },
         ];
+      case "subprogram":
+        return []; // lowered separately, into `subprograms`
+      case "return":
+        return [{ kind: "return", value: s.value === null ? null : expr(s.value), span: s.span }];
+      case "callStatement":
+        return [{ kind: "callStatement", callee: s.name, args: s.args.map(expr), span: s.span }];
       default: {
         const unreachable: never = s;
         throw new Error(`Unknown statement ${JSON.stringify(unreachable)}`);
@@ -186,5 +210,19 @@ export function lowerProgram(program: Program, source: string, types: ReadonlyMa
     }
   };
 
-  return { format: "pseudocode", main: block(program.body), subprograms: {} };
+  const main = block(program.body);
+  const subprograms: Record<string, Subprogram> = {};
+  for (const s of program.body) {
+    if (s.kind !== "subprogram" || subprograms[s.name] !== undefined) continue;
+    locals = localTypes.get(s) ?? new Map();
+    subprograms[s.name] = {
+      name: s.name,
+      kind: s.sub,
+      params: s.params.map((p) => p.name),
+      body: block(s.body),
+      span: s.span,
+    };
+    locals = null;
+  }
+  return { format: "pseudocode", main, subprograms };
 }

@@ -202,9 +202,9 @@ describe("SH-15 and D8 panic-mode recovery", () => {
     ]);
   });
 
-  it("SH-18 subprograms, input and files are recognised as not supported yet (they arrive after M2)", () => {
+  it("EDX-60 a procedure with brackets, BEGIN and END PROCEDURE parses with no errors", () => {
     const source = "PROCEDURE Hi()\nBEGIN PROCEDURE\n  SEND 'hi' TO DISPLAY\nEND PROCEDURE";
-    expect(errors(source)).toEqual(["E-SYN-NOT-SUPPORTED 1:1"]);
+    expect(errors(source)).toEqual([]);
   });
 
   it("MISC an upper-case keyword can't be a name", () => {
