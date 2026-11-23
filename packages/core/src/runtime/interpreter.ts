@@ -41,7 +41,7 @@ function* assign(target: AssignTarget, value: Value, env: Env): Run<undefined> {
   let shown = asIndex(yield* evaluateWithCalls(target.index, env));
   let i = shown - target.base;
   if (arr.kind !== "array") throw bug(`Element assignment got ${arr.kind}`);
-  const where = { text: target.text, span: target.span, base: target.base };
+  let where = { text: target.text, span: target.span, base: target.base };
   if (target.index2 !== undefined) {
     // EDX-24: grid[row, col] first finds the row, which must already exist, then the item inside it.
     if (i < 0 || i >= arr.elements.length) throw indexError(where, shown, arr);
@@ -49,6 +49,7 @@ function* assign(target: AssignTarget, value: Value, env: Env): Run<undefined> {
     if (row === undefined) throw new RunError("E-RUN-ARRAY-GAP", target.span, { array: target.text, index: shown });
     if (row.kind !== "array") throw bug(`A grid row is ${row.kind}`);
     arr = row;
+    where = { ...where, text: `${target.array.name}[${String(shown)}]` }; // a bad column is outside the row, e.g. grid[0]
     shown = asIndex(yield* evaluateWithCalls(target.index2, env));
     i = shown - target.base;
   }
@@ -101,6 +102,16 @@ function* statement(s: Stmt, env: Env): Run<Returned | undefined> {
       const line = (yield { type: "input", prompt: "", device: s.device, span: s.span }) as Value | undefined;
       if (line?.kind !== "str") throw bug("Input resumed without a line");
       setVariable(s.target, convertInput(line.value, s.convert, s.span), env, s.span);
+      return undefined;
+    }
+    case "fileRead": {
+      const line = env.machine.readLine(s.file, s.span);
+      setVariable(s.target, convertInput(line, s.convert, s.span, s.file), env, s.span);
+      return undefined;
+    }
+    case "fileWrite": {
+      const text = formatValue(yield* evaluateWithCalls(s.value, env), env.machine.format);
+      env.machine.writeLine(s.file, text, s.span);
       return undefined;
     }
     case "if": {

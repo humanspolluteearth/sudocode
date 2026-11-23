@@ -41,6 +41,12 @@ export interface Param {
   span: Span;
 }
 
+/** A file name, written bare or quoted (EDX-80). */
+export interface FileName {
+  name: string;
+  span: Span;
+}
+
 export type Stmt =
   | { kind: "set"; target: Target; value: Expr; span: Span }
   /** `x = 5` without SET (EDX-33): parsed so the checker can explain it. */
@@ -61,6 +67,17 @@ export type Stmt =
       deviceSpan: Span;
       span: Span;
     }
+  /** `READ file variable` (EDX-82). `extra` is a second variable, a checker error. */
+  | {
+      kind: "read";
+      file: FileName;
+      name: string;
+      nameSpan: Span;
+      extra: { name: string; span: Span } | null;
+      span: Span;
+    }
+  /** `WRITE file value` (EDX-81). `comma` is the first comma of a list, a checker error. */
+  | { kind: "write"; file: FileName; value: Expr; comma: Span | null; span: Span }
   | { kind: "const"; type: TypeName; name: string; nameSpan: Span; span: Span }
   | { kind: "if"; condition: Expr; then: Stmt[]; else: Stmt[]; span: Span }
   | { kind: "while"; condition: Expr; body: Stmt[]; span: Span }

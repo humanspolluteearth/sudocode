@@ -55,6 +55,13 @@ export const checkerMessages: Catalogue = {
       message: "SEND sends one value at a time",
       hint: "Join values with &, e.g. SEND 'Total: ' & Total TO DISPLAY.",
     },
+    // EDX-81: WRITE <File> takes one expression too.
+    variants: {
+      write: {
+        message: "WRITE writes one value at a time",
+        hint: "Join values with &, e.g. WRITE {file} 'Total: ' & Total.",
+      },
+    },
   },
   "E-CHK-READ-ONE-VARIABLE": {
     spec: ["EDX-82"],

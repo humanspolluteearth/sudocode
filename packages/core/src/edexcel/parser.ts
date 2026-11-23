@@ -13,6 +13,7 @@ import { forEach, forStatement, ifStatement, repeat, whileStatement } from "./pa
 import { callStatement, constant, returnStatement, subprogram } from "./parse-subprograms.ts";
 import type { ParserContext } from "./parser-context.ts";
 import { otherStatement } from "./other-statements.ts";
+import { parseRead, parseWrite } from "./file-statements.ts";
 import { parseReceive } from "./receive.ts";
 import { lex } from "./lexer.ts";
 import { parseExpression } from "./parse-expression.ts";
@@ -36,6 +37,8 @@ const STATEMENT_WORDS = new Set([
   "SET",
   "SEND",
   "RECEIVE",
+  "READ",
+  "WRITE",
   "IF",
   "WHILE",
   "REPEAT",
@@ -175,6 +178,10 @@ class Parser implements ParserContext {
         return this.send();
       case "RECEIVE":
         return parseReceive(this.c, (advice) => this.name(advice));
+      case "READ":
+        return parseRead(this.c, (advice) => this.name(advice));
+      case "WRITE":
+        return parseWrite(this.c);
       case "IF":
         return ifStatement(this, t, null);
       case "WHILE":

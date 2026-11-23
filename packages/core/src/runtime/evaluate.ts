@@ -21,6 +21,10 @@ export interface Machine {
   readonly globals: Map<string, Value>;
   /** Prints one line (its text ends with a newline); `span` is the output statement, for the trace table. */
   output(text: string, span: Span): void;
+  /** The next line of a virtual file, without its newline (EDX-82, SH-11); a runtime error when there is none. */
+  readLine(file: string, span: Span): string;
+  /** Adds one line to a virtual file; the first write of a run replaces the old contents (EDX-83). */
+  writeLine(file: string, text: string, span: Span): void;
   /** A variable was given a value (SH-17 trace table). For an element change, `value` is the whole array. */
   assigned(name: string, value: Value, span: Span): void;
   /** A runtime info note (e.g. I-EDX-ARRAY-GROWS). The driver decides how often it is shown. */

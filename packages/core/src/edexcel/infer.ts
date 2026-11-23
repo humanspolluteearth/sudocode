@@ -2,7 +2,7 @@
 import type { Expr, Program, Stmt } from "./ast.ts";
 import { check, type Scope } from "./check-expression.ts";
 import { TYPE_OF, type CheckState } from "./check-state.ts";
-import { CHARACTER, INTEGER, isText, isUnknown, REAL, UNKNOWN, type Ty } from "./types.ts";
+import { CHARACTER, INTEGER, isText, isUnknown, REAL, STRING, UNKNOWN, type Ty } from "./types.ts";
 
 export function loopType(s: Extract<Stmt, { kind: "for" }>, sc: Scope): Ty {
   const parts = [s.start, s.end, ...(s.step === null ? [] : [s.step])].map((e) => check(sc, e).ty);
@@ -73,7 +73,11 @@ export function inferTypes(st: CheckState, program: Program): void {
           if (ty !== undefined) define(s.name, ty, s); // EDX-12: RECEIVE ... FROM (type) gives the type
           break;
         }
+        case "read":
+          define(s.name, STRING, s); // EDX-82: a variable with no type yet becomes a STRING
+          break;
         case "send":
+        case "write":
         case "callStatement":
           break;
         case "subprogram":

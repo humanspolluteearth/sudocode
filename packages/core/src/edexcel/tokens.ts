@@ -13,6 +13,8 @@ export type TokenKind =
   | "real"
   /** Text in quotes; `value` is the text without the quotes (EDX-06, EDX-07). */
   | "string"
+  /** A bare file name after READ or WRITE, such as Scores.txt (EDX-80); `.` and `-` are allowed inside it. */
+  | "file"
   /** A symbol: + - * / ^ & = <> < <= > >= ( ) [ ] , : */
   | "symbol"
   /** End of a line: every statement ends with one (EDX-09). */

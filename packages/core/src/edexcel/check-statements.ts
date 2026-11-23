@@ -118,6 +118,28 @@ export function checkStatements(st: CheckState, program: Program): void {
         if (t.kind === "ARRAY") st.report("E-CHK-SEND-ARRAY", value.span, { name: st.text(value.span) }); // EDX-75
         return;
       }
+      case "write": {
+        if (s.comma !== null) {
+          st.report("E-CHK-SEND-COMMA", s.comma, { file: s.file.name }, "write"); // EDX-81
+          return;
+        }
+        const t = check(st.loud, s.value).ty;
+        if (t.kind === "ARRAY") st.report("E-CHK-SEND-ARRAY", s.value.span, { name: st.text(s.value.span) }, "write"); // EDX-75
+        return;
+      }
+      case "read": {
+        if (s.extra !== null) {
+          st.report("E-CHK-READ-ONE-VARIABLE", s.extra.span, {
+            file: s.file.name,
+            first: s.name,
+            second: s.extra.name,
+          }); // EDX-82
+          return;
+        }
+        const v = st.lookup(s.name);
+        if (v !== undefined) intoName(s, s.name, s.nameSpan, { ty: v.ty }, s.nameSpan);
+        return;
+      }
       case "receive": {
         const ty = s.type === null ? undefined : TYPE_OF[s.type];
         if (ty === undefined || s.typeSpan === null) {

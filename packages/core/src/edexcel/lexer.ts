@@ -127,6 +127,17 @@ export function lex(source: string): LexResult {
     report("E-SYN-UNCLOSED-STRING", token.span);
   };
 
+  /** A bare file name (EDX-80) after READ or WRITE: letters, digits, `_`, `.` and `-`, up to a space. */
+  const fileName = (): void => {
+    let k = 0;
+    while (peek(k) === " " || peek(k) === "\t") k++;
+    if (k === 0 || !isWordChar(peek(k))) return;
+    while (k-- > 0) advance();
+    const start = here();
+    while (isWordChar(peek()) || peek() === "." || peek() === "-") advance();
+    push("file", start);
+  };
+
   while (i < source.length) {
     const c = peek();
     if (atLineBreak()) {
@@ -148,7 +159,11 @@ export function lex(source: string): LexResult {
     const start = here();
     if (isLetter(c)) {
       while (isWordChar(peek())) advance();
-      push("word", start);
+      const word = push("word", start);
+      // Compiler concept: *context-sensitive lexing*. `Scores.txt` is one name only after READ or WRITE (EDX-80);
+      // anywhere else a `.` is still an unexpected character, so the lexer looks at the statement's first word.
+      const first = tokens.length < 2 || tokens[tokens.length - 2]?.kind === "newline";
+      if (first && /^(read|write)$/i.test(word.text)) fileName();
     } else if (c === "_") {
       while (isWordChar(peek())) advance();
       const token = push("error", start);

@@ -111,6 +111,10 @@ export type Stmt =
    * keyboard; another device's name is shown with the input request (EDX-74).
    */
   | { kind: "input"; target: VarRef; convert: InputConversion; device: string | null; span: Span }
+  /** Reads the next line of a virtual file into `target`, converted like an input line (EDX-82, SH-11). */
+  | { kind: "fileRead"; file: string; target: VarRef; convert: InputConversion; span: Span }
+  /** Writes one line to a virtual file; the first write of a run replaces the old contents (EDX-83). */
+  | { kind: "fileWrite"; file: string; value: Expr; span: Span }
   | { kind: "if"; condition: Expr; then: Stmt[]; else: Stmt[]; span: Span }
   /** Tests before each pass (EDX-50). */
   | { kind: "while"; condition: Expr; body: Stmt[]; span: Span }

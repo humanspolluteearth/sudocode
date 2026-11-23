@@ -101,6 +101,9 @@ function parsePrefix(c: Cursor): Expr {
       return prefixSymbol(c, t);
     case "word":
       return prefixWord(c, t);
+    case "file":
+      // A bare file name only follows READ or WRITE; here it is an unexpected word.
+      return c.fail("a value", "Put quotes around text, such as 'hello'.");
     default: {
       const unreachable: never = t.kind;
       throw new Error(`Unknown token ${String(unreachable)}`);

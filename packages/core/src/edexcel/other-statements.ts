@@ -22,10 +22,6 @@ export const OTHER_LANGUAGE: Readonly<Record<string, string>> = {
   ELIF: "ELSE, then a nested IF",
 };
 
-/** Edexcel statements whose engine parts arrive later (files). */
-export const LATER = new Set(["READ", "WRITE"]);
-export const LATER_ADVICE = "Files arrive in a later version of Sudocode.";
-
 /**
  * Reports a line that is not an M2 statement: another language's (SH-18), one arriving after M2, or one Sudocode
  * doesn't know. Lines that belong to it (a CASE's, a PROCEDURE's) are skipped; otherwise the line is abandoned.
@@ -38,10 +34,6 @@ export function otherStatement(c: Cursor, t: Token, upper: string): void {
       skipUntil(c, (first, second) => first === "ENDCASE" || (first === "END" && second === "CASE"));
     else throw new Abandon();
     return;
-  }
-  if (LATER.has(upper)) {
-    c.report("E-SYN-NOT-SUPPORTED", t.span, { feature: upper, advice: LATER_ADVICE });
-    throw new Abandon();
   }
   const variant = startsExpression(c.peek(1)) ? "missing-set" : undefined;
   c.report("E-SYN-UNKNOWN-STATEMENT", t.span, { word: t.text }, variant);
