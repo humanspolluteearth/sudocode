@@ -1,0 +1,21 @@
+{
+  "spec": ["SH-06", "EDX-72"],
+  "language": "edexcel",
+  "inputs": ["ten"],
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INPUT-TYPE",
+        "line": 1,
+        "column": 1,
+        "message": "The input 'ten' is not a REAL (a number)",
+        "hint": "Run the program again and type a number, such as 3.5."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-RUN-INPUT-TYPE (REAL) in Edexcel, for review in docs/review/M4.md."
+}

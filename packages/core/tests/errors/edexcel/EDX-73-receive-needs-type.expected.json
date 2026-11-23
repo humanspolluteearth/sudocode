@@ -1,0 +1,21 @@
+{
+  "spec": ["EDX-73"],
+  "language": "edexcel",
+  "inputs": [],
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-RECEIVE-NO-TYPE",
+        "line": 1,
+        "column": 20,
+        "message": "RECEIVE needs the type of the value in brackets",
+        "hint": "Write RECEIVE total FROM (INTEGER) KEYBOARD, or (STRING), (REAL), (BOOLEAN), (CHARACTER)."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Column 20 is KEYBOARD, where the bracketed type should be (as the harvested probe EDX-73-receive-without-type)."
+}

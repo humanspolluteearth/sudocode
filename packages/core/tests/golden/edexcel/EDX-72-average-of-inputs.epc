@@ -1,0 +1,14 @@
+# Average of marks typed in, ended by -1
+SET total TO 0
+SET count TO 0
+RECEIVE mark FROM (INTEGER) KEYBOARD
+WHILE mark <> -1 DO
+    SET total TO total + mark
+    SET count TO count + 1
+    RECEIVE mark FROM (INTEGER) KEYBOARD
+END WHILE
+IF count > 0 THEN
+    SEND 'Average: ' & total / count TO DISPLAY
+ELSE
+    SEND 'No marks' TO DISPLAY
+END IF

@@ -1,0 +1,4 @@
+SET n TO 0
+WHILE TRUE DO
+    SET n TO n + 1
+END WHILE

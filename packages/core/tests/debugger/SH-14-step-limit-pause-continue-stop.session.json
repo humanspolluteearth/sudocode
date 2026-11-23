@@ -1,0 +1,25 @@
+{
+  "spec": ["SH-14"],
+  "language": "edexcel",
+  "breakpoints": [],
+  "trace": false,
+  "script": [
+    {
+      "expect": {
+        "reason": "stepLimit"
+      },
+      "then": "continue"
+    },
+    {
+      "expect": {
+        "reason": "stepLimit"
+      },
+      "then": "stop"
+    }
+  ],
+  "expect": {
+    "stdout": "",
+    "status": "stopped"
+  },
+  "notes": "The real 10 million step limit: Continue runs another 10 million steps before asking again; Stop ends the run."
+}

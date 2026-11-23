@@ -1,0 +1,42 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "breakpoints": [3],
+  "trace": false,
+  "script": [
+    {
+      "expect": {
+        "reason": "breakpoint",
+        "line": 3,
+        "variables": {
+          "n": "0"
+        }
+      },
+      "then": "continue"
+    },
+    {
+      "expect": {
+        "reason": "breakpoint",
+        "line": 3,
+        "variables": {
+          "n": "1"
+        }
+      },
+      "then": "continue"
+    },
+    {
+      "expect": {
+        "reason": "breakpoint",
+        "line": 3,
+        "variables": {
+          "n": "2"
+        }
+      },
+      "then": "continue"
+    }
+  ],
+  "expect": {
+    "stdout": "3\n",
+    "status": "finished"
+  }
+}

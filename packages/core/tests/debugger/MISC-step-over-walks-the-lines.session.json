@@ -1,0 +1,43 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "breakpoints": [2],
+  "trace": false,
+  "script": [
+    {
+      "expect": {
+        "reason": "breakpoint",
+        "line": 2,
+        "variables": {
+          "x": "5"
+        }
+      },
+      "then": "stepOver"
+    },
+    {
+      "expect": {
+        "reason": "step",
+        "line": 3,
+        "variables": {
+          "x": "5"
+        }
+      },
+      "then": "stepOver"
+    },
+    {
+      "expect": {
+        "reason": "step",
+        "line": 7,
+        "variables": {
+          "x": "5"
+        }
+      },
+      "then": "continue"
+    }
+  ],
+  "expect": {
+    "stdout": "big\nend\n",
+    "status": "finished"
+  },
+  "notes": "Step over goes to the next line that runs: into the THEN branch, then past END IF."
+}

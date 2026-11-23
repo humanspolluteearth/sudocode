@@ -1,0 +1,21 @@
+{
+  "spec": ["SH-06", "EDX-72"],
+  "language": "edexcel",
+  "inputs": ["AB"],
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INPUT-TYPE",
+        "line": 1,
+        "column": 1,
+        "message": "The input 'AB' is not a CHARACTER (exactly one character)",
+        "hint": "Run the program again and type exactly one character, such as A."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-RUN-INPUT-TYPE (CHARACTER) in Edexcel, for review in docs/review/M4.md."
+}

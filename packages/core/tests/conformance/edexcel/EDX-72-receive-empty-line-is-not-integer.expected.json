@@ -1,0 +1,19 @@
+{
+  "spec": ["EDX-72", "SH-06"],
+  "language": "edexcel",
+  "inputs": [""],
+  "expect": {
+    "stdout": "Age?\n",
+    "errors": [
+      {
+        "code": "E-RUN-INPUT-TYPE",
+        "line": 2,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Output before the bad input stays printed."
+}

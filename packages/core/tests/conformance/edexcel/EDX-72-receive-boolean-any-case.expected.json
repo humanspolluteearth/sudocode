@@ -1,0 +1,13 @@
+{
+  "spec": ["EDX-72", "EDX-08"],
+  "language": "edexcel",
+  "inputs": ["false"],
+  "expect": {
+    "stdout": "TRUE\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "TRUE and FALSE are accepted in any case, as Boolean literals are (EDX-08; decision in docs/review/M4.md)."
+}

@@ -34,6 +34,7 @@ const protectedTestDirs = [
   "packages/core/tests/regressions/",
   "packages/core/tests/errors/",
   "packages/core/tests/harvested/",
+  "packages/core/tests/debugger/",
 ];
 
 const onMain = (path) => {

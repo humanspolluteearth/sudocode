@@ -1,0 +1,19 @@
+{
+  "spec": ["EDX-72", "EDX-12"],
+  "language": "edexcel",
+  "inputs": [],
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-TYPE-CHANGE",
+        "line": 2,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "RECEIVE gives n its type (EDX-12), so a STRING can't go into it later; the error points at the value and the run never starts."
+}

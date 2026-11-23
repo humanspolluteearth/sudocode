@@ -1,0 +1,21 @@
+{
+  "spec": ["SH-06", "EDX-72"],
+  "language": "edexcel",
+  "inputs": ["abc"],
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INPUT-TYPE",
+        "line": 1,
+        "column": 1,
+        "message": "The input 'abc' is not an INTEGER (a whole number)",
+        "hint": "Run the program again and type a whole number, such as 42."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-RUN-INPUT-TYPE (INTEGER) in Edexcel, for review in docs/review/M4.md."
+}

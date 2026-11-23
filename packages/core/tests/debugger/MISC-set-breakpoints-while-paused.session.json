@@ -1,0 +1,34 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "breakpoints": [2],
+  "trace": false,
+  "script": [
+    {
+      "expect": {
+        "reason": "breakpoint",
+        "line": 2,
+        "variables": {
+          "a": "1"
+        }
+      },
+      "setBreakpoints": [4],
+      "then": "continue"
+    },
+    {
+      "expect": {
+        "reason": "breakpoint",
+        "line": 4,
+        "variables": {
+          "a": "3"
+        }
+      },
+      "then": "continue"
+    }
+  ],
+  "expect": {
+    "stdout": "3\n",
+    "status": "finished"
+  },
+  "notes": "Breakpoints changed while paused apply straight away; the new list replaces the old one."
+}

@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-72"],
+  "language": "edexcel",
+  "inputs": ["Ada Lovelace"],
+  "expect": {
+    "stdout": "Hello Ada Lovelace\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

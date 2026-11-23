@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-05"],
+  "language": "edexcel",
+  "breakpoints": [],
+  "inputs": [],
+  "trace": false,
+  "script": [],
+  "expect": {
+    "stdout": "Name?\n",
+    "status": "stopped",
+    "inputRequests": [
+      {
+        "prompt": ""
+      }
+    ]
+  },
+  "notes": "Stop (or Cancel) while the input box is open ends the program; nothing after the RECEIVE runs."
+}

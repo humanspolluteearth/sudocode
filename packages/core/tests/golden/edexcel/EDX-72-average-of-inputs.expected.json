@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-72", "EDX-50", "EDX-14", "EDX-16"],
+  "language": "edexcel",
+  "inputs": ["70", "55", "-1"],
+  "expect": {
+    "stdout": "Average: 62.5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

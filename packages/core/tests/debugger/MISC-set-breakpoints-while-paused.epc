@@ -1,0 +1,4 @@
+SET a TO 1
+SET a TO 2
+SET a TO 3
+SEND a TO DISPLAY

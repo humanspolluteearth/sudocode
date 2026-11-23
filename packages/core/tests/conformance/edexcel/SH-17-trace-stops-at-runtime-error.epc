@@ -1,0 +1,4 @@
+SET a TO 10
+SET b TO 0
+SEND a DIV b TO DISPLAY
+SET a TO 1

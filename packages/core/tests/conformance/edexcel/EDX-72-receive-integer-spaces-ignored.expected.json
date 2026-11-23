@@ -1,0 +1,13 @@
+{
+  "spec": ["EDX-72"],
+  "language": "edexcel",
+  "inputs": [" 42 "],
+  "expect": {
+    "stdout": "84\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Spaces around a number are ignored, as Python's int() does (decision in docs/review/M4.md)."
+}

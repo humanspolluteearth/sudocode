@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-72"],
+  "language": "edexcel",
+  "inputs": ["TRUE"],
+  "expect": {
+    "stdout": "yes\nTRUE\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}
