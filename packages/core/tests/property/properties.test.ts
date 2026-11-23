@@ -12,8 +12,18 @@ async function out(code: string): Promise<{ stdout: string; errors: string[] }> 
   return { stdout: r.stdout, errors: r.errors.map((d) => d.code) };
 }
 
-describe("SH-10 DIV and MOD identity", () => {
-  it("SH-10 for every a and non-zero b, (a DIV b) * b + (a MOD b) = a, and MOD takes the sign of b", async () => {
+describe("SH-10 DIV and MOD follow the floor rules", () => {
+  it("SH-10 -7 DIV 2 is -4 and -7 MOD 2 is 1 (fixed cases for each sign combination)", async () => {
+    const r = await out(
+      "SEND (-7) DIV 2 TO DISPLAY\nSEND (-7) MOD 2 TO DISPLAY\nSEND 7 DIV (-2) TO DISPLAY\nSEND 7 MOD (-2) TO DISPLAY\n" +
+        "SEND (-7) DIV (-2) TO DISPLAY\nSEND (-7) MOD (-2) TO DISPLAY\nSEND 7 DIV 2 TO DISPLAY\nSEND 7 MOD 2 TO DISPLAY\n",
+    );
+    expect(r.errors).toEqual([]);
+    // floor(-3.5) = -4, -7 - (-4*2) = 1; floor(-3.5) = -4, 7 - (-4*-2) = -1; floor(3.5) = 3, -7 - (3*-2) = -1; 3 and 1.
+    expect(r.stdout).toBe("-4\n1\n-4\n-1\n3\n-1\n3\n1\n");
+  });
+
+  it("SH-10 for random a and non-zero b, DIV is the floor of a/b and MOD is a minus DIV times b", async () => {
     const cases: { a: number; b: number }[] = [];
     forAll(
       101,
@@ -24,18 +34,18 @@ describe("SH-10 DIV and MOD identity", () => {
       },
       (c) => cases.push(c),
     );
-    // One program per batch of cases keeps the run fast: each line prints the identity's two sides and the sign test.
-    const lines = cases.map(
-      ({ a, b }) =>
-        `SEND ((${String(a)}) DIV (${String(b)})) * (${String(b)}) + ((${String(a)}) MOD (${String(b)})) TO DISPLAY`,
-    );
+    // One program per batch of cases keeps the run fast. The oracle is the floor rule itself, worked out in plain JS.
+    const lines = cases.flatMap(({ a, b }) => [
+      `SEND (${String(a)}) DIV (${String(b)}) TO DISPLAY`,
+      `SEND (${String(a)}) MOD (${String(b)}) TO DISPLAY`,
+    ]);
     const r = await out(lines.join("\n") + "\n");
     expect(r.errors).toEqual([]);
-    expect(r.stdout).toBe(cases.map((c) => `${String(c.a)}\n`).join(""));
-    for (const { a, b } of cases) {
-      const mod = a - Math.floor(a / b) * b;
-      expect(mod === 0 || Math.sign(mod) === Math.sign(b)).toBe(true);
-    }
+    const expected = cases.flatMap(({ a, b }) => {
+      const q = Math.floor(a / b);
+      return [`${String(q)}\n`, `${String(a - q * b)}\n`];
+    });
+    expect(r.stdout).toBe(expected.join(""));
   });
 });
 
@@ -50,7 +60,7 @@ describe("EDX-11 literals survive being printed", () => {
     const r = await out(values.map((v) => `SEND ${String(v)} TO DISPLAY`).join("\n") + "\n");
     expect(r.stdout).toBe(values.map((v) => `${String(v)}\n`).join(""));
   });
-  it("EDX-12 a STRING literal without quotes or newlines printed with SEND comes back unchanged", async () => {
+  it("MISC a STRING literal without quotes or newlines printed with SEND comes back unchanged", async () => {
     const alphabet = "abcXYZ 012!?,.-";
     const strings: string[] = [];
     forAll(

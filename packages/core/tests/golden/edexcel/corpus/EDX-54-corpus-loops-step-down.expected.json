@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-54"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "10\n7\n4\n1\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Exam-style corpus program. 10,7,4,1; the second range cannot be reached so runs zero times."
+}

@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-52"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Hi\nHi\nHi\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Exam-style corpus program. Count 0 runs zero times."
+}
