@@ -26,7 +26,6 @@
     "golden/cie/CIE-48-records-not-comparable",
     "golden/cie/CIE-73-byref-carries-on",
     "golden/cie/CIE-76-byref-needs-variable",
-    "golden/cie/CIE-80-input-array-element",
     "golden/cie/CIE-90-write-append-read",
     "golden/cie/CIE-91-write-loses-old-data",
     "golden/cie/CIE-93-read-a-file-open-for-write",
