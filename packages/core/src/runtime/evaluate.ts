@@ -19,7 +19,10 @@ export type Request =
 export interface Machine {
   readonly format: OutputFormat;
   readonly globals: Map<string, Value>;
-  output(text: string): void;
+  /** Prints one line (its text ends with a newline); `span` is the output statement, for the trace table. */
+  output(text: string, span: Span): void;
+  /** A variable was given a value (SH-17 trace table). For an element change, `value` is the whole array. */
+  assigned(name: string, value: Value, span: Span): void;
   /** A runtime info note (e.g. I-EDX-ARRAY-GROWS). The driver decides how often it is shown. */
   note(code: string, span: Span, args: MessageArgs): void;
 }

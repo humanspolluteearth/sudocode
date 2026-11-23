@@ -2,11 +2,6 @@
   "description": "Tests the harness expects to FAIL. A pending test that passes fails CI until it is removed here (docs/TEST-PLAN.md section 5). IDs are paths from packages/core/tests/ without the extension.",
   "tests": [
     "conformance/edexcel/SH-03-real-small-no-exponent",
-    "conformance/edexcel/SH-17-trace-assignments-and-output",
-    "conformance/edexcel/SH-17-trace-device-output",
-    "conformance/edexcel/SH-17-trace-element-change-records-the-array",
-    "conformance/edexcel/SH-17-trace-receive-is-an-assignment",
-    "conformance/edexcel/SH-17-trace-stops-at-runtime-error",
     "debugger/MISC-breakpoint-in-loop-hit-every-pass",
     "debugger/MISC-breakpoint-stops-before-its-line",
     "debugger/MISC-empty-breakpoint-list-runs-to-the-end",

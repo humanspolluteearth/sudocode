@@ -36,6 +36,6 @@ export const edexcelEngine: Engine = {
       emit({ type: "done", status: "error" }); // checker errors: the program doesn't run
       return { command: () => undefined };
     }
-    return runProgram({ language: "edexcel", program, emit });
+    return runProgram({ language: "edexcel", program, emit, trace: request.trace });
   },
 };
