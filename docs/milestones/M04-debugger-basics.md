@@ -6,7 +6,7 @@ Read first: `CLAUDE.md`, `docs/AUTONOMOUS.md`, `docs/TEST-PLAN.md`, `docs/DECISI
 
 ## Checklist
 
-- [x] Add to `scope.json`: SH-05, SH-06, SH-14, SH-17, EDX-72, EDX-73, EDX-74 (#47 SH-14; #48 SH-05, SH-06, EDX-72-74; #49 SH-17. #48-#51 are open, see below)
+- [x] Add to `scope.json`: SH-05, SH-06, SH-14, SH-17, EDX-72, EDX-73, EDX-74 (#47 SH-14; #48 SH-05, SH-06, EDX-72-74; #49 SH-17. #48-#51 merged)
 - [x] Tests PR first (pending), then code (#47 merged, then #48-#51)
 - [x] RECEIVE with typed conversion and errors (EDX-72, SH-06), type required (EDX-73), other devices (EDX-74); console input box (SH-05) (#48 engine; #51 input box with Cancel)
 - [x] Breakpoints in the gutter, Run to breakpoint, Step over, Continue, Pause; current-line highlight (#50 engine; #51 gutter, toolbar, highlight)
@@ -15,8 +15,8 @@ Read first: `CLAUDE.md`, `docs/AUTONOMOUS.md`, `docs/TEST-PLAN.md`, `docs/DECISI
 - [x] Infinite-loop pause after 10 million steps with a continue/stop dialog (SH-14) (#24 engine budget; #47 test; #51 dialog)
 - [x] Debugger tests in `tests/debugger/` (scripted sessions: stop line, variables, trace rows); E2E: pause at a breakpoint, see variables, trace table matches (#47 sessions, #50 harness; #51 E2E `apps/web/e2e/debugger.spec.ts`)
 
-**Not merged yet.** #48 (RECEIVE) is red only on a merged M2 test that expects RECEIVE to be "not supported", and I
-may not edit merged tests. It waits on question 40 in `docs/review/QUESTIONS.md`; #49, #50 and #51 are stacked on it.
+**Merged.** #48-#51 were squash-merged in order with CI green, after question 40 was approved (RECEIVE removed from
+the SH-18 not-supported test).
 
 ## Out of scope
 

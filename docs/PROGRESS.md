@@ -2,15 +2,14 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
-## 24 Nov 2026: M4 debugger basics (built, blocked on question 40)
+## 24 Nov 2026: M4 debugger basics (merged)
 
-- **PRs:** #47 tests (merged); #48 RECEIVE, #49 trace table, #50 breakpoints and stepping, #51 debugger UI + E2E
-  (open, stacked in that order).
-- **Blocked:** #48 fails only the merged M2 SH-18 test that expects RECEIVE to be unsupported. Question 40 in
-  `docs/review/QUESTIONS.md`; the stack can't merge until you answer.
+- **PRs:** #47 tests, #48 RECEIVE, #49 trace table, #50 breakpoints and stepping, #51 debugger UI + E2E; all merged
+  with CI green, in that order.
+- **Question 40 approved:** RECEIVE removed from the one merged SH-18 not-supported test; nothing else merged was edited.
 - **State:** checklist in `docs/milestones/M04-debugger-basics.md` ticked with PR numbers. Both reviewers ran; MUST
   FIX items fixed with new tests (merged tests untouched). Decisions D1-D19 and gaps in `docs/review/M4.md`.
-- **Next step:** answer question 40, merge #48-#51 in order, then M5 (call stack, step into/out).
+- **Next step:** M5 (call stack, step into/out).
 
 ## 23 Nov 2026: M3 editor, console and workers (done)
 
