@@ -1,0 +1,4 @@
+READ d.txt x
+READ d.txt y
+READ d.txt z
+SEND x & '|' & y & '|' & z TO DISPLAY

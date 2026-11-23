@@ -1,0 +1,24 @@
+{
+  "spec": ["EDX-63"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "6\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null,
+    "info": [
+      {
+        "code": "I-EDX-GLOBAL-UPDATE",
+        "line": 5,
+        "column": 9
+      },
+      {
+        "code": "I-EDX-GLOBAL-UPDATE",
+        "line": 6,
+        "column": 9
+      }
+    ]
+  },
+  "notes": "Q41: one note per subprogram per variable: a at line 5, b at line 6, none at line 7. a = 3, b = 3, total 6."
+}

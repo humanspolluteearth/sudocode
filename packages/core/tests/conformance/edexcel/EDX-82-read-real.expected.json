@@ -1,0 +1,15 @@
+{
+  "spec": ["EDX-82"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "2.5\n"
+  },
+  "expect": {
+    "stdout": "5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "x is a REAL, so the line 2.5 becomes 2.5; 2.5 * 2 = 5, printed as 5 (SH-03)."
+}

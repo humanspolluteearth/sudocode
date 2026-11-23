@@ -1,0 +1,2 @@
+WRITE d.txt 7 / 2
+WRITE d.txt TRUE

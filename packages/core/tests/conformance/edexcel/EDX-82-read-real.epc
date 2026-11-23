@@ -1,0 +1,3 @@
+SET x TO 0.5
+READ d.txt x
+SEND x * 2 TO DISPLAY

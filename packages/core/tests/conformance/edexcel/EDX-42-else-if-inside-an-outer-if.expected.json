@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-42"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "b\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-ELSE-IF",
+        "line": 5,
+        "column": 3
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q27: the second END IF closes the outer IF, so no error; the ELSE IF still warns."
+}

@@ -1,0 +1,10 @@
+SET a TO [1, 2]
+SET i TO 5
+IF i < LENGTH(a) AND a[i] = 1 THEN
+  SEND 'yes' TO DISPLAY
+ELSE
+  SEND 'no' TO DISPLAY
+END IF
+IF i >= 0 OR a[i] = 1 THEN
+  SEND 'ok' TO DISPLAY
+END IF

@@ -1,0 +1,24 @@
+{
+  "spec": ["EDX-42", "EDX-41"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-UNMATCHED-CLOSER",
+        "line": 7,
+        "column": 1
+      }
+    ],
+    "warnings": [
+      {
+        "code": "W-EDX-ELSE-IF",
+        "line": 4,
+        "column": 1
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q27: the chain uses one END IF; the second has no IF to close (wording as EDX-41)."
+}

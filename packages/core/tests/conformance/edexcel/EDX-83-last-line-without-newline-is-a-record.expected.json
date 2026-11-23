@@ -1,0 +1,15 @@
+{
+  "spec": ["EDX-83"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "one\ntwo"
+  },
+  "expect": {
+    "stdout": "onetwo\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q45: the last line two has no newline and is still the second record."
+}

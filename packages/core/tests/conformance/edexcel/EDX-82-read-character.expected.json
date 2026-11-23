@@ -1,0 +1,16 @@
+{
+  "spec": ["EDX-82", "EDX-72"],
+  "language": "edexcel",
+  "inputs": ["a"],
+  "files": {
+    "d.txt": "q\n"
+  },
+  "expect": {
+    "stdout": "q\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "c is a CHARACTER; the one-character line q replaces the typed a."
+}

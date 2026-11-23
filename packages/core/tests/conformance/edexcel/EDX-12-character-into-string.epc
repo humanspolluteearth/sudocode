@@ -1,0 +1,4 @@
+SET name TO 'Ada'
+SET initial TO 'Zed'
+SET initial TO name[0]
+SEND initial TO DISPLAY

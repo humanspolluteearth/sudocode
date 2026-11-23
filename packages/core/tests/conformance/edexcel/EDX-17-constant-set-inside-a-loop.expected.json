@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-17"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q29: one SET statement that runs twice is still one SET."
+}

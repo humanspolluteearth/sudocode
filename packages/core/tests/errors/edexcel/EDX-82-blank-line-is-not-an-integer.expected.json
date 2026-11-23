@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-82"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "\n"
+  },
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INPUT-TYPE",
+        "line": 2,
+        "column": 1,
+        "message": "Line 1 of d.txt is empty",
+        "hint": "Put a value on that line, or READ it into a STRING."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q45: a blank file line READ into a non-STRING variable. 'Line 1' is the line of the file."
+}

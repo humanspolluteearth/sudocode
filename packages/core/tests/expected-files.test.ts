@@ -20,6 +20,12 @@ const specText = readdirSync(join(repoDir, "docs", "language-spec"))
 const specIdExists = (id: string): boolean => specText.includes(`| ${id} |`);
 const questionsText = readFileSync(join(repoDir, "docs", "review", "QUESTIONS.md"), "utf8");
 const questionExists = (q: string): boolean => new RegExp(`^${q.slice(1)}\\. `, "m").test(questionsText);
+// A question is answered once its "- Answer:" line has text after the colon (same rule as harvested.test.ts).
+const questionAnswered = (q: string): boolean => {
+  const block =
+    new RegExp(`^${q.slice(1)}\\. [\\s\\S]*?(?=^\\d+\\. |^## |(?![\\s\\S]))`, "m").exec(questionsText)?.[0] ?? "";
+  return /- Answer[^:\n]*:[ \t]*\S/.test(block);
+};
 const pending = readPending();
 
 const cases = discoverGoldenCases().filter((c) => !c.id.startsWith("harvested/"));
@@ -43,7 +49,7 @@ describe("MISC expected files outside harvested/", () => {
       expect(expected.spec.filter((id) => !specIdExists(id))).toEqual([]);
       const questions = expected.openQuestions ?? [];
       expect(questions.filter((q) => !questionExists(q))).toEqual([]);
-      if (questions.length > 0) expect(pending.has(c.id)).toBe(true);
+      if (questions.some((q) => !questionAnswered(q))) expect(pending.has(c.id)).toBe(true);
     });
 
     it("MISC lists diagnostics in order, at positions inside the program", () => {

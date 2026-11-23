@@ -1,0 +1,2 @@
+SET n TO 0
+READ d.txt n

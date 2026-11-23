@@ -1,0 +1,3 @@
+SET ok TO FALSE
+READ d.txt ok
+SEND ok TO DISPLAY

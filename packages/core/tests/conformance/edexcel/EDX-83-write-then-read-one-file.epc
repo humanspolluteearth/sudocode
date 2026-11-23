@@ -1,0 +1,3 @@
+WRITE d.txt 'hello'
+READ d.txt x
+SEND x TO DISPLAY

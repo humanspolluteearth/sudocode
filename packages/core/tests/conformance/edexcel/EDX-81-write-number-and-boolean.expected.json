@@ -1,0 +1,14 @@
+{
+  "spec": ["EDX-81", "SH-03"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [],
+    "warnings": [],
+    "files": {
+      "d.txt": "3.5\nTRUE\n"
+    },
+    "trace": null
+  },
+  "notes": "Q45: WRITE writes the same text as SEND: 7 / 2 is 3.5 (SH-03), TRUE is TRUE."
+}
