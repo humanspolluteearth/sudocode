@@ -14,5 +14,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "A string with no closing quote on its line is a syntax error at the opening quote."
+  "notes": "A string with no closing quote on its line is a syntax error at the opening quote. Decision D8 in docs/review/M2.md."
 }

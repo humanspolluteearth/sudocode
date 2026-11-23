@@ -8,5 +8,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "Pseudocode prints Booleans as TRUE / FALSE (SH-04), whatever case the literal was written in (EDX-08: no warning), and & joins them the same way (EDX-16)."
+  "notes": "Pseudocode prints Booleans as TRUE / FALSE (SH-04), whatever case the literal was written in (EDX-08: no warning), and & joins them the same way (EDX-16). Decision D5 in docs/review/M2.md."
 }

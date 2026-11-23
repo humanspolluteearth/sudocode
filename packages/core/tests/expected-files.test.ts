@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   discoverGoldenCases,
+  readPending,
   schemaErrors,
   TESTS_DIR,
   type ExpectedDiagnostic,
@@ -17,6 +18,9 @@ const specText = readdirSync(join(repoDir, "docs", "language-spec"))
   .map((f) => readFileSync(join(repoDir, "docs", "language-spec", f), "utf8"))
   .join("\n");
 const specIdExists = (id: string): boolean => specText.includes(`| ${id} |`);
+const questionsText = readFileSync(join(repoDir, "docs", "review", "QUESTIONS.md"), "utf8");
+const questionExists = (q: string): boolean => new RegExp(`^${q.slice(1)}\\. `, "m").test(questionsText);
+const pending = readPending();
 
 const cases = discoverGoldenCases().filter((c) => !c.id.startsWith("harvested/"));
 const all = (e: ExpectedFile["expect"]): ExpectedDiagnostic[] => [...e.errors, ...e.warnings, ...(e.info ?? [])];
@@ -35,8 +39,11 @@ describe("MISC expected files outside harvested/", () => {
       expect(c.name.startsWith("MISC-") || expected.spec.some((id) => c.name.startsWith(`${id}-`))).toBe(true);
     });
 
-    it("MISC cites only spec IDs that exist", () => {
+    it("MISC cites only spec IDs and questions that exist, and stays pending while it has open questions", () => {
       expect(expected.spec.filter((id) => !specIdExists(id))).toEqual([]);
+      const questions = expected.openQuestions ?? [];
+      expect(questions.filter((q) => !questionExists(q))).toEqual([]);
+      if (questions.length > 0) expect(pending.has(c.id)).toBe(true);
     });
 
     it("MISC lists diagnostics in order, at positions inside the program", () => {
@@ -61,8 +68,12 @@ describe("MISC expected files outside harvested/", () => {
     });
 
     it("MISC gives exact wording for every diagnostic in tests/errors/, and only there", () => {
-      const worded = all(expected.expect).filter((d) => d.message !== undefined && d.hint !== undefined);
-      expect(worded.length).toBe(c.id.startsWith("errors/") ? all(expected.expect).length : 0);
+      const list = all(expected.expect);
+      if (c.id.startsWith("errors/")) {
+        expect(list.filter((d) => d.message === undefined || d.hint === undefined)).toEqual([]);
+      } else {
+        expect(list.filter((d) => d.message !== undefined || d.hint !== undefined || d.fix !== undefined)).toEqual([]);
+      }
     });
   });
 });

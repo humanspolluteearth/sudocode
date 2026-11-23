@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-52"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-NEEDS-INTEGER",
+        "line": 1,
+        "column": 8,
+        "message": "This must be an INTEGER, but it is a REAL",
+        "hint": "Give a whole number of times, e.g. REPEAT 3 TIMES."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-NEEDS-INTEGER in Edexcel (first version, for review in docs/review/M2.md). (count variant). REPEAT ... TIMES counts passes (EDX-52)."
+}

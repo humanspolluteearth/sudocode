@@ -92,6 +92,10 @@
         "hint": {
           "description": "Exact hint wording (tests/errors/ programs give it; elsewhere it is left out).",
           "type": "string"
+        },
+        "fix": {
+          "description": "Label of the one-click fix the diagnostic offers (SH-15), where it has one.",
+          "type": "string"
         }
       }
     },

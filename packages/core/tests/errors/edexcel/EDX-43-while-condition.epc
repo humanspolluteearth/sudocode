@@ -1,0 +1,4 @@
+SET count TO 3
+WHILE count DO
+  SET count TO count - 1
+END WHILE

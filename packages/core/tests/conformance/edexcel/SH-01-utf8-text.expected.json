@@ -2,11 +2,11 @@
   "spec": ["SH-01", "EDX-90"],
   "language": "edexcel",
   "expect": {
-    "stdout": "héllo wörld ✓ 😀\n2\nï\n",
+    "stdout": "héllo wörld ✓ 😀\n2\na\n",
     "errors": [],
     "warnings": [],
     "files": null,
     "trace": null
   },
-  "notes": "UTF-8 text prints unchanged (SH-01). LENGTH counts characters, so an emoji is one character (EDX-90), and word[2] is the third character, ï (EDX-22)."
+  "notes": "UTF-8 text prints unchanged (SH-01). LENGTH counts characters, so an emoji is one character (EDX-90), and in '😀ab' index 1 is the a, the second character, not the second half of the emoji (EDX-22)."
 }

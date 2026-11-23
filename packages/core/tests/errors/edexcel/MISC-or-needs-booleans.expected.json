@@ -1,0 +1,20 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-OPERAND-TYPE",
+        "line": 2,
+        "column": 10,
+        "message": "OR can't be used with INTEGER values",
+        "hint": "OR works on TRUE and FALSE values, e.g. a comparison such as x > 0."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-OPERAND-TYPE in Edexcel (first version, for review in docs/review/M2.md). (logic variant). Decision D4 in docs/review/M2.md."
+}

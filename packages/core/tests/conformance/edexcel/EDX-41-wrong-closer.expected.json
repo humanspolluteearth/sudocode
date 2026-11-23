@@ -14,5 +14,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "END WHILE arrives while the inner IF (line 3) is still open (EDX-41): one error at END WHILE saying END IF is missing. END WHILE then closes both blocks, so there is no 'never closed' error as well."
+  "notes": "END WHILE arrives while the inner IF (line 3) is still open (EDX-41): one error at END WHILE saying END IF is missing. END WHILE then closes both blocks, so there is no 'never closed' error as well. Decision D8 in docs/review/M2.md."
 }

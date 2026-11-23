@@ -19,5 +19,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "Panic-mode recovery (M2 checklist): after the error on line 1 the parser skips to the next line and keeps checking, so both mistakes are reported in one run. Line 1 is missing TO (found 5); line 2 ends where the device should be."
+  "notes": "Panic-mode recovery (M2 checklist): after the error on line 1 the parser skips to the next line and keeps checking, so both mistakes are reported in one run. Line 1 is missing TO (found 5); line 2 ends where the device should be. Decision D8 in docs/review/M2.md."
 }

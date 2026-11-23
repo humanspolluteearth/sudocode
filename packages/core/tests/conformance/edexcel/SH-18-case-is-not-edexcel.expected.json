@@ -14,5 +14,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "CASE is not in the Edexcel command set (edexcel.md 2.11: 'not part of Edexcel pseudocode', hint nested IF). It is reported once, where it starts; the lines up to ENDCASE belong to it and give no further errors (SH-18)."
+  "notes": "CASE is not in the Edexcel command set (edexcel.md 2.11: 'not part of Edexcel pseudocode', hint nested IF). It is reported once, where it starts; the lines up to ENDCASE belong to it and give no further errors (SH-18). Decision D9 in docs/review/M2.md."
 }

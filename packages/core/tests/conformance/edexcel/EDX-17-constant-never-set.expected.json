@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-17"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CONST-NEVER-SET",
+        "line": 1,
+        "column": 15
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A constant needs exactly one SET (EDX-17); none is a checker error at the constant's name. Decision D14 in docs/review/M2.md."
+}

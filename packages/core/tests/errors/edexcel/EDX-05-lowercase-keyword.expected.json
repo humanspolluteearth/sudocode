@@ -10,7 +10,8 @@
         "line": 1,
         "column": 1,
         "message": "Keywords are written in capitals",
-        "hint": "Write SET instead of set."
+        "hint": "Write SET instead of set.",
+        "fix": "Write SET"
       }
     ],
     "files": null,

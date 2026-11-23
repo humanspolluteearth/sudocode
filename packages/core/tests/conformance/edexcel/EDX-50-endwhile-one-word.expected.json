@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-50"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-ONE-WORD-CLOSER",
+        "line": 4,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "WHILE closes with END WHILE (EDX-50); only ENDIF has a lenient one-word form (EDX-44). ENDWHILE is an error but still closes the loop, so there is no second error. Decision D11 in docs/review/M2.md."
+}

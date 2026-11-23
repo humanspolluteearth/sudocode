@@ -1,4 +1,4 @@
 SEND 'héllo wörld ✓ 😀' TO DISPLAY
 SEND LENGTH('😀é') TO DISPLAY
-SET word TO 'naïve'
-SEND word[2] TO DISPLAY
+SET word TO '😀ab'
+SEND word[1] TO DISPLAY

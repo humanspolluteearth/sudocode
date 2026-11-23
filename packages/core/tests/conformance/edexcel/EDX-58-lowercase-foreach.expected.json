@@ -1,0 +1,38 @@
+{
+  "spec": ["EDX-58", "EDX-05"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "a\nb\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-FOREACH",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 11
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 21
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 3,
+        "column": 5
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "foreach gets only the FOREACH warning (EDX-58); the other lowercase keywords warn one each (EDX-05). end foreach is the official closer written in lower case: two lowercase warnings. Decision D7 in docs/review/M2.md."
+}

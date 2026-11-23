@@ -1,0 +1,21 @@
+{
+  "spec": ["EDX-23"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-STRING-ELEMENT",
+        "line": 2,
+        "column": 5,
+        "message": "A STRING can't be changed one character at a time",
+        "hint": "Build a new STRING with & instead."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "openQuestions": ["Q26"],
+  "notes": "Wording for E-CHK-STRING-ELEMENT in Edexcel (first version, for review in docs/review/M2.md). PROPOSED, QUESTIONS.md 26 (pending until answered): EDX-23 shows element assignment for arrays only; a STRING can't be changed in place, as in Python."
+}

@@ -1,0 +1,4 @@
+SET n TO 0.5
+REPEAT
+  SET n TO n + 0.5
+UNTIL n
