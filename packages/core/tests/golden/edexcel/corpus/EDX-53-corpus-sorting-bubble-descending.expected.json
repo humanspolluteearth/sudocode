@@ -1,5 +1,5 @@
 {
-  "spec": ["EDX-50", "EDX-23"],
+  "spec": ["EDX-53", "EDX-23"],
   "language": "edexcel",
   "expect": {
     "stdout": "3\n2\n1\n",

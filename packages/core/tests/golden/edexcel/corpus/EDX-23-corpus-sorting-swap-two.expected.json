@@ -1,8 +1,8 @@
 {
-  "spec": ["EDX-52", "EDX-53"],
+  "spec": ["EDX-23"],
   "language": "edexcel",
   "expect": {
-    "stdout": "55\n",
+    "stdout": "4,9\n",
     "errors": [],
     "warnings": [],
     "files": null,

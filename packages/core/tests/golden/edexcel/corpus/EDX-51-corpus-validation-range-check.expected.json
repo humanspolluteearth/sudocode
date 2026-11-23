@@ -1,5 +1,5 @@
 {
-  "spec": ["EDX-54", "EDX-72", "EDX-30"],
+  "spec": ["EDX-51", "EDX-72"],
   "language": "edexcel",
   "inputs": ["-5", "130", "15"],
   "expect": {
