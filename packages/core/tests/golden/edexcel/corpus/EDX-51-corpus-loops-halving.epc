@@ -1,0 +1,7 @@
+SET n TO 100
+SET steps TO 0
+WHILE n > 1 DO
+    SET n TO n DIV 2
+    SET steps TO steps + 1
+END WHILE
+SEND steps TO DISPLAY

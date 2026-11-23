@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-50", "EDX-23"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "3\n2\n1\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Exam-style corpus program, written to the Edexcel command set. Pass 1: [3,1,2]->[3,2,1]; pass 2 changes nothing."
+}

@@ -1,0 +1,8 @@
+SET data TO [8, 3, 9, 4]
+SET found TO -1
+FOR i FROM 0 TO LENGTH(data) - 1 DO
+    IF data[i] = 9 THEN
+        SET found TO i
+    END IF
+END FOR
+SEND found TO DISPLAY

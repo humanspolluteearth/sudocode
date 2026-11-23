@@ -1,0 +1,13 @@
+{
+  "spec": ["EDX-41", "EDX-31", "EDX-72"],
+  "language": "edexcel",
+  "inputs": ["55"],
+  "expect": {
+    "stdout": "Pass\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Exam-style corpus program, written to the Edexcel command set. 55 is below 70 and at least 40."
+}

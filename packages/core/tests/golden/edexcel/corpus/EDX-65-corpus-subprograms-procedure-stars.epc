@@ -1,0 +1,8 @@
+PROCEDURE stars(count)
+BEGIN PROCEDURE
+    FOR i FROM 1 TO count DO
+        SEND '*' TO DISPLAY
+    END FOR
+END PROCEDURE
+
+stars(3)

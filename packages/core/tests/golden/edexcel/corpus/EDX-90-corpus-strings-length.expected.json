@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-90", "EDX-16"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Length 6\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Exam-style corpus program, written to the Edexcel command set. "
+}

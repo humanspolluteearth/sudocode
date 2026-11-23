@@ -43,10 +43,44 @@ jobs:
           CI: "true"
           E2E_BROWSERS: webkit
 
+  fuzz:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - run: pnpm --filter @sudocode/core test -- tests/property/fuzz
+        env:
+          SUDOCODE_RUNS: "20000"
+
+  property:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - run: pnpm --filter @sudocode/core test -- tests/property/properties
+        env:
+          SUDOCODE_RUNS: "20000"
+
+  perf:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - run: pnpm --filter @sudocode/core test -- tests/perf
+
   # Runs the whole test suite and the spec-coverage report on main; on failure it opens (or comments on) one
   # issue labelled `nightly`, so a broken night is never missed.
   report:
-    needs: [e2e-firefox, e2e-webkit]
+    needs: [e2e-firefox, e2e-webkit, fuzz, property, perf]
     # Runs even when a browser job failed, so the issue below is still opened.
     if: always()
     runs-on: ubuntu-latest

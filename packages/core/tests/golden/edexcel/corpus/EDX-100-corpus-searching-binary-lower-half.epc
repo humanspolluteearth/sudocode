@@ -1,0 +1,17 @@
+SET data TO [2, 5, 8, 12, 16, 23, 38]
+SET low TO 0
+SET high TO LENGTH(data) - 1
+SET found TO FALSE
+WHILE NOT found AND low <= high DO
+    SET mid TO (low + high) DIV 2
+    IF data[mid] = 5 THEN
+        SET found TO TRUE
+    ELSE
+        IF data[mid] < 5 THEN
+            SET low TO mid + 1
+        ELSE
+            SET high TO mid - 1
+        END IF
+    END IF
+END WHILE
+SEND mid TO DISPLAY

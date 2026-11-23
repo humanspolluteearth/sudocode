@@ -1,0 +1,6 @@
+FUNCTION square(n)
+BEGIN FUNCTION
+    RETURN n * n
+END FUNCTION
+
+SEND square(7) TO DISPLAY

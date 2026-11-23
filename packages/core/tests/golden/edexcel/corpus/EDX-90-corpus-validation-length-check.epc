@@ -1,0 +1,6 @@
+SET password TO 'abc123'
+IF LENGTH(password) >= 8 THEN
+    SEND 'OK' TO DISPLAY
+ELSE
+    SEND 'Too short' TO DISPLAY
+END IF

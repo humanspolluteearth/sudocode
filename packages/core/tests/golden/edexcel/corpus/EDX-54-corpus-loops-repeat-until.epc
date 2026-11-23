@@ -1,0 +1,5 @@
+SET n TO 1
+REPEAT
+    SET n TO n * 2
+UNTIL n > 50
+SEND n TO DISPLAY
