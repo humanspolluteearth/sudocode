@@ -210,4 +210,4 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
     so that test must fail. Proposed change: swap the RECEIVE line for a file statement that is still not supported
     (`READ Data.txt x` on line 5, EDX-82; expectation unchanged), and rename the test to "...subprograms and files...".
     RECEIVE itself is already covered by the EDX-72/73/74 conformance tests. The RECEIVE PR stays open until you answer.
-    - Answer:
+    - Answer: Approved: RECEIVE removed from the SH-18 not-supported test.
