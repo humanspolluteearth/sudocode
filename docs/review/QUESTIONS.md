@@ -169,4 +169,4 @@ Tests named here stay pending (`openQuestions`) until you answer; the others sho
     existing `docs/review/M2.md` instead of a new file. Proposed: accept both as they are (docs only, PR numbers checked
     against each PR's files); from M3 on, one item per PR.
     Tests: none.
-    - Answer:
+    - Answer: accept
