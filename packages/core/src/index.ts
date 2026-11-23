@@ -11,3 +11,4 @@ export * from "./messages/index.ts";
 export type { WorkerHandle } from "./worker/scope.ts";
 export { createWorkerRunner } from "./worker/worker-runner.ts";
 export { runHeadless, type HeadlessResult } from "./runner/headless.ts";
+export { EDEXCEL_EXAMPLES, SUBPROGRAM_EXAMPLES, type Example } from "./examples/edexcel.ts";
