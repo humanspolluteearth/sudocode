@@ -3,26 +3,27 @@ import { render } from "vitest-browser-react";
 import { axeViolations } from "./axe.ts";
 import { FilesPanel } from "./FilesPanel.tsx";
 
-describe("EDX-80 the Files panel", () => {
-  it("EDX-80 lists files and shows the contents of the chosen one", async () => {
+describe("SH-11 the Files panel", () => {
+  it("SH-11 lists files and shows the contents of the chosen one", async () => {
     const screen = await render(
       <FilesPanel files={{ "Scores.txt": "5\n7\n" }} onChange={() => undefined} onDelete={() => undefined} />,
     );
     await screen.getByRole("button", { name: "Scores.txt" }).click();
     await expect.element(screen.getByLabelText("Contents of Scores.txt")).toHaveValue("5\n7\n");
   });
-  it("EDX-80 creates a file from a valid name and refuses a bad one", async () => {
+  it("SH-11 creates a file from a valid name and refuses a bad one", async () => {
     const onChange = vi.fn();
     const screen = await render(<FilesPanel files={{}} onChange={onChange} onDelete={() => undefined} />);
     await screen.getByLabelText("New file name").fill("bad name");
     await screen.getByRole("button", { name: "Create" }).click();
     expect(onChange).not.toHaveBeenCalled();
     await expect.element(screen.getByRole("status")).toBeVisible();
+    expect(screen.getByRole("status").element().textContent).toContain("Use letters, digits, dot, dash or underscore");
     await screen.getByLabelText("New file name").fill("Scores.txt");
     await screen.getByRole("button", { name: "Create" }).click();
     expect(onChange).toHaveBeenCalledWith("Scores.txt", "");
   });
-  it("EDX-80 edits and deletes the chosen file", async () => {
+  it("SH-11 edits and deletes the chosen file", async () => {
     const onChange = vi.fn();
     const onDelete = vi.fn();
     const screen = await render(<FilesPanel files={{ "a.txt": "x" }} onChange={onChange} onDelete={onDelete} />);

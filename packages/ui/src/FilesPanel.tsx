@@ -8,7 +8,6 @@ export interface FilesPanelProps {
   files: VirtualFiles;
   onChange: (name: string, contents: string) => void;
   onDelete: (name: string) => void;
-  /** Called with the file's name once the student asks for it to be gone. */
 }
 
 export function FilesPanel({ files, onChange, onDelete }: FilesPanelProps) {
@@ -17,7 +16,7 @@ export function FilesPanel({ files, onChange, onDelete }: FilesPanelProps) {
   const [message, setMessage] = useState("");
   const picker = useRef<HTMLInputElement>(null);
   const names = Object.keys(files).sort((a, b) => a.localeCompare(b));
-  const current = selected !== null && selected in files ? selected : null;
+  const current = selected !== null && Object.hasOwn(files, selected) ? selected : null;
 
   const create = () => {
     const name = newName.trim();

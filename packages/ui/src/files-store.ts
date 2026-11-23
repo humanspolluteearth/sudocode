@@ -7,7 +7,7 @@ import type { VirtualFiles } from "@sudocode/core";
 const NAME = /^[A-Za-z0-9_.-]+$/;
 
 export function validName(name: string): boolean {
-  return NAME.test(name);
+  return NAME.test(name) && name !== "__proto__";
 }
 
 export function findName(files: VirtualFiles, name: string): string | undefined {
@@ -52,11 +52,9 @@ function open(): Promise<IDBDatabase> {
 
 function parseFiles(raw: unknown): VirtualFiles {
   if (typeof raw !== "object" || raw === null) return {};
-  const files: VirtualFiles = {};
-  for (const [name, text] of Object.entries(raw)) {
-    if (typeof text === "string" && validName(name)) files[name] = text;
-  }
-  return files;
+  return Object.fromEntries<string>(
+    Object.entries(raw).filter(([name, text]) => typeof text === "string" && validName(name)),
+  );
 }
 
 export async function loadFiles(): Promise<VirtualFiles> {

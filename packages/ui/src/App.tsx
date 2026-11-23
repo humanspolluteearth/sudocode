@@ -38,18 +38,23 @@ export function App({ workers }: AppProps) {
   const [files, setFilesState] = useState<VirtualFiles>({});
   const filesRef = useRef<VirtualFiles>({});
   const loaded = useRef(false);
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const setFiles = (next: VirtualFiles) => {
     filesRef.current = next;
     setFilesState(next);
-    if (loaded.current) void saveFiles(next);
+    // Saved after a pause in typing, so each keystroke in the Files panel doesn't rewrite the database.
+    if (saveTimer.current !== null) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => {
+      saveTimer.current = null;
+      if (loaded.current) void saveFiles(filesRef.current);
+    }, 300);
   };
   useEffect(() => {
     void loadFiles().then((stored) => {
       loaded.current = true;
-      if (Object.keys(filesRef.current).length === 0) {
-        filesRef.current = stored;
-        setFilesState(stored);
-      }
+      // Whatever a run wrote before the load finished wins over the stored copy of the same file.
+      filesRef.current = { ...stored, ...filesRef.current };
+      setFilesState(filesRef.current);
     });
   }, []);
 

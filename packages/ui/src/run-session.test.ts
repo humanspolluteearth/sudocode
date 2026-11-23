@@ -75,8 +75,8 @@ describe("MISC debugger commands reach the run worker", () => {
   });
 });
 
-describe("EDX-80 the run request carries the student's files", () => {
-  it("EDX-80 passes the files option to the worker", () => {
+describe("SH-11 the run request carries the student's files", () => {
+  it("MISC passes the files option to the worker", () => {
     const workers: FakeWorker[] = [];
     startRun(
       () => {
