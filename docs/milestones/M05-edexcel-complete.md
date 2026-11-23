@@ -14,7 +14,7 @@ Read first: `CLAUDE.md`, `docs/AUTONOMOUS.md`, `docs/TEST-PLAN.md`, `docs/DECISI
 - [x] Step into / step out and the call stack panel — #55
 - [x] Property tests (fast-check: DIV/MOD identity, print/parse round-trip of literals) and a fuzz harness (lexer/parser/checker never throw or hang) with short PR runs and long nightly runs — #56 (home-made `forAll`; fast-check could not be installed, see M5.md)
 - [x] Edexcel exam-style corpus: at least 3 programs per topic (selection, loops, arrays, strings, subprograms, searching, sorting, validation), written to the command set; real past-paper programs can be added later by you — #56 (24 programs, plus REPEAT TIMES and STEP in the review-fix PR)
-- [ ] First Stryker run on `packages/core`; record the score and set the release threshold in `docs/TEST-PLAN.md` — NOT DONE: Stryker could not be installed (sandbox has no network); logged in docs/review/M5.md
+- [x] First Stryker run on `packages/core`; record the score and set the release threshold in `docs/TEST-PLAN.md` — DEFERRED by the owner to M11 ("run Stryker locally before release"); Stryker could not be installed in the sandbox. Not blocking M5.
 - [x] Nightly jobs `fuzz`, `property`, `perf` (benchmarks + memory) with budgets — #56 (perf budgets in docs/TEST-PLAN.md)
 
 ## Out of scope
