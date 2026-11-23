@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { userEvent } from "vitest/browser";
 import { axeViolations } from "./axe.ts";
+import { CallStack } from "./CallStack.tsx";
 import { Console } from "./Console.tsx";
 import { Editor } from "./Editor.tsx";
 import { StepLimitDialog } from "./StepLimitDialog.tsx";
@@ -314,5 +315,51 @@ describe("MISC breakpoint gutter", () => {
     await vi.waitFor(() => {
       expect(screen.container.querySelector(".sc-paused-line")).toBeNull();
     });
+  });
+});
+
+describe("MISC step into, step out and the call stack panel", () => {
+  it("MISC Step into and Step out are enabled only while paused and call their handlers", async () => {
+    const onStepInto = vi.fn();
+    const onStepOut = vi.fn();
+    const make = (paused: boolean) => (
+      <Toolbar
+        running
+        paused={paused}
+        canRun
+        onRun={() => undefined}
+        onStop={() => undefined}
+        onStepInto={onStepInto}
+        onStepOut={onStepOut}
+        zoom={100}
+        onZoom={() => undefined}
+        theme="system"
+        onTheme={() => undefined}
+        examples={[]}
+        onExample={() => undefined}
+      />
+    );
+    const screen = await render(make(false));
+    await expect.element(screen.getByRole("button", { name: "Step into" })).toBeDisabled();
+    await expect.element(screen.getByRole("button", { name: "Step out" })).toBeDisabled();
+    await screen.rerender(make(true));
+    await screen.getByRole("button", { name: "Step into" }).click();
+    await screen.getByRole("button", { name: "Step out" }).click();
+    expect([onStepInto.mock.calls.length, onStepOut.mock.calls.length]).toEqual([1, 1]);
+  });
+
+  it("MISC the call stack lists the innermost call first with its line", async () => {
+    const stack: StackFrame[] = [
+      { name: "fact", line: 4, variables: [] },
+      { name: "(main program)", line: 9, variables: [] },
+    ];
+    const screen = await render(<CallStack stack={stack} />);
+    const rows = [...screen.container.querySelectorAll("li")].map((li) => li.textContent);
+    expect(rows).toEqual(["factline 4", "(main program)line 9"]);
+  });
+
+  it("MISC with no stack the panel says how to get one", async () => {
+    const screen = await render(<CallStack stack={[]} />);
+    await expect.element(screen.getByText("Pause the program to see the calls it is inside.")).toBeVisible();
   });
 });

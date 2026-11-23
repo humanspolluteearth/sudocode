@@ -17,6 +17,8 @@ export interface ToolbarProps {
   paused?: boolean;
   onContinue?: () => void;
   onStepOver?: () => void;
+  onStepInto?: () => void;
+  onStepOut?: () => void;
   onPause?: () => void;
   zoom: number;
   onZoom: (zoom: number) => void;
@@ -62,6 +64,36 @@ export function Toolbar(p: ToolbarProps) {
           <circle cx="8" cy="13" r="1.6" style={{ fill: "currentColor" }} />
         </svg>
         Step over
+      </button>
+      <button
+        type="button"
+        className="sc-tb"
+        onClick={p.onStepInto}
+        disabled={p.paused !== true}
+        title="Step into (F11)"
+      >
+        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M8 2v9M4.5 7.5 8 11l3.5-3.5M3 14h10"
+            style={{ fill: "none", stroke: "currentColor", strokeWidth: 1.5 }}
+          />
+        </svg>
+        Step into
+      </button>
+      <button
+        type="button"
+        className="sc-tb"
+        onClick={p.onStepOut}
+        disabled={p.paused !== true}
+        title="Step out (Shift+F11)"
+      >
+        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M8 11V2M4.5 5.5 8 2l3.5 3.5M3 14h10"
+            style={{ fill: "none", stroke: "currentColor", strokeWidth: 1.5 }}
+          />
+        </svg>
+        Step out
       </button>
       <button
         type="button"

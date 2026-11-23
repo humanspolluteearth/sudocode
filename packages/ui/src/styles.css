@@ -487,3 +487,18 @@ body {
     min-width: 24px;
   }
 }
+
+.sc-stack {
+  margin: 0;
+  padding: 0 8px 8px;
+  list-style: none;
+}
+.sc-stack li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 0;
+}
+.sc-stack li[aria-current="true"] {
+  font-weight: 600;
+}

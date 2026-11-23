@@ -75,7 +75,7 @@ export function App({ workers }: AppProps) {
   };
   const stop = () => session.current?.stop();
   const send = (command: SessionCommand) => session.current?.send(command);
-  const resume = (command: "continue" | "stepOver") => {
+  const resume = (command: "continue" | "stepOver" | "stepInto" | "stepOut") => {
     if (run.state !== "paused") return;
     dispatch({ type: "resumed" });
     send({ type: command });
@@ -89,6 +89,8 @@ export function App({ workers }: AppProps) {
     else if (e.key === "F5") start();
     else if (e.key === "F8") resume("continue");
     else if (e.key === "F10") resume("stepOver");
+    else if (e.key === "F11" && e.shiftKey) resume("stepOut");
+    else if (e.key === "F11") resume("stepInto");
     else return;
     e.preventDefault();
   };
@@ -122,6 +124,12 @@ export function App({ workers }: AppProps) {
         }}
         onStepOver={() => {
           resume("stepOver");
+        }}
+        onStepInto={() => {
+          resume("stepInto");
+        }}
+        onStepOut={() => {
+          resume("stepOut");
         }}
         onPause={() => send({ type: "pause" })}
         zoom={prefs.zoom}
