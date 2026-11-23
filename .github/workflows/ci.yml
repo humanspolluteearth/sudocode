@@ -47,7 +47,8 @@ jobs:
       - run: pnpm test
 
   # Lists every spec ID with the tests that prove it (table in the job summary). Fails if an ID in
-  # packages/core/tests/scope.json has no test. Report-only in M1: scope.json is empty and the check isn't required.
+  # packages/core/tests/scope.json has no passing (non-pending) test. From M2 scope.json lists the implemented IDs,
+  # so this gates every PR (TEST-PLAN section 8: add it to the required checks).
   spec-coverage:
     runs-on: ubuntu-latest
     timeout-minutes: 10
