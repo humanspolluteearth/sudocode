@@ -6,9 +6,12 @@
 // (panic mode, cursor.ts), and blocks know their closers, so a wrong or missing END is reported once and the
 // structure around it still makes sense (decision D8).
 import type { Diagnostic } from "../diagnostics.ts";
-import { TYPES, type Expr, type Program, type Stmt, type Target } from "./ast.ts";
-import { closerAhead, makeBlock, takeCloser, unmatched, type Block, type FoundCloser } from "./closers.ts";
+import type { Expr, Program, Stmt, Target } from "./ast.ts";
+import { closerAhead, takeCloser, unmatched, type Block, type FoundCloser } from "./closers.ts";
 import { Abandon, Cursor, RESERVED } from "./cursor.ts";
+import { forEach, forStatement, ifStatement, repeat, whileStatement } from "./parse-blocks.ts";
+import { callStatement, constant, returnStatement, subprogram } from "./parse-subprograms.ts";
+import type { ParserContext } from "./parser-context.ts";
 import { otherStatement } from "./other-statements.ts";
 import { parseReceive } from "./receive.ts";
 import { lex } from "./lexer.ts";
@@ -45,9 +48,14 @@ const STATEMENT_WORDS = new Set([
   "BEGIN",
 ]);
 
-class Parser {
+class Parser implements ParserContext {
   readonly c: Cursor;
   private readonly open: Block[] = [];
+
+  get openCount(): number {
+    return this.open.length;
+  }
+
   /** Closers already reported as wrong, so a closer that ends several blocks is reported once. */
   private readonly reported = new Set<Token>();
 
@@ -69,7 +77,7 @@ class Parser {
     }
   }
 
-  private skipBlankLines(): void {
+  skipBlankLines(): void {
     while (this.c.peek().kind === "newline") this.c.next();
   }
 
@@ -79,7 +87,7 @@ class Parser {
    * Parses statements until one of `block.closers` (returned, not consumed), the end of the program, or a closer
    * that belongs to an enclosing block ("outer": that block will take it).
    */
-  private body(block: Block, reportUnclosed: Block = block): { stmts: Stmt[]; end: FoundCloser | "eof" | "outer" } {
+  body(block: Block, reportUnclosed: Block = block): { stmts: Stmt[]; end: FoundCloser | "eof" | "outer" } {
     const stmts: Stmt[] = [];
     this.open.push(block);
     try {
@@ -126,7 +134,7 @@ class Parser {
   }
 
   /** Consumes the closer that ended a body (when it is this block's own), then the rest of its line. */
-  private close(end: FoundCloser | "eof" | "outer"): void {
+  close(end: FoundCloser | "eof" | "outer"): void {
     if (end === "eof" || end === "outer") return;
     if (end.replaced === true) {
       this.c.skipLine();
@@ -168,30 +176,30 @@ class Parser {
       case "RECEIVE":
         return parseReceive(this.c, (advice) => this.name(advice));
       case "IF":
-        return this.ifStatement(t, null);
+        return ifStatement(this, t, null);
       case "WHILE":
-        return this.whileStatement();
+        return whileStatement(this);
       case "REPEAT":
-        return this.repeat();
+        return repeat(this);
       case "FOR":
-        return this.forStatement();
+        return forStatement(this);
       case "FOREACH":
-        return this.forEach();
+        return forEach(this);
       case "CONST":
-        return this.constant();
+        return constant(this);
       case "PROCEDURE":
       case "FUNCTION":
-        return this.subprogram();
+        return subprogram(this);
       case "RETURN":
-        return this.returnStatement();
+        return returnStatement(this);
       default:
-        if (this.c.isSymbol("(", 1) && !RESERVED.has(t.text)) return this.callStatement();
+        if (this.c.isSymbol("(", 1) && !RESERVED.has(t.text)) return callStatement(this);
         otherStatement(this.c, t, upper);
         return null;
     }
   }
 
-  private name(advice: string): Token {
+  name(advice: string): Token {
     const t = this.c.peek();
     if (t.kind === "error") return this.c.failSilently();
     if (t.kind !== "word") return this.c.fail("a name", advice);
@@ -277,7 +285,7 @@ class Parser {
   }
 
   /** The rest of a block's first line; on a mistake the block still counts as open (D8). */
-  private header<T>(parse: () => T, fallback: T): T {
+  header<T>(parse: () => T, fallback: T): T {
     try {
       const result = parse();
       this.c.endStatement();
@@ -290,249 +298,7 @@ class Parser {
     }
   }
 
-  private placeholder(t: Token): Expr {
+  placeholder(t: Token): Expr {
     return { kind: "bool", value: true, span: t.span };
-  }
-
-  /** `chainHead` is set for the IF of an ELSE IF chain: its parts report "never closed" as the head IF. */
-  private ifStatement(first: Token, chainHead: Block | null): Stmt {
-    this.c.next();
-    this.c.warnCase(first, "IF");
-    const condition = this.header(() => {
-      const e = parseExpression(this.c);
-      this.c.expectKeyword("THEN", "Write IF <condition> THEN.");
-      return e;
-    }, this.placeholder(first));
-    const span = { ...first.span, end: this.c.last.span.start };
-    const own = makeBlock("IF", first, ["ELSE", "END IF"]);
-    const head = chainHead ?? own;
-    const then = this.body(own, head);
-    let otherwise: Stmt[] = [];
-    if (then.end !== "eof" && then.end !== "outer" && then.end.closer === "ELSE") {
-      const elseWord = this.c.next();
-      this.c.warnCase(elseWord, "ELSE");
-      const after = this.c.peek();
-      if (Cursor.isWord(after, "IF") && after.span.line === elseWord.span.line) {
-        // EDX-42: an ELSE IF chain, closed by one END IF, with a warning that the official form nests.
-        this.c.report("W-EDX-ELSE-IF", elseWord.span);
-        otherwise = [this.ifStatement(after, head)];
-      } else {
-        this.c.endStatement();
-        const elsePart = makeBlock("IF", first, ["END IF"]);
-        const rest = this.body(elsePart, { ...head, closers: ["END IF"], main: "END IF" });
-        otherwise = rest.stmts;
-        this.close(rest.end);
-      }
-    } else {
-      this.close(then.end);
-    }
-    return { kind: "if", condition, then: then.stmts, else: otherwise, span };
-  }
-
-  private whileStatement(): Stmt {
-    const first = this.c.next();
-    this.c.warnCase(first, "WHILE");
-    const condition = this.header(() => {
-      const e = parseExpression(this.c);
-      this.c.expectKeyword("DO", "Write WHILE <condition> DO.");
-      return e;
-    }, this.placeholder(first));
-    const span = { ...first.span, end: this.c.last.span.start };
-    const result = this.body(makeBlock("WHILE", first, ["END WHILE"]));
-    this.close(result.end);
-    return { kind: "while", condition, body: result.stmts, span };
-  }
-
-  private repeat(): Stmt {
-    const first = this.c.next();
-    this.c.warnCase(first, "REPEAT");
-    if (this.c.atLineEnd()) {
-      this.c.endLine();
-      const span = first.span;
-      const result = this.body(makeBlock("REPEAT", first, ["UNTIL"]));
-      let condition = this.placeholder(first);
-      if (result.end !== "eof" && result.end !== "outer") {
-        const until = this.c.peek();
-        takeCloser(this.c, result.end);
-        condition = this.header(() => parseExpression(this.c), this.placeholder(until));
-      }
-      return { kind: "repeatUntil", body: result.stmts, condition, span };
-    }
-    const count = this.header(() => {
-      const e = parseExpression(this.c);
-      this.c.expectKeyword("TIMES", "Write REPEAT <number> TIMES.");
-      return e;
-    }, this.placeholder(first));
-    const span = { ...first.span, end: this.c.last.span.start };
-    const result = this.body(makeBlock("REPEAT", first, ["END REPEAT"]));
-    this.close(result.end);
-    return { kind: "repeatTimes", count, body: result.stmts, span };
-  }
-
-  private forStatement(): Stmt {
-    const first = this.c.next();
-    this.c.warnCase(first, "FOR");
-    if (this.c.isKeyword("EACH")) {
-      this.c.warnCase(this.c.next(), "EACH");
-      return this.forEachRest(first);
-    }
-    const advice = "Write FOR <name> FROM <start> TO <end> DO.";
-    const parts = this.header(() => {
-      const n = this.name(advice);
-      this.c.expectKeyword("FROM", advice);
-      const start = parseExpression(this.c);
-      this.c.expectKeyword("TO", advice);
-      const end = parseExpression(this.c);
-      const step = this.c.takeKeyword("STEP") === null ? null : parseExpression(this.c);
-      this.c.expectKeyword("DO", advice);
-      return { n, start, end, step };
-    }, null);
-    const span = { ...first.span, end: this.c.last.span.start };
-    const result = this.body(makeBlock("FOR", first, ["END FOR"]));
-    this.close(result.end);
-    const p = parts ?? { n: first, start: this.placeholder(first), end: this.placeholder(first), step: null };
-    return {
-      kind: "for",
-      name: p.n.text,
-      nameSpan: p.n.span,
-      start: p.start,
-      end: p.end,
-      step: p.step,
-      body: result.stmts,
-      span,
-    };
-  }
-
-  private forEach(): Stmt {
-    const first = this.c.next();
-    // EDX-58: FOREACH works, with its own warning (which also fixes the case, D7).
-    const edits = [{ start: first.span.start, end: first.span.end, replacement: "FOR EACH" }];
-    this.c.report("W-EDX-FOREACH", first.span, { word: first.text, official: "FOR EACH" }, undefined, edits);
-    return this.forEachRest(first);
-  }
-
-  private forEachRest(first: Token): Stmt {
-    const advice = "Write FOR EACH <name> FROM <array> DO.";
-    const parts = this.header(() => {
-      const n = this.name(advice);
-      this.c.expectKeyword("FROM", advice);
-      const iterable = parseExpression(this.c);
-      this.c.expectKeyword("DO", advice);
-      return { n, iterable };
-    }, null);
-    const span = { ...first.span, end: this.c.last.span.start };
-    const result = this.body(makeBlock("FOR EACH", first, ["END FOREACH"]));
-    this.close(result.end);
-    const p = parts ?? { n: first, iterable: this.placeholder(first) };
-    return { kind: "forEach", name: p.n.text, nameSpan: p.n.span, iterable: p.iterable, body: result.stmts, span };
-  }
-
-  /**
-   * PROCEDURE name(params) / BEGIN PROCEDURE / ... / END PROCEDURE, and the same for FUNCTION (EDX-60, EDX-61).
-   * Compiler concept: a *subprogram definition* is a declaration; the checker gives its body its own scope.
-   */
-  private subprogram(): Stmt {
-    const first = this.c.next();
-    const sub = first.text.toUpperCase() === "PROCEDURE" ? "procedure" : "function";
-    const word = sub.toUpperCase();
-    this.c.warnCase(first, word);
-    if (this.open.length > 0) {
-      this.c.report("E-SYN-NOT-SUPPORTED", first.span, {
-        feature: `A ${sub} written inside another block`,
-        advice: `Write the ${sub} on its own, outside every IF, loop and other subprogram.`,
-      });
-      throw new Abandon();
-    }
-    const advice = `Write ${word} <name>(<parameters>).`;
-    const head = this.header(() => {
-      const n = this.name(advice);
-      const params: { name: string; span: Token["span"] }[] = [];
-      if (!this.c.isSymbol("(")) {
-        // EDX-66: the brackets are required, even with no parameters.
-        this.c.report("E-CHK-MISSING-PARENS", n.span, { name: n.text }, undefined, [
-          { start: n.span.end, end: n.span.end, replacement: "()" },
-        ]);
-      } else {
-        this.c.next();
-        if (!this.c.isSymbol(")")) {
-          for (;;) {
-            const p = this.name(advice);
-            params.push({ name: p.text, span: p.span });
-            if (!this.c.isSymbol(",")) break;
-            this.c.next();
-          }
-        }
-        this.c.expectSymbol(")", ") or ,", "Separate the parameters with commas and close them with ).");
-      }
-      return { n, params };
-    }, null);
-    // BEGIN PROCEDURE / BEGIN FUNCTION is the next line.
-    this.skipBlankLines();
-    const begin = this.c.peek();
-    if (Cursor.isWord(begin, "BEGIN")) {
-      this.c.next();
-      this.c.warnCase(begin, "BEGIN");
-      const kind = this.c.peek();
-      if (Cursor.isWord(kind, word)) {
-        this.c.next();
-        this.c.warnCase(kind, word);
-      } else {
-        this.c.fail(word, `Write BEGIN ${word}.`);
-      }
-      this.c.endStatement();
-    } else {
-      this.c.report("E-SYN-EXPECTED", begin.span, {
-        expected: `BEGIN ${word}`,
-        found: begin.kind === "eof" ? "the end of the program" : begin.text,
-        advice: `Write BEGIN ${word} on the line after the ${sub}'s name.`,
-      });
-    }
-    const span = { ...first.span, end: this.c.last.span.end };
-    const result = this.body(makeBlock(word, first, [`END ${word}` as "END PROCEDURE" | "END FUNCTION"]));
-    this.close(result.end);
-    const h = head ?? { n: first, params: [] };
-    return { kind: "subprogram", sub, name: h.n.text, nameSpan: h.n.span, params: h.params, body: result.stmts, span };
-  }
-
-  private returnStatement(): Stmt {
-    const first = this.c.next();
-    this.c.warnCase(first, "RETURN");
-    const value = this.c.atLineEnd() ? null : parseExpression(this.c);
-    const span = this.c.spanFrom(first);
-    this.c.endStatement();
-    return { kind: "return", value, span };
-  }
-
-  /** `name(args)` on its own line: a call to a procedure (EDX-64). */
-  private callStatement(): Stmt {
-    const n = this.c.next();
-    this.c.next(); // (
-    const args: Expr[] = [];
-    if (!this.c.isSymbol(")")) {
-      for (;;) {
-        args.push(parseExpression(this.c));
-        if (!this.c.isSymbol(",")) break;
-        this.c.next();
-      }
-    }
-    this.c.expectSymbol(")", ") or ,", "Separate the arguments with commas and close them with ).");
-    const span = this.c.spanFrom(n);
-    this.c.endStatement();
-    return { kind: "callStatement", name: n.text, nameSpan: n.span, args, span };
-  }
-
-  private constant(): Stmt {
-    const first = this.c.next();
-    this.c.warnCase(first, "CONST");
-    const advice = "Write CONST <type> <name>, e.g. CONST INTEGER Max.";
-    const typeToken = this.c.peek();
-    const type = TYPES.find((name) => Cursor.isWord(typeToken, name));
-    if (type === undefined) return this.c.fail("a type (INTEGER, REAL, BOOLEAN, CHARACTER or STRING)", advice);
-    this.c.next();
-    this.c.warnCase(typeToken, type);
-    const n = this.name(advice);
-    const span = this.c.spanFrom(first);
-    this.c.endStatement();
-    return { kind: "const", type, name: n.text, nameSpan: n.span, span };
   }
 }
