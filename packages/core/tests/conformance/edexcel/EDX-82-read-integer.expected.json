@@ -1,0 +1,15 @@
+{
+  "spec": ["EDX-82"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "41\n"
+  },
+  "expect": {
+    "stdout": "42\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A variable that is already an INTEGER receives the line converted to INTEGER, so 41 + 1 is 42."
+}

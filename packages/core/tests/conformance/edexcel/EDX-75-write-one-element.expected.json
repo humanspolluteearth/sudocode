@@ -1,0 +1,14 @@
+{
+  "spec": ["EDX-75", "EDX-83"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [],
+    "warnings": [],
+    "files": {
+      "s.txt": "3\n"
+    },
+    "trace": null
+  },
+  "notes": "Writing a single element is fine (EDX-75)."
+}

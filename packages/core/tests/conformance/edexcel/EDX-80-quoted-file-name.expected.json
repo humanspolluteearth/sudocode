@@ -1,0 +1,14 @@
+{
+  "spec": ["EDX-80", "EDX-83"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [],
+    "warnings": [],
+    "files": {
+      "Scores.txt": "a\n"
+    },
+    "trace": null
+  },
+  "notes": "A quoted file name names the same file as a bare one (EDX-80)."
+}

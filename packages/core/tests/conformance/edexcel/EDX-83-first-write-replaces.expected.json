@@ -1,0 +1,17 @@
+{
+  "spec": ["EDX-83"],
+  "language": "edexcel",
+  "files": {
+    "log.txt": "old\n"
+  },
+  "expect": {
+    "stdout": "",
+    "errors": [],
+    "warnings": [],
+    "files": {
+      "log.txt": "new1\nnew2\n"
+    },
+    "trace": null
+  },
+  "notes": "The first WRITE in a run replaces the old contents; the later WRITE adds a line."
+}

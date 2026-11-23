@@ -1,0 +1,2 @@
+SET grid TO [[1, 2], [3, 4]]
+SEND grid[0, 2] TO DISPLAY

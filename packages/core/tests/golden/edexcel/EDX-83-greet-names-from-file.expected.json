@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-80", "EDX-82", "EDX-83"],
+  "language": "edexcel",
+  "files": {
+    "names.txt": "Ann\nBen\nCy\n"
+  },
+  "expect": {
+    "stdout": "",
+    "errors": [],
+    "warnings": [],
+    "files": {
+      "names.txt": "Ann\nBen\nCy\n",
+      "out.txt": "Hello Ann\nHello Ben\nHello Cy\n"
+    },
+    "trace": null
+  },
+  "notes": "Each READ takes the next line; the first WRITE replaces out.txt and the rest add lines."
+}

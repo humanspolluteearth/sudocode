@@ -1,0 +1,3 @@
+SET n TO 0
+READ d.txt n
+SEND n + 1 TO DISPLAY

@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-84"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "one\n"
+  },
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-READ-PAST-END",
+        "line": 2,
+        "column": 1,
+        "message": "Tried to read past the end of d.txt",
+        "hint": "Count the records first, and READ that many times."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Reading past the last line is a runtime error (EDX-84)."
+}

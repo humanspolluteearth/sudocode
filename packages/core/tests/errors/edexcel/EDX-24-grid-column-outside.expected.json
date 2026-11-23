@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-24", "EDX-27"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INDEX-RANGE",
+        "line": 2,
+        "column": 6,
+        "message": "Index 2 is outside grid[0]",
+        "hint": "grid[0] has 2 elements, so its indexes are 0 to 1. Check the loop limits."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Reading a column that does not exist is a runtime error (EDX-27). New test for the M5 SHOULD FIX gap. The message names the row (grid[0]), the list whose column is out of range; today's wording names grid[0, 2], so this test is pending until the code PR fixes the wording."
+}
