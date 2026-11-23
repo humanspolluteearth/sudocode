@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-24"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "9\n7\n2\n2\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Grid[row, col], 0-based. A row on its own is an array (LENGTH 2)."
+}

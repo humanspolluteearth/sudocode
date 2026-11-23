@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-13"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "999\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Down(999) is 1,000 nested calls, exactly the limit, so it works. docs: SH-13."
+}

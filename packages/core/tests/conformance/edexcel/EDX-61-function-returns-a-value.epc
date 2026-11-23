@@ -1,0 +1,7 @@
+FUNCTION Double(n)
+BEGIN FUNCTION
+    RETURN n * 2
+END FUNCTION
+SET y TO Double(4) + 1
+SEND y TO DISPLAY
+SEND Double(Double(3)) TO DISPLAY

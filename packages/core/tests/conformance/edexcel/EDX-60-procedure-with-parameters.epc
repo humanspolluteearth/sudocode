@@ -1,0 +1,6 @@
+PROCEDURE greet(name)
+BEGIN PROCEDURE
+    SEND 'Hello ' & name TO DISPLAY
+END PROCEDURE
+greet('Sam')
+greet('Ana')

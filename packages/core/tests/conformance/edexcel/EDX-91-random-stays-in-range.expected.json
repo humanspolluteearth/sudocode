@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-91", "SH-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "TRUE\nTRUE\nTRUE\n0\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "RANDOM(n) is 0 to n inclusive (EDX-91): 500 draws stay in range and reach both ends. RANDOM(0) is 0. Fixed seed (SH-12)."
+}

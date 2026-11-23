@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-24", "EDX-27"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INDEX-RANGE",
+        "line": 2,
+        "column": 6,
+        "message": "Index 2 is outside grid",
+        "hint": "grid has 2 elements, so its indexes are 0 to 1. Check the loop limits."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Reading a row that does not exist is a runtime error (EDX-27)."
+}

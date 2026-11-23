@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-65", "EDX-61"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "25\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Subprograms may be defined anywhere and called before their definition (EDX-65)."
+}

@@ -25,6 +25,14 @@ export const noteMessages: Catalogue = {
     spec: ["EDX-44"],
     default: { message: "ENDIF is written as two words in Edexcel", hint: "Write END IF.", fix: "Write END IF" },
   },
+  "W-EDX-GRID-BRACKETS": {
+    spec: ["EDX-24"],
+    default: {
+      message: "A grid element is written {official} in Edexcel",
+      hint: "Write {official}.",
+      fix: "Write {official}",
+    },
+  },
   "W-EDX-FOREACH": {
     spec: ["EDX-58"],
     default: { message: "{word} is written {official} in Edexcel", hint: "Write {official}.", fix: "Write {official}" },

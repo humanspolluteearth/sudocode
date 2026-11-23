@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-62"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "6\n5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The parameter is a copy: the caller's x stays 5 (EDX-62). The parameter is local, so no global-update note."
+}

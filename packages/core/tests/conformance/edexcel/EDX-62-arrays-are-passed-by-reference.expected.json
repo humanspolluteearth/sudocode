@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-62"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "99\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The procedure changes the caller's array (EDX-62)."
+}
