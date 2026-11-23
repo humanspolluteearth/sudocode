@@ -1,12 +1,14 @@
 // The bottom status bar: run state, problem counts, cursor position and language.
 import type { Diagnostic } from "@sudocode/core";
 
-export type RunState = "idle" | "checking" | "running" | "finished" | "stopped" | "error";
+export type RunState = "idle" | "checking" | "running" | "paused" | "waiting" | "finished" | "stopped" | "error";
 
 const STATE_TEXT: Record<RunState, string> = {
   idle: "Ready",
   checking: "Checking",
   running: "Running",
+  paused: "Paused",
+  waiting: "Waiting for input",
   finished: "Finished",
   stopped: "Stopped",
   error: "Stopped with an error",

@@ -26,6 +26,9 @@
   --warn: #8a5a00;
   --info: #1f4e8c;
   --cur: #fbf3cf;
+  --paused: #d9ecff;
+  --paused-edge: #6a9fd8;
+  --changed: #fff0b3;
   --errline: #fbe1de;
   --kw: #1e3a6e;
   --str: #2f6b2f;
@@ -60,6 +63,9 @@
   --warn: #e0b24f;
   --info: #82aadd;
   --cur: #3a3520;
+  --paused: #1f3a57;
+  --paused-edge: #4f7fb3;
+  --changed: #4a4220;
   --errline: #45231f;
   --kw: #8fb4e3;
   --str: #a3c78f;
@@ -95,6 +101,9 @@
     --warn: #e0b24f;
     --info: #82aadd;
     --cur: #3a3520;
+    --paused: #1f3a57;
+    --paused-edge: #4f7fb3;
+    --changed: #4a4220;
     --errline: #45231f;
     --kw: #8fb4e3;
     --str: #a3c78f;
@@ -343,5 +352,138 @@ body {
     border-left: 0;
     border-top: 1px solid var(--line);
     flex: 0 0 140px;
+  }
+}
+
+/* ---------- debugger */
+.sc-tabs {
+  display: flex;
+  flex: none;
+  background: var(--chrome);
+  border-bottom: 1px solid var(--line);
+}
+.sc-tab {
+  padding: 4px 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+}
+.sc-tab.on {
+  border-bottom-color: var(--link);
+  font-weight: 600;
+}
+.sc-debugger {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.sc-vars-panel {
+  flex: 0 1 auto;
+  max-height: 45%;
+  overflow: auto;
+}
+.sc-trace-panel {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.sc-trace-wrap {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+}
+.sc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font: calc(12.5px * var(--zoom, 1)) / 1.4 var(--code-font);
+}
+.sc-table th,
+.sc-table td {
+  padding: 2px 8px;
+  border-bottom: 1px solid var(--line3);
+  text-align: left;
+  vertical-align: top;
+  white-space: pre-wrap;
+}
+.sc-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--chrome);
+}
+.sc-table tr.sc-changed {
+  background: var(--changed);
+}
+.sc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.sc-input {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 4px 8px;
+  border-top: 1px solid var(--line2);
+  background: var(--chrome);
+  flex: none;
+}
+.sc-input label {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+  align-items: center;
+}
+.sc-input input {
+  flex: 1;
+  min-width: 0;
+  font: calc(13px * var(--zoom, 1)) / 1.5 var(--code-font);
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--field);
+}
+.sc-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 35%);
+}
+.sc-dialog {
+  max-width: 420px;
+  margin: 16px;
+  padding: 16px 20px;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--line);
+}
+.sc-dialog h2 {
+  margin: 0 0 8px;
+  font-size: 1.1em;
+}
+.sc-dialog-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* Touch screens: every control is at least 44x44 px (ui rules); mouse users keep the compact desktop sizes. */
+@media (pointer: coarse) {
+  .sc-tb,
+  .sc-tab,
+  .sc-input input,
+  .sc-input button,
+  .sc-dialog-buttons button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .sc-bp-gutter .cm-gutterElement {
+    min-width: 24px;
   }
 }

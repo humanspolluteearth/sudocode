@@ -1,4 +1,4 @@
-// The toolbar: Run, Stop, zoom and theme. Buttons are real <button>s with visible text for screen readers.
+// The toolbar: Run, the debugger buttons (Continue, Step over, Pause), Stop, zoom and theme. Buttons are real <button>s with visible text for screen readers.
 import type { Example } from "@sudocode/core";
 import { parseTheme } from "./preferences.ts";
 export type ThemeChoice = "system" | "light" | "dark";
@@ -13,6 +13,11 @@ export interface ToolbarProps {
   canRun: boolean;
   onRun: () => void;
   onStop: () => void;
+  /** True while the run is paused (at a breakpoint, after a step, or by Pause). */
+  paused?: boolean;
+  onContinue?: () => void;
+  onStepOver?: () => void;
+  onPause?: () => void;
   zoom: number;
   onZoom: (zoom: number) => void;
   theme: ThemeChoice;
@@ -35,6 +40,41 @@ export function Toolbar(p: ToolbarProps) {
           <rect x="3.5" y="3.5" width="9" height="9" style={{ fill: p.running ? "var(--red)" : "currentColor" }} />
         </svg>
         Stop
+      </button>
+      <span className="sc-sep" aria-hidden="true" />
+      <button type="button" className="sc-tb" onClick={p.onContinue} disabled={p.paused !== true} title="Continue (F8)">
+        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+          <rect x="2.5" y="3" width="2" height="10" style={{ fill: "currentColor" }} />
+          <path d="M6.5 3v10l7-5z" style={{ fill: p.paused === true ? "var(--green)" : "currentColor" }} />
+        </svg>
+        Continue
+      </button>
+      <button
+        type="button"
+        className="sc-tb"
+        onClick={p.onStepOver}
+        disabled={p.paused !== true}
+        title="Step over (F10)"
+      >
+        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M2 9a6 6 0 0 1 11-3" style={{ fill: "none", stroke: "currentColor", strokeWidth: 1.5 }} />
+          <path d="M14 3v4h-4z" style={{ fill: "currentColor" }} />
+          <circle cx="8" cy="13" r="1.6" style={{ fill: "currentColor" }} />
+        </svg>
+        Step over
+      </button>
+      <button
+        type="button"
+        className="sc-tb"
+        onClick={p.onPause}
+        disabled={!p.running || p.paused === true}
+        title="Pause"
+      >
+        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+          <rect x="4" y="3" width="2.5" height="10" style={{ fill: "currentColor" }} />
+          <rect x="9.5" y="3" width="2.5" height="10" style={{ fill: "currentColor" }} />
+        </svg>
+        Pause
       </button>
       <span className="sc-sep" aria-hidden="true" />
       <label className="sc-field">

@@ -47,3 +47,30 @@ describe("MISC one fresh run worker per run", () => {
     expect(ended()).toBe(1);
   });
 });
+
+describe("MISC debugger commands reach the run worker", () => {
+  it("MISC the run request carries the breakpoints and the trace switch", () => {
+    const workers: FakeWorker[] = [];
+    startRun(
+      () => {
+        const w = new FakeWorker();
+        workers.push(w);
+        return w;
+      },
+      "edexcel",
+      "SEND 1 TO DISPLAY",
+      () => undefined,
+      () => undefined,
+      { breakpoints: [3, 5], trace: true },
+    );
+    expect(workers[0]?.posted[0]).toMatchObject({ type: "run", request: { breakpoints: [3, 5], trace: true } });
+  });
+  it("MISC send posts a command while running and nothing after the run ends", () => {
+    const { workers, session } = start();
+    session.send({ type: "input", text: "42" });
+    session.send({ type: "stepOver" });
+    workers[0]?.reply({ type: "done", status: "finished" });
+    session.send({ type: "continue" });
+    expect(workers[0]?.posted.slice(1)).toEqual([{ type: "input", text: "42" }, { type: "stepOver" }]);
+  });
+});

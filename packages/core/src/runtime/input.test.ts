@@ -64,4 +64,42 @@ describe("convertInput", () => {
     expect(convertInput("  hello  ", "str", span)).toEqual({ kind: "str", value: "  hello  " });
     expect(convertInput("", "str", span)).toEqual({ kind: "str", value: "" });
   });
+
+  it("SH-07 the INTEGER input range ends at ±9,007,199,254,740,991 (D12)", () => {
+    expect(convertInput("9007199254740991", "int", span)).toEqual({ kind: "int", value: 9007199254740991 });
+    expect(convertInput("-9007199254740991", "int", span)).toEqual({ kind: "int", value: -9007199254740991 });
+    expect(errorCode(() => convertInput("9007199254740992", "int", span))).toBe("E-RUN-NUMBER-TOO-LARGE 3:1");
+    expect(errorCode(() => convertInput("-9007199254740992", "int", span))).toBe("E-RUN-NUMBER-TOO-LARGE 3:1");
+  });
+
+  it.each([
+    [" 42 ", "int", { kind: "int", value: 42 }],
+    ["+5", "int", { kind: "int", value: 5 }],
+    ["007", "int", { kind: "int", value: 7 }],
+    [" 2.5 ", "real", { kind: "real", value: 2.5 }],
+    [".5", "real", { kind: "real", value: 0.5 }],
+    ["5.", "real", { kind: "real", value: 5 }],
+    ["1e3", "real", { kind: "real", value: 1000 }],
+    ["-2.5E-1", "real", { kind: "real", value: -0.25 }],
+    [" true ", "bool", { kind: "bool", value: true }],
+    ["False", "bool", { kind: "bool", value: false }],
+  ] as const)("SH-06 D1/D2/D11 %j as %s is accepted", (line, type, value) => {
+    expect(convertInput(line, type, span)).toEqual(value);
+  });
+
+  it.each([
+    ["Infinity", "real"],
+    ["0x10", "real"],
+    ["1_0", "real"],
+    ["0x10", "int"],
+    ["+-5", "int"],
+  ] as const)("SH-06 D11 %j as %s is E-RUN-INPUT-TYPE", (line, type) => {
+    expect(errorCode(() => convertInput(line, type, span))).toBe("E-RUN-INPUT-TYPE 3:1");
+  });
+
+  it("EDX-72 a CHARACTER line is not trimmed, and one emoji is one character", () => {
+    expect(convertInput(" ", "char", span)).toEqual({ kind: "char", value: " " });
+    expect(errorCode(() => convertInput("A ", "char", span))).toBe("E-RUN-INPUT-TYPE 3:1");
+    expect(convertInput("😀", "char", span)).toEqual({ kind: "char", value: "😀" });
+  });
 });
