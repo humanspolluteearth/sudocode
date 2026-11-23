@@ -34,6 +34,14 @@ const BINARY: Partial<Record<BinaryOperator, BinaryOp>> = {
   ">=": "ge",
 };
 
+/** How READ converts a line for the variable's type (EDX-82); anything else stays a STRING. */
+const READ_CONVERT: Readonly<Partial<Record<string, InputConversion>>> = {
+  INTEGER: "int",
+  REAL: "real",
+  BOOLEAN: "bool",
+  CHARACTER: "char",
+};
+
 /** How each RECEIVE type converts the typed line (EDX-72, SH-06). */
 const CONVERT: Readonly<Record<TypeName, InputConversion>> = {
   INTEGER: "int",
@@ -105,7 +113,11 @@ export function lowerProgram(
           target: expr(e.target),
           index: expr(e.index),
           base: 0,
-          text: text(e.target),
+          // A grid item's "array" is its row, named grid[0] (not the whole grid[0, 2]) in messages (EDX-24).
+          text:
+            e.grid === true && e.target.kind === "index"
+              ? `${text(e.target.target)}[${text(e.target.index)}]`
+              : text(e.target),
           span: e.span,
         };
       case "array":
@@ -162,6 +174,14 @@ export function lowerProgram(
         const device = s.device === "KEYBOARD" ? null : s.device;
         const target = variable(s.name, s.nameSpan);
         return [{ kind: "input", target, convert: CONVERT[s.type], device, span: s.span }];
+      }
+      case "write":
+        return [{ kind: "fileWrite", file: s.file.name, value: expr(s.value), span: s.span }];
+      case "read": {
+        // EDX-82: the line is converted to the variable's type; with no type it was made a STRING.
+        const ty = locals?.get(s.name) ?? types.get(s.name);
+        const convert = ty === undefined ? "str" : (READ_CONVERT[ty.kind] ?? "str");
+        return [{ kind: "fileRead", file: s.file.name, target: variable(s.name, s.nameSpan), convert, span: s.span }];
       }
       case "const":
         return []; // the type is the checker's business; the value comes from its SET

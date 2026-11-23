@@ -13,7 +13,7 @@ import type { Span } from "../diagnostics.ts";
 import type { Program } from "../ir/ir.ts";
 import type { Language } from "../language.ts";
 import { makeDiagnostic, type MessageArgs } from "../messages/index.ts";
-import type { PauseReason, RunnerEvent, RunStatus, StackFrame, TraceRow } from "../protocol.ts";
+import type { PauseReason, VirtualFiles, RunnerEvent, RunStatus, StackFrame, TraceRow } from "../protocol.ts";
 import type { EngineRun } from "../runner/engine.ts";
 import { formatValue, typeName } from "./format.ts";
 import { seededRandom } from "./random.ts";
@@ -40,6 +40,8 @@ export interface DriverOptions {
   trace?: boolean;
   /** Seed for RANDOM (SH-12); a fresh one when left out. */
   seed?: number;
+  /** Files that exist before the run: name -> contents (SH-11). */
+  files?: VirtualFiles;
   /** Runs `resume` later; setTimeout by default (exists in Node and in Web Workers). */
   schedule?: (resume: () => void) => void;
 }
@@ -83,12 +85,16 @@ export function runProgram(options: DriverOptions): EngineRun {
   /** An error to raise in the top frame (it came from a callee, or from a call that was refused). */
   let raise: RunError | undefined;
   const noted = new Set<string>();
+  /** Files written since the last flush; each goes out once, with its whole new contents. */
+  const pendingFiles = new Map<string, string>();
 
   const flush = (): void => {
     if (pendingTrace.length > 0) {
       emit({ type: "traceRows", rows: pendingTrace });
       pendingTrace = [];
     }
+    for (const [name, contents] of pendingFiles) emit({ type: "fileWrite", name, contents });
+    pendingFiles.clear();
     if (pendingOutput === "") return;
     emit({ type: "output", text: pendingOutput });
     pendingOutput = "";
@@ -97,6 +103,13 @@ export function runProgram(options: DriverOptions): EngineRun {
   const diagnostic = (code: string, span: Span, args: MessageArgs = {}, variant?: string) =>
     makeDiagnostic({ code, language, span, args, ...(variant === undefined ? {} : { variant }) });
 
+  // Compiler concept: an *I/O effect* kept behind the machine. The program only says "read a line" or "write a
+  // line"; this table is the whole virtual file system, so the same program runs in Node, a Worker or a test. Names
+  // match without regard to case (SH-11); `kept` remembers the spelling first used.
+  const store = new Map<string, { name: string; text: string; position: number; written: boolean }>();
+  for (const [name, text] of Object.entries(options.files ?? {}))
+    store.set(name.toLowerCase(), { name, text, position: 0, written: false });
+
   const machine: Machine = {
     format: program.format,
     globals: new Map(),
@@ -104,6 +117,29 @@ export function runProgram(options: DriverOptions): EngineRun {
       pendingOutput += text;
       // D4: an output row holds the line as the console shows it, without its newline.
       if (tracing) pendingTrace.push({ kind: "output", line: span.line, text: text.replace(/\n$/, "") });
+    },
+    readLine: (file, span) => {
+      const f = store.get(file.toLowerCase());
+      if (f === undefined) throw new RunError("E-RUN-FILE-NOT-FOUND", span, { file });
+      // Lines end with "\n" (or "\r\n"); a final newline does not start another, empty line.
+      const lines = f.text === "" ? [] : f.text.replace(/\r?\n$/, "").split(/\r?\n/);
+      const line = lines[f.position];
+      if (line === undefined) throw new RunError("E-RUN-READ-PAST-END", span, { file: f.name });
+      f.position++;
+      return line;
+    },
+    writeLine: (file, text) => {
+      const key = file.toLowerCase();
+      let f = store.get(key);
+      if (f === undefined) {
+        f = { name: file, text: "", position: 0, written: true };
+        store.set(key, f);
+      } else if (!f.written) {
+        f.text = ""; // EDX-83: the first WRITE of a run replaces the old contents
+        f.written = true;
+      }
+      f.text += `${text}\n`;
+      pendingFiles.set(f.name, f.text);
     },
     assigned: (name, value, span) => {
       if (tracing) {

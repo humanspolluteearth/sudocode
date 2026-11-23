@@ -47,6 +47,13 @@ export const runtimeMessages: Catalogue = {
   "E-RUN-INPUT-TYPE": {
     spec: ["SH-06", "EDX-72", "CIE-80"],
     default: { message: "The input {input} is not {expected}", hint: "Run the program again and type {example}." },
+    // EDX-82: a line READ from a file that doesn't convert to the variable's type.
+    variants: {
+      file: {
+        message: "The line {input} in {file} is not {short}",
+        hint: "Fix that line in the Files panel, or READ it into a STRING variable.",
+      },
+    },
   },
   "E-RUN-STEP-ZERO": {
     spec: ["EDX-54", "CIE-61"],
