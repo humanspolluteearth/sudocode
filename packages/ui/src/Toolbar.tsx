@@ -62,7 +62,7 @@ export function Toolbar(p: ToolbarProps) {
           p.onZoom(Math.max(ZOOM_MIN, p.zoom - ZOOM_STEP));
         }}
         disabled={p.zoom <= ZOOM_MIN}
-        aria-label="Zoom out"
+        aria-label="A− Zoom out"
         title="Zoom out"
       >
         A−
@@ -75,7 +75,7 @@ export function Toolbar(p: ToolbarProps) {
           p.onZoom(Math.min(ZOOM_MAX, p.zoom + ZOOM_STEP));
         }}
         disabled={p.zoom >= ZOOM_MAX}
-        aria-label="Zoom in"
+        aria-label="A+ Zoom in"
         title="Zoom in"
       >
         A+
