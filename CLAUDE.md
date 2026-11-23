@@ -5,8 +5,10 @@ syllabus Python. Users range from kids to teachers. Must run well on 2 GB RAM de
 Targets: web (Cloudflare), desktop (Tauri 2), Android. Licence: AGPL-3.0.
 
 ## How we work
+
 Claude writes the code and works through milestones unattended (`docs/AUTONOMOUS.md`, `docs/milestones/`);
 I review between milestones. So:
+
 - Start every session by reading `docs/PROGRESS.md`, `docs/review/QUESTIONS.md` and the milestone file.
 - Plan before code for anything non-trivial. Keep PRs small: one feature or one fix.
 - In each PR description, explain the design and name any compiler concept it uses (I'm writing an article,
@@ -20,12 +22,14 @@ I review between milestones. So:
 - `reference/` is read-only material (the old prototype). Never import from it.
 
 ## Stack (decided; don't propose alternatives unless I ask)
+
 - TypeScript (strict) + Vite, React, CodeMirror 6, pnpm workspaces monorepo
 - Tauri 2 for desktop; mobile shell (Tauri 2 or Capacitor) still to be trialled
 - Python runs on OUR interpreter only (no Pyodide). Keep the Runner interface engine-neutral.
 - Tests: Vitest (unit, golden, Browser Mode for UI), Playwright (E2E), fast-check (property), Stryker (mutation)
 
 ## Layout
+
 - `packages/core`: lexers, parsers, ASTs, checker, core IR, runtime, debugger, converter. NO DOM, React or browser APIs. Must run in Node.
 - `packages/ui`: React IDE (editor, console, debugger panels, settings, Simple/Advanced modes)
 - `apps/web`, `apps/desktop`, `apps/mobile`: thin shells only
@@ -33,6 +37,7 @@ I review between milestones. So:
 - Dependencies point one way: apps -> ui -> core. Never import upward.
 
 ## Commands
+
 - `pnpm install` (CI uses `--frozen-lockfile`)
 - `pnpm check`: exactly what CI stage 1 runs (lint, typecheck, core tests, spec coverage). Run before saying you're done.
 - `pnpm --filter @sudocode/core test -- <pattern>`: one test file while iterating
@@ -40,6 +45,7 @@ I review between milestones. So:
 - `pnpm typecheck` / `pnpm lint` / `pnpm build` / `pnpm dev`
 
 ## Interpreter architecture (confirmed; details in @docs/DECISIONS.md)
+
 - Hand-written lexers + recursive descent parsers, Pratt for expressions, panic-mode error recovery.
 - Separate front end per language, all lowering to ONE shared core IR whose nodes state language rules explicitly
   (e.g. `intDivFloor`, `forInclusive`), never a generic `div`.
@@ -53,11 +59,13 @@ I review between milestones. So:
 - Converter v1: Edexcel -> Python and CIE -> Python only, via IR printers.
 
 ## Language behaviour
+
 Source of truth: `docs/language-spec/` (shared.md, edexcel.md, cie-9618.md, python-subset.md). Every rule has an ID.
 If a behaviour isn't there, STOP and ask me; never fill gaps from memory of the exam boards or general Python.
 Python must match CPython 3.12 exactly (PY-01).
 
 ## Testing rules (IMPORTANT; full plan in docs/TEST-PLAN.md)
+
 - Core features go tests-first, in TWO PRs: (1) tests + `.expected.json` files from the spec rows, with their IDs
   added to `packages/core/tests/pending.json` so CI expects them to fail; I review and merge. (2) the code, which
   removes those IDs from `pending.json`. Never change merged tests or expected files to make code pass.
@@ -74,16 +82,23 @@ Python must match CPython 3.12 exactly (PY-01).
 - Only a green CI run counts as "tests pass".
 
 ## Code style
+
 - No `any`. Discriminated unions for AST/IR nodes (`kind` field); exhaustive `switch` with a `never` check.
 - Pure functions in core where possible; no global mutable state.
 - Error messages are for students: plain words, point at the student's line, suggest a fix.
 - Keep files under ~400 lines; split by concept.
 
 ## Git
+
 - Branch per task: `feat/...`, `fix/...`, `tests/...`, `docs/...`. PR titles follow Conventional Commits
   (`feat:`, `fix:`, `tests:`, `docs:`, `chore:`); they become the changelog via release-please.
 - Commits signed off for the DCO: `git commit -s`.
 - Commit only when I ask. Never force-push. Never commit `.env` files or secrets.
 
 ## When compacting
+
 Preserve: the current task and its plan, files modified, test commands used, and any open questions for me.
+
+Run only the tests for the files you changed while working; run pnpm check once before pushing; let CI run E2E, fuzz and nightly suites.
+
+Make `pnpm check` print only failures and a one-line summary (Vitest dot reporter with passed-test output silenced, quiet lint). Keep CI output unchanged.
