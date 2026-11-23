@@ -3,8 +3,9 @@ import type { OutputFormat } from "../ir/ir.ts";
 import type { Value } from "./values.ts";
 
 /**
- * A pseudocode REAL (SH-03): rounded to 10 decimal places, then the shortest form; never `-0`, never exponent
- * form (`1e+21` prints as `1000000000000000000000`, `1e-7` as `0.0000001`).
+ * A pseudocode REAL (SH-03): rounded to 10 decimal places, then the shortest form; never `-0`, and very large
+ * REALs never in exponent form (`1e+21` prints as `1000000000000000000000`, Q18). Small REALs such as `1e-7`
+ * keep the shortest form until QUESTIONS.md 20 decides whether they print as `0.0000001`.
  */
 export function formatPseudocodeReal(x: number): string {
   if (Number.isNaN(x)) return "NaN";
@@ -12,7 +13,8 @@ export function formatPseudocodeReal(x: number): string {
   // toFixed works on the exact binary value and gives exponent form only from 1e21, where no decimals remain anyway.
   const rounded = Math.abs(x) < 1e21 ? Number(x.toFixed(10)) : x;
   if (rounded === 0) return "0";
-  return withoutExponent(String(rounded));
+  const shortest = String(rounded);
+  return Math.abs(rounded) >= 1 ? withoutExponent(shortest) : shortest;
 }
 
 /** Rewrites JavaScript's shortest form (`1.5e+21`, `1e-7`) as plain digits, keeping exactly its digits. */
