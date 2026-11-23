@@ -106,57 +106,57 @@ Tests named here stay pending (`openQuestions`) until you answer; the others sho
     (`0.0000001`, `0.0000000001`) rather than `1e-7`? Proposed: yes; after rounding to 10 decimal places every digit
     fits in 10 decimals anyway.
     Tests: `conformance/edexcel/SH-03-real-small-no-exponent` (pending).
-    - Answer:
+    - Answer (24 Nov 2026): **Yes, in full.** `0.0000001` prints as written; `0.00000000004` rounds to `0`. SH-03 extended. Held test `conformance/edexcel/SH-03-real-small-no-exponent` can be enabled.
 21. **SH-03 large REALs that aren't exact:** `10.0 ^ 23` is stored as 99,999,999,999,999,991,611,392. Print the
     shortest form written out (`100000000000000000000000`) or the exact stored value? Proposed: the shortest form
     (it is what "shortest form" means, and 10 ^ 21, 10 ^ 22 are the same both ways).
     Tests: none yet.
-    - Answer:
+    - Answer (24 Nov 2026): **Shortest form written out** (`10.0 ^ 23` prints `100000000000000000000000`). SH-03 extended.
 22. **SH-03 infinity:** `10.0 ^ 400` is too large for a REAL. Runtime error ("number too large", as SH-07), or print
     something? Proposed: the SH-07 runtime error.
     Tests: none yet.
-    - Answer:
+    - Answer (24 Nov 2026): **Runtime error**, the SH-07 "number too large", at that line. SH-03 extended.
 23. **EDX-25 INTEGER and REAL in one array:** is `[1, 2.5]` an array of REAL (as EDX-12 lets an INTEGER go into a
     REAL), or an error because the elements' types differ? And `SET Prices[0] TO 3` into a REAL array?
     Proposed: allowed in both cases (an array of REAL).
     Tests: none yet.
-    - Answer:
+    - Answer (24 Nov 2026): **Allowed in both cases**: `[1, 2.5]` is an array of REAL; `SET Prices[0] TO 3` into a REAL array is fine. EDX-25 extended.
 24. **EDX-12 CHARACTER into STRING:** `SET initial TO name[0]` when `initial` already holds a STRING. EDX-12 read
     strictly makes it an error (only INTEGER into REAL is allowed). Proposed: allowed (a CHARACTER is one character of
     text; EDX-15 already lets one-character text fit the other way).
     Tests: none yet.
-    - Answer:
+    - Answer (24 Nov 2026): **Allowed.** A CHARACTER may go into a variable holding a STRING. EDX-12 extended.
 25. **EDX-21 empty array `[]`:** allowed? Proposed: yes; `LENGTH` is 0, `FOR EACH` runs zero times, and its element
     type comes from the first element written into it.
     Tests: none yet.
-    - Answer:
+    - Answer (24 Nov 2026): **Allowed.** `[]` has `LENGTH` 0; its element type comes from the first element written. EDX-21 extended.
 26. **EDX-23 changing one character of a STRING:** `SET Name[0] TO 'E'`. EDX-23 shows it only for arrays.
     Proposed: a checker error (a STRING can't be changed in place, as in Python).
     Tests: `errors/edexcel/EDX-23-string-element` (pending).
-    - Answer:
+    - Answer (24 Nov 2026): **Checker error** `E-CHK-STRING-ELEMENT` with the wording proposed ("A STRING can't be changed one character at a time", hint "Build a new STRING with & instead."). EDX-23 extended. Held test `errors/edexcel/EDX-23-string-element` can be enabled.
 27. **EDX-42 `ELSE IF` with two `END IF`s:** a student writes the official nesting but puts `IF` on the `ELSE`
     line, then closes with two `END IF`s. As an `ELSE IF` chain, the second `END IF` has no IF. Proposed: report it
     (`E-SYN-UNMATCHED-CLOSER`), since the chain form uses one END IF.
     Tests: none yet.
-    - Answer:
+    - Answer (24 Nov 2026): **Accept both forms**, made exact in a follow-up question: an `ELSE IF` chain followed by a second `END IF` closes an enclosing IF if one was opened earlier; only when there is none is it `E-SYN-UNMATCHED-CLOSER`. EDX-42 extended. Needs code and tests (not yet written).
 28. **EDX-30 `^` with a variable exponent:** `SET p TO 2 ^ e`: the type is INTEGER when `e` >= 0 and REAL when it is
     negative, which the checker can't know. Proposed: the checker treats INTEGER ^ INTEGER as INTEGER unless the
     exponent is a negative number written in the program; at run time the value follows EDX-30.
     Tests: none yet.
-    - Answer:
+    - Answer (24 Nov 2026): **As proposed.** EDX-30 extended.
 29. **EDX-17 a constant's SET inside a loop:** one SET statement that runs several times. Proposed: allowed (it is
     still one SET).
     Tests: none yet.
-    - Answer:
+    - Answer (24 Nov 2026): **Allowed.** EDX-17 extended.
 30. **EDX-55/EDX-56 assigning to the FOR variable inside the loop:** does the next pass continue from the loop's own
     count (Python), and does the variable afterwards keep the value the body assigned (Python) or the loop's last
     value (EDX-56's wording)? Proposed: Python in both; EDX-55's warning is shown either way.
     Tests: none depend on it.
-    - Answer:
+    - Answer (24 Nov 2026): **Python behaviour in both**; EDX-55 warning is shown either way. EDX-55 extended (EDX-56 already says this).
 31. **AND / OR short-circuit:** in `i < LENGTH(a) AND a[i] = x`, is the right side skipped when the left side
     decides (Python), or always worked out? Proposed: skipped, as in Python.
     Tests: none depend on it.
-    - Answer:
+    - Answer (24 Nov 2026): **Skipped**, as in Python. Added to the operators paragraph in `edexcel.md` (section 2.4).
 32. **The merged M0 check "MISC is pending" (`packages/core/tests/harvested/harvested.test.ts`) blocks the engine PR
     (#28).** It requires every harvested test to be in `pending.json`. 21 harvested Edexcel tests now pass, and a
     passing test can't stay pending (CI fails it). Proposed: replace the check with the harvested README's own rule,
@@ -182,28 +182,28 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
     `0x10`, `1_0` (Python's `float()` accepts the last four; we don't, as they aren't numbers a student would type).
     Tests: `EDX-72-receive-integer-spaces-ignored`, `EDX-72-receive-real-whole-number`, `SH-05-positive-sign-integer`,
     `SH-06-infinity-is-not-real`, `SH-06-two-signs-is-not-integer`, `SH-06-comma-number-is-not-integer`.
-    - Answer:
+    - Answer (24 Nov 2026): **As proposed.** SH-06 extended with the exact rule. M4 tests stand.
 35. **An INTEGER input beyond ±9,007,199,254,740,991 (D12).** Proposed: the SH-07 "number too large" error at the
     RECEIVE, not "not an INTEGER".
     Tests: `SH-07-integer-input-too-large`.
-    - Answer:
+    - Answer (24 Nov 2026): **SH-07 "number too large" error** at the RECEIVE. SH-06 extended.
 36. **SH-17 trace rows (D4).** Proposed: each FOR pass records the loop variable on the FOR line; an output row holds the
     printed line without its newline; device output reads `[MOTOR] on`, as the console shows it.
     Tests: `SH-17-trace-assignments-and-output`, `SH-17-trace-device-output`.
-    - Answer:
+    - Answer (24 Nov 2026): **As proposed.** SH-17 extended.
 37. **SH-17 changing one array element (D5).** Proposed: the row names the array and shows the whole new array
     (`scores = [3, 9]`), as an element is not a variable column.
     Tests: `SH-17-trace-element-change-records-the-array`.
-    - Answer:
+    - Answer (24 Nov 2026): **As proposed.** SH-17 extended.
 38. **BOOLEAN input in any case (D2).** Proposed: `true`, `False`, `TRUE` are accepted, as Boolean literals are
     (EDX-08). `T`, `1`, `yes` are not.
     Tests: `EDX-72-receive-boolean-any-case`.
-    - Answer:
+    - Answer (24 Nov 2026): **As proposed.** EDX-72 extended.
 39. **Debugger stepping (D6, D7).** Proposed: Step before a run starts stops before line 1; Step over stops at the next
     statement in the same or an outer frame; each new FOR pass stops on the FOR line before the variable changes, and
     the loop ends without stopping there again. Not a language rule, so its tests aren't held back.
     Tests: `debugger/MISC-step-over-through-a-for-loop`, `debugger/MISC-step-over-walks-the-lines`.
-    - Answer:
+    - Answer (24 Nov 2026): **As proposed.** Not a language rule; the M4 tests stand.
 40. **May I change a merged test so RECEIVE is no longer "not supported"? (blocks the RECEIVE PR)**
     `packages/core/src/edexcel/parser.test.ts` "SH-18 subprograms, input and files are recognised as not supported yet"
     (merged in M2) expects `RECEIVE x FROM (INTEGER) KEYBOARD` to give `E-SYN-NOT-SUPPORTED 5:1`. M4 makes RECEIVE work,
@@ -215,4 +215,21 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
     The spec text for Q-EDX-3 doesn't say whether assigning a global from inside a subprogram is an error, a warning
     or just an info note, so no test was written for it. Current behaviour: an `I-EDX-GLOBAL-UPDATE` info, once per
     subprogram. Please say what the rule is and I will add the test.
-    - Answer:
+    - Answer (24 Nov 2026): **The spec (EDX-63) already says: update the global, with an info note.** Detail you chose: the note names the variable and is shown **once per subprogram per variable** (today's code shows it once per subprogram, so a code change and a test are needed). EDX-63 extended.
+
+## From M5 and M6 (24 Nov 2026)
+
+42. **M5 property tests use a home-made seeded `forAll` instead of fast-check** (no network in the sandbox).
+    - Answer (24 Nov 2026): **Switch to fast-check in a later chore PR.** Until then the home-made helper stays.
+43. **M5 corpus location and outputs:** `tests/golden/edexcel/corpus/` (not `tests/corpus/`), outputs worked out by hand.
+    - Answer (24 Nov 2026): **Accept both.** TEST-PLAN.md names the real folder.
+44. **M6 file error wording and columns** (`E-RUN-FILE-NOT-FOUND`, `E-RUN-READ-PAST-END`, `E-RUN-INPUT-TYPE` file
+    variant, `E-CHK-READ-ONE-VARIABLE`, `E-CHK-SEND-COMMA` write variant, grid `grid[0]` message).
+    - Answer (24 Nov 2026): **Approved as merged** (wording and columns).
+45. **M6 file edge cases** (EDX-81/82/83).
+    - Answer (24 Nov 2026): **Blank line:** into a STRING gives an empty STRING; into any other type it is a runtime
+      error "Line 2 of d.txt is empty" (hint "Put a value on that line, or READ it into a STRING."). **No final
+      newline:** the last line is still a record; a trailing newline adds no empty record. **WRITE** of a number or
+      BOOLEAN writes the same text as SEND (`3.5`, `TRUE`). **CHARACTER** from a longer line: runtime error
+      "The line ab in d.txt is not a single character" (hint "Fix that line in the Files panel, or READ it into a STRING
+      variable."). EDX-81/82/83 extended.
