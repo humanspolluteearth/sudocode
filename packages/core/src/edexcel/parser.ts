@@ -6,10 +6,11 @@
 // (panic mode, cursor.ts), and blocks know their closers, so a wrong or missing END is reported once and the
 // structure around it still makes sense (decision D8).
 import type { Diagnostic } from "../diagnostics.ts";
-import type { Expr, Program, Stmt, Target, TypeName } from "./ast.ts";
+import { TYPES, type Expr, type Program, type Stmt, type Target } from "./ast.ts";
 import { closerAhead, makeBlock, takeCloser, unmatched, type Block, type FoundCloser } from "./closers.ts";
 import { Abandon, Cursor, RESERVED } from "./cursor.ts";
 import { otherStatement } from "./other-statements.ts";
+import { parseReceive } from "./receive.ts";
 import { lex } from "./lexer.ts";
 import { parseExpression } from "./parse-expression.ts";
 import type { Token } from "./tokens.ts";
@@ -28,9 +29,7 @@ export function parse(source: string): ParseResult {
 }
 
 /** Words that start a statement, so `SEND [1, 2][0] TO ...` is a SEND, not a bare `name[i] = ...`. */
-const STATEMENT_WORDS = new Set(["SET", "SEND", "IF", "WHILE", "REPEAT", "FOR", "FOREACH", "CONST"]);
-
-const TYPES: readonly TypeName[] = ["INTEGER", "REAL", "BOOLEAN", "CHARACTER", "STRING"];
+const STATEMENT_WORDS = new Set(["SET", "SEND", "RECEIVE", "IF", "WHILE", "REPEAT", "FOR", "FOREACH", "CONST"]);
 
 class Parser {
   readonly c: Cursor;
@@ -152,6 +151,8 @@ class Parser {
         return this.set();
       case "SEND":
         return this.send();
+      case "RECEIVE":
+        return parseReceive(this.c, (advice) => this.name(advice));
       case "IF":
         return this.ifStatement(t, null);
       case "WHILE":

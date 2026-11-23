@@ -8,6 +8,7 @@
 import type { Span } from "../diagnostics.ts";
 
 export type TypeName = "INTEGER" | "REAL" | "BOOLEAN" | "CHARACTER" | "STRING";
+export const TYPES: readonly TypeName[] = ["INTEGER", "REAL", "BOOLEAN", "CHARACTER", "STRING"];
 
 export type BinaryOperator =
   "+" | "-" | "*" | "/" | "^" | "DIV" | "MOD" | "&" | "=" | "<>" | "<" | "<=" | ">" | ">=" | "AND" | "OR";
@@ -39,6 +40,20 @@ export type Stmt =
   | { kind: "bareAssign"; target: Target; value: Expr; span: Span }
   /** `SEND a, b TO ...` keeps every value and the first comma (EDX-71). `device` is DISPLAY or another device. */
   | { kind: "send"; values: Expr[]; comma: Span | null; device: string; deviceSpan: Span; span: Span }
+  /**
+   * `RECEIVE name FROM (type) device` (EDX-72). `type` is null when the brackets were left out (EDX-73, a checker
+   * error at `deviceSpan`). `device` is KEYBOARD or another device such as CARD_READER (EDX-74).
+   */
+  | {
+      kind: "receive";
+      name: string;
+      nameSpan: Span;
+      type: TypeName | null;
+      typeSpan: Span | null;
+      device: string;
+      deviceSpan: Span;
+      span: Span;
+    }
   | { kind: "const"; type: TypeName; name: string; nameSpan: Span; span: Span }
   | { kind: "if"; condition: Expr; then: Stmt[]; else: Stmt[]; span: Span }
   | { kind: "while"; condition: Expr; body: Stmt[]; span: Span }

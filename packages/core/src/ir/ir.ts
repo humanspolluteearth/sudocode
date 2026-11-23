@@ -51,6 +51,13 @@ export type BuiltinName = "length";
 /** Where a variable lives. Lowering decides; the runtime never guesses. */
 export type Scope = "global" | "local";
 
+/**
+ * How a typed input line becomes a value (SH-06): `int` is an optional sign and digits, `real` a number, `bool`
+ * TRUE or FALSE in any case (spaces around these three ignored), `char` exactly one character, `str` the line as
+ * typed (SH-05). A line that doesn't convert is the E-RUN-INPUT-TYPE runtime error at the statement.
+ */
+export type InputConversion = "int" | "real" | "bool" | "char" | "str";
+
 export interface VarRef {
   kind: "var";
   name: string;
@@ -89,6 +96,11 @@ export type Stmt =
   | { kind: "assign"; target: AssignTarget; value: Expr; span: Span }
   /** Prints one line (SH-02). `device` is null for the screen; another device prints `[MOTOR] value` (EDX-74). */
   | { kind: "output"; value: Expr; device: string | null; span: Span }
+  /**
+   * Waits for one line of input and stores it, converted, in `target` (EDX-72, SH-05). `device` is null for the
+   * keyboard; another device's name is shown with the input request (EDX-74).
+   */
+  | { kind: "input"; target: VarRef; convert: InputConversion; device: string | null; span: Span }
   | { kind: "if"; condition: Expr; then: Stmt[]; else: Stmt[]; span: Span }
   /** Tests before each pass (EDX-50). */
   | { kind: "while"; condition: Expr; body: Stmt[]; span: Span }

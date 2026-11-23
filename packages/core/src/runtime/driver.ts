@@ -225,7 +225,11 @@ export function runProgram(options: DriverOptions): EngineRun {
         state = "input";
         flush();
         if (request.prompt !== "") emit({ type: "output", text: request.prompt });
-        emit({ type: "inputRequest", prompt: request.prompt });
+        emit({
+          type: "inputRequest",
+          prompt: request.prompt,
+          ...(request.device === null ? {} : { device: request.device }),
+        });
         return "yield";
       default: {
         const unreachable: never = request;

@@ -5,7 +5,7 @@
 //    it (EDX-12), or its CONST type (EDX-17). This repeats until nothing changes, so a variable used inside a loop
 //    before the line that first sets it still has a type.
 // 2. *Checking*: walk again and report every mistake: a later value of a different type, conditions that aren't
-//    BOOLEAN (EDX-43), operator types (check-expression.ts), constants set twice, SEND with a comma (EDX-71) or a
+//    BOOLEAN (EDX-43), operator types (check-expression.ts), constants set twice, RECEIVE without a type (EDX-73), SEND with a comma (EDX-71) or a
 //    whole array (EDX-75), and bare `x = 5` assignments (EDX-33).
 import type { Diagnostic, Span, TextEdit } from "../diagnostics.ts";
 import { makeDiagnostic, type MessageArgs } from "../messages/index.ts";
@@ -137,6 +137,11 @@ export function checkProgram(program: Program, source: string): CheckResult {
         case "repeatTimes":
           infer(s.body);
           break;
+        case "receive": {
+          const ty = s.type === null ? undefined : TYPE_OF[s.type];
+          if (ty !== undefined) define(s.name, ty, s); // EDX-12: RECEIVE ... FROM (type) gives the type
+          break;
+        }
         case "send":
           break;
         default: {
@@ -189,24 +194,26 @@ export function checkProgram(program: Program, source: string): CheckResult {
       }
       return;
     }
+    intoName(s, target.name, target.span, typed, value.span);
+  };
+
+  /** A value of type `typed` going into the variable `name` (from SET or RECEIVE); `at` is where a type error points. */
+  const intoName = (s: Stmt, name: string, nameSpan: Span, typed: Typed, at: Span): void => {
+    const v = vars.get(name);
     if (v === undefined) return;
-    if (forVariables.includes(target.name)) report("W-EDX-FOR-VAR-SET", target.span, { name: target.name }); // EDX-55
+    if (forVariables.includes(name)) report("W-EDX-FOR-VAR-SET", nameSpan, { name }); // EDX-55
     if (v.constant !== null) {
       v.constant.sets++;
       if (v.constant.sets === 1) v.constant.firstSetLine = s.span.line;
       else {
-        report("E-CHK-CONST-SET-TWICE", target.span, { name: target.name, line: v.constant.firstSetLine });
+        report("E-CHK-CONST-SET-TWICE", nameSpan, { name, line: v.constant.firstSetLine });
         return;
       }
     } else if (v.definedBy === s) {
       return; // this value gave the variable its type
     }
     if (!fits(typed, v.ty)) {
-      report("E-CHK-TYPE-CHANGE", value.span, {
-        name: target.name,
-        expected: typeName(v.ty),
-        actual: withArticle(typed.ty),
-      });
+      report("E-CHK-TYPE-CHANGE", at, { name, expected: typeName(v.ty), actual: withArticle(typed.ty) });
     }
   };
 
@@ -251,6 +258,15 @@ export function checkProgram(program: Program, source: string): CheckResult {
         if (value === undefined) return;
         const t = check(loud, value).ty;
         if (t.kind === "ARRAY") report("E-CHK-SEND-ARRAY", value.span, { name: text(value.span) }); // EDX-75
+        return;
+      }
+      case "receive": {
+        const ty = s.type === null ? undefined : TYPE_OF[s.type];
+        if (ty === undefined || s.typeSpan === null) {
+          report("E-CHK-RECEIVE-NO-TYPE", s.deviceSpan, { name: s.name }); // EDX-73
+          return;
+        }
+        intoName(s, s.name, s.nameSpan, { ty }, s.typeSpan);
         return;
       }
       case "const":

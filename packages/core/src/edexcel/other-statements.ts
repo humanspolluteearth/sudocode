@@ -1,5 +1,5 @@
 // Lines that are not M2 Edexcel statements: other languages' statements (SH-18, edexcel.md 2.11) and Edexcel
-// statements whose engine parts arrive after M2 (subprograms, input, files).
+// statements whose engine parts arrive later (subprograms, files).
 import { Abandon, type Cursor } from "./cursor.ts";
 import { startsExpression } from "./parse-expression.ts";
 import type { Token } from "./tokens.ts";
@@ -22,9 +22,9 @@ export const OTHER_LANGUAGE: Readonly<Record<string, string>> = {
   ELIF: "ELSE, then a nested IF",
 };
 
-/** Edexcel statements whose engine parts arrive after M2 (subprograms, input, files). */
-export const LATER = new Set(["PROCEDURE", "FUNCTION", "BEGIN", "RETURN", "RECEIVE", "READ", "WRITE"]);
-export const LATER_ADVICE = "Subprograms, input and files arrive in a later version of Sudocode.";
+/** Edexcel statements whose engine parts arrive later (subprograms, files). */
+export const LATER = new Set(["PROCEDURE", "FUNCTION", "BEGIN", "RETURN", "READ", "WRITE"]);
+export const LATER_ADVICE = "Subprograms and files arrive in a later version of Sudocode.";
 
 /**
  * Reports a line that is not an M2 statement: another language's (SH-18), one arriving after M2, or one Sudocode
