@@ -5,8 +5,15 @@
 // `forInclusive` (EDX-53), writing past the end of an array is `growOnWrite` (EDX-27), indexes have `base` 0
 // (EDX-22). Spans are copied across, so runtime errors still point at the student's code. Lowering only runs on a
 // program with no errors, so it never reports anything itself.
-import type { BinaryOp, Expr as IrExpr, Program as IrProgram, Stmt as IrStmt, VarRef } from "../ir/ir.ts";
-import type { BinaryOperator, Expr, Program, Stmt, Target } from "./ast.ts";
+import type {
+  BinaryOp,
+  Expr as IrExpr,
+  InputConversion,
+  Program as IrProgram,
+  Stmt as IrStmt,
+  VarRef,
+} from "../ir/ir.ts";
+import type { BinaryOperator, Expr, Program, Stmt, Target, TypeName } from "./ast.ts";
 import type { Ty } from "./types.ts";
 
 const BINARY: Partial<Record<BinaryOperator, BinaryOp>> = {
@@ -24,6 +31,15 @@ const BINARY: Partial<Record<BinaryOperator, BinaryOp>> = {
   "<=": "le",
   ">": "gt",
   ">=": "ge",
+};
+
+/** How each RECEIVE type converts the typed line (EDX-72, SH-06). */
+const CONVERT: Readonly<Record<TypeName, InputConversion>> = {
+  INTEGER: "int",
+  REAL: "real",
+  BOOLEAN: "bool",
+  CHARACTER: "char",
+  STRING: "str",
 };
 
 export function lowerProgram(program: Program, source: string, types: ReadonlyMap<string, Ty>): IrProgram {
@@ -122,6 +138,12 @@ export function lowerProgram(program: Program, source: string, types: ReadonlyMa
         const [value] = s.values;
         if (value === undefined) return [];
         return [{ kind: "output", value: expr(value), device: s.device === "DISPLAY" ? null : s.device, span: s.span }];
+      }
+      case "receive": {
+        if (s.type === null) throw new Error("A RECEIVE without a type should have been rejected by the checker");
+        const device = s.device === "KEYBOARD" ? null : s.device;
+        const target = variable(s.name, s.nameSpan);
+        return [{ kind: "input", target, convert: CONVERT[s.type], device, span: s.span }];
       }
       case "const":
         return []; // the type is the checker's business; the value comes from its SET

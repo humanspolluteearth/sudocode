@@ -22,6 +22,7 @@ import {
   type Run,
 } from "./evaluate.ts";
 import { formatValue } from "./format.ts";
+import { convertInput } from "./input.ts";
 import { RunError } from "./run-error.ts";
 import { char, characters, int, real, type Value } from "./values.ts";
 
@@ -75,6 +76,13 @@ function* statement(s: Stmt, env: Env): Run<Returned | undefined> {
     case "output": {
       const text = formatValue(yield* evaluateWithCalls(s.value, env), env.machine.format);
       env.machine.output(s.device === null ? `${text}\n` : `[${s.device}] ${text}\n`);
+      return undefined;
+    }
+    case "input": {
+      // The driver waits for the line (SH-05) and resumes this generator with it as a STRING.
+      const line = (yield { type: "input", prompt: "", device: s.device, span: s.span }) as Value | undefined;
+      if (line?.kind !== "str") throw bug("Input resumed without a line");
+      slot(s.target, env).set(s.target.name, convertInput(line.value, s.convert, s.span));
       return undefined;
     }
     case "if": {

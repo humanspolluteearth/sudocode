@@ -12,7 +12,8 @@ import { array, char, characterCount, characters, int, real, type Value } from "
 export type Request =
   | { type: "step"; span: Span }
   | { type: "call"; callee: string; args: Value[]; span: Span }
-  | { type: "input"; prompt: string; span: Span };
+  /** Wait for a line of input; `device` is null for the keyboard (EDX-74). Resumed with the line as a STRING. */
+  | { type: "input"; prompt: string; device: string | null; span: Span };
 
 /** What the interpreter needs from the driver. */
 export interface Machine {

@@ -173,8 +173,8 @@ Tests named here stay pending (`openQuestions`) until you answer; the others sho
 
 ## From M4 (24 Nov 2026)
 
-Tests that depend on an unanswered question below stay pending after the RECEIVE code merges, so no student meets
-a rule you haven't approved. Details are in `docs/review/M4.md`.
+The RECEIVE code implements the proposed answers below, so their tests pass (a passing test can't stay pending; see
+D14 in `docs/review/M4.md`). If you answer differently, the tests and code change together.
 
 34. **SH-06 what counts as a number when typed (D1, D11).** Proposed: spaces around the number are ignored; INTEGER is
     one optional `+`/`-` and digits; REAL also allows one point and an exponent (`2.5`, `.5`, `5.`, `1e3`), and a
@@ -204,3 +204,10 @@ a rule you haven't approved. Details are in `docs/review/M4.md`.
     the loop ends without stopping there again. Not a language rule, so its tests aren't held back.
     Tests: `debugger/MISC-step-over-through-a-for-loop`, `debugger/MISC-step-over-walks-the-lines`.
     - Answer:
+40. **May I change a merged test so RECEIVE is no longer "not supported"? (blocks the RECEIVE PR)**
+    `packages/core/src/edexcel/parser.test.ts` "SH-18 subprograms, input and files are recognised as not supported yet"
+    (merged in M2) expects `RECEIVE x FROM (INTEGER) KEYBOARD` to give `E-SYN-NOT-SUPPORTED 5:1`. M4 makes RECEIVE work,
+    so that test must fail. Proposed change: swap the RECEIVE line for a file statement that is still not supported
+    (`READ Data.txt x` on line 5, EDX-82; expectation unchanged), and rename the test to "...subprograms and files...".
+    RECEIVE itself is already covered by the EDX-72/73/74 conformance tests. The RECEIVE PR stays open until you answer.
+    - Answer: Approved: RECEIVE removed from the SH-18 not-supported test.
