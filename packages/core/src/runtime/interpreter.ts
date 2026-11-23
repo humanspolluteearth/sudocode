@@ -93,13 +93,6 @@ function* statement(s: Stmt, env: Env): Run<Returned | undefined> {
       setVariable(s.target, convertInput(line.value, s.convert, s.span), env, s.span);
       return undefined;
     }
-    case "input": {
-      // The driver waits for the line (SH-05) and resumes this generator with it as a STRING.
-      const line = (yield { type: "input", prompt: "", device: s.device, span: s.span }) as Value | undefined;
-      if (line?.kind !== "str") throw bug("Input resumed without a line");
-      slot(s.target, env).set(s.target.name, convertInput(line.value, s.convert, s.span));
-      return undefined;
-    }
     case "if": {
       const yes = asBoolean(yield* evaluateWithCalls(s.condition, env));
       return yield* block(yes ? s.then : s.else, env);
