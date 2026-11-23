@@ -1,7 +1,7 @@
 name: Nightly
 
 # docs/TEST-PLAN.md section 6: runs every day at 20:00 UTC (and by hand). Later milestones add jobs here
-# (python-full, fuzz, property, e2e-firefox, e2e-webkit, quarantine, perf); `report` then lists all of them in `needs`.
+# (python-full, fuzz, property, quarantine, perf; e2e-firefox and e2e-webkit are here from M3); `report` then lists all of them in `needs`.
 on:
   schedule:
     - cron: "0 20 * * *"
@@ -15,9 +15,40 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  e2e-firefox:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - run: pnpm --filter @sudocode/web exec playwright install --with-deps firefox
+      - run: pnpm --filter @sudocode/web e2e
+        env:
+          CI: "true"
+          E2E_BROWSERS: firefox
+
+  e2e-webkit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - run: pnpm --filter @sudocode/web exec playwright install --with-deps webkit
+      - run: pnpm --filter @sudocode/web e2e
+        env:
+          CI: "true"
+          E2E_BROWSERS: webkit
+
   # Runs the whole test suite and the spec-coverage report on main; on failure it opens (or comments on) one
   # issue labelled `nightly`, so a broken night is never missed.
   report:
+    needs: [e2e-firefox, e2e-webkit]
+    # Runs even when a browser job failed, so the issue below is still opened.
+    if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -33,7 +64,7 @@ jobs:
       - name: Spec coverage
         run: pnpm spec:coverage
       - name: Open or update the nightly issue
-        if: failure()
+        if: failure() || contains(needs.*.result, 'failure')
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
