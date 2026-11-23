@@ -9,5 +9,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "TRUE and FALSE are accepted in any case, as Boolean literals are (EDX-08; decision in docs/review/M4.md)."
+  "notes": "TRUE and FALSE are accepted in any case, as Boolean literals are (EDX-08; D2, question 38)."
 }

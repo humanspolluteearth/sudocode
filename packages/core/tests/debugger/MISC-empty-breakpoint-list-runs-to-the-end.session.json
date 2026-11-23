@@ -1,0 +1,15 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "breakpoints": [1],
+  "trace": false,
+  "script": [
+    {
+      "expect": { "reason": "breakpoint", "line": 1, "variables": {} },
+      "setBreakpoints": [],
+      "then": "continue"
+    }
+  ],
+  "expect": { "stdout": "2\n", "status": "finished" },
+  "notes": "Setting an empty breakpoint list while paused removes the breakpoint the run started with."
+}

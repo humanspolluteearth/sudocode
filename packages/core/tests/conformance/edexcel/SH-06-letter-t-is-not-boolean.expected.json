@@ -1,0 +1,19 @@
+{
+  "spec": ["EDX-72", "SH-06"],
+  "language": "edexcel",
+  "inputs": ["T"],
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INPUT-TYPE",
+        "line": 1,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Only TRUE or FALSE are BOOLEAN input."
+}

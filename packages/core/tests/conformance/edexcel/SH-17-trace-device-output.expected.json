@@ -1,0 +1,19 @@
+{
+  "spec": ["SH-17", "EDX-74"],
+  "language": "edexcel",
+  "inputs": [],
+  "expect": {
+    "stdout": "[MOTOR] on\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": [
+      {
+        "kind": "output",
+        "line": 1,
+        "text": "[MOTOR] on"
+      }
+    ]
+  },
+  "notes": "Device output is recorded as the console shows it (D4, question 36)."
+}

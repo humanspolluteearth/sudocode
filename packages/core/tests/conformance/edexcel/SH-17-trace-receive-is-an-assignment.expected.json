@@ -1,0 +1,25 @@
+{
+  "spec": ["SH-17", "EDX-72"],
+  "language": "edexcel",
+  "inputs": ["Ann"],
+  "expect": {
+    "stdout": "Ann\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": [
+      {
+        "kind": "assign",
+        "line": 1,
+        "variable": "name",
+        "value": "Ann"
+      },
+      {
+        "kind": "output",
+        "line": 2,
+        "text": "Ann"
+      }
+    ]
+  },
+  "notes": "RECEIVE records the variable it sets, like SET."
+}

@@ -5,30 +5,23 @@
   "trace": false,
   "script": [
     {
-      "expect": {
-        "reason": "breakpoint",
-        "line": 2,
-        "variables": {
-          "a": "1"
-        }
-      },
-      "setBreakpoints": [4],
+      "expect": { "reason": "breakpoint", "line": 2, "variables": { "i": "1" } },
+      "setBreakpoints": [3],
       "then": "continue"
     },
     {
-      "expect": {
-        "reason": "breakpoint",
-        "line": 4,
-        "variables": {
-          "a": "3"
-        }
-      },
+      "expect": { "reason": "breakpoint", "line": 3, "variables": { "i": "1", "a": "1" } },
+      "then": "continue"
+    },
+    {
+      "expect": { "reason": "breakpoint", "line": 3, "variables": { "i": "2", "a": "2" } },
+      "setBreakpoints": [],
       "then": "continue"
     }
   ],
   "expect": {
-    "stdout": "3\n",
+    "stdout": "1\n2\n3\nend\n",
     "status": "finished"
   },
-  "notes": "Breakpoints changed while paused apply straight away; the new list replaces the old one."
+  "notes": "Breakpoints changed while paused apply straight away, and the new list replaces the old one. If the lists were merged, line 2 would stop again on the second pass. An empty list clears every breakpoint, so the run then goes to the end."
 }

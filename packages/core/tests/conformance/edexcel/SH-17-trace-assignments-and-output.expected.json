@@ -56,5 +56,5 @@
       }
     ]
   },
-  "notes": "Each FOR pass assigns the loop variable on the FOR line. Output rows hold the printed line without its newline."
+  "notes": "Each FOR pass assigns the loop variable on the FOR line. Output rows hold the printed line without its newline (D4, question 36)."
 }

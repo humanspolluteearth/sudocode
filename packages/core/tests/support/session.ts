@@ -151,6 +151,8 @@ export function playSession(runner: Runner, source: string, session: SessionFile
           unsubscribe();
           runner.dispose();
           const want = session.expect;
+          if (inputs.length > 0)
+            problems.push(`${String(inputs.length)} input line(s) never read: ${JSON.stringify(inputs)}`);
           if (step < session.script.length) {
             problems.push(`the run ended after ${String(step)} of ${String(session.script.length)} scripted pauses`);
           }

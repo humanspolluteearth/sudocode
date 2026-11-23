@@ -1,0 +1,2 @@
+SET scores TO [3, 5]
+SET scores[1] TO 9

@@ -1,5 +1,0 @@
-RECEIVE name FROM (STRING) KEYBOARD
-SET scores TO [3, 5]
-SET scores[1] TO 9
-SEND name & ' ' & scores[1] TO DISPLAY
-SEND 'on' TO MOTOR

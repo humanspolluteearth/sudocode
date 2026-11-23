@@ -1,12 +1,13 @@
 {
-  "spec": ["EDX-72", "EDX-14"],
+  "spec": ["EDX-72", "EDX-12"],
   "language": "edexcel",
   "inputs": ["3"],
   "expect": {
-    "stdout": "1.5\n",
+    "stdout": "3.5\n",
     "errors": [],
     "warnings": [],
     "files": null,
     "trace": null
-  }
+  },
+  "notes": "A whole number typed for a REAL is accepted (D1, question 34). Adding 0.5 keeps the variable REAL, so this would be a type-change error if the RECEIVE had made price an INTEGER."
 }

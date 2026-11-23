@@ -9,5 +9,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "Spaces around a number are ignored, as Python's int() does (decision in docs/review/M4.md)."
+  "notes": "Spaces around a number are ignored, as Python's int() does (D1, question 34)."
 }
