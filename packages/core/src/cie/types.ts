@@ -9,6 +9,8 @@ export type Ty =
   | { kind: "CHAR" }
   | { kind: "STRING" }
   | { kind: "BOOLEAN" }
+  /** A fixed-size array (CIE-20): `dims` is the length of each dimension, `lows` the first index of each. */
+  | { kind: "ARRAY"; of: Ty; lows: number[]; dims: number[] }
   | { kind: "unknown" };
 
 export const INTEGER: Ty = { kind: "INTEGER" };
@@ -25,7 +27,8 @@ export const isUnknown = (t: Ty): boolean => t.kind === "unknown";
 export const isNumber = (t: Ty): boolean => t.kind === "INTEGER" || t.kind === "REAL";
 export const isText = (t: Ty): boolean => t.kind === "STRING" || t.kind === "CHAR";
 
-export const typeName = (t: Ty): string => (t.kind === "unknown" ? "unknown" : t.kind);
+export const typeName = (t: Ty): string =>
+  t.kind === "unknown" ? "unknown" : t.kind === "ARRAY" ? `ARRAY OF ${typeName(t.of)}` : t.kind;
 
 /** With its article, for messages such as "but this is an INTEGER". */
 export function withArticle(t: Ty): string {
@@ -40,6 +43,16 @@ export function withArticle(t: Ty): string {
 export function fits(value: Ty, oneChar: boolean, into: Ty): boolean {
   if (isUnknown(value) || isUnknown(into)) return true;
   if (into.kind === "REAL" && value.kind === "INTEGER") return true;
+  // CIE-23: a whole array goes into another when the size and the item type match.
+  if (into.kind === "ARRAY" || value.kind === "ARRAY") {
+    return (
+      into.kind === "ARRAY" &&
+      value.kind === "ARRAY" &&
+      into.dims.length === value.dims.length &&
+      into.dims.every((d, i) => d === value.dims[i]) &&
+      into.of.kind === value.of.kind
+    );
+  }
   if (into.kind === "CHAR" && value.kind === "STRING") return oneChar;
   if (into.kind === "STRING" && value.kind === "CHAR") return true;
   return value.kind === into.kind;
@@ -50,5 +63,5 @@ export function comparable(a: Ty, b: Ty): boolean {
   if (isUnknown(a) || isUnknown(b)) return true;
   if (isNumber(a) && isNumber(b)) return true;
   if (isText(a) && isText(b)) return true;
-  return a.kind === b.kind;
+  return a.kind === b.kind && a.kind !== "ARRAY";
 }

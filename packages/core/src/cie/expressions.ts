@@ -267,7 +267,80 @@ export class Expressions {
       return typed({ kind: "var", name: t.text, scope: "global", span: t.span }, UNKNOWN, t.span);
     }
     const scope = this.env.isLocal(t.text) ? "local" : "global";
-    return typed({ kind: "var", name: t.text, scope, span: t.span }, v.ty, t.span, { name: t.text });
+    const whole = typed({ kind: "var", name: t.text, scope, span: t.span }, v.ty, t.span, { name: t.text });
+    return this.c.isSymbol("[") ? this.element(t, whole) : whole;
+  }
+
+  /**
+   * Reads `A[i]`, `A[i, j]` or `S[i]` (CIE-20 to CIE-25). A 2D read is two nested `index` nodes: the first picks the
+   * row, the second the item (the runtime has no 2D read of its own). Lower bounds go in `base`, so the IR states
+   * where counting starts; a STRING counts from 1 (CIE-25).
+   */
+  private element(t: Token, whole: Typed): Typed {
+    const { indexes, span } = this.subscripts(t, whole.ty);
+    const full = joinSpans(t.span, span);
+    if (isUnknown(whole.ty)) return typed(whole.ir, UNKNOWN, full);
+    const ty = whole.ty;
+    const [first, second] = indexes;
+    if (first === undefined) return typed(whole.ir, UNKNOWN, full);
+    const lows = ty.kind === "ARRAY" ? ty.lows : [1];
+    const row: Ir = {
+      kind: "index",
+      target: whole.ir,
+      index: first.ir,
+      base: lows[0] ?? 1,
+      text: t.text,
+      span: full,
+    };
+    const item = ty.kind === "ARRAY" ? ty.of : CHAR;
+    if (second === undefined) return typed(row, item, full);
+    const rowText = `${t.text}[${this.text(first.span)}]`;
+    return typed(
+      { kind: "index", target: row, index: second.ir, base: lows[1] ?? 1, text: rowText, span: full },
+      item,
+      full,
+    );
+  }
+
+  /**
+   * The indexes after a name: `[` expr {`,` expr} `]`. Checks that the name can be indexed, that the right number of
+   * indexes is given and that each is an INTEGER. `A[1 TO 3]` is the CIE-24 group assignment error.
+   */
+  subscripts(t: Token, ty: Ty): { indexes: Typed[]; span: Span } {
+    const c = this.c;
+    c.next(); // [
+    const indexes: Typed[] = [];
+    for (;;) {
+      const value = this.expr();
+      if (c.peek().kind === "word" && c.peek().text.toUpperCase() === "TO") {
+        c.report("E-CHK-GROUP-ASSIGN", t.span);
+        return c.failSilently();
+      }
+      if (!isUnknown(value.ty) && value.ty.kind !== "INTEGER") {
+        c.report("E-CHK-NEEDS-INTEGER", value.span, { type: withArticle(value.ty), name: t.text }, "index");
+      }
+      indexes.push(value);
+      if (!c.isSymbol(",")) break;
+      c.next();
+    }
+    const close = c.expectSymbol("]", "]", "Close the index with ].");
+    if (!isUnknown(ty)) {
+      const allowed = ty.kind === "ARRAY" ? ty.dims.length : ty.kind === "STRING" ? 1 : 0;
+      if (allowed === 0) {
+        c.report("E-CHK-NOT-INDEXABLE", t.span, { name: t.text, type: withArticle(ty) });
+        return c.failSilently();
+      }
+      if (indexes.length !== allowed) {
+        const found = `${String(indexes.length)} ${indexes.length === 1 ? "index" : "indexes"}`;
+        c.report("E-SYN-EXPECTED", close.span, {
+          expected: allowed === 1 ? "one index" : "two indexes",
+          found,
+          advice: allowed === 1 ? `Write ${t.text}[index].` : `Write ${t.text}[row, column].`,
+        });
+        return c.failSilently();
+      }
+    }
+    return { indexes, span: close.span };
   }
 
   undeclared(t: Token): void {

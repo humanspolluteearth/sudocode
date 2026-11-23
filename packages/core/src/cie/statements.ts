@@ -4,11 +4,12 @@
 // - *Recursive descent*: one method per statement kind; a block's method calls `body`, which calls `statement`.
 // - *Panic-mode recovery*: a mistake reports once, throws `Abandon`, and `body` skips to the next line.
 // - *Desugaring*: CASE has no IR node of its own; it becomes an if-chain, and an OUTPUT list becomes one text join.
-import type { VarRef, InputConversion, Stmt as Ir, Expr as IrExpr } from "../ir/ir.ts";
+import type { AssignTarget, VarRef, InputConversion, Stmt as Ir, Expr as IrExpr } from "../ir/ir.ts";
 import type { Span } from "../diagnostics.ts";
 import type { Token } from "../edexcel/tokens.ts";
 import { Abandon, CIE_RESERVED, joinSpans, type CieCursor } from "./cursor.ts";
-import type { Env } from "./env.ts";
+import type { Env, Variable } from "./env.ts";
+import { arrayType } from "./arrays.ts";
 import { Expressions, type Typed } from "./expressions.ts";
 import { SCALAR_TYPES, fits, isUnknown, typeName, withArticle, UNKNOWN, type Ty } from "./types.ts";
 
@@ -192,7 +193,7 @@ export class Statements {
     return t;
   }
 
-  private typeName(): Ty {
+  private typeName(scalarOnly = false): Ty {
     const c = this.c;
     const t = c.peek();
     if (t.kind === "word") {
@@ -202,7 +203,11 @@ export class Statements {
         c.warnCase(t, t.text.toUpperCase());
         return ty;
       }
-      if (t.text.toUpperCase() === "ARRAY") return this.notSupported(t, "ARRAY");
+      if (t.text.toUpperCase() === "ARRAY" && !scalarOnly) {
+        c.next();
+        c.warnCase(t, "ARRAY");
+        return arrayType(c, t, () => this.typeName(true));
+      }
     }
     return c.fail("a type", "Use INTEGER, REAL, CHAR, STRING or BOOLEAN.");
   }
@@ -221,7 +226,15 @@ export class Statements {
     const ty = this.typeName();
     for (const n of names) this.env.declare(n.text, { ty, constant: false });
     c.endStatement();
-    return [];
+    // An array exists from its DECLARE, with every item unset (CIE-20); other types get their value on assignment.
+    if (ty.kind !== "ARRAY") return [];
+    const span = c.spanFrom(first);
+    return names.map((n) => ({
+      kind: "assign",
+      target: this.ref(n),
+      value: { kind: "newArray", dims: ty.dims, span },
+      span,
+    }));
   }
 
   private constant(first: Token): Ir[] {
@@ -295,6 +308,7 @@ export class Statements {
     }
     c.next();
     const v = this.env.lookup(first.text);
+    if (c.isSymbol("[")) return this.elementAssign(first, v);
     if (!c.isSymbol("←")) {
       if (v === undefined) {
         this.x.undeclared(first);
@@ -314,7 +328,48 @@ export class Statements {
     }
     this.checkFits(first.text, v.ty, value);
     c.endStatement();
-    return [{ kind: "assign", target: this.ref(first), value: this.valueFor(v.ty, value), span: c.spanFrom(first) }];
+    // CIE-23: `B <- A` copies the items, so changing A later leaves B alone.
+    const whole = v.ty.kind === "ARRAY" ? ({ kind: "copyArray", source: value.ir, span: value.span } as const) : null;
+    return [
+      { kind: "assign", target: this.ref(first), value: whole ?? this.valueFor(v.ty, value), span: c.spanFrom(first) },
+    ];
+  }
+
+  /** `A[i] <- value` and `A[i, j] <- value` (CIE-20 to CIE-22). */
+  private elementAssign(first: Token, v: Variable | undefined): Ir[] {
+    const c = this.c;
+    const ty = v?.ty ?? UNKNOWN;
+    const { indexes } = this.x.subscripts(first, ty);
+    c.expectSymbol("←", "←", "Use <- to store a value: Name[1] <- value.");
+    const value = this.x.expr();
+    if (v === undefined) {
+      this.x.undeclared(first);
+      return c.failSilently();
+    }
+    if (v.constant) {
+      c.report("E-CHK-CONSTANT-ASSIGN", first.span, { name: first.text });
+      return c.failSilently();
+    }
+    if (ty.kind === "STRING") {
+      c.report("E-CHK-STRING-ELEMENT", first.span);
+      return c.failSilently();
+    }
+    const item = ty.kind === "ARRAY" ? ty.of : UNKNOWN;
+    this.checkFits(first.text, item, value);
+    c.endStatement();
+    const [row, column] = indexes;
+    if (row === undefined) return c.failSilently();
+    const target: AssignTarget = {
+      kind: "element",
+      array: this.ref(first),
+      index: row.ir,
+      ...(column === undefined ? {} : { index2: column.ir }),
+      base: ty.kind === "ARRAY" ? (ty.lows[0] ?? 1) : 1,
+      growOnWrite: false, // CIE-20: the length is fixed
+      text: first.text,
+      span: c.spanFrom(first),
+    };
+    return [{ kind: "assign", target, value: this.valueFor(item, value), span: c.spanFrom(first) }];
   }
 
   /** CIE-13, CIE-49: the value must fit the variable's type. */
