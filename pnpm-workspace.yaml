@@ -3,3 +3,6 @@ packages:
   - "apps/*"
 allowBuilds:
   lefthook: true
+  # wrangler pulls these in; uploading a built site needs neither install script (esbuild ships prebuilt binaries).
+  esbuild: false
+  workerd: false

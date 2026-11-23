@@ -1,0 +1,8 @@
+// Cloudflare Workers static assets: the built site in ./dist is the whole Worker (no script).
+// Headers (COOP/COEP) come from dist/_headers, copied from public/_headers by Vite.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sudocode-staging",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "./dist" }
+}
