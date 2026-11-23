@@ -7,6 +7,7 @@ import { EditorState } from "@codemirror/state";
 import { EditorView, drawSelection, highlightActiveLine, keymap, lineNumbers } from "@codemirror/view";
 import type { Diagnostic } from "@sudocode/core";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { breakpointField, breakpointLines, debugGutter, setPausedLine } from "./debug-gutter.ts";
 import { toCodeMirrorDiagnostics } from "./diagnostics-bridge.ts";
 import { edexcelHighlight, edexcelLanguage } from "./edexcel-language.ts";
 
@@ -20,6 +21,10 @@ export interface EditorProps {
   onChange: (value: string) => void;
   diagnostics: readonly Diagnostic[];
   ariaLabel?: string;
+  /** Called with the breakpoint lines whenever the student sets or clears one (or edits move them). */
+  onBreakpointsChange?: (lines: number[]) => void;
+  /** The line the debugger is paused before, highlighted; null when not paused. */
+  pausedLine?: number | null;
 }
 
 const theme = EditorView.theme({
@@ -32,10 +37,20 @@ const theme = EditorView.theme({
   "&.cm-focused": { outline: "2px solid var(--link)", outlineOffset: "-2px" },
   ".cm-tooltip": { backgroundColor: "var(--bg)", color: "var(--fg)", border: "1px solid var(--field)" },
   ".cm-diagnostic": { padding: "3px 6px" },
+  ".sc-paused-line": { backgroundColor: "var(--paused)", outline: "1px solid var(--paused-edge)" },
+  ".sc-bp-gutter": { width: "14px", cursor: "pointer" },
+  ".sc-bp-gutter .cm-gutterElement": { display: "flex", alignItems: "center", justifyContent: "center" },
+  ".sc-bp-dot": {
+    display: "inline-block",
+    width: "9px",
+    height: "9px",
+    borderRadius: "50%",
+    backgroundColor: "var(--red)",
+  },
 });
 
 export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
-  { value, onChange, diagnostics, ariaLabel = "Program editor" },
+  { value, onChange, diagnostics, ariaLabel = "Program editor", onBreakpointsChange, pausedLine = null },
   ref,
 ) {
   const host = useRef<HTMLDivElement>(null);
@@ -43,6 +58,8 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
   // The latest callback, so the editor is created once and never rebuilt when the parent re-renders.
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
+  const onBreakpointsRef = useRef(onBreakpointsChange);
+  onBreakpointsRef.current = onBreakpointsChange;
 
   useEffect(() => {
     if (host.current === null) return;
@@ -51,6 +68,7 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
       state: EditorState.create({
         doc: value,
         extensions: [
+          debugGutter(),
           lineNumbers(),
           history(),
           drawSelection(),
@@ -63,6 +81,12 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
           EditorView.contentAttributes.of({ "aria-label": ariaLabel, spellcheck: "false", autocapitalize: "off" }),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) onChangeRef.current(update.state.doc.toString());
+            const before = update.startState.field(breakpointField);
+            const after = update.state.field(breakpointField);
+            if (before !== after) {
+              const lines = breakpointLines(update.state);
+              if (lines.join() !== breakpointLines(update.startState).join()) onBreakpointsRef.current?.(lines);
+            }
           }),
           theme,
         ],
@@ -88,6 +112,15 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
     if (v === null) return;
     v.dispatch(setDiagnostics(v.state, toCodeMirrorDiagnostics(v.state.doc.toString(), diagnostics)));
   }, [diagnostics, value]);
+
+  useEffect(() => {
+    const v = view.current;
+    if (v === null) return;
+    v.dispatch({ effects: setPausedLine.of(pausedLine) });
+    if (pausedLine !== null && pausedLine >= 1 && pausedLine <= v.state.doc.lines) {
+      v.dispatch({ effects: EditorView.scrollIntoView(v.state.doc.line(pausedLine).from, { y: "center" }) });
+    }
+  }, [pausedLine]);
 
   useImperativeHandle(ref, () => ({
     goTo(line, column) {

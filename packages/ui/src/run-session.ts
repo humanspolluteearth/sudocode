@@ -5,6 +5,7 @@ import {
   type Language,
   type RunRequest,
   type Runner,
+  type RunnerCommand,
   type RunnerEvent,
   type WorkerHandle,
 } from "@sudocode/core";
@@ -15,8 +16,19 @@ export interface WorkerFactories {
   createCheckWorker: () => WorkerHandle;
 }
 
+/** Debugger commands the UI may send while a run is going (Stop has its own method: it ends the worker). */
+export type SessionCommand = Exclude<RunnerCommand, { type: "run" } | { type: "stop" }>;
+
 export interface RunSession {
   stop: () => void;
+  send: (command: SessionCommand) => void;
+}
+
+export interface RunOptions {
+  /** 1-based lines with a breakpoint: the run pauses before running any of them. */
+  breakpoints?: readonly number[];
+  /** Record trace-table rows (SH-17). */
+  trace?: boolean;
 }
 
 export function startRun(
@@ -25,6 +37,7 @@ export function startRun(
   source: string,
   onEvent: (event: RunnerEvent) => void,
   onEnded: () => void,
+  options: RunOptions = {},
 ): RunSession {
   const runner: Runner = createWorkerRunner(createRunWorker());
   let ended = false;
@@ -43,8 +56,8 @@ export function startRun(
     source,
     files: {},
     seed: Math.floor(Math.random() * 0x7fffffff),
-    breakpoints: [],
-    trace: false,
+    breakpoints: [...(options.breakpoints ?? [])],
+    trace: options.trace ?? false,
   };
   runner.send({ type: "run", request });
   return {
@@ -52,6 +65,9 @@ export function startRun(
       if (ended) return;
       onEvent({ type: "done", status: "stopped" });
       end();
+    },
+    send(command) {
+      if (!ended) runner.send(command);
     },
   };
 }
