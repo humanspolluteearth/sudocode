@@ -58,3 +58,53 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup
       - run: pnpm spec:coverage
+
+  # Stage 2: these need stage 1 to be green first. build-web, test-ui and e2e-chromium are meant to be required
+  # checks on main (asked in docs/review/M3.md; the ruleset is the owner's to change).
+  build-web:
+    needs: [lint, typecheck, test-core, spec-coverage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - run: pnpm --filter @sudocode/web build
+      - name: Size budget
+        run: node scripts/size-budget.ts apps/web/dist
+
+  # Component tests (Vitest Browser Mode) in real headless Chromium, with axe.
+  test-ui:
+    needs: [lint, typecheck, test-core, spec-coverage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - run: pnpm --filter @sudocode/ui exec playwright install --with-deps chromium
+      - run: pnpm --filter @sudocode/ui test:browser
+
+  # End-to-end tests against the built site (apps/web/playwright.config.ts builds and serves it).
+  e2e-chromium:
+    needs: [lint, typecheck, test-core, spec-coverage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - run: pnpm --filter @sudocode/web exec playwright install --with-deps chromium
+      - run: pnpm --filter @sudocode/web e2e
+        env:
+          CI: "true"
+      - name: Keep the Playwright report if the tests failed
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-report
+          path: apps/web/test-results/
+          retention-days: 7
