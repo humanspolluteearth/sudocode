@@ -1,5 +1,5 @@
 {
-  "spec": ["CIE-120", "CIE-121", "CIE-122"],
+  "spec": ["CIE-15", "CIE-120", "CIE-121", "CIE-122"],
   "language": "cie",
   "inputs": ["Programming"],
   "expect": {
@@ -20,6 +20,6 @@
     "files": null,
     "trace": null
   },
-  "openQuestions": ["Q5", "Q11"],
+  "openQuestions": ["Q11"],
   "notes": "SUBSTRING is not one of the CIE built-ins (CIE-120 to CIE-130: 'Sudocode supports exactly the union below'), so it is a checker error. UCASE takes a CHAR (CIE-121) and Word is a STRING (Q11); TO_UPPER is the STRING version (CIE-122). Checker errors stop the run, so nothing is printed. Lines 2-3 use multi-name DECLARE (Q5)."
 }

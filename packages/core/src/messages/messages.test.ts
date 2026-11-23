@@ -132,4 +132,11 @@ describe("MISC hints the spec requires", () => {
   ] as const)("MISC %s (%s) hint", (code, language, args, pattern) => {
     expect(formatMessage(code, language, args).hint).toMatch(pattern);
   });
+
+  it("MISC E-CHK-SEND-ARRAY has WRITE wording for files (EDX-75, QUESTIONS.md 19)", () => {
+    expect(formatMessage("E-CHK-SEND-ARRAY", "edexcel", { name: "Scores" }, "write")).toEqual({
+      message: "WRITE can't write a whole array to a file",
+      hint: "Write each element in a loop: FOR EACH Item FROM Scores DO ... END FOREACH.",
+    });
+  });
 });
