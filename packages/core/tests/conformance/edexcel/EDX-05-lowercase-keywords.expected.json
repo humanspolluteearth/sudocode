@@ -114,5 +114,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "Lowercase keywords are accepted with one warning per keyword (EDX-05), including the device display (Q7, EDX-10). Warnings are found before the run, so line 8 is warned although it never runs. Each warning points at the keyword."
+  "notes": "Lowercase keywords are accepted with one warning per keyword (EDX-05), including the device display (Q7, EDX-10). Warnings are found before the run, so line 8 is warned although it never runs. Each warning points at the keyword. Decision D7 in docs/review/M2.md."
 }

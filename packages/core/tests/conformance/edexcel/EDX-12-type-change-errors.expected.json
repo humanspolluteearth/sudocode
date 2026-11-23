@@ -29,5 +29,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "A later value of a different type is a checker error at the value (EDX-12), one per assignment; only INTEGER into REAL is allowed, so REAL into INTEGER (line 2) is an error. An array of STRING is a different type from an array of INTEGER."
+  "notes": "A later value of a different type is a checker error at the value (EDX-12), one per assignment; only INTEGER into REAL is allowed, so REAL into INTEGER (line 2) is an error. An array of STRING is a different type from an array of INTEGER. Decision D10 in docs/review/M2.md."
 }

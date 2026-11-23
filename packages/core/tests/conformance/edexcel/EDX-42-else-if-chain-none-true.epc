@@ -1,0 +1,7 @@
+SET mark TO 10
+IF mark >= 70 THEN
+  SEND 'A' TO DISPLAY
+ELSE IF mark >= 50 THEN
+  SEND 'B' TO DISPLAY
+END IF
+SEND 'end' TO DISPLAY

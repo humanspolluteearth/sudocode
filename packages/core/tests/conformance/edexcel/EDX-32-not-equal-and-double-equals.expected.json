@@ -19,5 +19,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "The relational operators are = and <> (edexcel.md 2.4): != and == are syntax errors at the operator, each with a one-click fix."
+  "notes": "The relational operators are = and <> (edexcel.md 2.4): != and == are syntax errors at the operator (their one-click fixes are checked in errors/)."
 }

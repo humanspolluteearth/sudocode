@@ -1,0 +1,4 @@
+SET x TO 1
+IF x = 1 OR 2 THEN
+  SEND x TO DISPLAY
+END IF

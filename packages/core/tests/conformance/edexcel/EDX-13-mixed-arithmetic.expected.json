@@ -2,11 +2,11 @@
   "spec": ["EDX-13", "SH-03"],
   "language": "edexcel",
   "expect": {
-    "stdout": "11.25\n5\n7.5\n10\n4\n",
+    "stdout": "11.25\n5\n7.5\n10\n0.75\n4\n",
     "errors": [],
     "warnings": [],
     "files": null,
     "trace": null
   },
-  "notes": "INTEGER with INTEGER gives INTEGER; anything with a REAL gives REAL (EDX-13: 3 + 8.25 = 11.25). r is a REAL, so it accepts the INTEGER 4."
+  "notes": "INTEGER with INTEGER gives INTEGER; anything with a REAL gives REAL (EDX-13: 3 + 8.25 = 11.25). 2 + 0.5 is a REAL, so r is a REAL: it takes 0.75 (an INTEGER variable could not) and also the INTEGER 4 (EDX-12)."
 }

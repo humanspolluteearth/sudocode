@@ -1,0 +1,27 @@
+{
+  "spec": ["EDX-90"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-ARG-COUNT",
+        "line": 1,
+        "column": 6,
+        "message": "LENGTH needs 1 value but was given 0",
+        "hint": "Write LENGTH(<array or STRING>)."
+      },
+      {
+        "code": "E-CHK-ARG-COUNT",
+        "line": 2,
+        "column": 6,
+        "message": "LENGTH needs 1 value but was given 2",
+        "hint": "Write LENGTH(<array or STRING>)."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-ARG-COUNT in Edexcel (first version, for review in docs/review/M2.md). (built-in variant). LENGTH(x) takes one array or string (EDX-90)."
+}

@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-43"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CONDITION-TYPE",
+        "line": 2,
+        "column": 7,
+        "message": "The condition must be TRUE or FALSE, but this is an INTEGER",
+        "hint": "Compare it, e.g. WHILE count > 0 DO."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-CONDITION-TYPE in Edexcel (first version, for review in docs/review/M2.md). (WHILE wording)"
+}

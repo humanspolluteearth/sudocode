@@ -8,5 +8,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "& with a STRING and a non-STRING turns the other value into text (EDX-16), written as it would print (SH-03, SH-04). & binds below arithmetic (EDX-34), so 1 / 2 and 0.1 + 0.2 are worked out first."
+  "notes": "& with a STRING and a non-STRING turns the other value into text (EDX-16), written as it would print (SH-03, SH-04). & binds below arithmetic (EDX-34), so 1 / 2 and 0.1 + 0.2 are worked out first. Decision D5 in docs/review/M2.md."
 }

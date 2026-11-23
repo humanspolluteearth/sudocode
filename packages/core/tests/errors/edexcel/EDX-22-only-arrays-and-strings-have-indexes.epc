@@ -1,0 +1,2 @@
+SET x TO 5
+SEND x[0] TO DISPLAY

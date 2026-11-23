@@ -19,5 +19,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "There is no line continuation (EDX-09): line 1 ends before its expression is complete (reported one past its end), and line 2 is a new statement that starts with a number. With syntax errors the program is not checked further, so line 3 gives no error."
+  "notes": "There is no line continuation (EDX-09): line 1 ends before its expression is complete (reported one past its end), and line 2 is a new statement that starts with a number. With syntax errors the program is not checked further, so line 3 gives no error. Decision D1 in docs/review/M2.md."
 }

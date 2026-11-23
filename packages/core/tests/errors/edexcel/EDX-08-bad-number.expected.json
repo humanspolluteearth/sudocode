@@ -8,7 +8,7 @@
         "code": "E-SYN-BAD-NUMBER",
         "line": 1,
         "column": 10,
-        "message": "3. is not a number Sudocode can read",
+        "message": "'3.' is not a number Sudocode can read",
         "hint": "A number has at most one decimal point, with digits after it."
       }
     ],
@@ -16,5 +16,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "Wording for E-SYN-BAD-NUMBER in Edexcel (first version, for review in docs/review/M2.md)."
+  "notes": "Wording for E-SYN-BAD-NUMBER in Edexcel (first version, for review in docs/review/M2.md). Decision D6 in docs/review/M2.md."
 }

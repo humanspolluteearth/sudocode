@@ -142,7 +142,7 @@ export const checkerMessages: Catalogue = {
     spec: ["EDX-03", "EDX-12"],
     default: { message: "{name} is never given a value", hint: "Give it a value first, e.g. SET {name} TO 0." },
     variants: {
-      "other-case": { hint: "Names are case-sensitive: did you mean {suggestion}?" },
+      "other-case": { hint: "Capital letters matter in names: did you mean {suggestion}?" },
       "did-you-mean": { hint: "Did you mean {suggestion}?" },
     },
   },
@@ -151,6 +151,13 @@ export const checkerMessages: Catalogue = {
     default: {
       message: "{name} is a constant, so it can only be set once",
       hint: "It is already set on line {line}. Leave out CONST if its value needs to change.",
+    },
+  },
+  "E-CHK-CONST-NEVER-SET": {
+    spec: ["EDX-17"],
+    default: {
+      message: "{name} is a constant but is never given its value",
+      hint: "Add SET {name} TO ... after the CONST line.",
     },
   },
   "E-CHK-ARRAY-MIXED": {
@@ -170,7 +177,7 @@ export const checkerMessages: Catalogue = {
       arithmetic: { hint: "{operator} works on numbers. To join text, use &." },
       logic: { hint: "{operator} works on TRUE and FALSE values, e.g. a comparison such as x > 0." },
       order: { hint: "{operator} compares two numbers or two pieces of text." },
-      concat: { hint: "& joins text, so at least one side must be a STRING." },
+      concat: { hint: "& joins text, so at least one side must be a STRING or a CHARACTER." },
     },
   },
   "E-CHK-COMPARE-TYPES": {

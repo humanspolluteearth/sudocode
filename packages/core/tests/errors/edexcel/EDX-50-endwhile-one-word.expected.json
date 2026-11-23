@@ -1,0 +1,21 @@
+{
+  "spec": ["EDX-50"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-ONE-WORD-CLOSER",
+        "line": 4,
+        "column": 1,
+        "message": "ENDWHILE is written as two words in Edexcel",
+        "hint": "Write END WHILE.",
+        "fix": "Write END WHILE"
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-ONE-WORD-CLOSER in Edexcel (first version, for review in docs/review/M2.md). Decision D11 in docs/review/M2.md."
+}

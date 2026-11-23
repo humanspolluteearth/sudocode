@@ -19,5 +19,5 @@
     "files": null,
     "trace": null
   },
-  "notes": "A number literal has at most one decimal point with digits after it (EDX-08 shows 42 and 3.14): syntax errors at the number."
+  "notes": "A number literal has at most one decimal point with digits after it (EDX-08 shows 42 and 3.14): syntax errors at the number. Decision D6 in docs/review/M2.md."
 }

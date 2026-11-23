@@ -1,0 +1,238 @@
+{
+  "spec": ["EDX-05", "EDX-11"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "2\n2\n1\n3\na\nb\nhi\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 7
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 13
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 3,
+        "column": 3
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 3,
+        "column": 9
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 4,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 4,
+        "column": 5
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 5,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 6,
+        "column": 3
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 6,
+        "column": 9
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 7,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 8,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 8,
+        "column": 10
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 9,
+        "column": 3
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 9,
+        "column": 10
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 9,
+        "column": 13
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 10,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 10,
+        "column": 5
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 11,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 11,
+        "column": 7
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 11,
+        "column": 14
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 11,
+        "column": 19
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 11,
+        "column": 26
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 12,
+        "column": 3
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 12,
+        "column": 10
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 12,
+        "column": 13
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 13,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 13,
+        "column": 5
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 14,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 14,
+        "column": 5
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 14,
+        "column": 12
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 14,
+        "column": 22
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 15,
+        "column": 3
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 15,
+        "column": 10
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 15,
+        "column": 13
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 16,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 16,
+        "column": 5
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 17,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 17,
+        "column": 7
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 18,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 18,
+        "column": 14
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 19,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 19,
+        "column": 15
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 19,
+        "column": 18
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Every other M2 keyword in lower case, including the type name in CONST (EDX-11): it runs as the upper-case program would, with one warning per keyword word (EDX-05). n goes 2, 1, 0, then 1, 2; REPEAT 2 TIMES prints 2 twice; FOR 1 TO 3 STEP 2 prints 1, 3. Decision D7 in docs/review/M2.md."
+}
