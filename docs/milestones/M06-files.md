@@ -8,9 +8,9 @@ Read first: `CLAUDE.md`, `docs/AUTONOMOUS.md`, `docs/TEST-PLAN.md`, `docs/DECISI
 
 - [x] Add to `scope.json`: EDX-80 to EDX-84 (#61)
 - [x] Tests PR first (pending), then code (#60, #61)
-- [x] Virtual file system in core (in-memory, passed into the run worker; writes come back as `fileWrite` messages); persistence in the UI (IndexedDB) (#61 core, UI PR persistence)
+- [x] Virtual file system in core (in-memory, passed into the run worker; writes come back as `fileWrite` messages); persistence in the UI (IndexedDB) (#61 core, #62 persistence)
 - [x] Edexcel READ/WRITE per `edexcel.md` 2.9, including the READ type rule (EDX-82) and past-the-end error (EDX-84) (#61)
-- [x] Files panel (Advanced mode): list, create, view, edit, delete, import, export (UI PR)
+- [x] Files panel (Advanced mode): list, create, view, edit, delete, import, export (#62)
 - [x] File golden tests using the `files` field of `.expected.json` (#60, #61)
 
 ## Out of scope
