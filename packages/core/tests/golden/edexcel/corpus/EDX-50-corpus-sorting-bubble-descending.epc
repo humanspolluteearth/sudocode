@@ -1,0 +1,13 @@
+SET v TO [3, 1, 2]
+FOR pass FROM 1 TO 2 DO
+    FOR i FROM 0 TO 1 DO
+        IF v[i] < v[i + 1] THEN
+            SET t TO v[i]
+            SET v[i] TO v[i + 1]
+            SET v[i + 1] TO t
+        END IF
+    END FOR
+END FOR
+FOR EACH x FROM v DO
+    SEND x TO DISPLAY
+END FOREACH

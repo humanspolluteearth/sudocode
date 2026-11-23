@@ -1,0 +1,7 @@
+REPEAT
+    RECEIVE age FROM (INTEGER) KEYBOARD
+    IF age < 0 OR age > 120 THEN
+        SEND 'Invalid' TO DISPLAY
+    END IF
+UNTIL age >= 0 AND age <= 120
+SEND 'Age ' & age TO DISPLAY

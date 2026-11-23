@@ -1,0 +1,9 @@
+FUNCTION fact(n)
+BEGIN FUNCTION
+    IF n <= 1 THEN
+        RETURN 1
+    END IF
+    RETURN n * fact(n - 1)
+END FUNCTION
+
+SEND fact(5) TO DISPLAY

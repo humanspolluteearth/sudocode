@@ -1,0 +1,8 @@
+SET v TO [6, 2, 9, 2, 5]
+SET pos TO 0
+FOR i FROM 1 TO LENGTH(v) - 1 DO
+    IF v[i] < v[pos] THEN
+        SET pos TO i
+    END IF
+END FOR
+SEND pos TO DISPLAY

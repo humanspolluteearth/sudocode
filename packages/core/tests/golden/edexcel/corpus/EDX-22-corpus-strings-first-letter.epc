@@ -1,0 +1,3 @@
+SET word TO 'Python'
+SEND word[0] TO DISPLAY
+SEND word[5] TO DISPLAY

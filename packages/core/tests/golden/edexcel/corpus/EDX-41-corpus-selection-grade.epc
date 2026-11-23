@@ -1,0 +1,10 @@
+RECEIVE mark FROM (INTEGER) KEYBOARD
+IF mark >= 70 THEN
+    SEND 'Distinction' TO DISPLAY
+ELSE
+    IF mark >= 40 THEN
+        SEND 'Pass' TO DISPLAY
+    ELSE
+        SEND 'Fail' TO DISPLAY
+    END IF
+END IF

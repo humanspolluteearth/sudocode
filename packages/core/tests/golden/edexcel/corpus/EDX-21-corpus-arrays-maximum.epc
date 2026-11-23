@@ -1,0 +1,8 @@
+SET scores TO [12, 45, 7, 38]
+SET best TO scores[0]
+FOR i FROM 1 TO LENGTH(scores) - 1 DO
+    IF scores[i] > best THEN
+        SET best TO scores[i]
+    END IF
+END FOR
+SEND best TO DISPLAY

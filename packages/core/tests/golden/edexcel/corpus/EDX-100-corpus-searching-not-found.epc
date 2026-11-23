@@ -1,0 +1,8 @@
+SET data TO [8, 3, 9, 4]
+SET found TO FALSE
+FOR EACH x FROM data DO
+    IF x = 5 THEN
+        SET found TO TRUE
+    END IF
+END FOREACH
+SEND found TO DISPLAY

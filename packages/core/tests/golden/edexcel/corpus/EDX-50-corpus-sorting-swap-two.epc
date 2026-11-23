@@ -1,0 +1,5 @@
+SET v TO [9, 4]
+SET t TO v[0]
+SET v[0] TO v[1]
+SET v[1] TO t
+SEND v[0] & ',' & v[1] TO DISPLAY

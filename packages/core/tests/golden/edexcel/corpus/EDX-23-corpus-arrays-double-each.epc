@@ -1,0 +1,7 @@
+SET v TO [1, 2, 3]
+FOR i FROM 0 TO LENGTH(v) - 1 DO
+    SET v[i] TO v[i] * 2
+END FOR
+FOR EACH x FROM v DO
+    SEND x TO DISPLAY
+END FOREACH

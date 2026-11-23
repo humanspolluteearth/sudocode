@@ -1,0 +1,2 @@
+SET word TO 'banana'
+SEND 'Length ' & LENGTH(word) TO DISPLAY
