@@ -1,0 +1,11 @@
+SET temps TO [12, 15, 9, 20, 18]
+SET total TO 0
+SET highest TO temps[0]
+FOR i FROM 0 TO LENGTH(temps) - 1 DO
+  SET total TO total + temps[i]
+  IF temps[i] > highest THEN
+    SET highest TO temps[i]
+  END IF
+END FOR
+SEND 'Average: ' & total / LENGTH(temps) TO DISPLAY
+SEND 'Highest: ' & highest TO DISPLAY

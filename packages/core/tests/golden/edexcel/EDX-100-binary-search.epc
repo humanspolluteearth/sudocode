@@ -1,0 +1,23 @@
+# Binary search, written as in the November 2021 Paper 2 (EDX-100)
+SET list TO [3, 8, 13, 21, 34, 55, 89]
+SET target TO 34
+SET found TO FALSE
+SET start TO 0
+SET end TO LENGTH(list) - 1
+WHILE NOT found AND start <= end DO
+  SET middle TO (start + end) DIV 2
+  IF list[middle] = target THEN
+    SET found TO TRUE
+  ELSE
+    IF list[middle] < target THEN
+      SET start TO middle + 1
+    ELSE
+      SET end TO middle - 1
+    END IF
+  END IF
+END WHILE
+IF found THEN
+  SEND target & ' found at index ' & middle TO DISPLAY
+ELSE
+  SEND target & ' not found' TO DISPLAY
+END IF

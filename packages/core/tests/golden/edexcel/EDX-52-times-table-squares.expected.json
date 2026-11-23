@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-52", "EDX-30", "EDX-34", "EDX-16"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1 squared is 1\n2 squared is 4\n3 squared is 9\n4 squared is 16\n5 squared is 25\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "REPEAT 5 TIMES (EDX-52); n ^ 2 is an INTEGER (EDX-30) and binds tighter than & (EDX-34)."
+}

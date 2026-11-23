@@ -19,7 +19,7 @@ The official command set is short (about 30 constructs), so most of this section
 | EDX-07 | Double-quoted strings `"Hello"` are accepted with a warning | LENIENT (approved) |
 | EDX-08 | Number literals: `42`, `3.14`. Boolean literals `TRUE`, `FALSE` (not in the command set; Pearson's Nov 2021 Paper 2 writes TRUE and its student book writes True/False, so Boolean literals are accepted in any case) | DECIDED |
 | EDX-09 | No line continuation: each statement fits on one line. Long lines are handled by the editor's word-wrap | DECIDED (changed 23 Nov 2026) |
-| EDX-10 | Devices are identifiers in UPPER CASE (`KEYBOARD`, `DISPLAY`, `CARD_READER`, `MOTOR`) | SOURCE |
+| EDX-10 | Devices are identifiers in UPPER CASE (`KEYBOARD`, `DISPLAY`, `CARD_READER`, `MOTOR`). The standard devices `DISPLAY` and `KEYBOARD` written in another case (`display`) are accepted with the lowercase-keyword warning (EDX-05) and mean the same device | SOURCE; any case DECIDED (23 Nov 2026, Q7) |
 
 ### 2.2 Data types, coercion and constants
 

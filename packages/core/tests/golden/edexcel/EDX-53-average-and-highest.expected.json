@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-53", "EDX-14", "EDX-16", "EDX-22", "EDX-90", "SH-03"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Average: 14.8\nHighest: 20\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The total is 74, so the average is 74 / 5 = 14.8, a REAL (EDX-14, SH-03); indexes run 0 to LENGTH - 1 (EDX-22, EDX-90)."
+}

@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-57", "EDX-34", "EDX-16", "EDX-32"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Programming in pseudocode has 9 vowels\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "FOR EACH over a STRING visits its characters (EDX-57). Vowels: Programming has o, a, i (3); in has i (1); pseudocode has e, u, o, o, e (5): 9."
+}
