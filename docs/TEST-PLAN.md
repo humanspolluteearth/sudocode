@@ -110,3 +110,11 @@ Web hosting: Cloudflare (Workers with static assets; `apps/web/public/_headers` 
 | M9        | Differential for classes, files, modules                                         | -                                                            |
 | M10       | Converter round-trip; Simple/Advanced and settings UI tests                      | -                                                            |
 | M11       | Desktop/Android build checks; release checklist                                  | `release.yml`; mutation on release PR; production deploy     |
+
+## Performance budgets and nightly jobs (M5)
+
+- `fuzz` and `property` nightly jobs run `tests/property/` with `SUDOCODE_RUNS=20000` (PR runs use the default 300).
+- `perf` runs `tests/perf/`: a 200,000-iteration loop must finish in 5 s, and five repeated runs may grow the heap by
+  at most 100 MB. The budgets are deliberately loose (about 10x the first measurement) so they catch a regression, not noise.
+- Stryker: not run yet. The sandbox had no network, so it could not be installed. No score is recorded and the release
+  threshold is NOT set; see docs/review/M5.md.
