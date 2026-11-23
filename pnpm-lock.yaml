@@ -38,6 +38,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@sudocode/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@sudocode/ui':
         specifier: workspace:*
         version: link:../../packages/ui

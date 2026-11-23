@@ -1,0 +1,49 @@
+import type { RunnerEvent } from "@sudocode/core";
+import { describe, expect, it } from "vitest";
+import { FakeWorker } from "./fake-worker.ts";
+import { startRun } from "./run-session.ts";
+
+function start() {
+  const workers: FakeWorker[] = [];
+  const events: RunnerEvent[] = [];
+  let ended = 0;
+  const session = startRun(
+    () => {
+      const w = new FakeWorker();
+      workers.push(w);
+      return w;
+    },
+    "edexcel",
+    "SEND 1 TO DISPLAY",
+    (e) => events.push(e),
+    () => ended++,
+  );
+  return { workers, events, session, ended: () => ended };
+}
+
+describe("MISC one fresh run worker per run", () => {
+  it("MISC posts the run request to a new worker", () => {
+    const { workers } = start();
+    expect(workers).toHaveLength(1);
+    expect(workers[0]?.posted[0]).toMatchObject({
+      type: "run",
+      request: { language: "edexcel", source: "SEND 1 TO DISPLAY" },
+    });
+  });
+  it("MISC relays events and terminates the worker when the run is done", () => {
+    const { workers, events, ended } = start();
+    workers[0]?.reply({ type: "output", text: "1\n" });
+    workers[0]?.reply({ type: "done", status: "finished" });
+    expect(events.map((e) => e.type)).toEqual(["output", "done"]);
+    expect(workers[0]?.terminated).toBe(true);
+    expect(ended()).toBe(1);
+  });
+  it("MISC Stop terminates the worker and reports a stopped run", () => {
+    const { workers, events, session, ended } = start();
+    session.stop();
+    session.stop();
+    expect(workers[0]?.terminated).toBe(true);
+    expect(events).toEqual([{ type: "done", status: "stopped" }]);
+    expect(ended()).toBe(1);
+  });
+});
