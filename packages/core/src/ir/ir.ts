@@ -46,7 +46,30 @@ export type LogicalOp = "andThen" | "orElse";
 
 export type UnaryOp = "negate" | "not";
 
-export type BuiltinName = "length" | "random";
+export type BuiltinName =
+  | "length"
+  | "random"
+  // Cambridge 9618 built-ins (CIE-120 to CIE-129). Each is its own name so the IR states which rule applies.
+  | "left"
+  | "right"
+  | "mid"
+  | "ucase"
+  | "lcase"
+  | "toUpper"
+  | "toLower"
+  | "numToStr"
+  | "strToNum"
+  | "isNum"
+  | "asc"
+  | "chr"
+  | "truncate"
+  | "randomReal"
+  | "day"
+  | "month"
+  | "year"
+  | "dayIndex"
+  | "setDate"
+  | "today";
 
 /** Where a variable lives. Lowering decides; the runtime never guesses. */
 export type Scope = "global" | "local";

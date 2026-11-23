@@ -4,6 +4,7 @@
 import type { Span } from "../diagnostics.ts";
 import type { Expr, OutputFormat, VarRef } from "../ir/ir.ts";
 import type { MessageArgs } from "../messages/index.ts";
+import { cieBuiltin } from "./builtins.ts";
 import { binary, unary } from "./ops.ts";
 import { RunError } from "./run-error.ts";
 import { array, char, characterCount, characters, int, real, type Value } from "./values.ts";
@@ -31,6 +32,10 @@ export interface Machine {
   note(code: string, span: Span, args: MessageArgs): void;
   /** The next random whole number from 0 to `max` inclusive, from the run's seeded generator (SH-12). */
   random(max: number): number;
+  /** The next random REAL from 0 up to, but not including, 1, from the same seeded generator (CIE-128). */
+  randomReal(): number;
+  /** Today's date (CIE-129), from the clock; tests pass a fixed one. */
+  today(): { day: number; month: number; year: number };
 }
 
 /** One frame's view of the variables: its locals (null in the main program) and the globals. */
@@ -173,6 +178,7 @@ function builtin(e: Extract<Expr, { kind: "builtin" }>, args: Value[], env: Env)
     if (x.value < 0) throw new RunError("E-RUN-RANDOM-RANGE", e.span, { value: x.value });
     return int(env.machine.random(x.value));
   }
+  if (e.name !== "length") return cieBuiltin(e.name, args, e.span, env.machine);
   if (x?.kind === "array") return int(x.elements.length);
   if (x?.kind === "str" || x?.kind === "char") return int(characterCount(x.value));
   throw bug(`${e.name} got ${x?.kind ?? "nothing"}`);

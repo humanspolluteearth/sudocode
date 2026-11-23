@@ -41,6 +41,8 @@ export function formatValue(value: Value, format: OutputFormat): string {
     case "char":
     case "str":
       return value.value;
+    case "date":
+      return `${pad(value.day, 2)}/${pad(value.month, 2)}/${pad(value.year, 4)}`;
     case "array":
       return `[${value.elements.map((e) => (e === undefined ? "(no value)" : quoted(e, format))).join(", ")}]`;
     default: {
@@ -49,6 +51,8 @@ export function formatValue(value: Value, format: OutputFormat): string {
     }
   }
 }
+
+const pad = (n: number, width: number): string => String(n).padStart(width, "0");
 
 function quoted(value: Value, format: OutputFormat): string {
   return value.kind === "str" || value.kind === "char" ? `'${value.value}'` : formatValue(value, format);
@@ -67,6 +71,8 @@ export function typeName(value: Value): string {
       return "CHARACTER";
     case "str":
       return "STRING";
+    case "date":
+      return "DATE";
     case "array":
       return "ARRAY";
     default: {

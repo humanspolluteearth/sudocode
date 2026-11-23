@@ -9,6 +9,8 @@ export type Value =
   | { kind: "bool"; value: boolean }
   | { kind: "char"; value: string }
   | { kind: "str"; value: string }
+  /** A DATE (CIE-129): day, month and year are whole numbers; SETDATE has checked that the date exists. */
+  | { kind: "date"; day: number; month: number; year: number }
   /** Arrays are shared by reference (EDX-62). `undefined` marks a gap with no value yet (EDX-27). */
   | { kind: "array"; elements: (Value | undefined)[] };
 

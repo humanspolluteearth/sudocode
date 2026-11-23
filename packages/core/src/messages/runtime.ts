@@ -37,6 +37,13 @@ export const runtimeMessages: Catalogue = {
     spec: ["EDX-27"],
     default: { message: "{array}[{index}] has no value yet", hint: "Give that element a value before reading it." },
   },
+  "E-RUN-BAD-ARGUMENT": {
+    spec: ["CIE-120", "CIE-124", "CIE-126", "CIE-129"],
+    default: {
+      message: "{function} can't work with {problem}",
+      hint: "Check the values you give {function}.",
+    },
+  },
   "E-RUN-RANDOM-RANGE": {
     spec: ["EDX-91"],
     default: {

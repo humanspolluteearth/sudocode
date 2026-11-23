@@ -152,6 +152,11 @@ export function runProgram(options: DriverOptions): EngineRun {
       }
     },
     random: (max) => Math.floor(nextRandom() * (max + 1)),
+    randomReal: () => nextRandom(),
+    today: () => {
+      const now = new Date();
+      return { day: now.getDate(), month: now.getMonth() + 1, year: now.getFullYear() };
+    },
     note: (code, span, args) => {
       if (noted.has(code)) return; // "an info note appears the first time" (EDX-27)
       noted.add(code);
