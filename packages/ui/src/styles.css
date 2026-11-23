@@ -502,3 +502,56 @@ body {
 .sc-stack li[aria-current="true"] {
   font-weight: 600;
 }
+
+/* ---------- files panel */
+.sc-mode {
+  margin-left: auto;
+  padding: 4px 8px;
+  font-size: 0.85em;
+}
+.sc-files {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 8px 8px;
+  overflow: auto;
+}
+.sc-files-new {
+  display: flex;
+  gap: 4px;
+}
+.sc-files-new input[type="text"],
+.sc-files-new input:not([type]) {
+  flex: 1;
+  min-width: 0;
+}
+.sc-files-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sc-files-list button {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 3px 6px;
+  cursor: pointer;
+}
+.sc-files-list button.on {
+  font-weight: 600;
+  background: var(--chrome);
+}
+.sc-files-empty,
+.sc-files-message {
+  font-size: 0.9em;
+  margin: 0;
+}
+.sc-files-edit textarea {
+  width: 100%;
+  min-height: 8em;
+  font-family: inherit;
+  box-sizing: border-box;
+}

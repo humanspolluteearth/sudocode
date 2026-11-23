@@ -74,3 +74,22 @@ describe("MISC debugger commands reach the run worker", () => {
     expect(workers[0]?.posted.slice(1)).toEqual([{ type: "input", text: "42" }, { type: "stepOver" }]);
   });
 });
+
+describe("EDX-80 the run request carries the student's files", () => {
+  it("EDX-80 passes the files option to the worker", () => {
+    const workers: FakeWorker[] = [];
+    startRun(
+      () => {
+        const w = new FakeWorker();
+        workers.push(w);
+        return w;
+      },
+      "edexcel",
+      "READ Scores.txt Line",
+      () => undefined,
+      () => undefined,
+      { files: { "Scores.txt": "5\n" } },
+    );
+    expect(workers[0]?.posted[0]).toMatchObject({ request: { files: { "Scores.txt": "5\n" } } });
+  });
+});

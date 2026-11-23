@@ -7,9 +7,11 @@ const KEY = "sudocode.preferences";
 export interface Preferences {
   theme: ThemeChoice;
   zoom: number;
+  /** Advanced mode (docs/PRODUCT.md): shows the Files panel. Simple is the default. */
+  advanced: boolean;
 }
 
-export const DEFAULT_PREFERENCES: Preferences = { theme: "system", zoom: 100 };
+export const DEFAULT_PREFERENCES: Preferences = { theme: "system", zoom: 100, advanced: false };
 
 export function parseTheme(value: unknown): ThemeChoice {
   return value === "light" || value === "dark" || value === "system" ? value : DEFAULT_PREFERENCES.theme;
@@ -24,8 +26,8 @@ export function loadPreferences(): Preferences {
   try {
     const raw: unknown = JSON.parse(globalThis.localStorage.getItem(KEY) ?? "null");
     if (typeof raw === "object" && raw !== null) {
-      const { theme, zoom } = raw as Record<string, unknown>;
-      return { theme: parseTheme(theme), zoom: clampZoom(zoom) };
+      const { theme, zoom, advanced } = raw as Record<string, unknown>;
+      return { theme: parseTheme(theme), zoom: clampZoom(zoom), advanced: advanced === true };
     }
   } catch {
     // Missing, blocked or corrupt storage: use the defaults.

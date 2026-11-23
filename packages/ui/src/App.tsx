@@ -1,11 +1,12 @@
 // The IDE's root component: toolbar, editor, console, side panel (Problems / Debugger) and status bar (layout
 // from the prototype's desktop design, docs/PRODUCT.md). The shell passes in the worker factories, so this
 // package never imports a worker.
-import { EDEXCEL_EXAMPLES, type Diagnostic } from "@sudocode/core";
+import { EDEXCEL_EXAMPLES, type Diagnostic, type VirtualFiles } from "@sudocode/core";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
 import { Editor, type EditorHandle } from "./Editor.tsx";
+import { applyWrite, loadFiles, putFile, removeFile, saveFiles } from "./files-store.ts";
 import { loadPreferences, savePreferences } from "./preferences.ts";
 import { startRun, type RunSession, type SessionCommand, type WorkerFactories } from "./run-session.ts";
 import { initialRunView, runReducer } from "./run-state.ts";
@@ -32,6 +33,25 @@ export function App({ workers }: AppProps) {
   const checker = useRef<CheckClient | null>(null);
   const [prefs, setPrefs] = useState(loadPreferences);
   const editor = useRef<EditorHandle>(null);
+  // The student's virtual files: loaded from IndexedDB once, saved after every change. `filesRef` is what a run
+  // starts with and what its fileWrite events update (state alone would be stale inside the run callback).
+  const [files, setFilesState] = useState<VirtualFiles>({});
+  const filesRef = useRef<VirtualFiles>({});
+  const loaded = useRef(false);
+  const setFiles = (next: VirtualFiles) => {
+    filesRef.current = next;
+    setFilesState(next);
+    if (loaded.current) void saveFiles(next);
+  };
+  useEffect(() => {
+    void loadFiles().then((stored) => {
+      loaded.current = true;
+      if (Object.keys(filesRef.current).length === 0) {
+        filesRef.current = stored;
+        setFilesState(stored);
+      }
+    });
+  }, []);
 
   // The check worker lives as long as the editor.
   useEffect(() => {
@@ -65,12 +85,13 @@ export function App({ workers }: AppProps) {
       source,
       (event) => {
         if (event.type === "diagnostics") setDiagnostics(event.diagnostics);
+        if (event.type === "fileWrite") setFiles(applyWrite(filesRef.current, event.name, event.contents));
         dispatch({ type: "event", event });
       },
       () => {
         session.current = null;
       },
-      { breakpoints, trace },
+      { breakpoints, trace, files: filesRef.current },
     );
   };
   const stop = () => session.current?.stop();
@@ -179,6 +200,24 @@ export function App({ workers }: AppProps) {
           diagnostics={diagnostics}
           onSelectProblem={(d) => editor.current?.goTo(d.line, d.column)}
           run={run}
+          files={
+            prefs.advanced
+              ? {
+                  files,
+                  onChange: (name, contents) => {
+                    setFiles(putFile(filesRef.current, name, contents));
+                  },
+                  onDelete: (name) => {
+                    setFiles(removeFile(filesRef.current, name));
+                  },
+                }
+              : undefined
+          }
+          advanced={prefs.advanced}
+          onAdvanced={(advanced) => {
+            update({ ...prefs, advanced });
+            if (!advanced && tab === "files") setTab("problems");
+          }}
         />
       </main>
       <StatusBar state={run.state} diagnostics={diagnostics} languageName="Edexcel pseudocode" />
