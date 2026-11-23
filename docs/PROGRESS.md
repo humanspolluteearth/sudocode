@@ -2,6 +2,13 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 23 Nov 2026: M3 editor, console and workers (done)
+
+- **Merged with CI green:** #37 UI, #38 workers, #39 examples, #40 isolation E2E, #41 component tests + app E2E, #42 CI stage 2 (size budget 240 kB), #43 Cloudflare deploy workflow, #44 nightly Firefox/WebKit (manual run green), plus the review-fix PR.
+- **State:** `pnpm check` exits 0 on main. Both reviewers ran; every MUST FIX fixed, SHOULD FIX list in `docs/review/M3.md`.
+- **Needs you:** add the Cloudflare secrets (deploy skips until then); mark `build-web`, `test-ui`, `e2e-chromium` required.
+- **Next step:** M4 (input and debugger).
+
 ## 23 Nov 2026: M2 Edexcel basics (done)
 
 - M2 checklist ticked with PR numbers (#24-#28 code, #23 tests, #26 nightly); no code changed.
