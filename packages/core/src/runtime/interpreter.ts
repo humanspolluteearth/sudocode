@@ -36,6 +36,14 @@ function* assign(target: AssignTarget, value: Value, env: Env): Run<undefined> {
     setVariable(target, value, env, target.span);
     return undefined;
   }
+  if (target.kind === "field") {
+    // CIE-30: the record is found first (it may be `Form[2]` or `A.Inner`), then the field is set on the stored one.
+    const record = yield* evaluateWithCalls(target.record, env);
+    if (record.kind !== "record") throw bug(`Field assignment got ${record.kind}`);
+    record.fields[target.name] = value;
+    env.machine.assigned(target.root.name, read(target.root, env), target.span);
+    return undefined;
+  }
   const whole = read(target.array, env);
   let arr = whole;
   let shown = asIndex(yield* evaluateWithCalls(target.index, env));

@@ -11,6 +11,10 @@ export type Value =
   | { kind: "str"; value: string }
   /** A DATE (CIE-129): day, month and year are whole numbers; SETDATE has checked that the date exists. */
   | { kind: "date"; day: number; month: number; year: number }
+  /** A record (CIE-30): fields by name; `undefined` means no value yet. Shared by reference like arrays. */
+  | { kind: "record"; fields: Record<string, Value | undefined> }
+  /** A value of an enumerated type (CIE-31): the type's name and ordered value names, and which one this is. */
+  | { kind: "enum"; type: string; names: readonly string[]; ordinal: number }
   /** Arrays are shared by reference (EDX-62). `undefined` marks a gap with no value yet (EDX-27). */
   | { kind: "array"; elements: (Value | undefined)[] };
 

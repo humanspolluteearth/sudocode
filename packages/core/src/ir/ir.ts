@@ -103,8 +103,22 @@ export type Expr =
    * A fixed-size array whose items have no value yet (CIE-20, CIE-21). `dims` holds the length of each dimension,
    * so `[3, 3]` is three rows of three. Reading an unset item is the "no value yet" runtime error.
    */
-  | { kind: "newArray"; dims: number[]; span: Span }
-  /** A deep copy of an array, so changing one afterwards leaves the other alone (CIE-23). */
+  | { kind: "newArray"; dims: number[]; fill?: Expr; span: Span }
+  /**
+   * A record whose fields start with no value (CIE-30). A field that is itself an array or record gets its
+   * `init` expression, so `Form[1].Name` can be set straight after DECLARE. `newArray.fill` does the same for
+   * the items of an array of records.
+   */
+  | { kind: "newRecord"; fields: { name: string; init: Expr | null }[]; span: Span }
+  /** `record.field` (CIE-30). `text` is the record as written, for "V.F has no value yet". */
+  | { kind: "field"; target: Expr; name: string; text: string; span: Span }
+  /** One value of an enumerated type (CIE-31); `names` lists them in order and `ordinal` is this one's place. */
+  | { kind: "enumValue"; type: string; names: string[]; ordinal: number; span: Span }
+  /** `value + by`: the value `by` places along the enumerated type; running off either end is a runtime error. */
+  | { kind: "enumStep"; operand: Expr; by: Expr; span: Span }
+  /** The place of an enumerated value in its type, so comparisons by order are plain INTEGER comparisons (CIE-31). */
+  | { kind: "enumOrdinal"; operand: Expr; span: Span }
+  /** A deep copy of an array or record, so changing one afterwards leaves the other alone (CIE-23, CIE-30). */
   | { kind: "copyArray"; source: Expr; span: Span }
   | { kind: "index"; target: Expr; index: Expr; base: number; text: string; span: Span }
   | { kind: "arrayLiteral"; elements: Expr[]; span: Span }
@@ -116,6 +130,11 @@ export type Expr =
 
 export type AssignTarget =
   | VarRef
+  /**
+   * `record.field` (CIE-30). `record` evaluates to the record itself (records are shared by reference, like
+   * arrays, so setting a field changes the stored one); `root` is the variable it lives in, for the trace table.
+   */
+  | { kind: "field"; record: Expr; root: VarRef; name: string; text: string; span: Span }
   /**
    * `array[index]`. `growOnWrite`: writing past the end grows the array, filling gaps with "no value" (EDX-27);
    * otherwise it is an index error.
