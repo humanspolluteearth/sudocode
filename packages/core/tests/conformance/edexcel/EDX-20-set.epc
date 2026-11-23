@@ -1,0 +1,3 @@
+SET x TO 5
+SET x TO x + 1
+SEND x TO DISPLAY

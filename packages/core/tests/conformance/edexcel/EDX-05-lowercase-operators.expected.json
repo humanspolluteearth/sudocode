@@ -1,0 +1,38 @@
+{
+  "spec": ["EDX-05", "EDX-08", "EDX-34"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "TRUE\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 12
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 8
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 18
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 22
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 32
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Keyword operators in lower case work and warn (EDX-05); Boolean literals in any case don't warn (EDX-08). a = 3, so ((3 MOD 2 = 1) AND (NOT FALSE)) OR FALSE is TRUE (EDX-34)."
+}

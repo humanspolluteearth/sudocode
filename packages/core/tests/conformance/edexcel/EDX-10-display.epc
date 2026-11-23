@@ -1,0 +1,2 @@
+SEND 'on screen' TO DISPLAY
+SEND 5 TO display

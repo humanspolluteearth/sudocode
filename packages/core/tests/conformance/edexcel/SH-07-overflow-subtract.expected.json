@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "start\n",
+    "errors": [
+      {
+        "code": "E-RUN-NUMBER-TOO-LARGE",
+        "line": 3,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "-9,007,199,254,740,992 is outside the INTEGER range: runtime error at the operator (SH-07). Output printed before the error stays."
+}

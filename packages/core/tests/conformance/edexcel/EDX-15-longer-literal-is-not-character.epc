@@ -1,0 +1,2 @@
+CONST CHARACTER Grade
+SET Grade TO 'AB'

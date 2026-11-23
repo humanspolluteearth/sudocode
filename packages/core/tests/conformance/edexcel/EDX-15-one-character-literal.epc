@@ -1,0 +1,9 @@
+CONST CHARACTER Grade
+SET Grade TO 'B'
+SET word TO 'Bob'
+SEND word[0] = Grade TO DISPLAY
+SEND word[2] = 'b' TO DISPLAY
+SEND Grade & word TO DISPLAY
+SET letter TO word[1]
+SET letter TO 'z'
+SEND letter TO DISPLAY

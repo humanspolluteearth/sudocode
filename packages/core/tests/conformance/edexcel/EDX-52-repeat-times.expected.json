@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-52"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "hi\nhi\nhi\n12\n22\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "REPEAT <expression> TIMES (EDX-52): 0 runs zero times, and the count is worked out once, so changing n inside the loop doesn't change it."
+}

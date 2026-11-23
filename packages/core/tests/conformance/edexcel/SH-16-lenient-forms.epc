@@ -1,0 +1,7 @@
+set total to 0
+FOREACH n FROM [1, 2, 3] DO
+  set total to total + n
+END FOR EACH
+IF total > 5 THEN
+  SEND "big" TO DISPLAY
+ENDIF

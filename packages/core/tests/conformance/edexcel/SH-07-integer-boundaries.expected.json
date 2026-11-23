@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-07", "EDX-30"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "9007199254740991\n-9007199254740991\n4503599627370496\n9007199136250225\n-9007199254740991\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Results up to ±9,007,199,254,740,991 are fine (SH-07). 94906265² = 9,007,199,136,250,225 is just inside the range."
+}

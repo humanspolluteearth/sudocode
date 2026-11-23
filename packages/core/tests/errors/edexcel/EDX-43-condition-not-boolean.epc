@@ -1,0 +1,4 @@
+SET x TO 1
+IF x THEN
+  SEND x TO DISPLAY
+END IF

@@ -1,0 +1,4 @@
+SET total2 TO 1
+SET my_score TO 2
+SET A TO 3
+SEND total2 + my_score + A TO DISPLAY

@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-31"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "3\n2\n4\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "DIV and MOD of two INTEGERs give INTEGERs (EDX-31). Negative operands: SH-10-floor-div-mod."
+}

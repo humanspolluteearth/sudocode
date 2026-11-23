@@ -1,0 +1,5 @@
+SET day TO 2
+CASE day OF
+  1: SEND 'Mon' TO DISPLAY
+  2: SEND 'Tue' TO DISPLAY
+ENDCASE

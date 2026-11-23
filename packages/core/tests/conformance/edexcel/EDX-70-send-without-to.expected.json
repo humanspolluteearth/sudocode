@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-70"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 1,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "SEND needs TO DISPLAY (EDX-70): syntax error one past the end of the line."
+}

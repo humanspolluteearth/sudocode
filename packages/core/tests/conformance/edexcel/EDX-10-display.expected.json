@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-10", "EDX-70"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "on screen\n5\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 11
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "DISPLAY is the screen device (EDX-10). Written display, it is still the screen, with the lowercase-keyword warning (Q7), not a device called display."
+}

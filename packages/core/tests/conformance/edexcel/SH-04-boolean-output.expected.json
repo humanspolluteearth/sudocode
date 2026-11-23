@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-04", "EDX-08", "EDX-16"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "TRUE\nFALSE\nTRUE\nFALSE\nTRUE\nDone: TRUE\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Pseudocode prints Booleans as TRUE / FALSE (SH-04), whatever case the literal was written in (EDX-08: no warning), and & joins them the same way (EDX-16)."
+}

@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-44"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-ENDIF",
+        "line": 3,
+        "column": 1,
+        "message": "ENDIF is written as two words in Edexcel",
+        "hint": "Write END IF."
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for W-EDX-ENDIF in Edexcel (first version, for review in docs/review/M2.md)."
+}

@@ -112,6 +112,18 @@ describe("MISC golden runner: comparing a run with its expected file", () => {
       "the program reached the step limit (possible infinite loop)",
     ]);
   });
+
+  it("MISC checks message and hint wording exactly where the expected file gives it (tests/errors/)", () => {
+    const run = result({ errors: [{ ...d("E-X", 1, 2), message: "Index 3 is outside a", hint: "Check it." }] });
+    const want = (message: string, hint?: string): ExpectedFile["expect"] =>
+      expect0({ errors: [{ code: "E-X", line: 1, column: 2, message, ...(hint === undefined ? {} : { hint }) }] });
+    expect(compareRun(want("Index 3 is outside a", "Check it."), run)).toEqual([]);
+    expect(compareRun(want("Index 3 is outside a"), run)).toEqual([]);
+    expect(compareRun(want("Index 4 is outside a", "Check it!"), run)).toEqual([
+      'E-X 1:2 message: expected "Index 4 is outside a" but got "Index 3 is outside a"',
+      'E-X 1:2 hint: expected "Check it!" but got "Check it."',
+    ]);
+  });
 });
 
 describe("MISC golden runner: the pending rule", () => {

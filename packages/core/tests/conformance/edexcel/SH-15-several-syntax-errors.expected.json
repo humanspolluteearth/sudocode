@@ -1,0 +1,23 @@
+{
+  "spec": ["SH-15", "EDX-20", "EDX-70"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 1,
+        "column": 7
+      },
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 2,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Panic-mode recovery (M2 checklist): after the error on line 1 the parser skips to the next line and keeps checking, so both mistakes are reported in one run. Line 1 is missing TO (found 5); line 2 ends where the device should be."
+}

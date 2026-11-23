@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-14", "SH-03"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "3.5\n3\n-3.5\n1.25\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "/ always gives a REAL (EDX-14): 6 / 2 prints 3 (SH-03) but is a REAL, so q accepts 1.25."
+}

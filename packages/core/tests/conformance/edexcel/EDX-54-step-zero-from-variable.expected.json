@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-54", "EDX-55"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-STEP-ZERO",
+        "line": 2,
+        "column": 24
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The step is worked out before the loop (EDX-55), so a 0 held in a variable is the same runtime error (EDX-54), even though 3 TO 1 would run zero times anyway."
+}

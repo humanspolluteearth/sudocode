@@ -1,0 +1,14 @@
+SET mark TO 64
+IF mark >= 70 THEN
+  SEND 'A' TO DISPLAY
+ELSE
+  IF mark >= 50 THEN
+    IF mark >= 60 THEN
+      SEND 'B+' TO DISPLAY
+    ELSE
+      SEND 'B' TO DISPLAY
+    END IF
+  ELSE
+    SEND 'C' TO DISPLAY
+  END IF
+END IF

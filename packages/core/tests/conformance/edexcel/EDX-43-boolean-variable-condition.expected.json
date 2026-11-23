@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-43", "EDX-50"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "3\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A BOOLEAN variable is a condition on its own (EDX-43)."
+}

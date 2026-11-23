@@ -11,10 +11,17 @@ export const checkerMessages: Catalogue = {
     },
   },
   "E-CHK-TYPE-CHANGE": {
-    spec: ["EDX-12", "CIE-13"],
+    spec: ["EDX-12", "EDX-17", "EDX-25", "CIE-13"],
     default: {
       message: "{name} holds {expected} values, so it can't be given a {actual}",
       hint: "Use a new variable, or convert the value first.",
+    },
+    // Edexcel passes {actual} with its article ("an INTEGER") and has no conversion functions (Q-EDX-4).
+    languages: {
+      edexcel: {
+        message: "{name} holds {expected} values, so it can't be given {actual}",
+        hint: "Use a new variable for the new value.",
+      },
     },
   },
   "E-CHK-CONCAT-ARRAY": {
@@ -89,10 +96,17 @@ export const checkerMessages: Catalogue = {
     variants: { "did-you-mean": { hint: "Did you mean {suggestion}?" } },
   },
   "E-CHK-ARG-TYPE": {
-    spec: ["CIE-121", "CIE-74"],
+    spec: ["CIE-121", "CIE-74", "EDX-90"],
     default: {
       message: "{function} needs a {expected} here, but {argument} is a {actual}",
       hint: "Give {function} a {expected}.",
+    },
+    // Edexcel passes {expected} and {actual} with their articles ("an array or a STRING", "an INTEGER").
+    languages: {
+      edexcel: {
+        message: "{function} needs {expected} here, but {argument} is {actual}",
+        hint: "Give {function} {expected}.",
+      },
     },
     variants: { "use-to-upper": { hint: "For a whole STRING use {alternative}({argument})." } },
   },
@@ -102,6 +116,7 @@ export const checkerMessages: Catalogue = {
       message: "{name} needs {expected} but was given {actual}",
       hint: "It is defined on line {line} as {signature}.",
     },
+    variants: { builtin: { hint: "Write {signature}." } },
   },
   "E-CHK-CALL-REQUIRED": {
     spec: ["CIE-71"],
@@ -116,6 +131,82 @@ export const checkerMessages: Catalogue = {
     default: {
       message: "The condition must be TRUE or FALSE, but this is {type}",
       hint: "Compare it, e.g. IF {name} > 0 THEN.",
+    },
+    variants: {
+      while: { hint: "Compare it, e.g. WHILE {name} > 0 DO." },
+      until: { hint: "Compare it, e.g. UNTIL {name} > 0." },
+    },
+  },
+  // Edexcel has no declarations: a name that is never given a value anywhere is caught before the run (EDX-12).
+  "E-CHK-UNKNOWN-NAME": {
+    spec: ["EDX-03", "EDX-12"],
+    default: { message: "{name} is never given a value", hint: "Give it a value first, e.g. SET {name} TO 0." },
+    variants: {
+      "other-case": { hint: "Names are case-sensitive: did you mean {suggestion}?" },
+      "did-you-mean": { hint: "Did you mean {suggestion}?" },
+    },
+  },
+  "E-CHK-CONST-SET-TWICE": {
+    spec: ["EDX-17"],
+    default: {
+      message: "{name} is a constant, so it can only be set once",
+      hint: "It is already set on line {line}. Leave out CONST if its value needs to change.",
+    },
+  },
+  "E-CHK-ARRAY-MIXED": {
+    spec: ["EDX-25"],
+    default: {
+      message: "This element is {actual}, but the first element is {expected}",
+      hint: "All the elements of an array must have the same type.",
+    },
+  },
+  "E-CHK-OPERAND-TYPE": {
+    spec: ["EDX-13", "EDX-43"],
+    default: {
+      message: "{operator} can't be used with {type} values",
+      hint: "Check the values on both sides of {operator}.",
+    },
+    variants: {
+      arithmetic: { hint: "{operator} works on numbers. To join text, use &." },
+      logic: { hint: "{operator} works on TRUE and FALSE values, e.g. a comparison such as x > 0." },
+      order: { hint: "{operator} compares two numbers or two pieces of text." },
+      concat: { hint: "& joins text, so at least one side must be a STRING." },
+    },
+  },
+  "E-CHK-COMPARE-TYPES": {
+    spec: ["EDX-32"],
+    default: {
+      message: "Can't compare {left} with {right}",
+      hint: "Compare two numbers, two pieces of text or two BOOLEAN values.",
+    },
+  },
+  "E-CHK-FOREACH-TYPE": {
+    spec: ["EDX-57"],
+    default: {
+      message: "FOR EACH needs an array or a STRING, but this is {type}",
+      hint: "To count, use FOR {name} FROM 1 TO ... DO instead.",
+    },
+  },
+  "E-CHK-NEEDS-INTEGER": {
+    spec: ["EDX-22", "EDX-52"],
+    default: { message: "This must be an INTEGER, but it is {type}", hint: "Use a whole number." },
+    variants: {
+      index: { hint: "An index is a whole number, e.g. {name}[0]." },
+      count: { hint: "Give a whole number of times, e.g. REPEAT 3 TIMES." },
+    },
+  },
+  "E-CHK-NOT-INDEXABLE": {
+    spec: ["EDX-22"],
+    default: {
+      message: "Only arrays and STRINGs can be indexed, but {name} is {type}",
+      hint: "Use [ ] after an array or a STRING, e.g. Scores[0].",
+    },
+  },
+  "E-CHK-STRING-ELEMENT": {
+    spec: ["EDX-23"],
+    default: {
+      message: "A STRING can't be changed one character at a time",
+      hint: "Build a new STRING with & instead.",
     },
   },
 };

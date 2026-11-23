@@ -1,0 +1,4 @@
+SET x TO 5
+IF x > 3
+  SEND x TO DISPLAY
+END IF

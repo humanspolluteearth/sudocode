@@ -1,0 +1,4 @@
+Set x To 7
+If x Mod 2 = 1 Then
+  Send 'odd' To Display
+End If

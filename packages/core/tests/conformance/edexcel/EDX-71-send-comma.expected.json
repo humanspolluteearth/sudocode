@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-71"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-SEND-COMMA",
+        "line": 2,
+        "column": 14
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "SEND a, b is a checker error at the comma, with the hint to join values with & (EDX-71)."
+}

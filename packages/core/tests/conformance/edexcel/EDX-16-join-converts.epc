@@ -1,0 +1,7 @@
+SEND 'Age ' & 18 TO DISPLAY
+SEND 18 & ' years' TO DISPLAY
+SEND 'Half: ' & 1 / 2 TO DISPLAY
+SEND 'Sum: ' & 0.1 + 0.2 TO DISPLAY
+SEND 'Ready: ' & TRUE TO DISPLAY
+SEND 'a' & 'b' & 'c' TO DISPLAY
+SEND 'Big: ' & 10.0 ^ 21 TO DISPLAY

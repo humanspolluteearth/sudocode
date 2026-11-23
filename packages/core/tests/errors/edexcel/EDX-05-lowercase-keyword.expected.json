@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-05"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 1,
+        "message": "Keywords are written in capitals",
+        "hint": "Write SET instead of set."
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for W-LOWERCASE-KEYWORD in Edexcel (first version, for review in docs/review/M2.md)."
+}

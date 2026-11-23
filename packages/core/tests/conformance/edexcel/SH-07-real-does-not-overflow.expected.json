@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-07", "EDX-13"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "9007199254740992\n9007199254740992\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "With a REAL operand the result is a REAL (EDX-13, EDX-30), which has no INTEGER range limit (SH-07 is about INTEGER), so these print instead of failing."
+}

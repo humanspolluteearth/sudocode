@@ -1,0 +1,6 @@
+SET r TO 1.5
+SET r TO 2
+SEND r TO DISPLAY
+SET s TO 'abc'
+SET s TO 'x'
+SEND s TO DISPLAY

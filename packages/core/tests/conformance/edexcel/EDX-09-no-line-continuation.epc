@@ -1,0 +1,3 @@
+SET total TO 1 +
+  2
+SEND total TO DISPLAY

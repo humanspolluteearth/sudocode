@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-04", "EDX-34"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "x\nx\n-1\n2\na\nb\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Every M2 keyword written in UPPER CASE (EDX-04): no warnings. Line 14 is ((i MOD 2 = 0) AND (NOT FALSE)) OR (i DIV 1 = 5) by the precedence table (EDX-34): FALSE for i = 1, TRUE for i = 2."
+}

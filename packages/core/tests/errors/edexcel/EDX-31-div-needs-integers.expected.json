@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-31"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-DIV-MOD-INTEGER",
+        "line": 1,
+        "column": 10,
+        "message": "DIV needs two INTEGER values, but one side is a REAL",
+        "hint": "Use / to divide REAL values."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-DIV-MOD-INTEGER in Edexcel (first version, for review in docs/review/M2.md)."
+}

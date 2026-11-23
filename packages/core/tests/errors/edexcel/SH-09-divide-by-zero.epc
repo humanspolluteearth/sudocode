@@ -1,0 +1,2 @@
+SET zero TO 0
+SEND 5 / zero TO DISPLAY

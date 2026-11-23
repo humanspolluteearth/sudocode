@@ -1,0 +1,28 @@
+{
+  "spec": ["EDX-43"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CONDITION-TYPE",
+        "line": 2,
+        "column": 4
+      },
+      {
+        "code": "E-CHK-CONDITION-TYPE",
+        "line": 5,
+        "column": 7
+      },
+      {
+        "code": "E-CHK-CONDITION-TYPE",
+        "line": 10,
+        "column": 7
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "IF, WHILE and UNTIL conditions must be BOOLEAN (EDX-43): checker error at the start of each condition."
+}

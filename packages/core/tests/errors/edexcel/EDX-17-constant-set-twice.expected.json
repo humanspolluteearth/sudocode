@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-17"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CONST-SET-TWICE",
+        "line": 3,
+        "column": 5,
+        "message": "Max is a constant, so it can only be set once",
+        "hint": "It is already set on line 2. Leave out CONST if its value needs to change."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-CONST-SET-TWICE in Edexcel (first version, for review in docs/review/M2.md)."
+}

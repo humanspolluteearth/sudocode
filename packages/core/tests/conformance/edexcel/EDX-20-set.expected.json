@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-20"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "6\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "SET <name> TO <expression> (EDX-20); the right side is worked out with the old value."
+}

@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Hello\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 1,
+        "column": 6,
+        "message": "Edexcel text uses single quotes",
+        "hint": "Write 'Hello'."
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for W-EDX-DOUBLE-QUOTES in Edexcel (first version, for review in docs/review/M2.md)."
+}

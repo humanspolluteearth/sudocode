@@ -1,0 +1,20 @@
+{
+  "spec": ["SH-15"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-UNKNOWN-STATEMENT",
+        "line": 1,
+        "column": 1,
+        "message": "Sudocode doesn't know a statement that starts with Total",
+        "hint": "Statements start with a keyword such as SET, SEND, IF, WHILE or FOR, or call a subprogram like Total()."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-UNKNOWN-STATEMENT in Edexcel (first version, for review in docs/review/M2.md)."
+}

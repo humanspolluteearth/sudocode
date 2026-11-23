@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-57"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-FOREACH-TYPE",
+        "line": 2,
+        "column": 17
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "FOR EACH works on an array or a string (EDX-57); an INTEGER is a checker error at the expression after FROM."
+}

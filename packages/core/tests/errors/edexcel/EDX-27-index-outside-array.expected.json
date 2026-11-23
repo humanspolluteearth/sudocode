@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-27", "EDX-22"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INDEX-RANGE",
+        "line": 2,
+        "column": 6,
+        "message": "Index 3 is outside Scores",
+        "hint": "Scores has 3 elements, so its indexes are 0 to 2. Check the loop limits."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-RUN-INDEX-RANGE in Edexcel (first version, for review in docs/review/M2.md)."
+}

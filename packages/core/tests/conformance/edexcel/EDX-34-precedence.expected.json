@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-34", "EDX-16", "EDX-30"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "14\n20\n5\n5\n2\n4\n6\n-9\n-6\na3\nTRUE\nTRUE\nFALSE\nTRUE\nTRUE\nx4\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Precedence (EDX-34, edexcel.md 2.4), highest first: ( ), ^, unary minus, * / DIV MOD, + -, &, comparisons, NOT, AND, OR; same level left to right (10 - 3 - 2 = 5, 2 * 3 MOD 4 = 6 MOD 4 = 2). -3 ^ 2 = -(3 ^ 2). NOT is below the comparisons (NOT (1 = 2)) but above AND, and AND is above OR."
+}

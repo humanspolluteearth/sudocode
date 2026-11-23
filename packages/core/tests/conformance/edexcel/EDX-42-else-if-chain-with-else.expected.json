@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-42"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "B\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-ELSE-IF",
+        "line": 4,
+        "column": 1
+      },
+      {
+        "code": "W-EDX-ELSE-IF",
+        "line": 6,
+        "column": 1
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "An ELSE IF chain closed by one END IF is accepted with a warning at each ELSE IF (EDX-42); the first TRUE condition's block runs, exactly as the nested form would."
+}

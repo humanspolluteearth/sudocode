@@ -1,0 +1,10 @@
+SET x TO 1
+IF x THEN
+  SEND x TO DISPLAY
+END IF
+WHILE 'yes' DO
+  SET x TO x + 1
+END WHILE
+REPEAT
+  SET x TO x + 1
+UNTIL x + 1

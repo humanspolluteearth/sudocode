@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-09", "EDX-14"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "before\n",
+    "errors": [
+      {
+        "code": "E-RUN-DIV-ZERO",
+        "line": 3,
+        "column": 8
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Division by zero is a runtime error at the operator (SH-09); earlier output stays."
+}

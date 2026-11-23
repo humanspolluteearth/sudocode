@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-03"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "0.0000001\n0.0000000001\n0\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "PROPOSED (see docs/review/M2.md): small REALs also print without exponent form. After rounding to 10 decimal places (SH-03) every digit fits in 10 decimals, so 0.0000001 prints as written, and 0.00000000004 rounds to 0. Q18 only says 'never exponent form' for very large REALs."
+}

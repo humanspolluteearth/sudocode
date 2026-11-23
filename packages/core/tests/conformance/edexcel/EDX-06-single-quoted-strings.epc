@@ -1,0 +1,4 @@
+SEND 'Hello' TO DISPLAY
+SEND ‘Curly quotes’ TO DISPLAY
+SEND 'Say "hi"' TO DISPLAY
+SEND ‘Mixed' TO DISPLAY

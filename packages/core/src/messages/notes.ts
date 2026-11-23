@@ -29,6 +29,13 @@ export const noteMessages: Catalogue = {
     spec: ["EDX-58"],
     default: { message: "{word} is written {official} in Edexcel", hint: "Write {official}.", fix: "Write {official}" },
   },
+  "W-EDX-FOR-VAR-SET": {
+    spec: ["EDX-55"],
+    default: {
+      message: "This changes {name}, the FOR loop's own variable",
+      hint: "The loop sets {name} itself on each pass, so use another variable for your own values.",
+    },
+  },
   "W-CIE-NAME-CASE": {
     spec: ["CIE-03"],
     default: {

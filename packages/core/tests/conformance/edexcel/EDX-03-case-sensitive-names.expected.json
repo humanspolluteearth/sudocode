@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-03"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1\n2\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "MyValue and myValue are different variables (EDX-03)."
+}

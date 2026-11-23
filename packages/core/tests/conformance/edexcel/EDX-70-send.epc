@@ -1,0 +1,4 @@
+SEND 'Hello, world' TO DISPLAY
+SEND 6 * 7 TO DISPLAY
+SET name TO 'Ada'
+SEND 'Hi ' & name TO DISPLAY

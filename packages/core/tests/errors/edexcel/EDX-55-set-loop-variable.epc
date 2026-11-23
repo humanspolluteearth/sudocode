@@ -1,0 +1,4 @@
+FOR i FROM 1 TO 3 DO
+  SET i TO i * 1
+  SEND i TO DISPLAY
+END FOR

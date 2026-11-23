@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-40"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-BLOCK-NOT-CLOSED",
+        "line": 2,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "An IF needs END IF (EDX-40): syntax error at the IF that is never closed."
+}

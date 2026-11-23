@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-26"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CONCAT-ARRAY",
+        "line": 2,
+        "column": 16,
+        "message": "& joins text, not arrays",
+        "hint": "Join single elements instead, e.g. Names[0] & ' ' & Names[1]."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-CONCAT-ARRAY in Edexcel (first version, for review in docs/review/M2.md)."
+}

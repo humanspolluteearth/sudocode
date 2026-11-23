@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-03"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "0\n0\n0\n0\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A negative REAL that rounds to zero prints 0, never -0 (SH-03, Q18). 0.0 * -1 is negative zero in 64-bit floating point (SH-08) and also prints 0."
+}

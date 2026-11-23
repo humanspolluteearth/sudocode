@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-70"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Hello, world\n42\nHi Ada\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "SEND <expression> TO DISPLAY prints one line (EDX-70)."
+}

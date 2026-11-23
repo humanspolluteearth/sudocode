@@ -1,0 +1,27 @@
+{
+  "spec": ["EDX-03", "EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-UNKNOWN-NAME",
+        "line": 2,
+        "column": 6,
+        "message": "Total is never given a value",
+        "hint": "Names are case-sensitive: did you mean total?"
+      },
+      {
+        "code": "E-CHK-UNKNOWN-NAME",
+        "line": 3,
+        "column": 6,
+        "message": "score is never given a value",
+        "hint": "Give it a value first, e.g. SET score TO 0."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-UNKNOWN-NAME in Edexcel (first version, for review in docs/review/M2.md). When the name differs from a known one only in case, the hint says so (EDX-03). Checker errors are all reported, so both lines are."
+}

@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-44"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "yes\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-ENDIF",
+        "line": 5,
+        "column": 1
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "ENDIF closes an IF with an ELSE too, with the warning at ENDIF (EDX-44)."
+}

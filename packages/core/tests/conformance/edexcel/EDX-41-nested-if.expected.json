@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-41", "EDX-40"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "B+\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Nested IFs go inside THEN or ELSE, each with its own END IF (EDX-41)."
+}

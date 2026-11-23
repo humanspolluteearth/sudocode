@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-41"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-WRONG-CLOSER",
+        "line": 5,
+        "column": 3,
+        "message": "END WHILE found, but the open block is IF from line 3",
+        "hint": "Close blocks in reverse order: add END IF before this line."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-WRONG-CLOSER in Edexcel (first version, for review in docs/review/M2.md)."
+}

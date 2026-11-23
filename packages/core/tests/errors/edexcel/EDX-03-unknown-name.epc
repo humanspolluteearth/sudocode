@@ -1,0 +1,3 @@
+SET total TO 5
+SEND Total TO DISPLAY
+SEND score TO DISPLAY

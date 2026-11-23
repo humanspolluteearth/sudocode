@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-40"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-BLOCK-NOT-CLOSED",
+        "line": 2,
+        "column": 1,
+        "message": "IF on line 2 is never closed",
+        "hint": "Add END IF after the last line of the block."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-BLOCK-NOT-CLOSED in Edexcel (first version, for review in docs/review/M2.md)."
+}

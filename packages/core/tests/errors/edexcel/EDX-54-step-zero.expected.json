@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-54"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-STEP-ZERO",
+        "line": 1,
+        "column": 24,
+        "message": "STEP can't be 0",
+        "hint": "A STEP of 0 would never reach the end value."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-RUN-STEP-ZERO in Edexcel (first version, for review in docs/review/M2.md)."
+}

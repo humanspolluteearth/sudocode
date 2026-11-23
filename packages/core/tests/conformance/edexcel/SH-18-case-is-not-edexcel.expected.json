@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-18"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-OTHER-LANGUAGE",
+        "line": 2,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "CASE is not in the Edexcel command set (edexcel.md 2.11: 'not part of Edexcel pseudocode', hint nested IF). It is reported once, where it starts; the lines up to ENDCASE belong to it and give no further errors (SH-18)."
+}

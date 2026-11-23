@@ -1,0 +1,4 @@
+# A whole-line comment: SEND 'no' TO DISPLAY
+SET x TO 5 # a comment after code
+SEND 'a # b' TO DISPLAY   # the # inside quotes is text
+SEND x TO DISPLAY#no space needed

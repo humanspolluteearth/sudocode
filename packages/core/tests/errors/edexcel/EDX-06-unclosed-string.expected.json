@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-06"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-UNCLOSED-STRING",
+        "line": 1,
+        "column": 6,
+        "message": "This text is missing its closing quote",
+        "hint": "Edexcel text goes in single quotes, e.g. 'Hello'."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-UNCLOSED-STRING in Edexcel (first version, for review in docs/review/M2.md)."
+}

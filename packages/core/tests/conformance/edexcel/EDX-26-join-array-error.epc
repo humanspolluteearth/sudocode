@@ -1,0 +1,3 @@
+SET Names TO ['Ali', 'Bea']
+SEND 'Names: ' & Names TO DISPLAY
+SET Both TO Names & ['Cal']

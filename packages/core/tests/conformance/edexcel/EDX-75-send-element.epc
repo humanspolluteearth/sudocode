@@ -1,0 +1,2 @@
+SET Scores TO [3, 4]
+SEND Scores[0] TO DISPLAY

@@ -1,0 +1,8 @@
+SET n TO 5
+SET n TO 2.5
+SET flag TO TRUE
+SET flag TO 1
+SET word TO 'hi'
+SET word TO FALSE
+SET nums TO [1, 2]
+SET nums TO ['a']

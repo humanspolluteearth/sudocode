@@ -1,0 +1,2 @@
+SET total TO 5
+SEND 'Total:', total TO DISPLAY

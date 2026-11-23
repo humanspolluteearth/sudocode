@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-09"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-LINE-ENDS-EARLY",
+        "line": 1,
+        "column": 17
+      },
+      {
+        "code": "E-SYN-UNKNOWN-STATEMENT",
+        "line": 2,
+        "column": 3
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "There is no line continuation (EDX-09): line 1 ends before its expression is complete (reported one past its end), and line 2 is a new statement that starts with a number. With syntax errors the program is not checked further, so line 3 gives no error."
+}

@@ -1,0 +1,10 @@
+SET n TO 10
+REPEAT
+  SEND n TO DISPLAY
+  SET n TO n + 1
+UNTIL n > 5
+SET k TO 0
+REPEAT
+  SET k TO k + 2
+UNTIL k >= 6
+SEND k TO DISPLAY

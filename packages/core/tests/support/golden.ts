@@ -19,6 +19,9 @@ export interface ExpectedDiagnostic {
   code: string;
   line: number;
   column: number;
+  /** Exact wording, given by tests/errors/ programs (message wording is tested there: TEST-PLAN section 4). */
+  message?: string;
+  hint?: string;
 }
 
 export interface ExpectedFile {
@@ -107,8 +110,23 @@ function compareDiagnostics(
 ): string[] {
   const want = positions(expected);
   const got = positions(actual);
-  if (JSON.stringify(want) === JSON.stringify(got)) return [];
-  return [`${kind}: expected [${want.join(", ")}] but got [${got.join(", ")}]`];
+  if (JSON.stringify(want) !== JSON.stringify(got)) {
+    return [`${kind}: expected [${want.join(", ")}] but got [${got.join(", ")}]`];
+  }
+  // Same diagnostics at the same places: where the expected file gives wording, it must match exactly.
+  return expected.flatMap((e) => {
+    const match = actual.find((a) => position(a) === position(e));
+    const problems: string[] = [];
+    for (const field of ["message", "hint"] as const) {
+      const wanted = e[field];
+      if (wanted !== undefined && match?.[field] !== wanted) {
+        problems.push(
+          `${position(e)} ${field}: expected ${JSON.stringify(wanted)} but got ${JSON.stringify(match?.[field])}`,
+        );
+      }
+    }
+    return problems;
+  });
 }
 
 // File names are not case-sensitive (SH-11), so files are compared by lower-cased name.

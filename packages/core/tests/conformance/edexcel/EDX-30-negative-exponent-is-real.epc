@@ -1,0 +1,3 @@
+SET p TO 2 ^ -1
+SET p TO 3
+SEND p TO DISPLAY

@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-23", "EDX-22"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "10\n25\n30\n31\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "SET Scores[1] TO 25 changes one element (EDX-23); the others keep their values."
+}

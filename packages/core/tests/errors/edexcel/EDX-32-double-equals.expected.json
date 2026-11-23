@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-32"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-DOUBLE-EQUALS",
+        "line": 1,
+        "column": 8,
+        "message": "== is not used in pseudocode",
+        "hint": "Use a single = to compare two values."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-DOUBLE-EQUALS in Edexcel (first version, for review in docs/review/M2.md)."
+}

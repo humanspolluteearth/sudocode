@@ -1,0 +1,2 @@
+SET a TO 7 div 2
+SEND a mod 2 = 1 and not false or false TO DISPLAY

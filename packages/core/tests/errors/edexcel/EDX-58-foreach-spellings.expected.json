@@ -1,0 +1,27 @@
+{
+  "spec": ["EDX-58"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "a\nb\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-FOREACH",
+        "line": 1,
+        "column": 1,
+        "message": "FOREACH is written FOR EACH in Edexcel",
+        "hint": "Write FOR EACH."
+      },
+      {
+        "code": "W-EDX-FOREACH",
+        "line": 3,
+        "column": 1,
+        "message": "END FOR EACH is written END FOREACH in Edexcel",
+        "hint": "Write END FOREACH."
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for W-EDX-FOREACH in Edexcel (first version, for review in docs/review/M2.md)."
+}

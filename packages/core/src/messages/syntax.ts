@@ -49,10 +49,13 @@ export const syntaxMessages: Catalogue = {
     default: { message: "Expected {expected} but found {found}", hint: "{advice}" },
   },
   "E-SYN-LINE-ENDS-EARLY": {
-    spec: ["SH-15"],
+    spec: ["SH-15", "EDX-09"],
     default: {
       message: "This line ends before the expression is complete",
       hint: "Something is missing after the last operator.",
+    },
+    languages: {
+      edexcel: { hint: "Something is missing after the last operator. Each statement must fit on one line." },
     },
   },
   "E-SYN-UNKNOWN-STATEMENT": {
@@ -98,6 +101,13 @@ export const syntaxMessages: Catalogue = {
     default: {
       message: "{closer} has no matching {block}",
       hint: "Remove this line, or check that the block it closes was opened.",
+    },
+  },
+  "E-SYN-BAD-NAME": {
+    spec: ["EDX-02"],
+    default: {
+      message: "{text} can't be a name",
+      hint: "A name starts with a letter, followed by letters, digits or _.",
     },
   },
   "E-SYN-KEYWORD-AS-NAME": {

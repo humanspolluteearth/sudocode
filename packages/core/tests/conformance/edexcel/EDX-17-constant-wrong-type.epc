@@ -1,0 +1,2 @@
+CONST INTEGER Max
+SET Max TO 'five'

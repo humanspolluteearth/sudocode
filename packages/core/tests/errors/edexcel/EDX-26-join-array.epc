@@ -1,0 +1,2 @@
+SET Names TO ['Ali', 'Bea']
+SEND 'Names: ' & Names TO DISPLAY

@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-54"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "start\n",
+    "errors": [
+      {
+        "code": "E-RUN-STEP-ZERO",
+        "line": 2,
+        "column": 24
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "STEP 0 is a runtime error (EDX-54), reported at the STEP value before the loop runs."
+}

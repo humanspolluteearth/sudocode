@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-03"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "42\n-42\n9007199254740991\n0\n0\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "INTEGERs print all their digits with a leading - when negative; INTEGER zero is never -0 (SH-03)."
+}

@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-11", "EDX-17", "EDX-15"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "7.5\nTRUE\nAAda\n2\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The data types INTEGER, REAL, BOOLEAN, CHARACTER, STRING and arrays (EDX-11), named in CONST declarations (EDX-17)."
+}

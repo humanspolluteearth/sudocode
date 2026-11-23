@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-54"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1\n3\n5\n10\n7\n4\n1\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "STEP sets the change per pass (EDX-54): 1, 3, 5 (6 is not reached); a negative STEP counts down (10, 7, 4, 1); a range that can't be reached runs zero times."
+}

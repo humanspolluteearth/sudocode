@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-01"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "ok\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The file starts with a UTF-8 byte order mark (U+FEFF), as some Windows editors save it. It is part of the UTF-8 encoding, not of the program, so the program runs (SH-01)."
+}

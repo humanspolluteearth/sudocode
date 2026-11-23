@@ -1,0 +1,11 @@
+SEND 'apple' < 'banana' TO DISPLAY
+SEND 'Apple' < 'apple' TO DISPLAY
+SEND 'Zebra' < 'apple' TO DISPLAY
+SEND 'ab' < 'abc' TO DISPLAY
+SEND 'b' > 'abc' TO DISPLAY
+SEND 'abc' = 'abc' TO DISPLAY
+SEND 'abc' = 'ABC' TO DISPLAY
+SEND 'abc' <> 'abd' TO DISPLAY
+SEND 'abc' <= 'abc' TO DISPLAY
+SEND 'abd' >= 'abc' TO DISPLAY
+SEND 'a ' = 'a' TO DISPLAY

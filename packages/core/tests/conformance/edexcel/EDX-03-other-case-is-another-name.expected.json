@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-03", "EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-UNKNOWN-NAME",
+        "line": 2,
+        "column": 6
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Total is not total (EDX-03), and Total is never given a value anywhere, so it has no type (EDX-12): a checker error at the name, before anything runs."
+}

@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-41"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-UNMATCHED-CLOSER",
+        "line": 2,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "END IF with no IF open is a syntax error at END IF."
+}

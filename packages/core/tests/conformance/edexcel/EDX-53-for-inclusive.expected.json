@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-53"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1\n2\n3\n5\n-2\n-1\n0\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "FOR includes both ends (EDX-53): 1 TO 3 runs with 1, 2, 3; 5 TO 5 once; 4 TO 3 can't be reached, so zero times (EDX-54)."
+}

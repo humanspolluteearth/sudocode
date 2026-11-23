@@ -1,0 +1,20 @@
+{
+  "spec": ["SH-15"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-UNEXPECTED-CHAR",
+        "line": 1,
+        "column": 12,
+        "message": "Sudocode doesn't understand the character @",
+        "hint": "Remove it, or put it inside quotes if it is text."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-UNEXPECTED-CHAR in Edexcel (first version, for review in docs/review/M2.md)."
+}

@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-16", "EDX-04"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "big\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The official form of SH-16-lenient-forms: same output, no warnings."
+}

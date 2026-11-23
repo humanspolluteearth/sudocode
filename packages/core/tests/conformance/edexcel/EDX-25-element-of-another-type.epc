@@ -1,0 +1,2 @@
+SET Scores TO [10, 20]
+SET Scores[0] TO 'ten'
