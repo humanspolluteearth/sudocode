@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-56"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-NO-VALUE",
+        "line": 4,
+        "column": 6,
+        "message": "i has no value yet",
+        "hint": "Give it a value first with SET i TO ... before this line."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-RUN-NO-VALUE in Edexcel (first version, for review in docs/review/M2.md)."
+}

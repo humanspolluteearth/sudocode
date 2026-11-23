@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-40"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "big\nnot huge\nend\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "IF ... THEN ... END IF runs its block only when the condition is TRUE; with ELSE, exactly one block runs (EDX-40)."
+}

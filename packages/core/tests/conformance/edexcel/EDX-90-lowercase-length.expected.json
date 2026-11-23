@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-90", "EDX-05"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "3\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 6
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "length(...) is the built-in LENGTH written in lower case: it works, with the lowercase warning (EDX-05 applied to the built-in's name). Decision D12 in docs/review/M2.md."
+}

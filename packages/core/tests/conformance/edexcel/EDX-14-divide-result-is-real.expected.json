@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-14", "EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-TYPE-CHANGE",
+        "line": 2,
+        "column": 14
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "6 / 2 is a REAL (EDX-14), so it can't go into the INTEGER whole (EDX-12); the error points at the value."
+}

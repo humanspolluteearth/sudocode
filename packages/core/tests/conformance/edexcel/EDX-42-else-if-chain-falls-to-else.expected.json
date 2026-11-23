@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-42"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "U\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-ELSE-IF",
+        "line": 4,
+        "column": 1
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "When no condition in the chain is TRUE, the final ELSE runs (EDX-42)."
+}

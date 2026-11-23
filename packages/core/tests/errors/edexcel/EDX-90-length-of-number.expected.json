@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-90"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-ARG-TYPE",
+        "line": 1,
+        "column": 13,
+        "message": "LENGTH needs an array or a STRING here, but 42 is an INTEGER",
+        "hint": "Give LENGTH an array or a STRING."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-ARG-TYPE in Edexcel (first version, for review in docs/review/M2.md)."
+}

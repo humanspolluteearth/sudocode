@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-55"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1\n2\n3\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-FOR-VAR-SET",
+        "line": 2,
+        "column": 7,
+        "message": "This changes i, the FOR loop's own variable",
+        "hint": "The loop sets i itself on each pass, so use another variable for your own values."
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for W-EDX-FOR-VAR-SET in Edexcel (first version, for review in docs/review/M2.md)."
+}

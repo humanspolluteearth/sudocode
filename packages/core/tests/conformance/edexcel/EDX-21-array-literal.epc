@@ -1,0 +1,6 @@
+SET Scores TO [10, 20, 30]
+SEND Scores[0] TO DISPLAY
+SEND Scores[2] TO DISPLAY
+SEND LENGTH(Scores) TO DISPLAY
+SET Names TO ['Ali', 'Bea']
+SEND Names[1] TO DISPLAY

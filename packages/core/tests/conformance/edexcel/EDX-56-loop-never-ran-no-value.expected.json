@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-56"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-NO-VALUE",
+        "line": 4,
+        "column": 6
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The loop never ran and i had no value before it, so reading i is the usual 'has no value yet' runtime error (EDX-56), at the variable. Decision D3 in docs/review/M2.md."
+}

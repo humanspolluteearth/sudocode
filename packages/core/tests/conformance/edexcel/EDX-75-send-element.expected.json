@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-75", "EDX-70"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "3\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Sending a single element is fine (EDX-75)."
+}

@@ -1,0 +1,20 @@
+{
+  "spec": ["SH-09"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-DIV-ZERO",
+        "line": 2,
+        "column": 8,
+        "message": "Dividing by zero is not possible",
+        "hint": "The value on the right of / is 0 here. Check it with an IF first."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-RUN-DIV-ZERO in Edexcel (first version, for review in docs/review/M2.md)."
+}

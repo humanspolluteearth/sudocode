@@ -1,0 +1,20 @@
+{
+  "spec": ["Q-EDX-4"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-UNKNOWN-FUNCTION",
+        "line": 1,
+        "column": 6,
+        "message": "There is no function called INT",
+        "hint": "Edexcel's only built-in functions are LENGTH and RANDOM; define your own with FUNCTION INT(...)."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-UNKNOWN-FUNCTION in Edexcel (first version, for review in docs/review/M2.md). Edexcel has only LENGTH and RANDOM (Q-EDX-4)."
+}

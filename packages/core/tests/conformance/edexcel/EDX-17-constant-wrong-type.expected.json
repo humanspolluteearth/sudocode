@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-17", "EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-TYPE-CHANGE",
+        "line": 2,
+        "column": 12
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The constant's type comes from CONST (EDX-17), so a STRING value is a type error at the value (EDX-12)."
+}

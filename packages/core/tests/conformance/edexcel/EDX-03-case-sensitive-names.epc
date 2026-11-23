@@ -1,0 +1,4 @@
+SET MyValue TO 1
+SET myValue TO 2
+SEND MyValue TO DISPLAY
+SEND myValue TO DISPLAY

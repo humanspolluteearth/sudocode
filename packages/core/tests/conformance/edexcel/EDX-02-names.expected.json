@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-02"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "6\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Names use letters, digits and _, starting with a letter (EDX-02)."
+}

@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-43"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CONDITION-TYPE",
+        "line": 4,
+        "column": 7,
+        "message": "The condition must be TRUE or FALSE, but this is a REAL",
+        "hint": "Compare it, e.g. UNTIL n > 0."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-CONDITION-TYPE in Edexcel (first version, for review in docs/review/M2.md). (UNTIL wording, a REAL condition)"
+}

@@ -1,0 +1,4 @@
+SET day TO 1
+CASE day OF
+  1: SEND 'Mon' TO DISPLAY
+ENDCASE

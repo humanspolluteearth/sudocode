@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-71"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-SEND-COMMA",
+        "line": 1,
+        "column": 7,
+        "message": "SEND sends one value at a time",
+        "hint": "Join values with &, e.g. SEND 'Total: ' & Total TO DISPLAY."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-SEND-COMMA in Edexcel (first version, for review in docs/review/M2.md). The hint is the one EDX-71 gives."
+}

@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-01"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "a # b\n5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "# starts a comment that runs to the end of the line, also after code (EDX-01); inside a STRING it is text."
+}

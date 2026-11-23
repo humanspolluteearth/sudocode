@@ -1,0 +1,63 @@
+{
+  "spec": ["EDX-05"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "odd\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 1,
+        "column": 7
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 6
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 2,
+        "column": 16
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 3,
+        "column": 3
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 3,
+        "column": 14
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 3,
+        "column": 17
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 4,
+        "column": 1
+      },
+      {
+        "code": "W-LOWERCASE-KEYWORD",
+        "line": 4,
+        "column": 5
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Mixed-case keywords (End If) are accepted with a warning each, like lowercase ones (EDX-05). Decision D7 in docs/review/M2.md."
+}

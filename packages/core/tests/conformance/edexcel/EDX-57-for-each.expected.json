@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-57", "EDX-21"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Ali\nBea\nCal\nH\ni\n!\n40\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "FOR EACH visits each element of an array, or each character of a string, in order (EDX-57); an empty string has none."
+}

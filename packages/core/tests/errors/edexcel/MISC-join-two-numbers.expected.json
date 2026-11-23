@@ -1,0 +1,20 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-OPERAND-TYPE",
+        "line": 1,
+        "column": 8,
+        "message": "& can't be used with INTEGER values",
+        "hint": "& joins text, so at least one side must be a STRING or a CHARACTER."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-OPERAND-TYPE in Edexcel (first version, for review in docs/review/M2.md). (concat variant). EDX-26: & joins strings only; EDX-16 covers a STRING with a non-STRING. Decision D4 in docs/review/M2.md."
+}

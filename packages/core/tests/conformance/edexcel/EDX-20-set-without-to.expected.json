@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-20"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 1,
+        "column": 7
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "SET needs TO between the name and the value (EDX-20): syntax error where TO should be (at 5)."
+}

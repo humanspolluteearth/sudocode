@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-11", "EDX-17"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 1,
+        "column": 7
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "NUMBER is not one of the data types (EDX-11): CONST expects a type there."
+}

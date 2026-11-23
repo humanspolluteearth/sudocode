@@ -1,0 +1,21 @@
+{
+  "spec": ["EDX-32"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-NOT-EQUAL",
+        "line": 1,
+        "column": 8,
+        "message": "!= is not how pseudocode writes \"not equal to\"",
+        "hint": "Use <> for \"not equal to\".",
+        "fix": "Change != to <>"
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-NOT-EQUAL in Edexcel (first version, for review in docs/review/M2.md)."
+}

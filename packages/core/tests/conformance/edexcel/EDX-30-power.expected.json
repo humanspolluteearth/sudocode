@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-30", "EDX-34", "SH-03"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1024\n1\n0.5\n8\n2\n-8\n512\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "^ is exponent (EDX-30): an INTEGER base with a non-negative INTEGER exponent gives an INTEGER, anything else a REAL (2 ^ -1 = 0.5; 2.0 ^ 3 and 4 ^ 0.5 are REALs that print without decimals, SH-03). ^ works right to left (EDX-34): 2 ^ 3 ^ 2 = 2 ^ 9."
+}

@@ -1,0 +1,19 @@
+set n to 2
+while n > 0 do
+  set n to n - 1
+end while
+repeat
+  set n to n + 1
+until n = 2
+repeat n times
+  send n to display
+end repeat
+for i from 1 to 3 step 2 do
+  send i to display
+end for
+for each c from 'ab' do
+  send c to display
+end foreach
+const string Greeting
+set Greeting to 'hi'
+send Greeting to display

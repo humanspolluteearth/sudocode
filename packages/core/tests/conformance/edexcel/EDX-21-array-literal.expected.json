@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-21", "EDX-22", "EDX-90"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "10\n30\n3\nBea\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "SET Scores TO [10, 20, 30] makes an array (EDX-21)."
+}

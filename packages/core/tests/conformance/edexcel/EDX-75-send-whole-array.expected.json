@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-75"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-SEND-ARRAY",
+        "line": 2,
+        "column": 6
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Sending a whole array is a checker error at the array expression (EDX-75)."
+}

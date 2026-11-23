@@ -1,0 +1,20 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-OPERAND-TYPE",
+        "line": 1,
+        "column": 11,
+        "message": "> can't be used with BOOLEAN values",
+        "hint": "> compares two numbers or two pieces of text."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-OPERAND-TYPE in Edexcel (first version, for review in docs/review/M2.md). (order variant). No spec row orders TRUE and FALSE. Decision D4 in docs/review/M2.md."
+}

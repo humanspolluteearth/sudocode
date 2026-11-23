@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-30", "EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-TYPE-CHANGE",
+        "line": 2,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "2 ^ 3 is an INTEGER (EDX-30), so p is an INTEGER and can't take 0.5 (EDX-12)."
+}

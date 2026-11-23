@@ -1,0 +1,16 @@
+# FizzBuzz to 15
+FOR i FROM 1 TO 15 DO
+  IF i MOD 15 = 0 THEN
+    SEND 'FizzBuzz' TO DISPLAY
+  ELSE
+    IF i MOD 3 = 0 THEN
+      SEND 'Fizz' TO DISPLAY
+    ELSE
+      IF i MOD 5 = 0 THEN
+        SEND 'Buzz' TO DISPLAY
+      ELSE
+        SEND i TO DISPLAY
+      END IF
+    END IF
+  END IF
+END FOR

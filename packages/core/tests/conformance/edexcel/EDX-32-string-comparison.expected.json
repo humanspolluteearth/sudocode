@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-32"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "TRUE\nTRUE\nTRUE\nTRUE\nTRUE\nTRUE\nFALSE\nTRUE\nTRUE\nTRUE\nFALSE\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Strings compare by character code, character by character (EDX-32): capitals (65-90) come before lower case (97-122), and a prefix comes before the longer string. = compares exact content, case-sensitive, spaces included."
+}

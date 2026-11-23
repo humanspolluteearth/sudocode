@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-09"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-DIV-ZERO",
+        "line": 1,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Dividing a REAL by 0.0 is also a runtime error (SH-09), not infinity."
+}

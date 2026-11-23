@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-08", "SH-03"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "FALSE\nTRUE\n1.4142135624\n9007199254740992\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "REALs are 64-bit floating point (SH-08): 0.1 + 0.2 is 0.30000000000000004, so it is not equal to 0.3 even though it prints as 0.3 (SH-03); halves and quarters are exact. √2 = 1.41421356237... rounds to 1.4142135624. 9007199254740993.0 can't be stored exactly and becomes 9007199254740992."
+}

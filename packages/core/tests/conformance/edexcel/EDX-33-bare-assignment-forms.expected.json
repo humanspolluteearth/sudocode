@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-33", "EDX-101"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-BARE-ASSIGN",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "code": "E-CHK-BARE-ASSIGN",
+        "line": 4,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "An element (a[0] = 5) and the exam paper's own end = middle - 1 (EDX-101) are bare assignments too (EDX-33). end is a name here, not END. Decision D2 in docs/review/M2.md."
+}

@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-32"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-NOT-EQUAL",
+        "line": 1,
+        "column": 8
+      },
+      {
+        "code": "E-SYN-DOUBLE-EQUALS",
+        "line": 2,
+        "column": 8
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The relational operators are = and <> (edexcel.md 2.4): != and == are syntax errors at the operator (their one-click fixes are checked in errors/)."
+}

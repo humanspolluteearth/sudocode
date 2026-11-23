@@ -1,0 +1,5 @@
+SET n TO 1
+REPEAT 5 TIMES
+  SEND n & ' squared is ' & n ^ 2 TO DISPLAY
+  SET n TO n + 1
+END REPEAT

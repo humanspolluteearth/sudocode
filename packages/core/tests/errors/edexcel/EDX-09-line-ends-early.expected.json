@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-09"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-LINE-ENDS-EARLY",
+        "line": 1,
+        "column": 17,
+        "message": "This line ends before the expression is complete",
+        "hint": "Something is missing after the last operator. Each statement must fit on one line."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-LINE-ENDS-EARLY in Edexcel (first version, for review in docs/review/M2.md)."
+}

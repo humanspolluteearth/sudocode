@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-09", "EDX-31"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-DIV-ZERO",
+        "line": 1,
+        "column": 8
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "MOD by zero is a runtime error at the operator (SH-09)."
+}

@@ -1,0 +1,20 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-COMPARE-TYPES",
+        "line": 2,
+        "column": 11,
+        "message": "Can't compare a STRING with an INTEGER",
+        "hint": "Compare two numbers, two pieces of text or two BOOLEAN values."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-COMPARE-TYPES in Edexcel (first version, for review in docs/review/M2.md). No spec row says what '5' = 5 does; it is a checker error at the operator rather than a silent FALSE. MISC: see docs/review/M2.md. Decision D4 in docs/review/M2.md."
+}

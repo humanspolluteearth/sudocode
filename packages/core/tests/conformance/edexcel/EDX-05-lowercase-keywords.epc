@@ -1,0 +1,9 @@
+set total to 0
+for i from 1 to 3 do
+  set total to total + i
+end for
+if total > 5 then
+  send total to display
+else
+  send 0 to display
+end if

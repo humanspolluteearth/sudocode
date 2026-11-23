@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-06"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Hello\nCurly quotes\nSay \"hi\"\nMixed\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Strings use single quotes; the curly quotes printed in the command set count as straight ones (EDX-06), so a curly quote can open a string a straight one closes. Double quotes inside single quotes are just text."
+}

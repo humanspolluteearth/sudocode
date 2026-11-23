@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-03", "EDX-30"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1000000000000000000000\n10000000000000000000000\n-1000000000000000000000\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Very large REALs print all their digits, never exponent form (SH-03, Q18: 10 ^ 21 as a REAL gives 1000000000000000000000). 10.0 ^ 21 is a REAL because the base is REAL (EDX-30). 10^21 and 10^22 are exact in 64-bit floating point, so every digit is certain."
+}

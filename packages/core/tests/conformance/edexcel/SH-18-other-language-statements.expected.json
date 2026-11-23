@@ -1,0 +1,28 @@
+{
+  "spec": ["SH-18"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-OTHER-LANGUAGE",
+        "line": 1,
+        "column": 1
+      },
+      {
+        "code": "E-SYN-OTHER-LANGUAGE",
+        "line": 2,
+        "column": 1
+      },
+      {
+        "code": "E-SYN-OTHER-LANGUAGE",
+        "line": 3,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Statements from Cambridge pseudocode or older pseudocode are recognised and named as not Edexcel (SH-18, edexcel.md 2.11), one error per statement, instead of a confusing syntax error. Decision D9 in docs/review/M2.md."
+}

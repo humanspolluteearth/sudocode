@@ -1,0 +1,4 @@
+SEND "Hello" TO DISPLAY
+SEND "It's" TO DISPLAY
+SET name TO "Ada"
+SEND 'Hi ' & name TO DISPLAY

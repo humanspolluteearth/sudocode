@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-57"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-FOREACH-TYPE",
+        "line": 2,
+        "column": 17,
+        "message": "FOR EACH needs an array or a STRING, but this is an INTEGER",
+        "hint": "To count, use FOR d FROM 1 TO ... DO instead."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-FOREACH-TYPE in Edexcel (first version, for review in docs/review/M2.md)."
+}

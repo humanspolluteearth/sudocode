@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-08", "SH-04"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "42\n3.14\n0.5\nTRUE\nFALSE\nTRUE\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Number literals 42 and 3.14; Boolean literals in any case, with no warning (EDX-08), printed TRUE/FALSE (SH-04)."
+}

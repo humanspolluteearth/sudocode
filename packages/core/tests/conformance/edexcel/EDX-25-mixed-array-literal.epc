@@ -1,0 +1,2 @@
+SET Mixed TO [1, 'two', 3]
+SET Flags TO [TRUE, 1]

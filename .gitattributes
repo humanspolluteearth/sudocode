@@ -5,3 +5,5 @@
 *.woff2 binary
 # Golden test files must keep exact bytes (line endings matter to interpreters)
 packages/core/tests/golden/** text eol=lf
+# Test programs that prove Windows line endings work (SH-01) keep their \r\n bytes.
+packages/core/tests/**/*crlf*.epc -text

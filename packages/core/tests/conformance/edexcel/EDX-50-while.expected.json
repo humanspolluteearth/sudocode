@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-50"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1\n2\n3\ndone\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "WHILE tests before each pass (EDX-50), so a FALSE condition runs the body zero times."
+}

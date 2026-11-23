@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-51"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "10\n6\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "REPEAT ... UNTIL runs at least once (EDX-51): the first loop's condition is already TRUE, but its body runs once."
+}

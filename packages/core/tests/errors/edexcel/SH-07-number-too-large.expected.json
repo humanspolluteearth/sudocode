@@ -1,0 +1,20 @@
+{
+  "spec": ["SH-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-NUMBER-TOO-LARGE",
+        "line": 2,
+        "column": 8,
+        "message": "This number is too large: the answer is beyond ±9,007,199,254,740,991",
+        "hint": "Use smaller numbers, or a REAL if you don't need it exact."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-RUN-NUMBER-TOO-LARGE in Edexcel (first version, for review in docs/review/M2.md)."
+}

@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-15", "EDX-22"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "TRUE\nTRUE\nBBob\nz\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A one-character literal fits a CHARACTER (EDX-15); word[0] is a CHARACTER (EDX-22), so letter is a CHARACTER and accepts 'z'."
+}

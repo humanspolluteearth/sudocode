@@ -1,0 +1,3 @@
+SET Scores TO [10, 20, 30]
+SEND 'start' TO DISPLAY
+SEND Scores[3] TO DISPLAY

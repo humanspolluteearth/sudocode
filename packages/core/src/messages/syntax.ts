@@ -24,7 +24,7 @@ export const syntaxMessages: Catalogue = {
   "E-SYN-BAD-NUMBER": {
     spec: ["EDX-08", "CIE-04"],
     default: {
-      message: "{text} is not a number Sudocode can read",
+      message: "'{text}' is not a number Sudocode can read",
       hint: "A number has at most one decimal point, with digits after it.",
     },
   },
@@ -49,10 +49,13 @@ export const syntaxMessages: Catalogue = {
     default: { message: "Expected {expected} but found {found}", hint: "{advice}" },
   },
   "E-SYN-LINE-ENDS-EARLY": {
-    spec: ["SH-15"],
+    spec: ["SH-15", "EDX-09"],
     default: {
       message: "This line ends before the expression is complete",
       hint: "Something is missing after the last operator.",
+    },
+    languages: {
+      edexcel: { hint: "Something is missing after the last operator. Each statement must fit on one line." },
     },
   },
   "E-SYN-UNKNOWN-STATEMENT": {
@@ -69,6 +72,12 @@ export const syntaxMessages: Catalogue = {
         hint: "Statements start with a keyword such as DECLARE, OUTPUT, IF or FOR, or with a variable to assign.",
       },
     },
+    variants: {
+      // A name followed by a value: most likely a missing SET (Edexcel).
+      "missing-set": { hint: "To give {word} a value, write SET {word} TO ..." },
+      // A line that starts with a value rather than a word.
+      "not-a-word": { hint: "Statements start with a keyword such as SET, SEND, IF, WHILE or FOR." },
+    },
   },
   "E-SYN-OTHER-LANGUAGE": {
     spec: ["SH-15"],
@@ -77,6 +86,8 @@ export const syntaxMessages: Catalogue = {
       edexcel: { message: "{word} is not an Edexcel statement", hint: "Edexcel uses {official}." },
       cie: { message: "{word} is not Cambridge pseudocode", hint: "Cambridge pseudocode uses {official}." },
     },
+    // edexcel.md 2.11: students get "not part of Edexcel pseudocode".
+    variants: { "not-edexcel": { message: "{word} is not part of Edexcel pseudocode" } },
   },
   "E-SYN-BLOCK-NOT-CLOSED": {
     spec: ["EDX-40", "CIE-50"],
@@ -92,12 +103,29 @@ export const syntaxMessages: Catalogue = {
       message: "{closer} found, but the open block is {block} from line {line}",
       hint: "Close blocks in reverse order: add {expected} before this line.",
     },
+    // The closer matches no open block, so it was most likely meant as this block's closer.
+    variants: { replace: { hint: "Write {expected} here instead." } },
+  },
+  "E-SYN-ONE-WORD-CLOSER": {
+    spec: ["EDX-50", "EDX-53"],
+    default: {
+      message: "{word} is written as two words in Edexcel",
+      hint: "Write {official}.",
+      fix: "Write {official}",
+    },
   },
   "E-SYN-UNMATCHED-CLOSER": {
     spec: ["EDX-41", "CIE-50"],
     default: {
       message: "{closer} has no matching {block}",
       hint: "Remove this line, or check that the block it closes was opened.",
+    },
+  },
+  "E-SYN-BAD-NAME": {
+    spec: ["EDX-02"],
+    default: {
+      message: "{text} can't be a name",
+      hint: "A name starts with a letter, followed by letters, digits or _.",
     },
   },
   "E-SYN-KEYWORD-AS-NAME": {

@@ -1,0 +1,12 @@
+{
+  "spec": ["SH-10", "EDX-31"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "3\n1\n-4\n1\n-4\n-1\n3\n-1\n-2\n0\n0\n4503599627370495\n9\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Floor rules, as Python's // and % (SH-10): the quotient rounds down and the remainder takes the sign of the divisor. -6 MOD 3 is 0, never -0. Unary minus binds tighter than DIV/MOD (edexcel.md 2.4), so -7 DIV 2 is (-7) DIV 2."
+}

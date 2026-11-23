@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-40"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 2,
+        "column": 9,
+        "message": "Expected THEN but found the end of the line",
+        "hint": "Write IF <condition> THEN."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-EXPECTED in Edexcel (first version, for review in docs/review/M2.md). Decision D8 in docs/review/M2.md."
+}

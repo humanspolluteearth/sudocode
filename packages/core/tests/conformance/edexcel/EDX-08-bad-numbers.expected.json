@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-08"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-BAD-NUMBER",
+        "line": 1,
+        "column": 10
+      },
+      {
+        "code": "E-SYN-BAD-NUMBER",
+        "line": 2,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A number literal has at most one decimal point with digits after it (EDX-08 shows 42 and 3.14): syntax errors at the number. Decision D6 in docs/review/M2.md."
+}

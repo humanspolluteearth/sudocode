@@ -1,0 +1,4 @@
+SET a TO [1, 2]
+SET middle TO 4
+a[0] = 5
+end = middle - 1

@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-22", "EDX-27"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "start\n",
+    "errors": [
+      {
+        "code": "E-RUN-INDEX-RANGE",
+        "line": 3,
+        "column": 6
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Indexes of a 3-element array are 0 to 2 (EDX-22), so reading Scores[3] is a runtime error (EDX-27) at the start of the indexed expression."
+}

@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-01", "EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "ok\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 1,
+        "column": 6
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "The file starts with a UTF-8 byte order mark (U+FEFF), as some Windows editors save it. It is part of the UTF-8 encoding, not of the program, so the program runs (SH-01) and columns on line 1 count from the first character after it: the warning is at column 6."
+}

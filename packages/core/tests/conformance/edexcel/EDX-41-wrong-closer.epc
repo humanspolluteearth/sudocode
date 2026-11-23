@@ -1,0 +1,5 @@
+SET x TO 1
+WHILE x < 3 DO
+  IF x = 1 THEN
+    SEND x TO DISPLAY
+  END WHILE

@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-75"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-SEND-ARRAY",
+        "line": 2,
+        "column": 6,
+        "message": "SEND can't send a whole array",
+        "hint": "Send each element in a loop: FOR EACH Item FROM Scores DO ... END FOREACH."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-SEND-ARRAY in Edexcel (first version, for review in docs/review/M2.md)."
+}

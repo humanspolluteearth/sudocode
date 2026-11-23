@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-01", "EDX-70"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 1,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "With \\r\\n line endings, 'one past the end of the line' is still column 10: the \\r is not a character of the line (SH-01)."
+}

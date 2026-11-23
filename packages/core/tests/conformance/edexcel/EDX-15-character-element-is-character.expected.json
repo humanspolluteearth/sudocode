@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-15", "EDX-22", "EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-TYPE-CHANGE",
+        "line": 3,
+        "column": 15
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "word[1] is a CHARACTER (EDX-22), so letter is a CHARACTER and can't take the two-character STRING 'zz' (EDX-15, EDX-12)."
+}

@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-25"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-ARRAY-MIXED",
+        "line": 1,
+        "column": 18
+      },
+      {
+        "code": "E-CHK-ARRAY-MIXED",
+        "line": 2,
+        "column": 21
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "All elements of an array share one type (EDX-25): checker error at the first element whose type differs from the first element's."
+}

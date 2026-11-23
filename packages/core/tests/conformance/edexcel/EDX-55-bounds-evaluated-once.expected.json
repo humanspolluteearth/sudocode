@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-55"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1\n2\n3\n1\n2\n3\n4\n5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Start, end and step are worked out once, before the loop (EDX-55): changing n or s inside doesn't change the passes."
+}

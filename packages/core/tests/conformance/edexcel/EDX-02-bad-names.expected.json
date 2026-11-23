@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-02"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-BAD-NAME",
+        "line": 1,
+        "column": 5
+      },
+      {
+        "code": "E-SYN-BAD-NAME",
+        "line": 2,
+        "column": 5
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A name must start with a letter (EDX-02): _total and 2nd are syntax errors at the name. Each line is checked, so both are reported."
+}

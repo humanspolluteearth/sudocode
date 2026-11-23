@@ -1,0 +1,8 @@
+SET word TO 'Programming in pseudocode'
+SET vowels TO 0
+FOR EACH c FROM word DO
+  IF c = 'a' OR c = 'e' OR c = 'i' OR c = 'o' OR c = 'u' THEN
+    SET vowels TO vowels + 1
+  END IF
+END FOREACH
+SEND word & ' has ' & vowels & ' vowels' TO DISPLAY

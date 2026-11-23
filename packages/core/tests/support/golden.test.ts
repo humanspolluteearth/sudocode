@@ -112,6 +112,44 @@ describe("MISC golden runner: comparing a run with its expected file", () => {
       "the program reached the step limit (possible infinite loop)",
     ]);
   });
+
+  it("MISC checks message and hint wording exactly where the expected file gives it (tests/errors/)", () => {
+    const run = result({ errors: [{ ...d("E-X", 1, 2), message: "Index 3 is outside a", hint: "Check it." }] });
+    const want = (message: string, hint?: string): ExpectedFile["expect"] =>
+      expect0({ errors: [{ code: "E-X", line: 1, column: 2, message, ...(hint === undefined ? {} : { hint }) }] });
+    expect(compareRun(want("Index 3 is outside a", "Check it."), run)).toEqual([]);
+    expect(compareRun(want("Index 3 is outside a"), run)).toEqual([]);
+    expect(compareRun(want("Index 4 is outside a", "Check it!"), run)).toEqual([
+      'E-X 1:2 message: expected "Index 4 is outside a" but got "Index 3 is outside a"',
+      'E-X 1:2 hint: expected "Check it!" but got "Check it."',
+    ]);
+  });
+
+  it("MISC checks the fix label where the expected file gives one, and a missing fix fails", () => {
+    const fixed = { ...d("W-X", 3, 1, "warning"), fix: { label: "Write END IF", edits: [] } };
+    const want = (fix: string): ExpectedFile["expect"] =>
+      expect0({ warnings: [{ code: "W-X", line: 3, column: 1, fix }] });
+    expect(compareRun(want("Write END IF"), result({ warnings: [fixed] }))).toEqual([]);
+    expect(compareRun(want("Write END IF"), result({ warnings: [d("W-X", 3, 1, "warning")] }))).toEqual([
+      'W-X 3:1 fix: expected "Write END IF" but got undefined',
+    ]);
+  });
+
+  it("MISC pairs two diagnostics at the same place one to one", () => {
+    const run = result({
+      errors: [
+        { ...d("E-X", 1, 2), message: "first" },
+        { ...d("E-X", 1, 2), message: "second" },
+      ],
+    });
+    const want = expect0({
+      errors: [
+        { code: "E-X", line: 1, column: 2, message: "first" },
+        { code: "E-X", line: 1, column: 2, message: "first" },
+      ],
+    });
+    expect(compareRun(want, run)).toEqual(['E-X 1:2 message: expected "first" but got "second"']);
+  });
 });
 
 describe("MISC golden runner: the pending rule", () => {

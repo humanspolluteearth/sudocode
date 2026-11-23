@@ -1,0 +1,28 @@
+{
+  "spec": ["EDX-31"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-DIV-MOD-INTEGER",
+        "line": 1,
+        "column": 10
+      },
+      {
+        "code": "E-CHK-DIV-MOD-INTEGER",
+        "line": 2,
+        "column": 8
+      },
+      {
+        "code": "E-CHK-DIV-MOD-INTEGER",
+        "line": 3,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "DIV and MOD need INTEGER operands (EDX-31): checker error at the operator for a REAL or a STRING on either side."
+}

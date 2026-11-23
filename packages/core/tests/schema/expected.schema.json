@@ -84,7 +84,19 @@
           "pattern": "^([EWI]-[A-Z][A-Z0-9]*(-[A-Z0-9]+)*|E-PY-[A-Z][A-Za-z]*)$"
         },
         "line": { "type": "integer", "minimum": 1 },
-        "column": { "type": "integer", "minimum": 1 }
+        "column": { "type": "integer", "minimum": 1 },
+        "message": {
+          "description": "Exact wording the student reads (tests/errors/ programs give it; elsewhere it is left out).",
+          "type": "string"
+        },
+        "hint": {
+          "description": "Exact hint wording (tests/errors/ programs give it; elsewhere it is left out).",
+          "type": "string"
+        },
+        "fix": {
+          "description": "Label of the one-click fix the diagnostic offers (SH-15), where it has one.",
+          "type": "string"
+        }
       }
     },
     "fileMap": {

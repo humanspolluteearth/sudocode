@@ -1,0 +1,3 @@
+SET grade TO 'A'
+SET grade TO 'A*'
+SEND grade TO DISPLAY

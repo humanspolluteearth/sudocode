@@ -1,0 +1,4 @@
+SET n TO 0
+WHILE n < 2 DO
+  SET n TO n + 1
+ENDWHILE

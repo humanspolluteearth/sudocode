@@ -1,0 +1,4 @@
+SET answer TO '5'
+IF answer = 5 THEN
+  SEND 'yes' TO DISPLAY
+END IF

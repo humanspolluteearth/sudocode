@@ -1,0 +1,15 @@
+CONST INTEGER Count
+SET Count TO 3
+CONST REAL Price
+SET Price TO 2.5
+CONST BOOLEAN Ready
+SET Ready TO TRUE
+CONST CHARACTER Initial
+SET Initial TO 'A'
+CONST STRING Name
+SET Name TO 'Ada'
+SET Scores TO [1, 2, 3]
+SEND Count * Price TO DISPLAY
+SEND Ready TO DISPLAY
+SEND Initial & Name TO DISPLAY
+SEND Scores[1] TO DISPLAY

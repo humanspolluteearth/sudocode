@@ -1,0 +1,8 @@
+SET Scores TO [10, 20, 30]
+SET Name TO 'Ada'
+SEND Scores[0] TO DISPLAY
+SEND Scores[LENGTH(Scores) - 1] TO DISPLAY
+SEND Name[0] TO DISPLAY
+SEND Name[2] TO DISPLAY
+SET i TO 1
+SEND Scores[i + 1] TO DISPLAY

@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-02"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-BAD-NAME",
+        "line": 1,
+        "column": 5,
+        "message": "_total can't be a name",
+        "hint": "A name starts with a letter, followed by letters, digits or _."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-SYN-BAD-NAME in Edexcel (first version, for review in docs/review/M2.md)."
+}

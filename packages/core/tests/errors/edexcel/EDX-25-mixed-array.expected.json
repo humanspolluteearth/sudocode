@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-25"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-ARRAY-MIXED",
+        "line": 1,
+        "column": 18,
+        "message": "This element is a STRING, but the first element is an INTEGER",
+        "hint": "All the elements of an array must have the same type."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Wording for E-CHK-ARRAY-MIXED in Edexcel (first version, for review in docs/review/M2.md)."
+}

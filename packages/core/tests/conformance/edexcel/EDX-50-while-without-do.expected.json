@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-50"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 2,
+        "column": 12
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "WHILE <condition> DO (EDX-50): DO is missing at the end of line 2."
+}

@@ -1,0 +1,28 @@
+{
+  "spec": ["EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Hello\nIt's\nHi Ada\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 1,
+        "column": 6
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 2,
+        "column": 6
+      },
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 3,
+        "column": 13
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Double-quoted strings work, with a warning at each opening quote (EDX-07); a single quote inside is text."
+}

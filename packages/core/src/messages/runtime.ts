@@ -5,8 +5,8 @@ export const runtimeMessages: Catalogue = {
   "E-RUN-DIV-ZERO": {
     spec: ["SH-09"],
     default: {
-      message: "{operator} by zero",
-      hint: "The value on the right of {operator} is 0. Check it with an IF first.",
+      message: "Dividing by zero is not possible",
+      hint: "The value on the right of {operator} is 0 here. Check it with an IF first.",
     },
   },
   "E-RUN-INDEX-RANGE": {
@@ -15,6 +15,10 @@ export const runtimeMessages: Catalogue = {
     languages: {
       edexcel: { hint: "{array} has {length} elements, so its indexes are 0 to {last}. Check the loop limits." },
       cie: { hint: "{array} is declared with indexes {low} to {high}. Check the loop limits." },
+    },
+    variants: {
+      string: { hint: "{array} has {length} characters, so its indexes are 0 to {last}. Check the loop limits." },
+      empty: { hint: "{array} is empty, so it has no indexes yet." },
     },
   },
   "E-RUN-NUMBER-TOO-LARGE": {
@@ -27,6 +31,7 @@ export const runtimeMessages: Catalogue = {
   "E-RUN-NO-VALUE": {
     spec: ["CIE-14", "EDX-56"],
     default: { message: "{name} has no value yet", hint: "Give it a value first, e.g. with an assignment or INPUT." },
+    languages: { edexcel: { hint: "Give it a value first with SET {name} TO ... before this line." } },
   },
   "E-RUN-ARRAY-GAP": {
     spec: ["EDX-27"],

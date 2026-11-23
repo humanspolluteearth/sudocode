@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-58", "EDX-57"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "a\nb\nc\nd\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-FOREACH",
+        "line": 3,
+        "column": 1
+      },
+      {
+        "code": "W-EDX-FOREACH",
+        "line": 4,
+        "column": 1
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "FOREACH (one word) and END FOR EACH are accepted with a warning each (EDX-58); the official forms are FOR EACH and END FOREACH."
+}

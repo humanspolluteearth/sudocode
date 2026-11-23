@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-09"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 1,
+        "column": 12
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Each statement is on its own line (EDX-09): after SET x TO 1 the line must end, but the second SET follows."
+}

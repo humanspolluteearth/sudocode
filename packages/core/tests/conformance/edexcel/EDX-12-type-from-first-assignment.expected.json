@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-12", "EDX-15"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "2\nx\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "r is a REAL from its first value, and an INTEGER may go into a REAL (EDX-12); 2 then prints as 2 (SH-03). s is a STRING; a one-character literal is a STRING too."
+}

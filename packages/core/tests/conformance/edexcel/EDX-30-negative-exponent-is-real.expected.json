@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-30", "EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "0.25\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A negative exponent gives a REAL (EDX-30), so p is a REAL and can take 0.25 (an INTEGER variable could not, EDX-12)."
+}

@@ -97,3 +97,63 @@ expected file says now; if you agree, write "yes"; if not, the M1 session correc
 19. **EDX-75 scope (M1 question 7):** is writing a whole array to a file (`WRITE Scores.txt Scores`) also an error?
     - Answer (23 Nov 2026): **Yes, a checker error too**, with the same hint (write the elements one at a time in a
       loop). Extend EDX-75 to cover `WRITE <File>`.
+
+## From M2 (23 Nov 2026)
+
+Tests named here stay pending (`openQuestions`) until you answer; the others show what the engine does now.
+
+20. **SH-03 small REALs:** Q18 says very large REALs never use exponent form. Should small ones also print in full
+    (`0.0000001`, `0.0000000001`) rather than `1e-7`? Proposed: yes; after rounding to 10 decimal places every digit
+    fits in 10 decimals anyway.
+    Tests: `conformance/edexcel/SH-03-real-small-no-exponent` (pending).
+    - Answer:
+21. **SH-03 large REALs that aren't exact:** `10.0 ^ 23` is stored as 99,999,999,999,999,991,611,392. Print the
+    shortest form written out (`100000000000000000000000`) or the exact stored value? Proposed: the shortest form
+    (it is what "shortest form" means, and 10 ^ 21, 10 ^ 22 are the same both ways).
+    Tests: none yet.
+    - Answer:
+22. **SH-03 infinity:** `10.0 ^ 400` is too large for a REAL. Runtime error ("number too large", as SH-07), or print
+    something? Proposed: the SH-07 runtime error.
+    Tests: none yet.
+    - Answer:
+23. **EDX-25 INTEGER and REAL in one array:** is `[1, 2.5]` an array of REAL (as EDX-12 lets an INTEGER go into a
+    REAL), or an error because the elements' types differ? And `SET Prices[0] TO 3` into a REAL array?
+    Proposed: allowed in both cases (an array of REAL).
+    Tests: none yet.
+    - Answer:
+24. **EDX-12 CHARACTER into STRING:** `SET initial TO name[0]` when `initial` already holds a STRING. EDX-12 read
+    strictly makes it an error (only INTEGER into REAL is allowed). Proposed: allowed (a CHARACTER is one character of
+    text; EDX-15 already lets one-character text fit the other way).
+    Tests: none yet.
+    - Answer:
+25. **EDX-21 empty array `[]`:** allowed? Proposed: yes; `LENGTH` is 0, `FOR EACH` runs zero times, and its element
+    type comes from the first element written into it.
+    Tests: none yet.
+    - Answer:
+26. **EDX-23 changing one character of a STRING:** `SET Name[0] TO 'E'`. EDX-23 shows it only for arrays.
+    Proposed: a checker error (a STRING can't be changed in place, as in Python).
+    Tests: `errors/edexcel/EDX-23-string-element` (pending).
+    - Answer:
+27. **EDX-42 `ELSE IF` with two `END IF`s:** a student writes the official nesting but puts `IF` on the `ELSE`
+    line, then closes with two `END IF`s. As an `ELSE IF` chain, the second `END IF` has no IF. Proposed: report it
+    (`E-SYN-UNMATCHED-CLOSER`), since the chain form uses one END IF.
+    Tests: none yet.
+    - Answer:
+28. **EDX-30 `^` with a variable exponent:** `SET p TO 2 ^ e`: the type is INTEGER when `e` >= 0 and REAL when it is
+    negative, which the checker can't know. Proposed: the checker treats INTEGER ^ INTEGER as INTEGER unless the
+    exponent is a negative number written in the program; at run time the value follows EDX-30.
+    Tests: none yet.
+    - Answer:
+29. **EDX-17 a constant's SET inside a loop:** one SET statement that runs several times. Proposed: allowed (it is
+    still one SET).
+    Tests: none yet.
+    - Answer:
+30. **EDX-55/EDX-56 assigning to the FOR variable inside the loop:** does the next pass continue from the loop's own
+    count (Python), and does the variable afterwards keep the value the body assigned (Python) or the loop's last
+    value (EDX-56's wording)? Proposed: Python in both; EDX-55's warning is shown either way.
+    Tests: none depend on it.
+    - Answer:
+31. **AND / OR short-circuit:** in `i < LENGTH(a) AND a[i] = x`, is the right side skipped when the left side
+    decides (Python), or always worked out? Proposed: skipped, as in Python.
+    Tests: none depend on it.
+    - Answer:

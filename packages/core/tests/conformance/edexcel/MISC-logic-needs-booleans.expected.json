@@ -1,0 +1,23 @@
+{
+  "spec": [],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-OPERAND-TYPE",
+        "line": 2,
+        "column": 10
+      },
+      {
+        "code": "E-CHK-OPERAND-TYPE",
+        "line": 5,
+        "column": 6
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "AND, OR and NOT work on BOOLEANs (edexcel.md 2.4 lists them as logical operators): x = 1 OR 2 has the INTEGER 2 on the right of OR, and NOT 5 is NOT of an INTEGER. Checker errors at the operator. Decision D4 in docs/review/M2.md."
+}

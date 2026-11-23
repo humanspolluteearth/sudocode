@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-01", "EDX-07"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "big\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-DOUBLE-QUOTES",
+        "line": 3,
+        "column": 8
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Every line ends with \\r\\n (Windows). It runs exactly as with \\n (SH-01), the \\r is not part of any token, and the warning's column on line 3 is not shifted by it. Output ends with \\n: each SEND writes one line (SH-02)."
+}

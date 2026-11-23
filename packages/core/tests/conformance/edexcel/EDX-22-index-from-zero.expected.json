@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-22", "EDX-90"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "10\n30\nA\na\n30\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Arrays and strings are indexed from 0 (EDX-22); the last index is LENGTH - 1."
+}

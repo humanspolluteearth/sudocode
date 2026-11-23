@@ -1,0 +1,3 @@
+CONST INTEGER Max
+SET Max TO 5
+SET Max TO 6

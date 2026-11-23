@@ -1,0 +1,8 @@
+SET Scores TO [10, 20, 30]
+SET Scores[1] TO 25
+SEND Scores[0] TO DISPLAY
+SEND Scores[1] TO DISPLAY
+SEND Scores[2] TO DISPLAY
+SET i TO 2
+SET Scores[i] TO Scores[i] + 1
+SEND Scores[2] TO DISPLAY

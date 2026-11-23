@@ -1,0 +1,2 @@
+SET Name TO 'Ada'
+SET Name[0] TO 'E'

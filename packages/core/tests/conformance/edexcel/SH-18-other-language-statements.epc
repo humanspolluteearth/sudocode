@@ -1,0 +1,3 @@
+OUTPUT 'Hello'
+DECLARE Total : INTEGER
+PRINT 'Hello'

@@ -1,0 +1,9 @@
+SET done TO FALSE
+SET n TO 0
+WHILE NOT done DO
+  SET n TO n + 1
+  IF n = 3 THEN
+    SET done TO TRUE
+  END IF
+END WHILE
+SEND n TO DISPLAY

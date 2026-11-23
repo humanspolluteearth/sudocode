@@ -19,6 +19,11 @@ export interface ExpectedDiagnostic {
   code: string;
   line: number;
   column: number;
+  /** Exact wording, given by tests/errors/ programs (message wording is tested there: TEST-PLAN section 4). */
+  message?: string;
+  hint?: string;
+  /** The one-click fix's label (SH-15: "where possible a suggested fix"). */
+  fix?: string;
 }
 
 export interface ExpectedFile {
@@ -96,9 +101,15 @@ export function readPending(root: string = TESTS_DIR): Set<string> {
   return new Set(data.tests);
 }
 
-const position = (d: ExpectedDiagnostic): string => `${d.code} ${String(d.line)}:${String(d.column)}`;
-const positions = (list: readonly ExpectedDiagnostic[]): string[] =>
-  [...list].sort((a, b) => a.line - b.line || a.column - b.column || (a.code < b.code ? -1 : 1)).map(position);
+interface Positioned {
+  code: string;
+  line: number;
+  column: number;
+}
+const position = (d: Positioned): string => `${d.code} ${String(d.line)}:${String(d.column)}`;
+const byPosition = <T extends Positioned>(list: readonly T[]): T[] =>
+  [...list].sort((a, b) => a.line - b.line || a.column - b.column || (a.code < b.code ? -1 : a.code > b.code ? 1 : 0));
+const positions = (list: readonly Positioned[]): string[] => byPosition(list).map(position);
 
 function compareDiagnostics(
   kind: string,
@@ -107,8 +118,26 @@ function compareDiagnostics(
 ): string[] {
   const want = positions(expected);
   const got = positions(actual);
-  if (JSON.stringify(want) === JSON.stringify(got)) return [];
-  return [`${kind}: expected [${want.join(", ")}] but got [${got.join(", ")}]`];
+  if (JSON.stringify(want) !== JSON.stringify(got)) {
+    return [`${kind}: expected [${want.join(", ")}] but got [${got.join(", ")}]`];
+  }
+  // Same diagnostics at the same places, paired one to one in position order (so two at one place are both
+  // checked). Where the expected file gives wording or a fix label, it must match exactly.
+  const got2 = byPosition(actual);
+  return byPosition(expected).flatMap((e, i) => {
+    const match = got2[i];
+    const found = { message: match?.message, hint: match?.hint, fix: match?.fix?.label };
+    const problems: string[] = [];
+    for (const field of ["message", "hint", "fix"] as const) {
+      const wanted = e[field];
+      if (wanted !== undefined && found[field] !== wanted) {
+        problems.push(
+          `${position(e)} ${field}: expected ${JSON.stringify(wanted)} but got ${JSON.stringify(found[field])}`,
+        );
+      }
+    }
+    return problems;
+  });
 }
 
 // File names are not case-sensitive (SH-11), so files are compared by lower-cased name.

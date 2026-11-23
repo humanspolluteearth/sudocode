@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-53", "EDX-41", "EDX-31", "EDX-70"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "FOR 1 TO 15 inclusive (EDX-53) with nested IFs (EDX-41) and MOD (EDX-31): multiples of 15, 3 and 5 are replaced."
+}

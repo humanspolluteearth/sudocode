@@ -1,0 +1,18 @@
+{
+  "spec": ["SH-07", "EDX-30"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-NUMBER-TOO-LARGE",
+        "line": 1,
+        "column": 8
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "2 ^ 53 is an INTEGER (INTEGER base, non-negative INTEGER exponent: EDX-30) and 9,007,199,254,740,992 is one past the range: runtime error at the operator (SH-07)."
+}

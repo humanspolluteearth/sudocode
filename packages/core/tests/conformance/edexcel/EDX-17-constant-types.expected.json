@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-17", "EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "10\n0.5\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "CONST names the type; one SET gives the value (EDX-17). An INTEGER may go into a REAL (EDX-12): Rate * 2 prints 10. Rate is a REAL, so copy is a REAL too and can take 0.5."
+}

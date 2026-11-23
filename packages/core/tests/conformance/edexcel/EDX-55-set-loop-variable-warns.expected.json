@@ -1,0 +1,18 @@
+{
+  "spec": ["EDX-55"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "1\n2\n3\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-EDX-FOR-VAR-SET",
+        "line": 2,
+        "column": 7
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Assigning to the loop variable inside the loop is a warning (EDX-55), at the name. (The value assigned is the same, so the output doesn't depend on how the loop treats it.)"
+}

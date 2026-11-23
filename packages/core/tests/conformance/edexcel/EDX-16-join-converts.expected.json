@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-16", "EDX-34", "SH-03", "SH-04"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "Age 18\n18 years\nHalf: 0.5\nSum: 0.3\nReady: TRUE\nabc\nBig: 1000000000000000000000\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "& with a STRING and a non-STRING turns the other value into text (EDX-16), written as it would print (SH-03, SH-04). & binds below arithmetic (EDX-34), so 1 / 2 and 0.1 + 0.2 are worked out first. Decision D5 in docs/review/M2.md."
+}

@@ -1,0 +1,12 @@
+{
+  "spec": ["EDX-15", "EDX-12"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "A*\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A one-character literal is a STRING that is also compatible with CHARACTER (EDX-15), so grade is a STRING and can later hold 'A*'. Decision D15 in docs/review/M2.md."
+}
