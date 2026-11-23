@@ -1,0 +1,15 @@
+{
+  "spec": ["EDX-83", "EDX-82"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "one\ntwo\n"
+  },
+  "expect": {
+    "stdout": "one\ntwo\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Each file is read from its first line, one record per READ."
+}

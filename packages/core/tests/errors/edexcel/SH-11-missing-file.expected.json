@@ -1,0 +1,20 @@
+{
+  "spec": ["SH-11"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-FILE-NOT-FOUND",
+        "line": 1,
+        "column": 1,
+        "message": "The file nope.txt doesn't exist",
+        "hint": "Check the name in the Files panel, or create the file first."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Reading a missing file is a runtime error (SH-11)."
+}

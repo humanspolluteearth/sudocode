@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-82", "SH-06"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "abc\n"
+  },
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INPUT-TYPE",
+        "line": 2,
+        "column": 1,
+        "message": "The line abc in d.txt is not a whole number",
+        "hint": "Fix that line in the Files panel, or READ it into a STRING variable."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A line that can't be converted to the variable's type is a runtime error, as SH-06 (EDX-82)."
+}

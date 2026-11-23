@@ -1,0 +1,15 @@
+{
+  "spec": ["EDX-82"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "41\n"
+  },
+  "expect": {
+    "stdout": "41!\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A variable with no type yet becomes a STRING, so the line stays text."
+}

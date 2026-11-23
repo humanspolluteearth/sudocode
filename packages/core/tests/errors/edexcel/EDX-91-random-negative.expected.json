@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-91"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-RANDOM-RANGE",
+        "line": 1,
+        "column": 10,
+        "message": "RANDOM needs a number that is 0 or more, but was given -1",
+        "hint": "Write RANDOM(n) with n from 0 upwards."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "RANDOM's n must be 0 or more; -1 is a runtime error (EDX-91). New test for the M5 SHOULD FIX gap."
+}

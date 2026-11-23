@@ -1,0 +1,5 @@
+# Read three names from a file and write a greeting for each (EDX-82, EDX-83)
+FOR i FROM 1 TO 3 DO
+  READ names.txt n
+  WRITE out.txt 'Hello ' & n
+END FOR

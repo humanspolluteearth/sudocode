@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-75"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-SEND-ARRAY",
+        "line": 2,
+        "column": 13,
+        "message": "WRITE can't write a whole array to a file",
+        "hint": "Write each element in a loop: FOR EACH Item FROM Scores DO ... END FOREACH."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Writing a whole array is a checker error at the array (EDX-75)."
+}

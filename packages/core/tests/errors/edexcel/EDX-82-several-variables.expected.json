@@ -1,0 +1,23 @@
+{
+  "spec": ["EDX-82"],
+  "language": "edexcel",
+  "files": {
+    "d.txt": "x\n"
+  },
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-READ-ONE-VARIABLE",
+        "line": 1,
+        "column": 14,
+        "message": "READ reads one variable at a time",
+        "hint": "Read one line per READ: READ d.txt a, then READ d.txt b."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "READ takes one variable; the extra one is a checker error, reported at the second variable (EDX-82)."
+}

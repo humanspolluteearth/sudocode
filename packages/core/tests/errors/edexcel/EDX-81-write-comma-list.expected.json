@@ -1,0 +1,20 @@
+{
+  "spec": ["EDX-81"],
+  "language": "edexcel",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-SEND-COMMA",
+        "line": 1,
+        "column": 16,
+        "message": "WRITE writes one value at a time",
+        "hint": "Join values with &, e.g. WRITE d.txt 'Total: ' & Total."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "WRITE takes one expression; a comma list is a checker error at the first comma (EDX-81, as EDX-71)."
+}

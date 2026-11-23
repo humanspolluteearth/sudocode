@@ -1,0 +1,2 @@
+WRITE log.txt 'new1'
+WRITE log.txt 'new2'

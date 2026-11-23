@@ -56,6 +56,13 @@ export const checkerMessages: Catalogue = {
       hint: "Join values with &, e.g. SEND 'Total: ' & Total TO DISPLAY.",
     },
   },
+  "E-CHK-READ-ONE-VARIABLE": {
+    spec: ["EDX-82"],
+    default: {
+      message: "READ reads one variable at a time",
+      hint: "Read one line per READ: READ {file} {first}, then READ {file} {second}.",
+    },
+  },
   "E-CHK-SEND-ARRAY": {
     spec: ["EDX-75"],
     default: {

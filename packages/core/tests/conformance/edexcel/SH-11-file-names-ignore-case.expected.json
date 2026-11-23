@@ -1,0 +1,15 @@
+{
+  "spec": ["SH-11", "EDX-82"],
+  "language": "edexcel",
+  "files": {
+    "Data.TXT": "hi\n"
+  },
+  "expect": {
+    "stdout": "hi\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "File names are not case-sensitive (SH-11)."
+}
