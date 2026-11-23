@@ -4,6 +4,8 @@ Newest entry first. Updated at the end of each milestone (and each session).
 
 ## 23 Nov 2026: M2 Edexcel basics (done)
 
+- M2 checklist ticked with PR numbers (#24-#28 code, #23 tests, #26 nightly); no code changed.
+
 - **Merged with CI green:**
   - #21: your answers 14-19.
   - #23: 194 conformance, error-wording and golden programs, reviewed before merge.
