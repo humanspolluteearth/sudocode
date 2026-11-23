@@ -7,6 +7,7 @@ import {
   type Runner,
   type RunnerCommand,
   type RunnerEvent,
+  type VirtualFiles,
   type WorkerHandle,
 } from "@sudocode/core";
 
@@ -29,6 +30,8 @@ export interface RunOptions {
   breakpoints?: readonly number[];
   /** Record trace-table rows (SH-17). */
   trace?: boolean;
+  /** The student's files, read by READ and WRITE (EDX-80..84). */
+  files?: VirtualFiles;
 }
 
 export function startRun(
@@ -54,7 +57,7 @@ export function startRun(
   const request: RunRequest = {
     language,
     source,
-    files: {},
+    files: { ...options.files },
     seed: Math.floor(Math.random() * 0x7fffffff),
     breakpoints: [...(options.breakpoints ?? [])],
     trace: options.trace ?? false,

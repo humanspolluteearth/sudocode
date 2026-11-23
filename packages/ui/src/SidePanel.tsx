@@ -1,12 +1,13 @@
 // The right-hand panel: Problems, or the Debugger (Variables and the trace table), per docs/PRODUCT.md.
-import type { Diagnostic } from "@sudocode/core";
+import type { Diagnostic, VirtualFiles } from "@sudocode/core";
+import { FilesPanel } from "./FilesPanel.tsx";
 import { CallStack } from "./CallStack.tsx";
 import { Problems } from "./Problems.tsx";
 import type { RunView } from "./run-state.ts";
 import { TraceTable } from "./TraceTable.tsx";
 import { Variables } from "./Variables.tsx";
 
-export type SideTab = "problems" | "debugger";
+export type SideTab = "problems" | "debugger" | "files";
 
 export interface SidePanelProps {
   tab: SideTab;
@@ -14,9 +15,28 @@ export interface SidePanelProps {
   diagnostics: readonly Diagnostic[];
   onSelectProblem: (d: Diagnostic) => void;
   run: RunView;
+  advanced: boolean;
+  onAdvanced: (advanced: boolean) => void;
+  /** Advanced mode only: shows the Files tab. */
+  files?: FilesProps | undefined;
 }
 
-export function SidePanel({ tab, onTab, diagnostics, onSelectProblem, run }: SidePanelProps) {
+export interface FilesProps {
+  files: VirtualFiles;
+  onChange: (name: string, contents: string) => void;
+  onDelete: (name: string) => void;
+}
+
+export function SidePanel({
+  tab,
+  onTab,
+  diagnostics,
+  onSelectProblem,
+  run,
+  files,
+  advanced,
+  onAdvanced,
+}: SidePanelProps) {
   const tabButton = (id: SideTab, label: string) => (
     <button
       type="button"
@@ -34,8 +54,21 @@ export function SidePanel({ tab, onTab, diagnostics, onSelectProblem, run }: Sid
       <div className="sc-tabs" role="group" aria-label="Side panel view">
         {tabButton("problems", "Problems")}
         {tabButton("debugger", "Debugger")}
+        {files !== undefined && tabButton("files", "Files")}
+        <label className="sc-mode">
+          <input
+            type="checkbox"
+            checked={advanced}
+            onChange={(e) => {
+              onAdvanced(e.target.checked);
+            }}
+          />
+          Advanced
+        </label>
       </div>
-      {tab === "problems" ? (
+      {tab === "files" && files !== undefined ? (
+        <FilesPanel files={files.files} onChange={files.onChange} onDelete={files.onDelete} />
+      ) : tab === "problems" ? (
         <Problems diagnostics={diagnostics} onSelect={onSelectProblem} />
       ) : (
         <div className="sc-debugger">

@@ -211,3 +211,8 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
     (`READ Data.txt x` on line 5, EDX-82; expectation unchanged), and rename the test to "...subprograms and files...".
     RECEIVE itself is already covered by the EDX-72/73/74 conformance tests. The RECEIVE PR stays open until you answer.
     - Answer: Approved: RECEIVE removed from the SH-18 not-supported test.
+41. **Do I-EDX-GLOBAL-UPDATE notes (Q-EDX-3) apply to a global assigned in a subprogram? (M5 SHOULD FIX test left out)**
+    The spec text for Q-EDX-3 doesn't say whether assigning a global from inside a subprogram is an error, a warning
+    or just an info note, so no test was written for it. Current behaviour: an `I-EDX-GLOBAL-UPDATE` info, once per
+    subprogram. Please say what the rule is and I will add the test.
+    - Answer:
