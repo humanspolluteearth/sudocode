@@ -1,6 +1,6 @@
 // The IDE's root component: toolbar, editor, console, problems and status bar (layout from the prototype's
 // desktop design, docs/PRODUCT.md). The shell passes in the worker factories, so this package never imports a worker.
-import type { Diagnostic, RunnerEvent } from "@sudocode/core";
+import { EDEXCEL_EXAMPLES, type Diagnostic, type RunnerEvent } from "@sudocode/core";
 import { useEffect, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
@@ -85,6 +85,10 @@ export function App({ workers }: AppProps) {
         zoom={prefs.zoom}
         onZoom={(zoom) => {
           update({ ...prefs, zoom });
+        }}
+        examples={EDEXCEL_EXAMPLES}
+        onExample={(example) => {
+          setSource(example.code);
         }}
         theme={prefs.theme}
         onTheme={(theme) => {

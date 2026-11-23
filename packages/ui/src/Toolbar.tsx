@@ -1,4 +1,5 @@
 // The toolbar: Run, Stop, zoom and theme. Buttons are real <button>s with visible text for screen readers.
+import type { Example } from "@sudocode/core";
 import { parseTheme } from "./preferences.ts";
 export type ThemeChoice = "system" | "light" | "dark";
 
@@ -16,6 +17,8 @@ export interface ToolbarProps {
   onZoom: (zoom: number) => void;
   theme: ThemeChoice;
   onTheme: (theme: ThemeChoice) => void;
+  examples: readonly Example[];
+  onExample: (example: Example) => void;
 }
 
 export function Toolbar(p: ToolbarProps) {
@@ -33,6 +36,24 @@ export function Toolbar(p: ToolbarProps) {
         </svg>
         Stop
       </button>
+      <span className="sc-sep" aria-hidden="true" />
+      <label className="sc-field">
+        Examples
+        <select
+          value=""
+          onChange={(e) => {
+            const picked = p.examples.find((x) => x.id === e.target.value);
+            if (picked !== undefined) p.onExample(picked);
+          }}
+        >
+          <option value="">Choose…</option>
+          {p.examples.map((x) => (
+            <option key={x.id} value={x.id}>
+              {x.name}
+            </option>
+          ))}
+        </select>
+      </label>
       <span className="sc-sep" aria-hidden="true" />
       <button
         type="button"
