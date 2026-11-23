@@ -1,0 +1,5 @@
+DECLARE Names : ARRAY[1:3] OF STRING
+Names[1] <- "a"
+Names[2] <- "b"
+Names[3] <- "c"
+OUTPUT Names[1], Names[3]

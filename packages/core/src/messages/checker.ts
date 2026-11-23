@@ -264,4 +264,46 @@ export const checkerMessages: Catalogue = {
       hint: "Build a new STRING with & instead.",
     },
   },
+  "E-CHK-CONSTANT-ASSIGN": {
+    spec: ["CIE-12"],
+    default: {
+      message: "{name} is a constant, so it cannot be changed",
+      hint: "A constant keeps the value it was given. Use DECLARE for a variable that changes.",
+    },
+  },
+  "E-CHK-CONSTANT-LITERAL": {
+    spec: ["CIE-12"],
+    default: {
+      message: "A constant must be set to a plain value",
+      hint: "Write a number, text or TRUE/FALSE after the =, not a variable or a sum.",
+    },
+  },
+  "E-CHK-GROUP-ASSIGN": {
+    spec: ["CIE-24"],
+    default: {
+      message: "You cannot set several array items in one line",
+      hint: "Use a FOR loop to set each item.",
+    },
+  },
+  "E-CHK-PRIVATE-MEMBER": {
+    spec: ["CIE-115"],
+    default: {
+      message: "{name} is PRIVATE, so only the class itself can use it",
+      hint: "Make it PUBLIC, or add a method to the class that gives access to it.",
+    },
+  },
+  "E-CHK-FUNCTION-CALL": {
+    spec: ["CIE-72"],
+    default: {
+      message: "{name} is a function, so it cannot be used with CALL",
+      hint: "Use it inside an expression, e.g. OUTPUT {name}(...).",
+    },
+  },
+  "E-CHK-BYREF-ARG": {
+    spec: ["CIE-76"],
+    default: {
+      message: "A BYREF parameter needs a variable here",
+      hint: "Pass a variable, an array item or a record field, not a value.",
+    },
+  },
 };

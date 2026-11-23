@@ -112,4 +112,18 @@ export const runtimeMessages: Catalogue = {
       hint: "This language is still being built. Try again in a later version.",
     },
   },
+  "E-RUN-FILE-MODE": {
+    spec: ["CIE-93"],
+    default: {
+      message: "{file} is open for {mode}, so you cannot do that with it",
+      hint: "Open the file with the mode you need before reading or writing.",
+    },
+  },
+  "E-RUN-RECORD-EMPTY": {
+    spec: ["CIE-95"],
+    default: {
+      message: "There is no record at address {address} in {file}",
+      hint: "Write a record there with PUTRECORD first.",
+    },
+  },
 };

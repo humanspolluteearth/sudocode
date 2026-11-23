@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-48"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-COMPARE-TYPES",
+        "line": 5,
+        "column": 10
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

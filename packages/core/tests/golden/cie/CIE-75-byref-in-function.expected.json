@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-75"],
+  "language": "cie",
+  "expect": {
+    "stdout": "2\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-CIE-BYREF-FUNCTION",
+        "line": 1,
+        "column": 14
+      }
+    ],
+    "files": null,
+    "trace": null
+  }
+}

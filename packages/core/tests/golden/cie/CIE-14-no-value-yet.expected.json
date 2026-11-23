@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-14"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-NO-VALUE",
+        "line": 2,
+        "column": 8
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

@@ -1,0 +1,1 @@
+OUTPUT STR_TO_NUM("-12.5") + 1

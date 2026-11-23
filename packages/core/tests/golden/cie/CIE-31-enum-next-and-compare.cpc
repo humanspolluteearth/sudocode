@@ -1,0 +1,6 @@
+TYPE Season = (Spring, Summer, Autumn, Winter)
+DECLARE S : Season
+S <- Spring
+S <- S + 1
+OUTPUT S
+OUTPUT S < Autumn

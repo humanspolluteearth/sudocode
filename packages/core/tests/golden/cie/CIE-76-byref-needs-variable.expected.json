@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-76"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-BYREF-ARG",
+        "line": 10,
+        "column": 11
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

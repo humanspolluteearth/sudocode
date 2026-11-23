@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-129"],
+  "language": "cie",
+  "expect": {
+    "stdout": "1120262\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "23 Nov 2026 is a Monday; Sunday = 1 so DAYINDEX is 2."
+}

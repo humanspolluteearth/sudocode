@@ -1,0 +1,14 @@
+DECLARE L : STRING
+OPENFILE "a.txt" FOR WRITE
+WRITEFILE "a.txt", "one"
+WRITEFILE "a.txt", "two"
+CLOSEFILE "a.txt"
+OPENFILE "a.txt" FOR APPEND
+WRITEFILE "a.txt", "three"
+CLOSEFILE "a.txt"
+OPENFILE "a.txt" FOR READ
+WHILE NOT EOF("a.txt")
+  READFILE "a.txt", L
+  OUTPUT L
+ENDWHILE
+CLOSEFILE "a.txt"

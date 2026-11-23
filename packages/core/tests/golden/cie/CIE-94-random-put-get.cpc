@@ -1,0 +1,14 @@
+TYPE Rec
+  DECLARE N : INTEGER
+ENDTYPE
+DECLARE R, S : Rec
+OPENFILE "r.dat" FOR WRITE
+CLOSEFILE "r.dat"
+OPENFILE "r.dat" FOR RANDOM
+R.N <- 7
+SEEK "r.dat", 1
+PUTRECORD "r.dat", R
+SEEK "r.dat", 1
+GETRECORD "r.dat", S
+OUTPUT S.N
+CLOSEFILE "r.dat"

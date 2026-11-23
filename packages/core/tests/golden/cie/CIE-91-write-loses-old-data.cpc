@@ -1,0 +1,3 @@
+OPENFILE "a.txt" FOR WRITE
+WRITEFILE "a.txt", "new"
+CLOSEFILE "a.txt"

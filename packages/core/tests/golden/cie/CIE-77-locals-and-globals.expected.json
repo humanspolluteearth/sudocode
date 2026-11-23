@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-77"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-UNDECLARED",
+        "line": 9,
+        "column": 8
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

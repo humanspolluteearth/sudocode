@@ -1,0 +1,22 @@
+{
+  "spec": ["CIE-42"],
+  "language": "cie",
+  "expect": {
+    "stdout": "3\n1\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-CIE-DIV-FUNCTION",
+        "line": 1,
+        "column": 8
+      },
+      {
+        "code": "W-CIE-DIV-FUNCTION",
+        "line": 2,
+        "column": 8
+      }
+    ],
+    "files": null,
+    "trace": null
+  }
+}

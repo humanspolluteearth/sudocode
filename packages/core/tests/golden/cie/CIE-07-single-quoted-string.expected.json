@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-07"],
+  "language": "cie",
+  "expect": {
+    "stdout": "Hello\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-CIE-SINGLE-QUOTES",
+        "line": 2,
+        "column": 6
+      }
+    ],
+    "files": null,
+    "trace": null
+  }
+}

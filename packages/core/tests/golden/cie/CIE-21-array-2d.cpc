@@ -1,0 +1,3 @@
+DECLARE Board : ARRAY[1:3, 1:3] OF CHAR
+Board[2, 3] <- 'X'
+OUTPUT Board[2, 3]

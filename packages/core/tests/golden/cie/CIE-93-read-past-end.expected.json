@@ -1,0 +1,20 @@
+{
+  "spec": ["CIE-93"],
+  "language": "cie",
+  "files": {
+    "a.txt": "x\n"
+  },
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-READ-PAST-END",
+        "line": 4,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

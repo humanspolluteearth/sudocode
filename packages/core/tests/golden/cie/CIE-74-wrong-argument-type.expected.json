@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-74"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-ARG-TYPE",
+        "line": 4,
+        "column": 8
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-05"],
+  "language": "cie",
+  "expect": {
+    "stdout": "0.5\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-CIE-REAL-FORM",
+        "line": 2,
+        "column": 6
+      }
+    ],
+    "files": null,
+    "trace": null
+  }
+}

@@ -1,0 +1,1 @@
+OUTPUT UCASE('a'), LCASE('B'), UCASE('1')

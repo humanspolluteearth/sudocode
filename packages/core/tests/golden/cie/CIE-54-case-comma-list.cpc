@@ -1,0 +1,6 @@
+DECLARE C : CHAR
+C <- 'E'
+CASE OF C
+  'A', 'E' : OUTPUT "vowel"
+  OTHERWISE : OUTPUT "other"
+ENDCASE

@@ -1,0 +1,3 @@
+DECLARE R : REAL
+R <- .5
+OUTPUT R

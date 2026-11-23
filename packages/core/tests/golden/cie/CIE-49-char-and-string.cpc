@@ -1,0 +1,5 @@
+DECLARE S : STRING
+DECLARE C : CHAR
+C <- "x"
+S <- C
+OUTPUT S & C & "!"

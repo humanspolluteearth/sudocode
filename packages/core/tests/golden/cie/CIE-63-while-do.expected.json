@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-63"],
+  "language": "cie",
+  "expect": {
+    "stdout": "2\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-CIE-WHILE-DO",
+        "line": 3,
+        "column": 13
+      }
+    ],
+    "files": null,
+    "trace": null
+  }
+}

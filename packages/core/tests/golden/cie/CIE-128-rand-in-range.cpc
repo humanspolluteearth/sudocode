@@ -1,0 +1,3 @@
+DECLARE X : REAL
+X <- RAND(10)
+OUTPUT X >= 0 AND X < 10

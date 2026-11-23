@@ -1,0 +1,17 @@
+{
+  "spec": ["CIE-73"],
+  "language": "cie",
+  "expect": {
+    "stdout": "1\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-CIE-BYVALUE",
+        "line": 1,
+        "column": 16
+      }
+    ],
+    "files": null,
+    "trace": null
+  }
+}
