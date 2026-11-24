@@ -7,7 +7,9 @@
       {
         "code": "E-SYN-NOT-SUPPORTED",
         "line": 1,
-        "column": 7
+        "column": 7,
+        "message": "*args and **kwargs is not supported in Sudocode yet",
+        "hint": "*args and **kwargs are not in the Python subset yet. Use a list parameter instead."
       }
     ],
     "warnings": [],

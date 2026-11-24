@@ -7,7 +7,9 @@
       {
         "code": "E-SYN-NOT-SUPPORTED",
         "line": 1,
-        "column": 7
+        "column": 7,
+        "message": "The := operator is not supported in Sudocode yet",
+        "hint": "The := operator is not in the Python subset yet. Assign on one line and test on the next."
       }
     ],
     "warnings": [],

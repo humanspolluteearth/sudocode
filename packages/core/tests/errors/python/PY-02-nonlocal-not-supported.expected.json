@@ -7,7 +7,9 @@
       {
         "code": "E-SYN-NOT-SUPPORTED",
         "line": 4,
-        "column": 9
+        "column": 9,
+        "message": "nonlocal is not supported in Sudocode yet",
+        "hint": "nonlocal is not in the Python subset yet. Pass the value in as a parameter and return the new value."
       }
     ],
     "warnings": [],

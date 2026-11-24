@@ -7,7 +7,9 @@
       {
         "code": "E-SYN-NOT-SUPPORTED",
         "line": 1,
-        "column": 1
+        "column": 1,
+        "message": "The os module is not supported in Sudocode yet",
+        "hint": "Only the math, random, datetime and time modules are available. Remove the import."
       }
     ],
     "warnings": [],

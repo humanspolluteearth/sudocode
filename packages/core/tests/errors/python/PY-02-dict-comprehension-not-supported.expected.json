@@ -7,7 +7,9 @@
       {
         "code": "E-SYN-NOT-SUPPORTED",
         "line": 1,
-        "column": 5
+        "column": 5,
+        "message": "Dictionary and set comprehensions is not supported in Sudocode yet",
+        "hint": "Only list comprehensions are in the Python subset. Build the dictionary with a for loop instead."
       }
     ],
     "warnings": [],

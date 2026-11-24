@@ -7,7 +7,9 @@
       {
         "code": "E-SYN-NOT-SUPPORTED",
         "line": 2,
-        "column": 5
+        "column": 5,
+        "message": "yield (generators) is not supported in Sudocode yet",
+        "hint": "Generators are not in the Python subset yet. Build a list and return it instead."
       }
     ],
     "warnings": [],

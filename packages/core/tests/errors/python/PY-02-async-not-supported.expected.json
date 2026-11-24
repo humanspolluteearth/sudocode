@@ -7,7 +7,9 @@
       {
         "code": "E-SYN-NOT-SUPPORTED",
         "line": 1,
-        "column": 1
+        "column": 1,
+        "message": "async and await is not supported in Sudocode yet",
+        "hint": "async and await are not in the Python subset yet. Write ordinary functions instead."
       }
     ],
     "warnings": [],
