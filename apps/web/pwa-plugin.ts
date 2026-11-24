@@ -20,7 +20,9 @@ export function pwa(): Plugin {
       const template = readFileSync(new URL("./src/sw-template.js", import.meta.url), "utf8");
       writeFileSync(
         join(outDir, "sw.js"),
-        template.replace("__PRECACHE__", JSON.stringify(urls)).replace("__VERSION__", version),
+        template
+          .replace("const PRECACHE = __PRECACHE__;", `const PRECACHE = ${JSON.stringify(urls)};`)
+          .replace('"sudocode-__VERSION__"', `"sudocode-${version}"`),
       );
     },
   };
