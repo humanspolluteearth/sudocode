@@ -155,6 +155,19 @@ describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc
     expect(document.querySelector(".sc-tabstrip")?.getBoundingClientRect().height).toBe(30);
   });
 
+  for (const width of [390, 360]) {
+    it(`MISC the status bar fits one row at ${String(width)}px and drops the language name`, async () => {
+      await page.viewport(width, 800);
+      await render(<App />);
+      const bar = document.querySelector<HTMLElement>(".sc-statusbar");
+      expect(bar?.getBoundingClientRect().height).toBeLessThan(30);
+      expect(bar?.scrollWidth).toBeLessThanOrEqual(width);
+      const language = document.querySelector(".sc-statusbar .sc-hide-compact");
+      expect(language).not.toBeNull();
+      expect(language === null ? "" : getComputedStyle(language).display).toBe("none");
+    });
+  }
+
   for (const width of [834, 390]) {
     it(`MISC axe finds nothing at ${String(width)}px in any view`, async () => {
       await page.viewport(width, 800);

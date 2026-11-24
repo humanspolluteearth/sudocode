@@ -57,7 +57,7 @@ export function StatusBar({
       <span>{`${String(errors)} ${errors === 1 ? "error" : "errors"}, ${String(warnings)} ${warnings === 1 ? "warning" : "warnings"}`}</span>
       <span className="sc-grow" />
       <span>{`Ln ${String(cursor.line)}, Col ${String(cursor.column)}`}</span>
-      <span>{languageName}</span>
+      <span className="sc-hide-compact">{languageName}</span>
     </div>
   );
 }
