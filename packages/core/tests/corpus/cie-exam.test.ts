@@ -20,7 +20,7 @@ type Row = readonly [name: string, source: string, stdout: string];
 const TOPICS: Readonly<Record<string, readonly Row[]>> = {
   selection: [
     [
-      "CIE-51 IF with ELSE picks the else branch for 4",
+      "CIE-50 IF with ELSE picks the else branch for 4",
       L(
         "DECLARE N : INTEGER",
         "N ← 4",
@@ -62,34 +62,34 @@ const TOPICS: Readonly<Record<string, readonly Row[]>> = {
   ],
   loops: [
     [
-      "CIE-53 FOR STEP 2 from 1 to 9 sums 1+3+5+7+9",
+      "CIE-60 FOR STEP 2 from 1 to 9 sums 1+3+5+7+9",
       L("DECLARE T, I : INTEGER", "T ← 0", "FOR I ← 1 TO 9 STEP 2", "  T ← T + I", "NEXT I", "OUTPUT T"),
       "25\n",
     ],
     [
-      "CIE-54 WHILE doubles 1 until 100: 1,2,4,8,16,32,64,128",
+      "CIE-63 WHILE doubles 1 until 100: 1,2,4,8,16,32,64,128",
       L("DECLARE N : INTEGER", "N ← 1", "WHILE N < 100 DO", "  N ← N * 2", "ENDWHILE", "OUTPUT N"),
       "128\n",
     ],
     [
-      "CIE-55 REPEAT runs once even when the condition is already true",
+      "CIE-62 REPEAT runs once even when the condition is already true",
       L("DECLARE N : INTEGER", "N ← 10", "REPEAT", "  N ← N + 1", "UNTIL N > 5", "OUTPUT N"),
       "11\n",
     ],
   ],
   arrays: [
     [
-      "CIE-40 a 1D array is indexed from its lower bound 1",
+      "CIE-20 a 1D array is indexed from its lower bound 1",
       L("DECLARE A : ARRAY[1:3] OF INTEGER", "A[1] ← 5", "A[2] ← 6", "A[3] ← 7", "OUTPUT A[1] + A[3]"),
       "12\n",
     ],
     [
-      "CIE-41 a 2D array stores by row and column: 2*3 = 6",
+      "CIE-21 a 2D array stores by row and column: 2*3 = 6",
       L("DECLARE G : ARRAY[1:2, 1:3] OF INTEGER", "G[2, 3] ← 2 * 3", "OUTPUT G[2, 3]"),
       "6\n",
     ],
     [
-      "CIE-40 a loop finds the largest of 4, 9, 2",
+      "CIE-20 a loop finds the largest of 4, 9, 2",
       L(
         "DECLARE A : ARRAY[1:3] OF INTEGER",
         "DECLARE M, I : INTEGER",
@@ -110,12 +110,12 @@ const TOPICS: Readonly<Record<string, readonly Row[]>> = {
   ],
   subprograms: [
     [
-      "CIE-60 a FUNCTION returns the square of 7",
+      "CIE-72 a FUNCTION returns the square of 7",
       L("FUNCTION Sq(X : INTEGER) RETURNS INTEGER", "  RETURN X * X", "ENDFUNCTION", "OUTPUT Sq(7)"),
       "49\n",
     ],
     [
-      "CIE-61 BYREF changes the caller's variable (3 becomes 4)",
+      "CIE-73 BYREF changes the caller's variable (3 becomes 4)",
       L(
         "PROCEDURE Inc(BYREF X : INTEGER)",
         "  X ← X + 1",
@@ -128,7 +128,7 @@ const TOPICS: Readonly<Record<string, readonly Row[]>> = {
       "4\n",
     ],
     [
-      "CIE-61 BYVAL leaves the caller's variable alone",
+      "CIE-73 BYVAL leaves the caller's variable alone",
       L(
         "PROCEDURE Inc(BYVAL X : INTEGER)",
         "  X ← X + 1",
@@ -177,8 +177,8 @@ const TOPICS: Readonly<Record<string, readonly Row[]>> = {
     ],
   ],
   strings: [
-    ["CIE-70 LENGTH of 'hello' is 5", 'OUTPUT LENGTH("hello")', "5\n"],
-    ["CIE-70 MID counts from 1: MID('abcdef', 2, 3) = 'bcd'", 'OUTPUT MID("abcdef", 2, 3)', "bcd\n"],
+    ["CIE-120 LENGTH of 'hello' is 5", 'OUTPUT LENGTH("hello")', "5\n"],
+    ["CIE-120 MID counts from 1: MID('abcdef', 2, 3) = 'bcd'", 'OUTPUT MID("abcdef", 2, 3)', "bcd\n"],
     ["CIE-121 UCASE converts a letter to a capital", "OUTPUT UCASE('k')", "K\n"],
   ],
   files: [
@@ -286,7 +286,7 @@ const TOPICS: Readonly<Record<string, readonly Row[]>> = {
       "hi\n",
     ],
     [
-      "CIE-114 an overriding method wins",
+      "CIE-116 an overriding method wins",
       L(
         "CLASS A",
         "  PUBLIC FUNCTION Hi() RETURNS STRING",
