@@ -1,6 +1,6 @@
 // Per-viewer settings kept in the browser (theme and zoom). Storage can be missing or blocked (private windows,
 // tests), so every read and write is wrapped: the app works the same without it.
-import { ZOOM_MAX, ZOOM_MIN, type ThemeChoice } from "./Toolbar.tsx";
+import { ZOOM_LEVELS, type ThemeChoice } from "./Toolbar.tsx";
 
 /** The languages the editor offers. */
 export type PseudocodeLanguage = "edexcel" | "cie" | "python";
@@ -24,7 +24,8 @@ export function parseTheme(value: unknown): ThemeChoice {
 
 export function clampZoom(value: unknown): number {
   if (typeof value !== "number" || !Number.isFinite(value)) return DEFAULT_PREFERENCES.zoom;
-  return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(value / 10) * 10));
+  // The nearest size the design offers (so a stored 117 becomes 120 and 125 stays 125).
+  return ZOOM_LEVELS.reduce((best, z) => (Math.abs(z - value) < Math.abs(best - value) ? z : best));
 }
 
 export function loadPreferences(): Preferences {
