@@ -1,0 +1,20 @@
+{
+  "spec": ["PY-44", "PY-22", "PY-02"],
+  "language": "python",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-NOT-SUPPORTED",
+        "line": 1,
+        "column": 1,
+        "message": "The pickle module is not supported in Sudocode yet",
+        "hint": "Only the math, random, datetime and time modules are available. Remove the import."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Sudocode's own 'not supported' behaviour (SH-18), not CPython's, so it is hand-specified and never run through the CPython oracle. Position convention: the first token of the statement (Q54)."
+}
