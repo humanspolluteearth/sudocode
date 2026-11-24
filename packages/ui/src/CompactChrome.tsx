@@ -45,7 +45,7 @@ export function ViewSwitcher(p: { view: CompactView; onView: (v: CompactView) =>
 /** One tap per keyword: pressing a key must not steal focus from the editor, so mousedown is cancelled. */
 export function KeyBar(p: { language: PseudocodeLanguage; onInsert: (text: string) => void }) {
   return (
-    <div role="toolbar" aria-label="Insert keyword" className="sc-keybar">
+    <div role="toolbar" aria-label="Insert keyword" className="sc-keybar on">
       {KEYSETS[p.language].map((k) => (
         <button
           key={k}

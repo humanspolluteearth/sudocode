@@ -55,10 +55,12 @@ for (const [width, min, tabHeight] of [
     it("MISC the Console and Debug views", async () => {
       await page.viewport(width, 800);
       const screen = await render(<App />);
-      for (const view of ["Console", "Debug"]) {
+      // A tablet shows every panel at once; a phone has one view at a time.
+      for (const view of width < 700 ? ["Console", "Debug"] : []) {
         await screen.getByRole("button", { name: view, exact: true }).click();
         expect(offenders(min, tabHeight)).toEqual([]);
       }
+      expect(offenders(min, tabHeight)).toEqual([]);
     });
   });
 }
