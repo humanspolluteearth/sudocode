@@ -238,6 +238,10 @@ body {
   overflow: hidden;
   background: var(--bg);
 }
+.sc-editor {
+  position: relative;
+}
+.sc-editor-host,
 .sc-editor .cm-editor {
   height: 100%;
 }

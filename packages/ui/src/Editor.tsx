@@ -1,6 +1,6 @@
 // The code editor: CodeMirror 6 with line numbers, Edexcel highlighting and lint underlines.
 // CodeMirror owns the text while the student types; React only passes in changes from outside (a new example).
-import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
+import { defaultKeymap, history, historyKeymap, indentMore } from "@codemirror/commands";
 import { bracketMatching, indentOnInput } from "@codemirror/language";
 import { setDiagnostics } from "@codemirror/lint";
 import { Compartment, EditorState } from "@codemirror/state";
@@ -94,6 +94,9 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
   // The latest callback, so the editor is created once and never rebuilt when the parent re-renders.
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
+  // Keyboard escape hatch (the design's): Escape arms it, and the next Tab (or Shift+Tab at any time) moves focus out
+  // of the editor instead of indenting. Any other key disarms it.
+  const escArmed = useRef(false);
   const onBreakpointsRef = useRef(onBreakpointsChange);
   onBreakpointsRef.current = onBreakpointsChange;
 
@@ -113,8 +116,43 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
           bracketMatching(),
           languageSlot.of(languageExtension(language)),
           edexcelHighlight,
-          keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
-          EditorView.contentAttributes.of({ "aria-label": ariaLabel, spellcheck: "false", autocapitalize: "off" }),
+          keymap.of([
+            {
+              key: "Escape",
+              run: () => {
+                escArmed.current = true;
+                return true;
+              },
+            },
+            {
+              key: "Tab",
+              run: (v) => {
+                if (escArmed.current) {
+                  escArmed.current = false;
+                  return false;
+                }
+                return indentMore(v);
+              },
+              // Shift+Tab always leaves, as in the design.
+              shift: () => false,
+            },
+            ...defaultKeymap,
+            ...historyKeymap,
+          ]),
+          EditorView.domEventHandlers({
+            keydown: (e) => {
+              if (e.key !== "Escape" && e.key !== "Tab") escArmed.current = false;
+            },
+            blur: () => {
+              escArmed.current = false;
+            },
+          }),
+          EditorView.contentAttributes.of({
+            "aria-label": ariaLabel,
+            "aria-describedby": "sc-editor-hint",
+            spellcheck: "false",
+            autocapitalize: "off",
+          }),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) onChangeRef.current(update.state.doc.toString());
             const before = update.startState.field(breakpointField);
@@ -193,5 +231,12 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
     },
   }));
 
-  return <div className="sc-editor" ref={host} />;
+  return (
+    <div className="sc-editor">
+      <div ref={host} className="sc-editor-host" />
+      <p id="sc-editor-hint" className="sc-sr-only">
+        Press Escape, then Tab, to leave the editor. Tab on its own indents.
+      </p>
+    </div>
+  );
 });
