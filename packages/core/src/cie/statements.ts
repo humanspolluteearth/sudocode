@@ -10,6 +10,7 @@ import type { Token } from "../edexcel/tokens.ts";
 import { Abandon, CIE_RESERVED, joinSpans, type CieCursor } from "./cursor.ts";
 import type { Env, Variable } from "./env.ts";
 import { arrayType } from "./arrays.ts";
+import { fileStatement } from "./files.ts";
 import { placeOf } from "./byref.ts";
 import { startingValue, typeDeclaration } from "./records.ts";
 import { Expressions, type Typed } from "./expressions.ts";
@@ -151,15 +152,16 @@ export class Statements {
         return [];
       case "ARRAY":
       case "CLASS":
+      case "FINALLY": // CIE-101: only one EXCEPT clause exists; FINALLY is not supported
+        return this.notSupported(first, upper);
       case "OPENFILE":
       case "READFILE":
       case "WRITEFILE":
       case "CLOSEFILE":
-      case "FINALLY": // CIE-101: only one EXCEPT clause exists; FINALLY is not supported
       case "SEEK":
       case "GETRECORD":
       case "PUTRECORD":
-        return this.notSupported(first, upper);
+        return fileStatement(this, first, upper);
       default:
         break;
     }
@@ -263,7 +265,7 @@ export class Statements {
     return [{ kind: "assign", target: this.ref(name), value: ir, span: c.spanFrom(first) }];
   }
 
-  private ref(t: Token): VarRef {
+  ref(t: Token): VarRef {
     return {
       kind: "var",
       name: this.env.lookup(t.text)?.name ?? t.text,
