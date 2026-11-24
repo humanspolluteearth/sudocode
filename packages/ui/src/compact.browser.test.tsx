@@ -126,6 +126,35 @@ describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc
     expect(await axeViolations(screen.container)).toEqual([]);
   });
 
+  it("MISC five tabs on a phone: the strip scrolls, the active tab stays in view, and the page does not overflow", async () => {
+    await page.viewport(390, 800);
+    const screen = await render(<App />);
+    for (let i = 0; i < 4; i++) await screen.getByRole("button", { name: "New tab" }).click();
+    const strip = document.querySelector<HTMLElement>(".sc-tabs-scroll");
+    const wrap = document.querySelector<HTMLElement>(".sc-tabs-wrap");
+    if (strip === null || wrap === null) throw new Error("no tab strip");
+    expect(strip.scrollWidth).toBeGreaterThan(strip.clientWidth);
+    // The newest tab is active and fully visible; earlier tabs are hidden to the left, so the fade shows there.
+    await expect.poll(() => wrap.dataset["moreLeft"]).toBe("true");
+    const active = strip.querySelector<HTMLElement>('[aria-selected="true"]')?.getBoundingClientRect();
+    const box = strip.getBoundingClientRect();
+    expect(active?.right ?? 0).toBeLessThanOrEqual(box.right + 1);
+    expect(active?.left ?? -1).toBeGreaterThanOrEqual(box.left - 1);
+    expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
+    expect(document.querySelector(".sc-tabstrip")?.getBoundingClientRect().height).toBe(34);
+    // Switching to the first tab scrolls back and moves the fade to the right edge.
+    await screen.getByRole("tab").first().click();
+    await expect.poll(() => wrap.dataset["moreRight"]).toBe("true");
+    await expect.poll(() => wrap.dataset["moreLeft"]).toBe("false");
+    expect(await axeViolations(screen.container)).toEqual([]);
+  });
+
+  it("MISC on a tablet the tab strip is 30px high", async () => {
+    await page.viewport(834, 800);
+    await render(<App />);
+    expect(document.querySelector(".sc-tabstrip")?.getBoundingClientRect().height).toBe(30);
+  });
+
   for (const width of [834, 390]) {
     it(`MISC axe finds nothing at ${String(width)}px in any view`, async () => {
       await page.viewport(width, 800);

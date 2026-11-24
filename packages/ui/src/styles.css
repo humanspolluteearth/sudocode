@@ -743,9 +743,49 @@ button.sc-section-head:hover {
 .sc-tabs {
   display: flex;
   align-items: stretch;
-  min-width: 0;
-  /* No scrollbars: the tabs' -1px margin made a vertical one, and one tab at a time fits. */
+  flex: none;
+  /* No scrollbars of its own: the tabs' -1px margin would make a vertical one. .sc-tabs-scroll does the scrolling. */
   overflow: hidden;
+}
+/* Scrolls sideways with the scrollbar hidden. */
+.sc-tabs-scroll {
+  display: flex;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+.sc-tabs-scroll::-webkit-scrollbar {
+  display: none;
+}
+/* Fades at an edge that has more tabs past it. */
+.sc-tabs-wrap {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+
+.sc-tabs-wrap::before,
+.sc-tabs-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 18px;
+  pointer-events: none;
+  opacity: 0;
+}
+.sc-tabs-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--tabbar), transparent);
+}
+.sc-tabs-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--tabbar), transparent);
+}
+.sc-tabs-wrap[data-more-left="true"]::before,
+.sc-tabs-wrap[data-more-right="true"]::after {
+  opacity: 1;
 }
 .sc-tab {
   display: flex;
@@ -1118,4 +1158,31 @@ button.sc-section-head:hover {
 }
 .sc-compact:not([data-view="code"]) .sc-keybar {
   display: none;
+}
+
+/* Tab height follows the designs: 34px on a phone, 30px on a tablet. */
+.sc-compact .sc-tabstrip {
+  box-sizing: border-box;
+  height: 34px;
+}
+.sc-compact .sc-tab-btn {
+  height: 33px;
+}
+.sc-compact .sc-tab-btn {
+  font-size: 12px;
+}
+.sc-compact .sc-tab-close {
+  width: 26px;
+  height: 26px;
+}
+.sc-compact .sc-tab-new {
+  width: 36px;
+}
+@media (min-width: 700px) {
+  .sc-compact .sc-tabstrip {
+    height: 30px;
+  }
+  .sc-compact .sc-tab-btn {
+    height: 29px;
+  }
 }
