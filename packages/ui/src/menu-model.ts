@@ -1,5 +1,6 @@
 // What each menu holds. Everything here is reachable from the toolbar too, except what the design puts only in
 // menus (zoom, theme, language). Items for features that don't exist yet are disabled with a reason.
+import type { Example } from "@sudocode/core";
 import type { MenuDef } from "./MenuBar.tsx";
 import type { PseudocodeLanguage } from "./preferences.ts";
 import type { SideTab } from "./SidePanel.tsx";
@@ -31,9 +32,19 @@ export interface MenuActions {
   /** How many breakpoints are set; "Clear all breakpoints" is disabled at 0. */
   breakpointCount: number;
   onClearBreakpoints: () => void;
+  /** File menu: new, open, save, and the examples with a tick on the one whose code is in the editor. */
+  onNewFile: () => void;
+  onOpenFile: () => void;
+  onSave: () => void;
+  onSaveAs: () => void;
+  onSaveAll: () => void;
+  examples: readonly Example[];
+  currentExampleId: string | null;
+  onExample: (example: Example) => void;
+  /** The converter is an Advanced tool (docs/PRODUCT.md); in Simple mode the Convert menu isn't shown. */
+  advanced: boolean;
+  onConvertToPython: () => void;
 }
-
-const SOON = "Not available yet";
 
 export function buildMenus(a: MenuActions): MenuDef[] {
   const languages: [PseudocodeLanguage, string][] = [
@@ -51,10 +62,20 @@ export function buildMenus(a: MenuActions): MenuDef[] {
       id: "file",
       label: "File",
       items: [
-        { label: "New file", disabled: true, title: SOON },
-        { label: "Open…", disabled: true, title: SOON },
+        { label: "New file", onSelect: a.onNewFile },
+        { label: "Open…", onSelect: a.onOpenFile },
         { sep: true },
-        { label: "Save", disabled: true, title: SOON, hint: "Ctrl+S" },
+        { label: "Save", onSelect: a.onSave, hint: "Ctrl+S" },
+        { label: "Save as…", onSelect: a.onSaveAs, hint: "Ctrl+Shift+S" },
+        { label: "Save all", onSelect: a.onSaveAll },
+        { sep: true },
+        ...a.examples.map((x) => ({
+          label: x.name,
+          checked: a.currentExampleId === x.id,
+          onSelect: () => {
+            a.onExample(x);
+          },
+        })),
       ],
     },
     {
@@ -73,14 +94,24 @@ export function buildMenus(a: MenuActions): MenuDef[] {
         { label: "Clear all breakpoints", onSelect: a.onClearBreakpoints, disabled: a.breakpointCount === 0 },
       ],
     },
-    {
-      id: "convert",
-      label: "Convert",
-      items: [
-        { label: "Convert to Python", disabled: true, title: SOON },
-        { label: "Convert to Cambridge 9618 pseudocode", disabled: true, title: SOON },
-      ],
-    },
+    ...(a.advanced
+      ? [
+          {
+            id: "convert",
+            label: "Convert",
+            items: [
+              a.language === "python"
+                ? { label: "Convert to Python", disabled: true, title: "This file is already Python" }
+                : { label: "Convert to Python", onSelect: a.onConvertToPython },
+              {
+                label: "Convert to Cambridge 9618 pseudocode",
+                disabled: true,
+                title: "Only conversion to Python is available",
+              },
+            ],
+          },
+        ]
+      : []),
     {
       id: "language",
       label: "Language",

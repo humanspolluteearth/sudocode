@@ -7,6 +7,8 @@ import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
 import { Editor, type EditorHandle } from "./Editor.tsx";
 import { GuidePage, guideFromSearch, guideUrl, type GuideId } from "./GuidePage.tsx";
+import { SaveDialog } from "./SaveDialog.tsx";
+import { useWorkspace } from "./use-workspace.ts";
 import { FileTabs } from "./FileTabs.tsx";
 import { applyWrite, loadFiles, putFile, removeFile, saveFiles } from "./files-store.ts";
 import { MenuBar } from "./MenuBar.tsx";
@@ -36,8 +38,6 @@ export interface AppProps {
 
 export function App({ workers }: AppProps) {
   const [prefs, setPrefs] = useState(loadPreferences);
-  const language = prefs.language;
-  const [source, setSource] = useState<string>(STARTERS[prefs.language]);
   const [diagnostics, setDiagnostics] = useState<readonly Diagnostic[]>([]);
   const [run, dispatch] = useReducer(runReducer, initialRunView);
   // A note under the tab strip; nothing sets one yet (see NoteBanner), so it starts empty.
@@ -67,6 +67,20 @@ export function App({ workers }: AppProps) {
   const session = useRef<RunSession | null>(null);
   const checker = useRef<CheckClient | null>(null);
   const editor = useRef<EditorHandle>(null);
+  // The open files. Switching file or opening a converted copy ends any run and clears breakpoints (they belong
+  // to the file they were set in).
+  const files$ = useWorkspace(
+    { language: prefs.language, source: STARTERS[prefs.language] },
+    () => {
+      session.current?.stop();
+      setDiagnostics([]);
+      editor.current?.clearBreakpoints();
+    },
+    setNote,
+  );
+  const { current } = files$;
+  const { source, language } = current;
+  const setSource = files$.setSource;
   // The student's virtual files: loaded from IndexedDB once, saved after every change. `filesRef` is what a run
   // starts with and what its fileWrite events update (state alone would be stale inside the run callback).
   const [files, setFilesState] = useState<VirtualFiles>({});
@@ -161,7 +175,10 @@ export function App({ workers }: AppProps) {
     else if (e.key === "F10") step("stepOver");
     else if (e.key === "F11" && e.shiftKey) resume("stepOut");
     else if (e.key === "F11") step("stepInto");
-    else if ((e.ctrlKey || e.metaKey) && (e.key === "=" || e.key === "+"))
+    else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+      if (e.shiftKey) files$.saveAs();
+      else files$.save();
+    } else if ((e.ctrlKey || e.metaKey) && (e.key === "=" || e.key === "+"))
       update({ ...prefs, zoom: nextZoom(prefs.zoom, 1) });
     else if ((e.ctrlKey || e.metaKey) && e.key === "-") update({ ...prefs, zoom: nextZoom(prefs.zoom, -1) });
     else if ((e.ctrlKey || e.metaKey) && e.key === "0") update({ ...prefs, zoom: ZOOM_LEVELS[0] });
@@ -190,6 +207,7 @@ export function App({ workers }: AppProps) {
     setDiagnostics([]);
     // An untouched starter program follows the language; anything the student wrote stays.
     if (source === STARTERS[language]) setSource(STARTERS[next]);
+    files$.setLanguage(next);
     update({ ...prefs, language: next });
   };
   const menus = buildMenus({
@@ -230,6 +248,18 @@ export function App({ workers }: AppProps) {
     },
     breakpointCount: breakpoints.length,
     onClearBreakpoints: () => editor.current?.clearBreakpoints(),
+    onNewFile: files$.newFile,
+    onOpenFile: files$.openFiles,
+    onSave: files$.save,
+    onSaveAs: files$.saveAs,
+    onSaveAll: files$.saveAll,
+    examples: EXAMPLES[language],
+    currentExampleId: EXAMPLES[language].find((x) => x.code === source)?.id ?? null,
+    onExample: (example) => {
+      setSource(example.code);
+    },
+    advanced: prefs.advanced,
+    onConvertToPython: files$.convertToPython,
   });
 
   if (guide !== null) return <GuidePage guide={guide} onNavigate={openGuide} themeClass={themeClass(prefs.theme)} />;
@@ -266,6 +296,15 @@ export function App({ workers }: AppProps) {
         onExample={(example) => {
           setSource(example.code);
         }}
+        onSave={files$.save}
+        onConvert={
+          prefs.advanced
+            ? () => {
+                files$.convertToPython();
+              }
+            : undefined
+        }
+        canConvert={language !== "python"}
         theme={prefs.theme}
         onTheme={(theme) => {
           update({ ...prefs, theme });
@@ -273,7 +312,13 @@ export function App({ workers }: AppProps) {
       />
       <main className="sc-main" style={{ "--side-w": `${String(sideWidth)}px` } as React.CSSProperties}>
         <div className="sc-left" style={{ "--console-h": `${String(consoleHeight)}px` } as React.CSSProperties}>
-          <FileTabs language={language} name="untitled" source={source} />
+          <FileTabs
+            tabs={files$.ws.tabs}
+            activeId={files$.ws.activeId}
+            onSwitch={files$.switchTo}
+            onClose={files$.close}
+            onNew={files$.newFile}
+          />
           {note !== null && (
             <NoteBanner
               note={note}
@@ -349,6 +394,14 @@ export function App({ workers }: AppProps) {
         diagnostics={diagnostics}
         languageName={LANGUAGE_NAMES[language]}
       />
+      {files$.dialog !== null && (
+        <SaveDialog
+          name={files$.dialog.name}
+          type={files$.dialog.type}
+          onSave={files$.finishSave}
+          onCancel={files$.cancelSave}
+        />
+      )}
       {paused?.reason === "stepLimit" && (
         <StepLimitDialog
           line={paused.line}
