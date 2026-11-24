@@ -46,7 +46,7 @@ export function App({ workers }: AppProps) {
   const [diagnostics, setDiagnostics] = useState<readonly Diagnostic[]>([]);
   const [run, dispatch] = useReducer(runReducer, initialRunView);
   const [breakpoints, setBreakpoints] = useState<number[]>([]);
-  const [tab, setTab] = useState<SideTab>("problems");
+  const [tab, setTab] = useState<SideTab>("debugger");
   const session = useRef<RunSession | null>(null);
   const checker = useRef<CheckClient | null>(null);
   const editor = useRef<EditorHandle>(null);
@@ -159,7 +159,7 @@ export function App({ workers }: AppProps) {
     setDiagnostics([]);
     // An untouched starter program follows the language; anything the student wrote stays.
     if (source === STARTERS[language]) setSource(STARTERS[next]);
-    if (tab === "reference" && next === "edexcel") setTab("problems");
+    if (tab === "reference" && next === "edexcel") setTab("debugger");
     update({ ...prefs, language: next });
   };
   const menus = buildMenus({
@@ -269,6 +269,7 @@ export function App({ workers }: AppProps) {
           diagnostics={diagnostics}
           onSelectProblem={(d) => editor.current?.goTo(d.line, d.column)}
           run={run}
+          breakpoints={breakpoints}
           files={
             prefs.advanced
               ? {
@@ -289,7 +290,7 @@ export function App({ workers }: AppProps) {
           advanced={prefs.advanced}
           onAdvanced={(advanced) => {
             update({ ...prefs, advanced });
-            if (!advanced && tab === "files") setTab("problems");
+            if (!advanced && tab === "files") setTab("debugger");
           }}
         />
       </main>

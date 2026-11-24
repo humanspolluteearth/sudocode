@@ -184,3 +184,23 @@ describe("MISC Default program", () => {
     await expect.element(screen.getByText("No problems.")).toBeVisible();
   });
 });
+
+describe("MISC Side panel", () => {
+  it("MISC the Debugger tab stacks Status, Problems, Variables and Breakpoints", async () => {
+    localStorage.clear();
+    const screen = await render(<App />);
+    for (const name of ["Status", "Problems", "Variables", "Breakpoints"]) {
+      await expect.element(screen.getByRole("region", { name })).toBeVisible();
+    }
+    await expect.element(screen.getByText("No breakpoints.")).toBeVisible();
+    await expect.element(screen.getByRole("button", { name: "Debugger" })).toHaveAttribute("aria-pressed", "true");
+  });
+  it("MISC the side panel passes axe", async () => {
+    localStorage.clear();
+    const screen = await render(<App />);
+    await expect.element(screen.getByRole("region", { name: "Breakpoints" })).toBeVisible();
+    const side = screen.container.querySelector("aside");
+    expect(side).not.toBeNull();
+    expect(await axeViolations(side as HTMLElement)).toEqual([]);
+  });
+});

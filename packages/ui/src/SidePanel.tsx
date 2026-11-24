@@ -1,4 +1,5 @@
-// The right-hand panel: Problems, or the Debugger (Variables and the trace table), per docs/PRODUCT.md.
+// The right-hand panel, as in the design: a Debugger tab (stacked Status, Problems, Variables, Call stack,
+// Breakpoints and Trace table sections), a Quick reference tab, and a Files tab in Advanced mode.
 import type { Diagnostic, GuideSection, VirtualFiles } from "@sudocode/core";
 import { FilesPanel } from "./FilesPanel.tsx";
 import { CallStack } from "./CallStack.tsx";
@@ -6,9 +7,10 @@ import { QuickReference } from "./QuickReference.tsx";
 import { Problems } from "./Problems.tsx";
 import type { RunView } from "./run-state.ts";
 import { TraceTable } from "./TraceTable.tsx";
+import { STATE_TEXT } from "./StatusBar.tsx";
 import { Variables } from "./Variables.tsx";
 
-export type SideTab = "problems" | "debugger" | "files" | "reference";
+export type SideTab = "debugger" | "files" | "reference";
 
 export interface SidePanelProps {
   tab: SideTab;
@@ -16,6 +18,8 @@ export interface SidePanelProps {
   diagnostics: readonly Diagnostic[];
   onSelectProblem: (d: Diagnostic) => void;
   run: RunView;
+  /** The lines that have a breakpoint. */
+  breakpoints: readonly number[];
   advanced: boolean;
   onAdvanced: (advanced: boolean) => void;
   /** Advanced mode only: shows the Files tab. */
@@ -37,6 +41,7 @@ export function SidePanel({
   diagnostics,
   onSelectProblem,
   run,
+  breakpoints,
   files,
   advanced,
   onAdvanced,
@@ -58,7 +63,6 @@ export function SidePanel({
   return (
     <aside className="sc-side" aria-label="Side panel">
       <div className="sc-tabs" role="group" aria-label="Side panel view">
-        {tabButton("problems", "Problems")}
         {tabButton("debugger", "Debugger")}
         {files !== undefined && tabButton("files", "Files")}
         {guide !== undefined && tabButton("reference", "Quick reference")}
@@ -77,16 +81,33 @@ export function SidePanel({
         <QuickReference sections={guide} onUse={(section) => onUseGuide?.(section)} />
       ) : tab === "files" && files !== undefined ? (
         <FilesPanel files={files.files} onChange={files.onChange} onDelete={files.onDelete} />
-      ) : tab === "problems" ? (
-        <Problems diagnostics={diagnostics} onSelect={onSelectProblem} />
       ) : (
-        <div className="sc-debugger">
+        <div className="sc-debugger" tabIndex={0} role="group" aria-label="Debugger">
+          <section aria-label="Status" className="sc-status-panel">
+            <div className="sc-panel-title">
+              <span>Status</span>
+            </div>
+            <div className="sc-status-body">
+              {STATE_TEXT[run.state]}
+              {run.paused !== null && ` before line ${String(run.paused.line)}`}
+            </div>
+          </section>
+          <Problems diagnostics={diagnostics} onSelect={onSelectProblem} />
           <section aria-label="Variables" className="sc-vars-panel">
             <div className="sc-panel-title">
               <span>Variables</span>
               {run.paused !== null && <span className="sc-count">{`line ${String(run.paused.line)}`}</span>}
             </div>
             <Variables frame={run.paused?.stack[0] ?? null} previous={run.previous} />
+          </section>
+          <section aria-label="Breakpoints" className="sc-bps-panel">
+            <div className="sc-panel-title">
+              <span>Breakpoints</span>
+              <span className="sc-count">{breakpoints.length}</span>
+            </div>
+            <div className="sc-status-body">
+              {breakpoints.length === 0 ? "No breakpoints." : breakpoints.map((n) => `line ${String(n)}`).join(", ")}
+            </div>
           </section>
           <section aria-label="Call stack" className="sc-stack-panel">
             <div className="sc-panel-title">
