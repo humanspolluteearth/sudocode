@@ -4,7 +4,7 @@
 // Start the app first (`pnpm --filter @sudocode/web build && pnpm --filter @sudocode/web preview --port 4173`).
 // The design is only used for looking at, never for pixel comparison: fonts differ per machine.
 import { createRequire } from "node:module";
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 
@@ -16,6 +16,11 @@ const arg = (name, fallback) => {
 const appUrl = arg("url", "http://localhost:4173");
 const out = resolve(arg("out", "ui-compare-out"));
 const designFile = resolve("reference/prototype/design-standalone.html");
+
+if (!existsSync(designFile)) {
+  console.error(`Missing ${designFile}. It is kept out of git (see docs/review/UI.md); put your copy there.`);
+  process.exit(1);
+}
 
 // Playwright is a dependency of apps/web only, so resolve it from there.
 const require = createRequire(resolve("apps/web/package.json"));
