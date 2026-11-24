@@ -2,16 +2,14 @@
 // from the prototype's desktop design, docs/PRODUCT.md). The shell passes in the worker factories, so this
 // package never imports a worker.
 import { CIE_EXAMPLES, EDEXCEL_EXAMPLES, PYTHON_EXAMPLES, type Diagnostic, type VirtualFiles } from "@sudocode/core";
-import { useEffect, useReducer, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
 import { KeyBar, OverflowMenu, ProblemChip, ViewSwitcher } from "./CompactChrome.tsx";
 import { useCompact, type CompactView } from "./compact.ts";
 import { Editor, type EditorHandle } from "./Editor.tsx";
 import { GuidePage, guideFromSearch, guideUrl, type GuideId } from "./GuidePage.tsx";
-import { SettingsDialog } from "./SettingsDialog.tsx";
 import { toolFlags } from "./tools.ts";
-import { SaveDialog } from "./SaveDialog.tsx";
 import { useWorkspace } from "./use-workspace.ts";
 import { FileTabs } from "./FileTabs.tsx";
 import { applyWrite, loadFiles, putFile, removeFile, saveFiles } from "./files-store.ts";
@@ -31,6 +29,10 @@ import "./styles.css";
 
 const EXAMPLES = { edexcel: EDEXCEL_EXAMPLES, cie: CIE_EXAMPLES, python: PYTHON_EXAMPLES } as const;
 // The app opens with the design's sample, the "Grade checker" example of the chosen language.
+// Dialogs are only needed when opened, so they load on demand and stay out of the first download (the 2 GB device target).
+const SettingsDialog = lazy(() => import("./SettingsDialog.tsx").then((m) => ({ default: m.SettingsDialog })));
+const SaveDialog = lazy(() => import("./SaveDialog.tsx").then((m) => ({ default: m.SaveDialog })));
+
 const starter = (language: PseudocodeLanguage): string => EXAMPLES[language].find((x) => x.id === "grade")?.code ?? "";
 const STARTERS = { edexcel: starter("edexcel"), cie: starter("cie"), python: starter("python") } as const;
 const LANGUAGE_NAMES = { edexcel: "Edexcel pseudocode", cie: "Cambridge 9618 pseudocode", python: "Python" } as const;
@@ -453,38 +455,40 @@ export function App({ workers }: AppProps) {
         diagnostics={diagnostics}
         languageName={LANGUAGE_NAMES[language]}
       />
-      {settingsOpen && (
-        <SettingsDialog
-          advanced={prefs.advanced}
-          onAdvanced={(advanced) => {
-            update({ ...prefs, advanced });
-          }}
-          theme={prefs.theme}
-          onTheme={(theme) => {
-            update({ ...prefs, theme });
-          }}
-          zoom={prefs.zoom}
-          onZoom={(zoom) => {
-            update({ ...prefs, zoom });
-          }}
-          toolsOff={prefs.toolsOff}
-          onTool={(id, on) => {
-            if (id === "breakpoints" && !on) editor.current?.clearBreakpoints();
-            update({ ...prefs, toolsOff: on ? prefs.toolsOff.filter((t) => t !== id) : [...prefs.toolsOff, id] });
-          }}
-          onClose={() => {
-            setSettingsOpen(false);
-          }}
-        />
-      )}
-      {files$.dialog !== null && (
-        <SaveDialog
-          name={files$.dialog.name}
-          type={files$.dialog.type}
-          onSave={files$.finishSave}
-          onCancel={files$.cancelSave}
-        />
-      )}
+      <Suspense fallback={null}>
+        {settingsOpen && (
+          <SettingsDialog
+            advanced={prefs.advanced}
+            onAdvanced={(advanced) => {
+              update({ ...prefs, advanced });
+            }}
+            theme={prefs.theme}
+            onTheme={(theme) => {
+              update({ ...prefs, theme });
+            }}
+            zoom={prefs.zoom}
+            onZoom={(zoom) => {
+              update({ ...prefs, zoom });
+            }}
+            toolsOff={prefs.toolsOff}
+            onTool={(id, on) => {
+              if (id === "breakpoints" && !on) editor.current?.clearBreakpoints();
+              update({ ...prefs, toolsOff: on ? prefs.toolsOff.filter((t) => t !== id) : [...prefs.toolsOff, id] });
+            }}
+            onClose={() => {
+              setSettingsOpen(false);
+            }}
+          />
+        )}
+        {files$.dialog !== null && (
+          <SaveDialog
+            name={files$.dialog.name}
+            type={files$.dialog.type}
+            onSave={files$.finishSave}
+            onCancel={files$.cancelSave}
+          />
+        )}
+      </Suspense>
       {paused?.reason === "stepLimit" && (
         <StepLimitDialog
           line={paused.line}
