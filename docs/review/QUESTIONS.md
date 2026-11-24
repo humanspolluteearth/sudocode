@@ -257,3 +257,11 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
     runtime error `E-RUN-ENUM-RANGE` ("Summer is a Season, and moving 1 place from it goes past the end of the list"),
     and only the probe-level unit test `MISC` in `src/runtime/records.test.ts` pins it. Please confirm the error (the
     alternative is wrapping round) and the wording.
+
+## Q51 (M7): Cambridge file details the spec does not give
+
+Logged by Claude under /goal. Implemented as below; no golden test depends on them. Please confirm or correct.
+
+- Reading, writing or EOF on a file that was never opened: runtime error `E-RUN-FILE-NOT-OPEN` (new code).
+- OPENFILE on a file that is already open: runtime error `E-RUN-FILE-ALREADY-OPEN` (new code), from "one mode at a time" (CIE-91).
+- Random files: the address starts at 1 after OPENFILE and does not move by itself after GETRECORD/PUTRECORD; SEEK below 1 is `E-RUN-RECORD-EMPTY`. Random-file records live in memory only; they are not shown in the Files panel or kept between runs.

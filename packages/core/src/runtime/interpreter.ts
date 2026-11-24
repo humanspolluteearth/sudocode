@@ -6,7 +6,7 @@
 // also `yield`s, as a "call" request: the driver starts the callee on its own explicit stack and later resumes the
 // caller with the result. So interpreted calls never nest JavaScript frames (see driver.ts).
 import type { Span } from "../diagnostics.ts";
-import type { AssignTarget, Stmt, Subprogram, VarRef } from "../ir/ir.ts";
+import type { AssignTarget, Expr, Stmt, Subprogram, VarRef } from "../ir/ir.ts";
 import {
   asBoolean,
   asIndex,
@@ -26,6 +26,14 @@ import { formatValue } from "./format.ts";
 import { convertInput } from "./input.ts";
 import { RunError } from "./run-error.ts";
 import { array, char, characters, int, real, type Value } from "./values.ts";
+
+/** The name of a file: a plain string (Edexcel) or an expression (Cambridge, where it may be a variable). */
+function* fileName(file: string | Expr, env: Env): Run<string> {
+  if (typeof file === "string") return file;
+  const v = yield* evaluateWithCalls(file, env);
+  if (v.kind !== "str") throw bug(`A file name was ${v.kind}`);
+  return v.value;
+}
 
 export type { Body, Machine, Request } from "./evaluate.ts";
 
@@ -113,13 +121,38 @@ function* statement(s: Stmt, env: Env): Run<Returned | undefined> {
       return undefined;
     }
     case "fileRead": {
-      const line = env.machine.readLine(s.file, s.span);
-      setVariable(s.target, convertInput(line, s.convert, s.span, s.file), env, s.span);
+      const file = yield* fileName(s.file, env);
+      const line = env.machine.readLine(file, s.span, s.strict === true);
+      setVariable(s.target, convertInput(line, s.convert, s.span, file), env, s.span);
       return undefined;
     }
     case "fileWrite": {
+      const file = yield* fileName(s.file, env);
       const text = formatValue(yield* evaluateWithCalls(s.value, env), env.machine.format);
-      env.machine.writeLine(s.file, text, s.span);
+      env.machine.writeLine(file, text, s.span, s.strict === true);
+      return undefined;
+    }
+    case "fileOpen":
+      env.machine.openFile(yield* fileName(s.file, env), s.mode, s.span);
+      return undefined;
+    case "fileClose":
+      env.machine.closeFile(yield* fileName(s.file, env), s.span);
+      return undefined;
+    case "fileSeek": {
+      const file = yield* fileName(s.file, env);
+      const address = yield* evaluateWithCalls(s.address, env);
+      if (address.kind !== "int") throw bug(`SEEK got ${address.kind}`);
+      env.machine.seek(file, address.value, s.span);
+      return undefined;
+    }
+    case "fileGet": {
+      const file = yield* fileName(s.file, env);
+      yield* assign(s.target, env.machine.getRecord(file, s.span), env);
+      return undefined;
+    }
+    case "filePut": {
+      const file = yield* fileName(s.file, env);
+      env.machine.putRecord(file, yield* evaluateWithCalls(s.value, env), s.span);
       return undefined;
     }
     case "if": {

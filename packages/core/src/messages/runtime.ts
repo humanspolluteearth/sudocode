@@ -133,6 +133,20 @@ export const runtimeMessages: Catalogue = {
       hint: "Open the file with the mode you need before reading or writing.",
     },
   },
+  "E-RUN-FILE-NOT-OPEN": {
+    spec: ["CIE-90"],
+    default: {
+      message: "{file} is not open",
+      hint: "Open it first with OPENFILE {file} FOR READ, WRITE, APPEND or RANDOM.",
+    },
+  },
+  "E-RUN-FILE-ALREADY-OPEN": {
+    spec: ["CIE-91"],
+    default: {
+      message: "{file} is already open",
+      hint: "A file is open in one mode at a time. CLOSEFILE it before opening it again.",
+    },
+  },
   "E-RUN-RECORD-EMPTY": {
     spec: ["CIE-95"],
     default: {

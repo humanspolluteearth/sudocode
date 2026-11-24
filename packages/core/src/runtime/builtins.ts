@@ -95,6 +95,8 @@ export function cieBuiltin(
       if (x < 0) throw fail("RAND", span, `${String(x)}, which is below 0`);
       return real(m.randomReal() * x);
     }
+    case "eof":
+      return { kind: "bool", value: m.eof(text(args[0]), span) };
     case "day":
       return int(date(a).day);
     case "month":
