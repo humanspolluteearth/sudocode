@@ -3,6 +3,7 @@ import { render } from "vitest-browser-react";
 import { axeViolations } from "./axe.ts";
 import { FileTabs, lineCount } from "./FileTabs.tsx";
 import { MenuBar } from "./MenuBar.tsx";
+import { Toolbar } from "./Toolbar.tsx";
 import { buildMenus, type MenuActions } from "./menu-model.ts";
 
 const actions = (over: Partial<MenuActions> = {}): MenuActions => ({
@@ -102,6 +103,48 @@ describe("MISC file tab strip", () => {
 
   it("MISC the tab strip has no axe violations", async () => {
     const screen = await render(<FileTabs language="cie" name="untitled" source="x" />);
+    expect(await axeViolations(screen.container)).toEqual([]);
+  });
+});
+
+describe("MISC Toolbar layout", () => {
+  const bar = (over: Partial<Parameters<typeof Toolbar>[0]> = {}) => (
+    <Toolbar
+      running={false}
+      canRun
+      onRun={() => undefined}
+      onStop={() => undefined}
+      zoom={100}
+      onZoom={() => undefined}
+      theme="system"
+      onTheme={() => undefined}
+      examples={[]}
+      onExample={() => undefined}
+      {...over}
+    />
+  );
+  it("MISC Save and Convert to are shown disabled with a title", async () => {
+    const screen = await render(bar());
+    const save = screen.getByRole("button", { name: "Save" });
+    await expect.element(save).toBeDisabled();
+    await expect.element(save).toHaveAttribute("title", "Not available yet");
+    await expect.element(screen.getByRole("button", { name: /Convert to/ })).toBeDisabled();
+  });
+  it("MISC Clear breakpoints calls its handler", async () => {
+    const onClearBreakpoints = vi.fn();
+    const screen = await render(bar({ onClearBreakpoints }));
+    await screen.getByRole("button", { name: "Clear breakpoints" }).click();
+    expect(onClearBreakpoints).toHaveBeenCalledOnce();
+  });
+  it("MISC the Theme button cycles system, light, dark", async () => {
+    const onTheme = vi.fn();
+    const screen = await render(bar({ onTheme, theme: "dark" }));
+    await screen.getByRole("button", { name: "Theme" }).click();
+    expect(onTheme).toHaveBeenCalledWith("system");
+  });
+  it("MISC the toolbar passes axe", async () => {
+    const screen = await render(bar({ language: "edexcel", onLanguage: () => undefined }));
+    await expect.element(screen.getByRole("toolbar")).toBeVisible();
     expect(await axeViolations(screen.container)).toEqual([]);
   });
 });

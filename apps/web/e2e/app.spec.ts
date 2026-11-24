@@ -21,7 +21,7 @@ test("Stop ends a WHILE TRUE loop", async ({ page }) => {
   await page.goto("/");
   await typeProgram(page, "WHILE TRUE DO\nSET x TO 1\nEND WHILE");
   await page.getByRole("button", { name: "Run" }).click();
-  const stop = page.getByRole("button", { name: "Stop" });
+  const stop = page.getByRole("button", { name: "Reset" });
   await expect(stop).toBeEnabled();
   await expect(page.getByRole("button", { name: "Run" })).toBeDisabled();
   await stop.click();

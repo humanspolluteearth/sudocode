@@ -25,3 +25,11 @@ PR #111 (menu bar and tab strip) was 340.3 kB gzipped in CI (339.6 kB locally; C
 0.3 kB over. Main was already at about 338.7 kB, and trimming the new code saved under 0.1 kB. You told me to raise
 the budget, so `scripts/size-budget.json` went up once by 4 kB to cover the whole UI job (menu bar, tab strip,
 toolbar, side panel). Each PR reports its measured size. Earlier milestones (M7, M8, M9) did the same.
+
+## U3 Toolbar deviations from the design
+
+- Step into, Step out and Pause appear only while a program runs (also in the Run menu). The design has no such buttons.
+- Zoom (A−, %, A+) stays in the toolbar after Theme; the design puts zoom in the status bar. Moving it is left to the status-bar work.
+- The design's 26px buttons are below the 44px touch target in `.claude/rules/ui.md`. The goal says to match the design, so the 26px size is kept.
+- "Stop" is now "Reset", and the "Examples" label is "Example" (design wording). Tests edited for that text only: `components.browser.test.tsx` (2 lines), `apps/web/e2e/app.spec.ts` (line 24).
+- `pnpm check` printed `FAIL test` twice during this work and passed on rerun (four more green runs in a row). The failing test was not captured; not reproduced.
