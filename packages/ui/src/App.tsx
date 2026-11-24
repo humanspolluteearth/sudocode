@@ -1,7 +1,7 @@
 // The IDE's root component: toolbar, editor, console, side panel (Problems / Debugger) and status bar (layout
 // from the prototype's desktop design, docs/PRODUCT.md). The shell passes in the worker factories, so this
 // package never imports a worker.
-import { CIE_EXAMPLES, EDEXCEL_EXAMPLES, PYTHON_EXAMPLES, type Diagnostic, type VirtualFiles } from "@sudocode/core";
+import { type Diagnostic, type VirtualFiles } from "@sudocode/core";
 import { lazy, Suspense, useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
@@ -28,15 +28,12 @@ import { StepLimitDialog } from "./StepLimitDialog.tsx";
 import { nextZoom, Toolbar, ZOOM_LEVELS, type ThemeChoice } from "./Toolbar.tsx";
 import "./styles.css";
 
-const EXAMPLES = { edexcel: EDEXCEL_EXAMPLES, cie: CIE_EXAMPLES, python: PYTHON_EXAMPLES } as const;
-// The app opens with the design's sample, the "Grade checker" example of the chosen language.
+// The app opens with a blank untitled file in the remembered language (no sample program).
 // Dialogs are only needed when opened, so they load on demand and stay out of the first download (the 2 GB device target).
 const SettingsDialog = lazy(() => import("./SettingsDialog.tsx").then((m) => ({ default: m.SettingsDialog })));
 const WelcomeDialog = lazy(() => import("./WelcomeDialog.tsx").then((m) => ({ default: m.WelcomeDialog })));
 const SaveDialog = lazy(() => import("./SaveDialog.tsx").then((m) => ({ default: m.SaveDialog })));
 
-const starter = (language: PseudocodeLanguage): string => EXAMPLES[language].find((x) => x.id === "grade")?.code ?? "";
-const STARTERS = { edexcel: starter("edexcel"), cie: starter("cie"), python: starter("python") } as const;
 const LANGUAGE_NAMES = { edexcel: "Edexcel pseudocode", cie: "Cambridge 9618 pseudocode", python: "Python" } as const;
 
 export interface AppProps {
@@ -81,7 +78,7 @@ export function App({ workers }: AppProps) {
   // The open files. Switching file or opening a converted copy ends any run and clears breakpoints (they belong
   // to the file they were set in).
   const files$ = useWorkspace(
-    { language: prefs.language, source: STARTERS[prefs.language] },
+    { language: prefs.language, source: "" },
     () => {
       session.current?.stop();
       setDiagnostics([]);
@@ -217,8 +214,6 @@ export function App({ workers }: AppProps) {
     // The old language's run and problems no longer apply.
     session.current?.stop();
     setDiagnostics([]);
-    // An untouched starter program follows the language; anything the student wrote stays.
-    if (source === STARTERS[language]) setSource(STARTERS[next]);
     files$.setLanguage(next);
     update({ ...prefs, language: next });
   };
@@ -275,11 +270,6 @@ export function App({ workers }: AppProps) {
     onSave: files$.save,
     onSaveAs: files$.saveAs,
     onSaveAll: files$.saveAll,
-    examples: EXAMPLES[language],
-    currentExampleId: EXAMPLES[language].find((x) => x.code === source)?.id ?? null,
-    onExample: (example) => {
-      setSource(example.code);
-    },
     advanced: prefs.advanced,
     onConvertToPython: files$.convertToPython,
     tools,
@@ -328,10 +318,6 @@ export function App({ workers }: AppProps) {
         }}
         language={language}
         onLanguage={changeLanguage}
-        examples={EXAMPLES[language]}
-        onExample={(example) => {
-          setSource(example.code);
-        }}
         onSave={files$.save}
         onConvert={
           prefs.advanced && tools.converter

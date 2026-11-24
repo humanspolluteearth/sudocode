@@ -33,7 +33,6 @@ export interface WorkspaceHook {
   saveAll: () => void;
   openFiles: () => void;
   convertToPython: () => void;
-  openExample: (name: string, source: string) => void;
   /** Set while the Save dialog is on screen. */
   dialog: { name: string; type: SaveType } | null;
   finishSave: (name: string, type: SaveType) => void;
@@ -113,9 +112,6 @@ export function useWorkspace(
         }
         if (picked.length > 0) changed(next);
       });
-    },
-    openExample: (name, source) => {
-      changed(openTab(latest.current, { name, language: current.language, source }));
     },
     convertToPython: () => {
       const from = current.language;

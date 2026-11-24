@@ -2,15 +2,7 @@
 // Settings AND the current mode allows it: Simple mode hides the Advanced-only tools whatever the switches say.
 
 export type ToolId =
-  | "problems"
-  | "variables"
-  | "breakpoints"
-  | "traceTable"
-  | "reference"
-  | "examples"
-  | "stepInto"
-  | "files"
-  | "converter";
+  "problems" | "variables" | "breakpoints" | "traceTable" | "reference" | "stepInto" | "files" | "converter";
 
 export const TOOLS: readonly { id: ToolId; label: string; advancedOnly: boolean }[] = [
   { id: "problems", label: "Problems list", advancedOnly: false },
@@ -18,7 +10,6 @@ export const TOOLS: readonly { id: ToolId; label: string; advancedOnly: boolean 
   { id: "breakpoints", label: "Breakpoints and Step over", advancedOnly: false },
   { id: "traceTable", label: "Trace table", advancedOnly: false },
   { id: "reference", label: "Quick reference", advancedOnly: false },
-  { id: "examples", label: "Examples", advancedOnly: false },
   { id: "stepInto", label: "Step into, Step out and Call stack", advancedOnly: true },
   { id: "files", label: "Files panel", advancedOnly: true },
   { id: "converter", label: "Converter", advancedOnly: true },
@@ -33,7 +24,6 @@ export const ALL_TOOLS: ToolFlags = {
   breakpoints: true,
   traceTable: true,
   reference: true,
-  examples: true,
   stepInto: true,
   files: true,
   converter: true,

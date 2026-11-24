@@ -28,6 +28,9 @@ describe("MISC files in the app: tabs and Convert", () => {
   it("MISC Convert to Python opens the converted program in a new tab with a note", async () => {
     advanced();
     const screen = await render(<App />);
+    // The app starts blank, so type a one-line program to convert.
+    await screen.getByRole("textbox").first().click();
+    await userEvent.keyboard("SEND 1 TO DISPLAY");
     await menu(screen, "Convert", "Convert to Python");
     await expect.element(screen.getByRole("tab", { name: /untitled\.py/ })).toHaveAttribute("aria-selected", "true");
     await expect

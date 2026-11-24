@@ -11,7 +11,5 @@ export * from "./messages/index.ts";
 export type { WorkerHandle } from "./worker/scope.ts";
 export { createWorkerRunner } from "./worker/worker-runner.ts";
 export { runHeadless, type HeadlessResult } from "./runner/headless.ts";
-export { EDEXCEL_EXAMPLES, SUBPROGRAM_EXAMPLES, type Example } from "./examples/edexcel.ts";
-export { CIE_EXAMPLES } from "./examples/cie.ts";
 export { CIE_GUIDE, type GuideSection } from "./examples/cie-guide.ts";
-export { PYTHON_EXAMPLES, PYTHON_GUIDE } from "./examples/python.ts";
+export { PYTHON_GUIDE } from "./examples/python-guide.ts";

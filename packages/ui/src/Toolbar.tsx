@@ -1,6 +1,5 @@
 // The toolbar: Run, the debugger buttons (Continue, Step over, Pause), Stop, zoom and theme. Buttons are real <button>s with visible text for screen readers.
 import { ALL_TOOLS, type ToolFlags } from "./tools.ts";
-import type { Example } from "@sudocode/core";
 import type { PseudocodeLanguage } from "./preferences.ts";
 export type ThemeChoice = "system" | "light" | "dark";
 
@@ -44,8 +43,6 @@ export interface ToolbarProps {
   onConvert?: ((target: "python") => void) | undefined;
   /** False when the active file is already Python, so there is nothing to convert to. */
   canConvert?: boolean;
-  examples: readonly Example[];
-  onExample: (example: Example) => void;
   /** Which tools are on (Settings and mode); every tool is on when missing. */
   tools?: ToolFlags;
 }
@@ -191,25 +188,6 @@ export function Toolbar(p: ToolbarProps) {
             <option value="edexcel">Edexcel pseudocode</option>
             <option value="cie">Cambridge 9618 pseudocode</option>
             <option value="python">Python</option>
-          </select>
-        </label>
-      )}
-      {tools.examples && (
-        <label className="sc-field">
-          Example
-          <select
-            value=""
-            onChange={(e) => {
-              const picked = p.examples.find((x) => x.id === e.target.value);
-              if (picked !== undefined) p.onExample(picked);
-            }}
-          >
-            <option value="">(untitled)</option>
-            {p.examples.map((x) => (
-              <option key={x.id} value={x.id}>
-                {x.name}
-              </option>
-            ))}
           </select>
         </label>
       )}

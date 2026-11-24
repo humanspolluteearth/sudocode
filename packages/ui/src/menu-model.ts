@@ -1,6 +1,5 @@
 // What each menu holds. Everything here is reachable from the toolbar too, except what the design puts only in
 // menus (zoom, theme, language). Items for features that don't exist yet are disabled with a reason.
-import type { Example } from "@sudocode/core";
 import { ALL_TOOLS, type ToolFlags } from "./tools.ts";
 import type { MenuDef } from "./MenuBar.tsx";
 import type { PseudocodeLanguage } from "./preferences.ts";
@@ -33,15 +32,12 @@ export interface MenuActions {
   /** How many breakpoints are set; "Clear all breakpoints" is disabled at 0. */
   breakpointCount: number;
   onClearBreakpoints: () => void;
-  /** File menu: new, open, save, and the examples with a tick on the one whose code is in the editor. */
+  /** File menu: new, open and save. */
   onNewFile: () => void;
   onOpenFile: () => void;
   onSave: () => void;
   onSaveAs: () => void;
   onSaveAll: () => void;
-  examples: readonly Example[];
-  currentExampleId: string | null;
-  onExample: (example: Example) => void;
   /** The converter is an Advanced tool (docs/PRODUCT.md); in Simple mode the Convert menu isn't shown. */
   advanced: boolean;
   onConvertToPython: () => void;
@@ -77,14 +73,6 @@ export function buildMenus(a: MenuActions): MenuDef[] {
         { label: "Save", onSelect: a.onSave, hint: "Ctrl+S" },
         { label: "Save as…", onSelect: a.onSaveAs, hint: "Ctrl+Shift+S" },
         { label: "Save all", onSelect: a.onSaveAll },
-        ...(tools.examples ? [{ sep: true as const }] : []),
-        ...(tools.examples ? a.examples : []).map((x) => ({
-          label: x.name,
-          checked: a.currentExampleId === x.id,
-          onSelect: () => {
-            a.onExample(x);
-          },
-        })),
       ],
     },
     {

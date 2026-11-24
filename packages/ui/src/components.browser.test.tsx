@@ -1,5 +1,4 @@
 import type { Diagnostic } from "@sudocode/core";
-import { EDEXCEL_EXAMPLES } from "@sudocode/core";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { axeViolations } from "./axe.ts";
@@ -29,8 +28,6 @@ const toolbar = (over: Partial<Parameters<typeof Toolbar>[0]> = {}) => (
     onZoom={() => undefined}
     theme="system"
     onTheme={() => undefined}
-    examples={EDEXCEL_EXAMPLES}
-    onExample={() => undefined}
     {...over}
   />
 );
@@ -44,13 +41,6 @@ describe("MISC Toolbar", () => {
     await screen.rerender(toolbar({ running: true, onRun }));
     await expect.element(screen.getByRole("button", { name: "Run" })).toBeDisabled();
     await expect.element(screen.getByRole("button", { name: "Reset" })).toBeEnabled();
-  });
-
-  it("MISC choosing an example calls onExample with that example", async () => {
-    const onExample = vi.fn();
-    const screen = await render(toolbar({ onExample }));
-    await screen.getByRole("combobox", { name: /Example/ }).selectOptions(EDEXCEL_EXAMPLES[0]?.id ?? "");
-    expect(onExample).toHaveBeenCalledWith(EDEXCEL_EXAMPLES[0]);
   });
 
   it("MISC the language menu reports the chosen pseudocode", async () => {
