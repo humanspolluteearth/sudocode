@@ -21,6 +21,8 @@ export const PARENT: Readonly<Record<string, string>> = {
   ImportError: "Exception",
   OSError: "Exception",
   FileNotFoundError: "OSError",
+  // io.UnsupportedOperation (CPython also makes it a ValueError); not a builtin name, so not in EXCEPTION_NAMES.
+  UnsupportedOperation: "OSError",
   ValueError: "Exception",
   TypeError: "Exception",
   AttributeError: "Exception",
@@ -30,7 +32,7 @@ export const PARENT: Readonly<Record<string, string>> = {
   NotImplementedError: "RuntimeError",
 };
 
-export const EXCEPTION_NAMES = ["BaseException", ...Object.keys(PARENT)];
+export const EXCEPTION_NAMES = ["BaseException", ...Object.keys(PARENT).filter((n) => n !== "UnsupportedOperation")];
 
 /** True when exception class `name` is `ancestor` or inherits from it. */
 export function isSubclass(name: string, ancestor: string): boolean {

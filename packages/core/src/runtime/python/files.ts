@@ -7,7 +7,7 @@ import type { Machine } from "../evaluate.ts";
 import { NONE, pyint, str, type Value } from "../values.ts";
 import { pyError, typeError, valueError } from "./errors.ts";
 import { iterate } from "./seq.ts";
-import { pyRepr } from "./repr.ts";
+import { pyRepr, pyTypeName } from "./repr.ts";
 import { setOrder } from "./hash.ts";
 import type { CallArgs } from "./methods-str.ts";
 
@@ -18,10 +18,11 @@ export function openFile(args: Value[], kwargs: Map<string, Value>, machine: Mac
   const modeArg = args[1] ?? kwargs.get("mode");
   if (nameArg === undefined) throw typeError("open() missing required argument 'file' (pos 1)", span);
   if (nameArg.kind !== "str")
-    throw typeError("expected str, bytes or os.PathLike object, not " + typeName(nameArg), span);
-  const mode = modeArg === undefined ? "r" : modeArg.kind === "str" ? modeArg.value : "";
-  if (mode !== "r" && mode !== "w" && mode !== "a")
-    throw valueError(`invalid mode: ${pyRepr(str(mode), setOrder)}`, span);
+    throw typeError("expected str, bytes or os.PathLike object, not " + pyTypeName(nameArg), span);
+  if (modeArg !== undefined && modeArg.kind !== "str")
+    throw typeError(`open() argument 'mode' must be str, not ${pyTypeName(modeArg)}`, span);
+  const mode = modeArg === undefined ? "r" : modeArg.value;
+  if (mode !== "r" && mode !== "w" && mode !== "a") throw valueError(badMode(mode), span);
   const name = nameArg.value;
   const existing = machine.fileText(name);
   if (mode === "r") {
@@ -31,8 +32,6 @@ export function openFile(args: Value[], kwargs: Map<string, Value>, machine: Mac
   return { kind: "file", name, mode, text: mode === "r" ? (existing ?? "") : "", pos: 0, closed: false };
 }
 
-const typeName = (v: Value): string => (v.kind === "none" ? "NoneType" : v.kind);
-
 /** What iterating a file gives: the lines still unread, each with its newline. */
 export function fileLines(f: FileValue, span: Span): Value[] {
   needOpen(f, span);
@@ -41,13 +40,22 @@ export function fileLines(f: FileValue, span: Span): Value[] {
   return lines.map((l) => str(l));
 }
 
+// CPython's two wordings: an unknown letter, or not exactly one of read/write/append (e.g. "rw" or "").
+function badMode(mode: string): string {
+  const known = Array.from(mode).every((c) => "rwxabt+".includes(c));
+  const kinds = Array.from(mode).filter((c) => "rwxa".includes(c)).length;
+  return known && kinds !== 1
+    ? "must have exactly one of create/read/write/append mode"
+    : `invalid mode: ${pyRepr(str(mode), setOrder)}`;
+}
+
 function needOpen(f: FileValue, span: Span): void {
   if (f.closed) throw valueError("I/O operation on closed file.", span);
 }
 
 function needMode(f: FileValue, mode: "r" | "w", what: string, span: Span): void {
   const ok = mode === "r" ? f.mode === "r" : f.mode !== "r";
-  if (!ok) throw pyError("OSError", what, span);
+  if (!ok) throw pyError("UnsupportedOperation", what, span);
 }
 
 function takeLines(f: FileValue, count: number): string[] {
@@ -88,7 +96,7 @@ export function fileMethod(f: FileValue, name: string, ca: CallArgs, machine: Ma
       needOpen(f, span);
       needMode(f, "w", "not writable", span);
       if (a0 === undefined || a0.kind !== "str")
-        throw typeError(`write() argument must be str, not ${a0 === undefined ? "None" : typeName(a0)}`, span);
+        throw typeError(`write() argument must be str, not ${a0 === undefined ? "None" : pyTypeName(a0)}`, span);
       append(f, a0.value, machine);
       return pyint(BigInt(a0.value.length));
     }
@@ -97,7 +105,7 @@ export function fileMethod(f: FileValue, name: string, ca: CallArgs, machine: Ma
       needMode(f, "w", "not writable", span);
       let text = "";
       for (const item of iterate(a0 ?? NONE, span)) {
-        if (item.kind !== "str") throw typeError(`write() argument must be str, not ${typeName(item)}`, span);
+        if (item.kind !== "str") throw typeError(`write() argument must be str, not ${pyTypeName(item)}`, span);
         text += item.value;
       }
       append(f, text, machine);

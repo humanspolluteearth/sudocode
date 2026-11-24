@@ -418,8 +418,7 @@ class StatementParser extends ExprParser {
     } else {
       const module = moduleName();
       if (!this.acceptWord("import")) this.fail(this.tok.span);
-      if (this.isOp("*"))
-        this.unsupported(this.tok.span, "import *", "Name what you need, like: from math import sqrt");
+      if (this.isOp("*")) this.unsupported(first, "import *", "Name the things you need, like: from math import sqrt");
       do {
         const n = this.tok;
         if (n.type !== "name" || KEYWORDS.has(n.value)) this.fail(n.span);

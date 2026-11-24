@@ -8,10 +8,6 @@
     "errors/cie/CIE-10-file-type",
     "errors/edexcel/EDX-23-string-element",
     "errors/edexcel/EDX-82-blank-line-is-not-an-integer",
-    "errors/edexcel/EDX-82-character-line-is-too-long",
-    "errors/python/PY-22-import-star-not-supported",
-    "golden/python/PY-21-invalid-mode",
-    "golden/python/PY-21-write-non-string",
-    "golden/python/PY-21-wrong-mode-operations"
+    "errors/edexcel/EDX-82-character-line-is-too-long"
   ]
 }
