@@ -239,9 +239,11 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
 46. **CIE-81: where does the `INPUT "Prompt" X` prompt text go?** The spec says the prompt is "shown first" but not
     whether it is part of stdout (and whether a newline follows it). No CIE-81 test is written; CIE-81 is left out of
     `scope.json` until you decide. My suggestion: the prompt is console output without a newline, then the input box.
+    - Answer (24 Nov 2026): **Console output with no newline**, then the input box (the typed line is echoed as in any input). CIE-81 extended; its goldens go into `scope.json`.
 47. **CIE-51: does `ELSE IF` stay one chain with one `ENDIF`, or open a nested IF needing its own `ENDIF`?** The spec
     says "ELSE IF chains accepted with warnings". No ELSE IF test is written until you decide. My suggestion: a
     single chain, one `ENDIF`, one `W-CIE-ELSE-IF` warning at the ELSE.
+    - Answer (24 Nov 2026): **One chain, one `ENDIF`**, one `W-CIE-ELSE-IF` warning at the ELSE. CIE-51 extended.
 48. **Web size budget (M7).** The CIE front end adds about 8 kB gzipped to the web build (247.9 kB against the 240 kB
     budget in `scripts/size-budget.json`), so `build-web` fails on PR #68. I did not raise the budget because I may
     never loosen a CI check. Please either raise it (my suggestion: 270 kB, since a whole language needs room, and
@@ -252,15 +254,19 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
     `RIGHT`, `MID` asking for more characters than there are is a runtime error, not a shorter result. (d) A DATE
     prints `dd/mm/yyyy` with zero padding, and DATEs can't be compared. Tests for these edges are `MISC`-named unit
     tests in `src/cie/builtins.test.ts`, not goldens, until you decide.
+    - Answer (24 Nov 2026): **(a)** STR_TO_NUM stays REAL; `N <- STR_TO_NUM("5")` into an INTEGER is `E-CHK-TYPE-CHANGE` with a hint to use `INT()` (CIE-124 extended); **(b), (c), (d) confirmed as implemented** (CIE-126, CIE-120, CIE-129 extended).
 50. **CIE-31: what happens when an enumerated value is stepped past either end?** The spec gives `S + 1` and
     comparison but is silent on `S + 1` at the last value, `S - 1` at the first, and on `- n` in general. I raise the
     runtime error `E-RUN-ENUM-RANGE` ("Summer is a Season, and moving 1 place from it goes past the end of the list"),
     and only the probe-level unit test `MISC` in `src/runtime/records.test.ts` pins it. Please confirm the error (the
     alternative is wrapping round) and the wording.
+    - Answer (24 Nov 2026): **Runtime error `E-RUN-ENUM-RANGE`**, wording as proposed. CIE-31 extended.
 
 ## Q51 (M7): Cambridge file details the spec does not give
 
 Logged by Claude under /goal. Implemented as below; no golden test depends on them. Please confirm or correct.
+
+- Answer (24 Nov 2026): **All confirmed as implemented** (CIE-91 and CIE-95 extended).
 
 - Reading, writing or EOF on a file that was never opened: runtime error `E-RUN-FILE-NOT-OPEN` (new code).
 - OPENFILE on a file that is already open: runtime error `E-RUN-FILE-ALREADY-OPEN` (new code), from "one mode at a time" (CIE-91).
@@ -269,4 +275,6 @@ Logged by Claude under /goal. Implemented as below; no golden test depends on th
 ## From the M7 test review (please decide)
 
 - Two merged tests pin behaviour the spec does not decide or contradicts, and I may not edit merged tests: (a) `cie/arrays.test.ts` expects `E-SYN-NOT-SUPPORTED` for a 2D array with different lower bounds (CIE-20/21 allow any bounds; this is a gap in the code); (b) `cie/builtins.test.ts` expects `N <- STR_TO_NUM("5")` to be `E-CHK-TYPE-CHANGE` (CIE-124 says the result is "INTEGER or REAL"; should it be allowed into an INTEGER variable when the text is whole?). Please say whether to replace them.
+- Answer (24 Nov 2026): **(a) 2D arrays with different lower bounds are allowed** (CIE-21 extended); the merged test in `cie/arrays.test.ts` may be replaced to match. **(b) STR_TO_NUM into an INTEGER stays an error** (see Q49a); the merged test already pins that, so it needs no change. **CIE-10:** `DECLARE F : FILE` is a checker error with a hint to use a STRING file name (CIE-10 extended).
 - Choices not in the spec: `RAND(0)` returns 0; `IS_NUM("3.")` is FALSE; `MID("abc",3,2)` is an error; `SUPER` outside a subclass is a syntax error.
+  - Answer (24 Nov 2026): **All four confirmed as implemented**; written into CIE-113, CIE-128, CIE-125 and CIE-120.
