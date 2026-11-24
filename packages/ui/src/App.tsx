@@ -428,7 +428,10 @@ export function App({ workers }: AppProps) {
           }
           language={language}
           onOpenGuide={openGuide}
-          onInsert={(code) => editor.current?.insertAtCursor(code)}
+          onInsert={(code) => {
+            editor.current?.insertAtCursor(code);
+            if (compactRef.current) setView("code");
+          }}
           advanced={prefs.advanced}
           onAdvanced={(advanced) => {
             update({ ...prefs, advanced });
@@ -448,9 +451,11 @@ export function App({ workers }: AppProps) {
           <KeyBar language={language} onInsert={(text) => editor.current?.insertAtCursor(text)} />
           <ViewSwitcher
             view={view}
-            onView={setView}
-            onGuide={() => {
-              openGuide(language);
+            onView={(v) => {
+              // The Guide view is the Quick reference tab; its link opens the full guide page.
+              if (v === "guide") setTab("reference");
+              else if (v === "debug" && tab === "reference") setTab("debugger");
+              setView(v);
             }}
             problems={diagnostics.length}
           />
