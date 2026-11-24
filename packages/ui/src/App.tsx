@@ -5,7 +5,7 @@ import { type Diagnostic, type VirtualFiles } from "@sudocode/core";
 import { lazy, Suspense, useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
-import { KeyBar, OverflowMenu, ProblemChip, ViewSwitcher } from "./CompactChrome.tsx";
+import { KeyBar, OverflowMenu, ProblemChip, SidePanelToggle, ViewSwitcher } from "./CompactChrome.tsx";
 import { useLayout, type CompactView } from "./compact.ts";
 import { Editor, type EditorHandle } from "./Editor.tsx";
 import { GuidePage, guideFromSearch, guideUrl, type GuideId } from "./GuidePage.tsx";
@@ -227,6 +227,18 @@ export function App({ workers }: AppProps) {
       setView("console");
     }
   }, [run.state]);
+  // Tablet side panel: hidden by choice (remembered). A pause, breakpoint or error while it is hidden never reopens
+  // it; `sideAttention` lights a dot on the toggle until the student shows the panel.
+  const sideHidden = tablet && prefs.sidePanelHidden;
+  const [sideAttention, setSideAttention] = useState(false);
+  useEffect(() => {
+    const needsLook = (pauseReason !== undefined && pauseReason !== "stepLimit") || run.state === "error";
+    if (!sideHidden) setSideAttention(false);
+    else if (needsLook) setSideAttention(true);
+  }, [sideHidden, pauseReason, run.state]);
+  const toggleSidePanel = () => {
+    update({ ...prefs, sidePanelHidden: !prefs.sidePanelHidden });
+  };
   const menus = buildMenus({
     running: active,
     paused: run.state === "paused",
@@ -276,6 +288,7 @@ export function App({ workers }: AppProps) {
     onSettings: () => {
       setSettingsOpen(true);
     },
+    ...(tablet ? { onToggleSidePanel: toggleSidePanel, sidePanelShown: !sideHidden } : {}),
     onWelcome: () => {
       setWelcomeOpen(true);
     },
@@ -329,22 +342,25 @@ export function App({ workers }: AppProps) {
         canConvert={language !== "python"}
         extra={
           compact ? (
-            <OverflowMenu
-              onNew={files$.newFile}
-              onSave={files$.save}
-              onSaveAs={files$.saveAs}
-              onConvert={
-                prefs.advanced && tools.converter && language !== "python" ? files$.convertToPython : undefined
-              }
-              onCloseTab={() => {
-                files$.close(files$.ws.activeId);
-              }}
-              canCloseTab={files$.ws.tabs.length > 1}
-              zoom={prefs.zoom}
-              onZoom={(zoom) => {
-                update({ ...prefs, zoom });
-              }}
-            />
+            <>
+              <OverflowMenu
+                onNew={files$.newFile}
+                onSave={files$.save}
+                onSaveAs={files$.saveAs}
+                onConvert={
+                  prefs.advanced && tools.converter && language !== "python" ? files$.convertToPython : undefined
+                }
+                onCloseTab={() => {
+                  files$.close(files$.ws.activeId);
+                }}
+                canCloseTab={files$.ws.tabs.length > 1}
+                zoom={prefs.zoom}
+                onZoom={(zoom) => {
+                  update({ ...prefs, zoom });
+                }}
+              />
+              {tablet && <SidePanelToggle shown={!sideHidden} attention={sideAttention} onToggle={toggleSidePanel} />}
+            </>
           ) : undefined
         }
         tools={tools}
@@ -353,7 +369,10 @@ export function App({ workers }: AppProps) {
           update({ ...prefs, theme });
         }}
       />
-      <main className="sc-main" style={{ "--side-w": `${String(sideWidth)}px` } as React.CSSProperties}>
+      <main
+        className={`sc-main${sideHidden ? " sc-side-hidden" : ""}`}
+        style={{ "--side-w": `${String(sideWidth)}px` } as React.CSSProperties}
+      >
         <div className="sc-left" style={{ "--console-h": `${String(consoleHeight)}px` } as React.CSSProperties}>
           <FileTabs
             tabs={files$.ws.tabs}

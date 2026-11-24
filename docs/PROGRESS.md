@@ -148,4 +148,5 @@ Newest entry first. Updated at the end of each milestone (and each session).
 - Web UI matches the design (menu bar, tab strip, toolbar, gutter, side panel, Grade checker default); gaps in `docs/review/UI.md`.
 - Focus rings follow the design: 1px dotted ring on controls, none on the editor (caret only).
 - UI iteration 1 done (#118-#123): full guides, Quick reference Find/Insert, View/Run menus and zoom ladder, Escape-then-Tab editor exit, status bar Ln/Col and wording, note banner.
+- UI-3 done (#149-#151): startup dialog and Help menu, blank untitled file (no example programs), tablet side-panel toggle with a remembered choice and an attention dot.
 - Next step: M0 (`docs/milestones/M00-bootstrap.md`).
