@@ -685,7 +685,32 @@ export class Statements {
       if (!(fits(label.ty, label.oneChar, subject.ty) || fits(subject.ty, true, label.ty))) {
         c.report("E-CHK-COMPARE-TYPES", label.span, { left: withArticle(subject.ty), right: withArticle(label.ty) });
       }
-      const eq: IrExpr = { kind: "binary", op: "eq", symbol: "=", left: subject.ir, right: label.ir, span: label.span };
+      let eq: IrExpr = { kind: "binary", op: "eq", symbol: "=", left: subject.ir, right: label.ir, span: label.span };
+      if (c.isKeyword("TO")) {
+        // CIE-52: `a TO b :` matches a <= subject <= b (both ends included).
+        c.next();
+        const high = this.x.expr();
+        if (!(fits(high.ty, high.oneChar, subject.ty) || fits(subject.ty, true, high.ty))) {
+          c.report("E-CHK-COMPARE-TYPES", high.span, { left: withArticle(subject.ty), right: withArticle(high.ty) });
+        }
+        const lo: IrExpr = {
+          kind: "binary",
+          op: "ge",
+          symbol: ">=",
+          left: subject.ir,
+          right: label.ir,
+          span: label.span,
+        };
+        const hi: IrExpr = {
+          kind: "binary",
+          op: "le",
+          symbol: "<=",
+          left: subject.ir,
+          right: high.ir,
+          span: high.span,
+        };
+        eq = { kind: "logical", op: "andThen", left: lo, right: hi, span: label.span };
+      }
       test = test === null ? eq : { kind: "logical", op: "orElse", left: test, right: eq, span: label.span };
       if (!c.isSymbol(",")) break;
       c.next();
