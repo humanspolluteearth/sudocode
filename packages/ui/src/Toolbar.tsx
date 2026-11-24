@@ -69,7 +69,7 @@ export function Toolbar(p: ToolbarProps) {
         type="button"
         className="sc-tb"
         onClick={p.onStepOver}
-        disabled={!paused}
+        disabled={!paused && (p.running || !p.canRun)}
         title="Step over (F10)"
         aria-label="Step over"
       >

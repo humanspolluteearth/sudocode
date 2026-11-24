@@ -1,4 +1,5 @@
 import { App } from "./App.tsx";
+import { FakeWorker } from "./fake-worker.ts";
 import { createRef, useState } from "react";
 import { userEvent } from "vitest/browser";
 import { Editor, type EditorHandle } from "./Editor.tsx";
@@ -379,5 +380,37 @@ describe("MISC editor selection and tab strip", () => {
     const tabs = screen.container.querySelector(".sc-tabs") as HTMLElement;
     expect(getComputedStyle(tabs).overflowX).toBe("hidden");
     expect(getComputedStyle(tabs).overflowY).toBe("hidden");
+  });
+});
+
+describe("MISC Step with no run going", () => {
+  const setup = async () => {
+    const created: FakeWorker[] = [];
+    const workers = {
+      createRunWorker: () => {
+        const w = new FakeWorker();
+        created.push(w);
+        return w;
+      },
+      createCheckWorker: () => new FakeWorker(),
+    };
+    const screen = await render(<App workers={workers} />);
+    return { screen, created };
+  };
+
+  it("MISC Step is enabled before a run and starts one that pauses before the first statement", async () => {
+    const { screen, created } = await setup();
+    const step = screen.getByRole("button", { name: "Step over" });
+    await expect.element(step).toBeEnabled();
+    await step.click();
+    const types = (created[0]?.posted ?? []).map((m) => (m as { type: string }).type);
+    expect(types).toEqual(["run", "pause"]);
+  });
+
+  it("MISC F10 with no run going also starts a run paused at the first statement", async () => {
+    const { created } = await setup();
+    await userEvent.keyboard("{F10}");
+    const types = (created[0]?.posted ?? []).map((m) => (m as { type: string }).type);
+    expect(types).toEqual(["run", "pause"]);
   });
 });
