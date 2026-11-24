@@ -6,6 +6,7 @@ export default defineConfig({
   test: {
     name: "ui-browser",
     include: ["src/**/*.browser.test.tsx"],
+    setupFiles: ["src/test-setup.ts"],
     retry: 0,
     browser: {
       enabled: true,

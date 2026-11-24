@@ -13,7 +13,20 @@ export default defineConfig({
   testDir: "e2e",
   retries: process.env["CI"] === undefined ? 0 : 2,
   reporter: process.env["CI"] === undefined ? "dot" : "github",
-  use: { baseURL: "http://localhost:4173" },
+  // The startup dialog shows on every launch until its box is ticked; the tests start with it already dismissed
+  // (welcome.spec.ts clears this to test the dialog itself).
+  use: {
+    baseURL: "http://localhost:4173",
+    storageState: {
+      cookies: [],
+      origins: [
+        {
+          origin: "http://localhost:4173",
+          localStorage: [{ name: "sudocode.preferences", value: JSON.stringify({ welcomeDone: true }) }],
+        },
+      ],
+    },
+  },
   projects: wanted.map((name) => ({ name, use: all[name] })),
   webServer: {
     command: "pnpm build && pnpm preview --port 4173 --strictPort",

@@ -49,6 +49,9 @@ export interface MenuActions {
   tools?: ToolFlags;
   /** View > Settings… */
   onSettings?: () => void;
+  /** Help > Welcome and disclaimer, and Report a bug (opens the mail link). */
+  onWelcome?: () => void;
+  onReportBug?: () => void;
 }
 
 export function buildMenus(a: MenuActions): MenuDef[] {
@@ -209,5 +212,17 @@ export function buildMenus(a: MenuActions): MenuDef[] {
         ...(a.onSettings === undefined ? [] : [{ sep: true as const }, { label: "Settings…", onSelect: a.onSettings }]),
       ],
     },
+    ...(a.onWelcome === undefined || a.onReportBug === undefined
+      ? []
+      : [
+          {
+            id: "help",
+            label: "Help",
+            items: [
+              { label: "Welcome and disclaimer", onSelect: a.onWelcome },
+              { label: "Report a bug", onSelect: a.onReportBug },
+            ],
+          },
+        ]),
   ];
 }
