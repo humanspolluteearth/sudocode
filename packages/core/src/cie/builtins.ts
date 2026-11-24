@@ -38,6 +38,7 @@ export const BUILTINS: Readonly<Record<string, BuiltinSignature>> = {
   YEAR: { ir: "year", params: ["date"], returns: INTEGER },
   DAYINDEX: { ir: "dayIndex", params: ["date"], returns: INTEGER },
   SETDATE: { ir: "setDate", params: ["integer", "integer", "integer"], returns: DATE },
+  EOF: { ir: "eof", params: ["string"], returns: BOOLEAN },
   TODAY: { ir: "today", params: [], returns: DATE },
 };
 
