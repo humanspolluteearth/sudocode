@@ -15,7 +15,7 @@ import { loadPreferences, savePreferences, type PseudocodeLanguage } from "./pre
 import { startRun, type RunSession, type SessionCommand, type WorkerFactories } from "./run-session.ts";
 import { initialRunView, runReducer } from "./run-state.ts";
 import { SidePanel, type SideTab } from "./SidePanel.tsx";
-import { StatusBar } from "./StatusBar.tsx";
+import { StatusBar, type CursorPosition } from "./StatusBar.tsx";
 import { StepLimitDialog } from "./StepLimitDialog.tsx";
 import { Toolbar, type ThemeChoice } from "./Toolbar.tsx";
 import "./styles.css";
@@ -38,6 +38,7 @@ export function App({ workers }: AppProps) {
   const [diagnostics, setDiagnostics] = useState<readonly Diagnostic[]>([]);
   const [run, dispatch] = useReducer(runReducer, initialRunView);
   const [breakpoints, setBreakpoints] = useState<number[]>([]);
+  const [cursor, setCursor] = useState<CursorPosition>({ line: 1, column: 1 });
   const [tab, setTab] = useState<SideTab>("debugger");
   // The full guide pages are routes (`?guide=cie`), so the browser's Back button and shared links work.
   const [guide, setGuide] = useState<GuideId | null>(() =>
@@ -255,6 +256,7 @@ export function App({ workers }: AppProps) {
               send({ type: "setBreakpoints", lines });
             }}
             language={language}
+            onCursorChange={setCursor}
             pausedLine={paused === null || paused.reason === "stepLimit" ? null : paused.line}
           />
           <Console
@@ -302,7 +304,13 @@ export function App({ workers }: AppProps) {
           }}
         />
       </main>
-      <StatusBar state={run.state} diagnostics={diagnostics} languageName={LANGUAGE_NAMES[language]} />
+      <StatusBar
+        state={run.state}
+        line={run.state === "error" ? (run.error?.line ?? null) : (run.paused?.line ?? null)}
+        cursor={cursor}
+        diagnostics={diagnostics}
+        languageName={LANGUAGE_NAMES[language]}
+      />
       {paused?.reason === "stepLimit" && (
         <StepLimitDialog
           line={paused.line}
