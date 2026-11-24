@@ -17,14 +17,16 @@ async function out(source: string): Promise<string> {
 const hex = (b: Uint8Array): string => Array.from(b, (x) => x.toString(16).padStart(2, "0")).join("");
 
 describe("Python modules", () => {
-  it("PY-41 sha512 matches the published digests (used to seed random from a string)", () => {
+  it("MISC sha512 matches the published digests (used to seed random from a string)", () => {
     const enc = new TextEncoder();
     expect(hex(sha512(enc.encode(""))).startsWith("cf83e1357eefb8bdf1542850d66d8007")).toBe(true);
     expect(hex(sha512(enc.encode("abc"))).startsWith("ddaf35a193617abacc417349ae204131")).toBe(true);
   });
   it("PY-22 importing a module that is not provided is not supported", () => {
-    const codes = analyse("import os").diagnostics.map((d) => d.code);
-    expect(codes.length).toBe(1);
+    const [d] = analyse("import os").diagnostics;
+    expect(analyse("import os").diagnostics).toHaveLength(1);
+    expect([d?.line, d?.column]).toEqual([1, 1]);
+    expect(d?.message).toContain("not supported");
   });
   it("PY-22 import as and from-import bind the names", async () => {
     expect(await out("import math as m\nfrom math import pi as p\nprint(m.floor(2.5), round(p, 2))")).toBe("2 3.14\n");
