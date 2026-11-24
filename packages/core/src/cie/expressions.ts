@@ -9,7 +9,7 @@ import type { Expr as Ir, BinaryOp } from "../ir/ir.ts";
 import type { Token } from "../edexcel/tokens.ts";
 import { BUILTINS, KIND_NAME, fitsKind, type BuiltinSignature } from "./builtins.ts";
 import { Abandon, CIE_RESERVED, joinSpans, type CieCursor } from "./cursor.ts";
-import type { Env } from "./env.ts";
+import type { Env, Variable } from "./env.ts";
 import {
   BOOLEAN,
   CHAR,
@@ -130,7 +130,7 @@ export class Expressions {
       case "&":
         if (!(isText(l.ty) || isUnknown(l.ty)) || !(isText(r.ty) || isUnknown(r.ty))) {
           const odd = isText(l.ty) || isUnknown(l.ty) ? r : l;
-          this.c.report("E-CHK-CONCAT-NUMBER", odd.span, { value: this.text(odd.span), type: withArticle(odd.ty) });
+          this.c.report("E-CHK-CONCAT-NUMBER", t.span, { value: this.text(odd.span), type: withArticle(odd.ty) });
           return typed({ kind: "fail", code: "E-RUN-INTERNAL", args: {}, span }, UNKNOWN, span);
         }
         return bin(STRING);
@@ -268,14 +268,14 @@ export class Expressions {
   }
 
   private variable(t: Token): Typed {
-    const v = this.env.lookup(t.text);
+    const v = this.lookupVar(t);
     if (v === undefined) {
       this.undeclared(t);
       return typed({ kind: "var", name: t.text, scope: "global", span: t.span }, UNKNOWN, t.span);
     }
     if (v.literal !== undefined) return typed(v.literal(t.span), v.ty, t.span); // CIE-31: an enumerated value
     const scope = this.env.isLocal(t.text) ? "local" : "global";
-    const whole = typed({ kind: "var", name: t.text, scope, span: t.span }, v.ty, t.span, { name: t.text });
+    const whole = typed({ kind: "var", name: v.name, scope, span: t.span }, v.ty, t.span, { name: v.name });
     return this.fields(t, this.c.isSymbol("[") ? this.element(t, whole) : whole);
   }
 
@@ -386,12 +386,21 @@ export class Expressions {
     return { indexes, span: close.span };
   }
 
+  /** Finds a variable whatever the casing (CIE-03); a different casing from its declaration is a warning. */
+  lookupVar(t: Token): Variable | undefined {
+    const v = this.env.lookup(t.text);
+    if (v !== undefined && v.name !== t.text) {
+      this.c.report("W-CIE-NAME-CASE", t.span, { word: t.text, name: v.name }, undefined, [
+        { start: t.span.start, end: t.span.end, replacement: v.name },
+      ]);
+    }
+    return v;
+  }
+
+  /** CIE-11: reported once, at the first use; the name is then known (type unknown) so later uses stay quiet. */
   undeclared(t: Token): void {
-    const lower = t.text.toLowerCase();
-    const close = this.env.names().find((n) => n.toLowerCase() === lower);
-    if (close !== undefined)
-      this.c.report("E-CHK-UNDECLARED", t.span, { name: t.text, suggestion: close }, "did-you-mean");
-    else this.c.report("E-CHK-UNDECLARED", t.span, { name: t.text });
+    this.c.report("E-CHK-UNDECLARED", t.span, { name: t.text });
+    this.env.declare(t.text, { ty: UNKNOWN, constant: false });
   }
 
   /** A call to a user function in an expression (CIE-70..78). */
