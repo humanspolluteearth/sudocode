@@ -11,7 +11,9 @@ import type { Catalogue, CatalogueEntry, MessageTemplate } from "./types.ts";
 
 export type { Catalogue, CatalogueEntry, MessageTemplate } from "./types.ts";
 
-export const MESSAGES: Readonly<Catalogue> = Object.freeze({
+// The PURE marker tells the bundler this call has no side effects, so the web page (which never formats messages;
+// the workers do) can drop the whole catalogue instead of shipping it twice.
+export const MESSAGES: Readonly<Catalogue> = /* @__PURE__ */ Object.freeze({
   ...syntaxMessages,
   ...checkerMessages,
   ...runtimeMessages,
