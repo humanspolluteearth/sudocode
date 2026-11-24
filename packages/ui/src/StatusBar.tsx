@@ -45,9 +45,15 @@ export function StatusBar({
 }: StatusBarProps) {
   const errors = diagnostics.filter((d) => d.severity === "error").length;
   const warnings = diagnostics.filter((d) => d.severity === "warning").length;
+  // The status follows the current code: while the program isn't running, a problem in it reads "Error, line N",
+  // even if the last run finished fine or the error came from the checker rather than a runtime error.
+  const firstError = diagnostics.find((d) => d.severity === "error");
+  const idleLike = state === "idle" || state === "finished" || state === "stopped" || state === "error";
+  const shown: RunState = idleLike && firstError !== undefined ? "error" : state;
+  const shownLine = shown === "error" ? (state === "error" && line !== null ? line : (firstError?.line ?? null)) : line;
   return (
     <div className="sc-statusbar" role="status" aria-label="Status bar">
-      <span>{statusText(state, line)}</span>
+      <span>{statusText(shown, shownLine)}</span>
       <span>{`${String(errors)} ${errors === 1 ? "error" : "errors"}, ${String(warnings)} ${warnings === 1 ? "warning" : "warnings"}`}</span>
       <span className="sc-grow" />
       <span>{`Ln ${String(cursor.line)}, Col ${String(cursor.column)}`}</span>

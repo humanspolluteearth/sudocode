@@ -178,6 +178,29 @@ describe("MISC Status bar wording and cursor", () => {
     await expect.element(screen.getByText(text, { exact: true })).toBeVisible();
   });
 
+  it.each(["idle", "finished", "stopped", "error"] as const)(
+    "MISC state %s with an error in the code reads Error, line N, never Finished",
+    async (state) => {
+      const screen = await render(
+        <StatusBar state={state} diagnostics={[diag({ line: 5 }), diag({ line: 9 })]} languageName="Python" />,
+      );
+      await expect.element(screen.getByText("Error, line 5", { exact: true })).toBeVisible();
+      await expect.element(screen.getByText("Finished", { exact: true })).not.toBeInTheDocument();
+      expect(await axeViolations(screen.container)).toEqual([]);
+    },
+  );
+
+  it("MISC a warning alone leaves the status as Finished, and Paused wins over an error", async () => {
+    const warn = render(
+      <StatusBar state="finished" diagnostics={[diag({ severity: "warning" })]} languageName="Python" />,
+    );
+    await expect.element((await warn).getByText("Finished", { exact: true })).toBeVisible();
+    const paused = await render(
+      <StatusBar state="paused" line={3} diagnostics={[diag({ line: 5 })]} languageName="Python" />,
+    );
+    await expect.element(paused.getByText("Paused at line 3", { exact: true })).toBeVisible();
+  });
+
   it("MISC the status bar shows the cursor as Ln and Col", async () => {
     const screen = await render(
       <StatusBar state="idle" cursor={{ line: 4, column: 9 }} diagnostics={[]} languageName="Python" />,
