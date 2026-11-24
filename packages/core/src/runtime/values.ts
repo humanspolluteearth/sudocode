@@ -3,6 +3,8 @@
 // Pseudocode INTEGERs are JavaScript numbers checked against the safe range (DECISIONS); Python's BigInt ints
 // arrive with the Python engine (M8).
 
+import type { Span } from "../diagnostics.ts";
+
 export type Value =
   | { kind: "int"; value: number }
   | { kind: "real"; value: number }
@@ -16,7 +18,32 @@ export type Value =
   /** A value of an enumerated type (CIE-31): the type's name and ordered value names, and which one this is. */
   | { kind: "enum"; type: string; names: readonly string[]; ordinal: number }
   /** Arrays are shared by reference (EDX-62). `undefined` marks a gap with no value yet (EDX-27). */
-  | { kind: "array"; elements: (Value | undefined)[] };
+  | { kind: "array"; elements: (Value | undefined)[] }
+  // ---- Python values (M8). Python's int is a BigInt (`pyint`), its float reuses `real`, and bool and str are shared.
+  | { kind: "pyint"; value: bigint }
+  | { kind: "none" }
+  | { kind: "list"; items: Value[] }
+  | { kind: "tuple"; items: Value[] }
+  /** Keys are stored under a hash key (python/hash.ts) so 1, 1.0 and True are one key; insertion order is kept. */
+  | { kind: "dict"; map: Map<string, { key: Value; value: Value }> }
+  | { kind: "set"; map: Map<string, Value> }
+  | { kind: "range"; start: bigint; stop: bigint; step: bigint }
+  /** A `def` or `lambda` value; `closure` is the frame it was made in (null at module level). */
+  | {
+      kind: "func";
+      name: string;
+      sub: string;
+      params: string[];
+      defaults: Value[];
+      closure: Value | null;
+      doc: string | null;
+    }
+  | { kind: "builtin"; name: string }
+  /** A class such as `int` or `ValueError`, callable and usable in `isinstance` and `except`. */
+  | { kind: "type"; name: string }
+  | { kind: "exc"; name: string; detail: string; args: Value[]; origin: Span | null }
+  /** One call frame's variables, used to build closures; never visible to the student. */
+  | { kind: "env"; locals: Map<string, Value>; parent: Value | null };
 
 export const int = (value: number): Value => ({ kind: "int", value: value === 0 ? 0 : value });
 export const real = (value: number): Value => ({ kind: "real", value });
@@ -54,3 +81,8 @@ export function compareText(a: string, b: string): number {
   }
   return x.length - y.length < 0 ? -1 : x.length > y.length ? 1 : 0;
 }
+
+export const pyint = (value: bigint): Value => ({ kind: "pyint", value });
+export const NONE: Value = Object.freeze({ kind: "none" });
+export const list = (items: Value[]): Value => ({ kind: "list", items });
+export const tuple = (items: Value[]): Value => ({ kind: "tuple", items });

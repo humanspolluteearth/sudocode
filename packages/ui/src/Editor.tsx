@@ -10,6 +10,7 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { breakpointField, breakpointLines, debugGutter, setPausedLine } from "./debug-gutter.ts";
 import { toCodeMirrorDiagnostics } from "./diagnostics-bridge.ts";
 import { cieLanguage } from "./cie-language.ts";
+import { pythonLanguage } from "./python-language.ts";
 import { edexcelHighlight, edexcelLanguage } from "./edexcel-language.ts";
 
 export interface EditorHandle {
@@ -27,12 +28,13 @@ export interface EditorProps {
   /** The line the debugger is paused before, highlighted; null when not paused. */
   pausedLine?: number | null;
   /** Which pseudocode to colour; Edexcel by default. */
-  language?: "edexcel" | "cie";
+  language?: "edexcel" | "cie" | "python";
 }
 
 // A Compartment is CodeMirror's way to swap one extension later without rebuilding the editor.
 const languageSlot = new Compartment();
-const languageExtension = (language: "edexcel" | "cie") => (language === "cie" ? cieLanguage : edexcelLanguage);
+const languageExtension = (language: "edexcel" | "cie" | "python") =>
+  language === "cie" ? cieLanguage : language === "python" ? pythonLanguage : edexcelLanguage;
 
 const theme = EditorView.theme({
   "&": { height: "100%", color: "var(--fg)", backgroundColor: "var(--bg)" },

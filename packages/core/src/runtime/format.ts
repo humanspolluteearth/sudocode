@@ -1,6 +1,8 @@
 // How values print (SH-03, SH-04). The same text is used by output statements and by `&` (EDX-16).
 import type { OutputFormat } from "../ir/ir.ts";
 import type { Value } from "./values.ts";
+import { setOrder } from "./python/hash.ts";
+import { pyStr, pyTypeName } from "./python/repr.ts";
 
 /**
  * A pseudocode REAL (SH-03): rounded to 10 decimal places, then the shortest form; never `-0`, and very large
@@ -31,6 +33,7 @@ export function withoutExponent(text: string): string {
 
 /** The text a value prints as. Arrays print only in the debugger and in later languages (EDX-75 forbids SEND). */
 export function formatValue(value: Value, format: OutputFormat): string {
+  if (format === "python") return pyStr(value, setOrder);
   switch (value.kind) {
     case "int":
       return String(value.value);
@@ -51,6 +54,19 @@ export function formatValue(value: Value, format: OutputFormat): string {
         .join(", ")}}`;
     case "array":
       return `[${value.elements.map((e) => (e === undefined ? "(no value)" : quoted(e, format))).join(", ")}]`;
+    case "pyint":
+    case "none":
+    case "list":
+    case "tuple":
+    case "dict":
+    case "set":
+    case "range":
+    case "func":
+    case "builtin":
+    case "type":
+    case "exc":
+    case "env":
+      return pyStr(value, setOrder); // Python values only appear in Python programs
     default: {
       const unreachable: never = value;
       throw new Error(`Unknown value ${JSON.stringify(unreachable)}`);
@@ -65,7 +81,8 @@ function quoted(value: Value, format: OutputFormat): string {
 }
 
 /** The language's name for a value's type, for the debugger (VariableView.type). */
-export function typeName(value: Value): string {
+export function typeName(value: Value, format: OutputFormat = "pseudocode"): string {
+  if (format === "python") return pyTypeName(value);
   switch (value.kind) {
     case "int":
       return "INTEGER";
@@ -85,6 +102,19 @@ export function typeName(value: Value): string {
       return "RECORD";
     case "array":
       return "ARRAY";
+    case "pyint":
+    case "none":
+    case "list":
+    case "tuple":
+    case "dict":
+    case "set":
+    case "range":
+    case "func":
+    case "builtin":
+    case "type":
+    case "exc":
+    case "env":
+      return pyTypeName(value);
     default: {
       const unreachable: never = value;
       throw new Error(`Unknown value ${JSON.stringify(unreachable)}`);

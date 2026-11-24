@@ -2,8 +2,8 @@
 // tests), so every read and write is wrapped: the app works the same without it.
 import { ZOOM_MAX, ZOOM_MIN, type ThemeChoice } from "./Toolbar.tsx";
 
-/** The two pseudocodes the editor offers (a subset of core's `Language`; Python comes later). */
-export type PseudocodeLanguage = "edexcel" | "cie";
+/** The languages the editor offers. */
+export type PseudocodeLanguage = "edexcel" | "cie" | "python";
 
 const KEY = "sudocode.preferences";
 
@@ -36,7 +36,7 @@ export function loadPreferences(): Preferences {
         theme: parseTheme(theme),
         zoom: clampZoom(zoom),
         advanced: advanced === true,
-        language: language === "cie" ? "cie" : "edexcel",
+        language: language === "cie" || language === "python" ? language : "edexcel",
       };
     }
   } catch {

@@ -1,7 +1,15 @@
 // The IDE's root component: toolbar, editor, console, side panel (Problems / Debugger) and status bar (layout
 // from the prototype's desktop design, docs/PRODUCT.md). The shell passes in the worker factories, so this
 // package never imports a worker.
-import { CIE_EXAMPLES, CIE_GUIDE, EDEXCEL_EXAMPLES, type Diagnostic, type VirtualFiles } from "@sudocode/core";
+import {
+  CIE_EXAMPLES,
+  CIE_GUIDE,
+  EDEXCEL_EXAMPLES,
+  PYTHON_EXAMPLES,
+  PYTHON_GUIDE,
+  type Diagnostic,
+  type VirtualFiles,
+} from "@sudocode/core";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
@@ -16,8 +24,10 @@ import { StepLimitDialog } from "./StepLimitDialog.tsx";
 import { Toolbar, type ThemeChoice } from "./Toolbar.tsx";
 import "./styles.css";
 
-const STARTERS = { edexcel: 'SEND "Hello" TO DISPLAY\n', cie: 'OUTPUT "Hello"\n' } as const;
-const LANGUAGE_NAMES = { edexcel: "Edexcel pseudocode", cie: "Cambridge 9618 pseudocode" } as const;
+const STARTERS = { edexcel: 'SEND "Hello" TO DISPLAY\n', cie: 'OUTPUT "Hello"\n', python: 'print("Hello")\n' } as const;
+const EXAMPLES = { edexcel: EDEXCEL_EXAMPLES, cie: CIE_EXAMPLES, python: PYTHON_EXAMPLES } as const;
+const GUIDES = { edexcel: undefined, cie: CIE_GUIDE, python: PYTHON_GUIDE } as const;
+const LANGUAGE_NAMES = { edexcel: "Edexcel pseudocode", cie: "Cambridge 9618 pseudocode", python: "Python" } as const;
 
 export interface AppProps {
   /** Without workers (tests, a bare page) the app shows the editor but Run stays disabled. */
@@ -171,10 +181,10 @@ export function App({ workers }: AppProps) {
           setDiagnostics([]);
           // An untouched starter program follows the language; anything the student wrote stays.
           if (source === STARTERS[language]) setSource(STARTERS[next]);
-          if (tab === "reference" && next !== "cie") setTab("problems");
+          if (tab === "reference" && next === "edexcel") setTab("problems");
           update({ ...prefs, language: next });
         }}
-        examples={language === "cie" ? CIE_EXAMPLES : EDEXCEL_EXAMPLES}
+        examples={EXAMPLES[language]}
         onExample={(example) => {
           setSource(example.code);
         }}
@@ -231,7 +241,7 @@ export function App({ workers }: AppProps) {
                 }
               : undefined
           }
-          guide={language === "cie" ? CIE_GUIDE : undefined}
+          guide={GUIDES[language]}
           onUseGuide={(section) => {
             setSource(section.code);
           }}

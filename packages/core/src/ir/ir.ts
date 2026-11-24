@@ -7,9 +7,10 @@
 // (CLAUDE.md). Nodes are plain data with a `kind` tag (a discriminated union) and keep the span of the student's
 // code they came from, so runtime errors point at the right place.
 import type { Span } from "../diagnostics.ts";
+import type { PyExpr, PyStmt } from "./python-ir.ts";
 
 /** How values are printed: pseudocode rules (SH-03, SH-04) or Python's (from M8). */
-export type OutputFormat = "pseudocode";
+export type OutputFormat = "pseudocode" | "python";
 
 /** A constant written in the program. */
 export type Literal =
@@ -92,6 +93,8 @@ export interface VarRef {
 }
 
 export type Expr =
+  /** Python expressions (python-ir.ts), lowered by the Python front end. */
+  | PyExpr
   | { kind: "literal"; value: Literal; span: Span }
   | VarRef
   /** `span` is the operator; `symbol` is how the student wrote it (for messages such as "DIV by zero"). */
@@ -162,6 +165,7 @@ export type AssignTarget =
     };
 
 export type Stmt =
+  | PyStmt
   | { kind: "assign"; target: AssignTarget; value: Expr; span: Span }
   /** Prints one line (SH-02). `device` is null for the screen; another device prints `[MOTOR] value` (EDX-74). */
   | { kind: "output"; value: Expr; device: string | null; span: Span }

@@ -296,3 +296,11 @@ SH-18/PY-02 say unsupported Python syntax gives "not supported in Sudocode", but
 - Custom exception classes (`class MyError(Exception)`) need classes, which are M9 (PY-19); the M8 tests use only built-in exceptions. Custom exceptions are left for M9.
 - `random`, `math`, `datetime`, `time` modules (PY-40..44) are M9; PY-22 in M8 only covers "any other module gives not supported". The harvested `PY-41-example-guessing-game` stays pending.
 - The harvested Python expected files were made with CPython 3.14 (Q12). Run `pnpm py:expect` is NOT used on them (merged files); `python-full` will report any difference from 3.12 and I will log it here.
+
+## Q56 (M8): web size budget is exhausted; PR #94 is red on `build-web` (24 Nov 2026)
+
+`main` is 269.6 kB gzipped against the 270.0 kB budget, so any new feature fails it. With Python the build is 315.8 kB (+46 kB: the shared runtime's Python values and built-ins land in BOTH worker bundles, about 14.5 kB each, plus the front end in each).
+**Tried:** lazy-loading the Python engine with a dynamic `import()` in the workers and `worker.format = "es"` in `apps/web/vite.config.ts`. The chunk did split out (about 9.5 kB each), but `scripts/size-budget.ts` sums every file in `dist`, lazy chunks included, so the total only moved to 317.8 kB. I reverted it. Error: `Web build is 317.8 kB gzipped, over the 270.0 kB budget by 47.8 kB.`
+**Best guess at the cause:** the budget was set when only two languages existed; the two workers each carry the full runtime. Real fixes: (a) raise `scripts/size-budget.json` to about 320 kB (276480 -> ~330000), (b) make the budget count only what loads on first paint, or (c) share one worker bundle. All three touch CI or the architecture, so per the stop rule I did not do any of them. Tell me which and I will finish #94. Until then #94 is not merged.
+
+**Answered (24 Nov 2026):** Q54 first token of the construct; Q55 defer to M9; Q56 raise the budget to 330 kB (337920 bytes). Done in #94.

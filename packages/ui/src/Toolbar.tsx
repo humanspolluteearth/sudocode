@@ -117,11 +117,13 @@ export function Toolbar(p: ToolbarProps) {
           <select
             value={p.language}
             onChange={(e) => {
-              p.onLanguage?.(e.target.value === "cie" ? "cie" : "edexcel");
+              const v = e.target.value;
+              p.onLanguage?.(v === "cie" || v === "python" ? v : "edexcel");
             }}
           >
             <option value="edexcel">Edexcel pseudocode</option>
             <option value="cie">Cambridge 9618 pseudocode</option>
+            <option value="python">Python</option>
           </select>
         </label>
       )}
