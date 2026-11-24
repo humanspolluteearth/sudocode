@@ -60,6 +60,7 @@ export type SStmt =
   | { kind: "for"; target: SExpr; iter: SExpr; body: SStmt[]; orelse: SStmt[]; span: Span }
   | { kind: "def"; name: string; params: SParam[]; body: SStmt[]; span: Span }
   | { kind: "class"; name: string; bases: SExpr[]; body: SStmt[]; span: Span }
+  | { kind: "with"; items: { expr: SExpr; target: SExpr | null }[]; body: SStmt[]; span: Span }
   | { kind: "return"; value: SExpr | null; span: Span }
   | { kind: "break" | "continue" | "pass"; span: Span }
   | { kind: "global"; names: string[]; span: Span }

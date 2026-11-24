@@ -1,8 +1,9 @@
 // Python statements -> core IR, plus the syntax checks that need context (PY-04): `return` outside a function,
 // `break` outside a loop, and so on. Expression lowering lives in lower-expr.ts.
 import type { Program } from "../ir/ir.ts";
-import type { PyHandler, PyStmt } from "../ir/python-ir.ts";
-import type { SStmt } from "./ast.ts";
+import type { PyHandler, PyStmt, PyWhere } from "../ir/python-ir.ts";
+import type { Span } from "../diagnostics.ts";
+import type { SExpr, SStmt } from "./ast.ts";
 import { ExprLowerer } from "./lower-expr.ts";
 import { FuncScope } from "./scope.ts";
 
@@ -136,7 +137,33 @@ class PythonLowerer extends ExprLowerer {
         ];
       case "try":
         return [this.tryStmt(s)];
+      case "with":
+        return this.withStmt(s.items, s.body, span);
     }
+  }
+
+  /**
+   * Compiler concept: *desugaring*. `with E as f: body` has no IR node of its own; it becomes
+   * `$w = E; f = $w; try: body finally: $w.close()`, which already means "close the file, even after an error".
+   */
+  private withStmt(items: { expr: SExpr; target: SExpr | null }[], body: readonly SStmt[], span: Span): PyStmt[] {
+    const [item, ...rest] = items;
+    if (item === undefined) return this.lowerBlock(body);
+    const hidden = this.hidden("with");
+    const out: PyStmt[] = [{ kind: "pyAssign", targets: [hidden], value: this.expr(item.expr), span }];
+    if (item.target !== null)
+      out.push({ kind: "pyAssign", targets: [this.target(item.target)], value: this.ref(hidden), span });
+    const close: PyStmt = {
+      kind: "pyExpr",
+      value: { kind: "pyMethod", target: this.ref(hidden), name: "close", args: [], keywords: [], span },
+      span,
+    };
+    out.push({ kind: "pyTry", body: this.withStmt(rest, body, span), handlers: [], orelse: [], final: [close], span });
+    return out;
+  }
+
+  private ref(t: { name: string; where: PyWhere; span: Span }): ReturnType<ExprLowerer["expr"]> {
+    return { kind: "pyName", name: t.name, where: t.where, hops: 0, span: t.span };
   }
 
   private reraiseValue(span: PyStmt["span"]): ReturnType<ExprLowerer["expr"]> {

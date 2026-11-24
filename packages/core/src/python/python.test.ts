@@ -44,4 +44,9 @@ describe("Python behaves like CPython 3.12", () => {
   it("PY-01 f-string format specs", async () => {
     expect(await out("print(f'{3.14159:.2f}|{42:>5}|{255:x}')")).toBe("3.14|   42|ff\n");
   });
+  it("PY-21 with closes the file after its block and supports two items", async () => {
+    const src =
+      'with open("a.txt", "w") as f, open("b.txt", "w") as g:\n    f.write("1")\n    g.write("2")\nprint("done")\n';
+    expect(await out(src)).toBe("done\n");
+  });
 });

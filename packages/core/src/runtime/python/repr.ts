@@ -74,6 +74,8 @@ export function pyTypeName(v: Value): string {
       return v.name;
     case "class":
       return "type";
+    case "file":
+      return "TextIOWrapper";
     case "instance":
       return v.cls.name;
     case "bound":
@@ -145,6 +147,8 @@ export function pyStr(v: Value, setItems: Orderer, inner = false): string {
       return inner ? `${v.name}(${v.args.map(rep).join(", ")})` : v.detail;
     case "class":
       return `<class '__main__.${v.name}'>`;
+    case "file":
+      return `<_io.TextIOWrapper name='${v.name}' mode='${v.mode}' encoding='UTF-8'>`;
     case "bound":
       return `<bound method ${pyStr(v.fn, setItems)}>`;
     case "instance": {
