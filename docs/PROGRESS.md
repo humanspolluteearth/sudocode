@@ -132,4 +132,5 @@ Newest entry first. Updated at the end of each milestone (and each session).
   explicit call stack for 1,000-deep recursion.
 - Test plan and CI in `docs/TEST-PLAN.md`; product defaults in `docs/PRODUCT.md`; milestones in `docs/milestones/`.
 - Web UI matches the design (menu bar, tab strip, toolbar, gutter, side panel, Grade checker default); gaps in `docs/review/UI.md`.
+- Focus rings follow the design: 1px dotted ring on controls, none on the editor (caret only).
 - Next step: M0 (`docs/milestones/M00-bootstrap.md`).

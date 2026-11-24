@@ -139,11 +139,20 @@ body {
   font: inherit;
   color: inherit;
 }
+/* The design's focus ring: a thin dotted line in the text colour, on every control reachable by keyboard.
+   :focus-visible shows it for keyboard focus and hides it on mouse click. */
 .sc-root button:focus-visible,
 .sc-root select:focus-visible,
-.sc-root input:focus-visible {
-  outline: 2px solid var(--link);
+.sc-root input:focus-visible,
+.sc-root textarea:focus-visible,
+.sc-root a:focus-visible,
+.sc-root [tabindex]:focus-visible {
+  outline: 1px dotted var(--fg);
   outline-offset: 1px;
+}
+/* The console log is a box that scrolls, so its ring sits inside it where it would not be clipped. */
+.sc-root .sc-console-log:focus-visible {
+  outline-offset: -2px;
 }
 
 .sc-toolbar {
