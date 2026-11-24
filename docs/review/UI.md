@@ -37,3 +37,7 @@ toolbar, side panel). Each PR reports its measured size. Earlier milestones (M7,
 ## U4 Editor gutter
 
 The gutter is 62px wide with the design's number padding and 11px numbers, and the code uses 13px / 19px with ligatures off (console 12px / 18px, from the design's non-compact values). The design's per-line arrow marker for the paused line is not drawn in the gutter; the app keeps its existing paused-line highlight. Left as is: it changes no behaviour and the highlight already shows where the debugger is.
+
+## U5 Default program
+
+The app opens with the "Grade checker" example of the chosen language (the design's sample). Core's example tests already prove every example, including these, runs with no error or warning. The design also pre-fills the input "Amira" and "64"; our Grade checker example sets those values in the program, so no input is pre-filled.

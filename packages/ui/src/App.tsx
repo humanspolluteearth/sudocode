@@ -27,8 +27,10 @@ import { StepLimitDialog } from "./StepLimitDialog.tsx";
 import { Toolbar, type ThemeChoice } from "./Toolbar.tsx";
 import "./styles.css";
 
-const STARTERS = { edexcel: 'SEND "Hello" TO DISPLAY\n', cie: 'OUTPUT "Hello"\n', python: 'print("Hello")\n' } as const;
 const EXAMPLES = { edexcel: EDEXCEL_EXAMPLES, cie: CIE_EXAMPLES, python: PYTHON_EXAMPLES } as const;
+// The app opens with the design's sample, the "Grade checker" example of the chosen language.
+const starter = (language: PseudocodeLanguage): string => EXAMPLES[language].find((x) => x.id === "grade")?.code ?? "";
+const STARTERS = { edexcel: starter("edexcel"), cie: starter("cie"), python: starter("python") } as const;
 const GUIDES = { edexcel: undefined, cie: CIE_GUIDE, python: PYTHON_GUIDE } as const;
 const LANGUAGE_NAMES = { edexcel: "Edexcel pseudocode", cie: "Cambridge 9618 pseudocode", python: "Python" } as const;
 

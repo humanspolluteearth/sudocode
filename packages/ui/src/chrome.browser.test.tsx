@@ -1,3 +1,4 @@
+import { App } from "./App.tsx";
 import { createRef } from "react";
 import { userEvent } from "vitest/browser";
 import { Editor, type EditorHandle } from "./Editor.tsx";
@@ -172,5 +173,14 @@ describe("MISC Editor gutter", () => {
     expect(onBreakpointsChange).toHaveBeenLastCalledWith([3]);
     ref.current?.clearBreakpoints();
     expect(onBreakpointsChange).toHaveBeenLastCalledWith([]);
+  });
+});
+
+describe("MISC Default program", () => {
+  it("MISC the app opens with the Grade checker sample and no problems", async () => {
+    localStorage.clear();
+    const screen = await render(<App />);
+    await expect.element(screen.getByText("# Grade checker")).toBeVisible();
+    await expect.element(screen.getByText("No problems.")).toBeVisible();
   });
 });
