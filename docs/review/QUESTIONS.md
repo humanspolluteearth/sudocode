@@ -308,3 +308,5 @@ SH-18/PY-02 say unsupported Python syntax gives "not supported in Sudocode", but
 ## Q57 (M9): two merged goldens miss the PY-54 note (24 Nov 2026)
 
 `tests/golden/python/PY-19-hashing.expected.json` and `PY-19-dunders.expected.json` (merged in #100) have `"info": []`, but their classes set attributes in `__init__` without a declaration comment, so PY-54 reports `I-PY-CLASS-DECLARATIONS` (for `hashing`: lines 1, 13, 24; for `dunders`: lines 1, 12, 33). I may not edit merged expected files, so both stay in `pending.json` and fail only on that. Their printed output is already correct: `src/runtime/python/protocols.test.ts` runs both programs and checks stdout against the CPython text in those files. **Please confirm** adding the three `info` entries to each file, then remove both IDs from `pending.json`.
+
+**Answered (24 Nov 2026) Q57:** yes. Explicit authorisation, nothing beyond it: edit the merged `PY-19-hashing` and `PY-19-dunders` expected files only to add the missing PY-54 `I-PY-CLASS-DECLARATIONS` info notes (hashing: lines 1, 13, 24; dunders: lines 1, 12, 33; column 1), then remove both IDs from `pending.json`. Done in the follow-up PR.
