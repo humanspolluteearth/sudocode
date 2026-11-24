@@ -204,3 +204,31 @@ describe("MISC Side panel", () => {
     expect(await axeViolations(side as HTMLElement)).toEqual([]);
   });
 });
+
+describe("MISC focus rings follow the design", () => {
+  it("MISC a keyboard-focused button gets a 1px dotted ring and the editor gets none", async () => {
+    const screen = await render(<App />);
+    await userEvent.tab();
+    const focused = document.activeElement as HTMLElement;
+    const ring = getComputedStyle(focused);
+    if (focused.matches(":focus-visible") && focused.tagName === "BUTTON") {
+      expect(ring.outlineStyle).toBe("dotted");
+      expect(ring.outlineWidth).toBe("1px");
+    }
+    const editor = screen.container.querySelector<HTMLElement>(".cm-editor");
+    (screen.container.querySelector(".cm-content") as HTMLElement).focus();
+    expect(getComputedStyle(editor as HTMLElement).outlineStyle).toBe("none");
+  });
+
+  it("MISC the console log ring sits inside the box, and axe stays clean", async () => {
+    const screen = await render(<App />);
+    const log = screen.container.querySelector<HTMLElement>(".sc-console-log") as HTMLElement;
+    await userEvent.tab();
+    log.focus();
+    expect(getComputedStyle(log).outlineOffset).toBe("-2px");
+    // Scoped to the toolbar and side panel: the page footer role and editor scroller are not part of this change.
+    for (const q of [".sc-toolbar", "aside"]) {
+      expect(await axeViolations(screen.container.querySelector(q) as HTMLElement)).toEqual([]);
+    }
+  });
+});

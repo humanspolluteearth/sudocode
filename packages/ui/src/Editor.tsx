@@ -59,7 +59,8 @@ const theme = EditorView.theme({
   ".cm-activeLine": { backgroundColor: "var(--cur)" },
   ".cm-activeLineGutter": { backgroundColor: "var(--cur)" },
   ".cm-cursor": { borderLeftColor: "var(--fg)" },
-  "&.cm-focused": { outline: "2px solid var(--link)", outlineOffset: "-2px" },
+  // No ring on the editor: the caret shows where focus is, as in the design.
+  "&.cm-focused": { outline: "none" },
   ".cm-tooltip": { backgroundColor: "var(--bg)", color: "var(--fg)", border: "1px solid var(--field)" },
   ".cm-diagnostic": { padding: "3px 6px" },
   ".sc-paused-line": { backgroundColor: "var(--paused)", outline: "1px solid var(--paused-edge)" },
