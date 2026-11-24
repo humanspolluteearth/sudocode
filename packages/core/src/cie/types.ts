@@ -16,6 +16,8 @@ export type Ty =
   | { kind: "RECORD"; name: string; fields: { name: string; ty: Ty }[] }
   /** An enumerated type (CIE-31): its values in order. */
   | { kind: "ENUM"; name: string; names: string[] }
+  /** An object of a class (CIE-110); `supers` lists the parent classes, nearest first, so a Dog fits an Animal. */
+  | { kind: "CLASS"; name: string; supers: string[] }
   | { kind: "unknown" };
 
 export const INTEGER: Ty = { kind: "INTEGER" };
@@ -38,7 +40,7 @@ export const typeName = (t: Ty): string =>
     ? "unknown"
     : t.kind === "ARRAY"
       ? `ARRAY OF ${typeName(t.of)}`
-      : t.kind === "RECORD" || t.kind === "ENUM"
+      : t.kind === "RECORD" || t.kind === "ENUM" || t.kind === "CLASS"
         ? t.name
         : t.kind;
 
@@ -47,7 +49,11 @@ export function sameType(a: Ty, b: Ty): boolean {
   if (a.kind === "ARRAY" && b.kind === "ARRAY") {
     return a.dims.length === b.dims.length && a.dims.every((d, i) => d === b.dims[i]) && sameType(a.of, b.of);
   }
-  if ((a.kind === "RECORD" && b.kind === "RECORD") || (a.kind === "ENUM" && b.kind === "ENUM"))
+  if (
+    (a.kind === "RECORD" && b.kind === "RECORD") ||
+    (a.kind === "ENUM" && b.kind === "ENUM") ||
+    (a.kind === "CLASS" && b.kind === "CLASS")
+  )
     return a.name === b.name;
   return a.kind === b.kind;
 }
@@ -69,6 +75,9 @@ export function fits(value: Ty, oneChar: boolean, into: Ty): boolean {
   if (into.kind === "ARRAY" || value.kind === "ARRAY") {
     return sameType(into, value);
   }
+  // CIE-116: an object of a subclass fits a variable of its parent class.
+  if (into.kind === "CLASS" && value.kind === "CLASS")
+    return value.name === into.name || value.supers.includes(into.name);
   if (into.kind === "CHAR" && value.kind === "STRING") return oneChar;
   if (into.kind === "STRING" && value.kind === "CHAR") return true;
   return sameType(value, into);
@@ -80,5 +89,5 @@ export function comparable(a: Ty, b: Ty): boolean {
   if (isNumber(a) && isNumber(b)) return true;
   if (isText(a) && isText(b)) return true;
   // CIE-48: records (like arrays and dates) cannot be compared; enumerated values can, by order (CIE-31).
-  return sameType(a, b) && a.kind !== "ARRAY" && a.kind !== "DATE" && a.kind !== "RECORD";
+  return sameType(a, b) && a.kind !== "ARRAY" && a.kind !== "DATE" && a.kind !== "RECORD" && a.kind !== "CLASS";
 }

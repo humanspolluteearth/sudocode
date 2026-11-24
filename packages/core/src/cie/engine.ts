@@ -7,6 +7,7 @@ import { CieCursor } from "./cursor.ts";
 import { Env } from "./env.ts";
 import { lex } from "./lexer.ts";
 import { Statements } from "./statements.ts";
+import { finishClasses, installClasses } from "./classes.ts";
 import { installSubprograms } from "./subprograms.ts";
 
 export interface Analysis {
@@ -20,7 +21,9 @@ function translate(source: string, env: Env, collecting: boolean): { program: Ir
   const s = new Statements(cursor, env);
   const subprograms: Record<string, Subprogram> = {};
   installSubprograms(s, subprograms, collecting);
+  installClasses(s, subprograms, collecting);
   const main = s.body([]).stmts;
+  if (!collecting) finishClasses(env, subprograms);
   return {
     program: { format: "pseudocode", main, subprograms },
     diagnostics: [...lexed.diagnostics, ...cursor.diagnostics],
@@ -31,7 +34,7 @@ export function analyse(source: string): Analysis {
   // Pass 1 only gathers the subprogram signatures, so a call may come before its definition (CIE-70).
   const first = new Env();
   translate(source, first, true);
-  const env = new Env(first.subs);
+  const env = new Env(first.subs, first.classes);
   const { program, diagnostics: found } = translate(source, env, false);
   const diagnostics = sortDiagnostics(found);
   if (diagnostics.some((d) => d.severity === "error")) return { diagnostics, program: null };

@@ -13,6 +13,36 @@ export interface Variable {
   constant: boolean;
   /** For the values of an enumerated type: the IR to use wherever the name appears (CIE-31). */
   literal?: (span: Span) => Expr;
+  /** True for an attribute of the class being translated: `literal` reads it from `Self` (CIE-111). */
+  attr?: boolean;
+}
+
+/** A class's attribute and method (CIE-111, CIE-112); `owner` is the class that declared it. */
+export interface Attr {
+  name: string;
+  ty: Ty;
+  private: boolean;
+  owner: string;
+}
+export interface Method {
+  name: string;
+  kind: "procedure" | "function";
+  params: Param[];
+  returns: Ty | null;
+  private: boolean;
+  owner: string;
+  span: Span;
+}
+export interface ClassInfo {
+  name: string;
+  parent: string | null;
+  attrs: Attr[];
+  methods: Method[];
+  span: Span;
+}
+export interface MemberContext {
+  cls: ClassInfo;
+  private: boolean;
 }
 
 export interface Param {
@@ -37,15 +67,21 @@ export class Env {
   locals: Map<string, Variable> | null = null;
   /** The function being translated (for RETURN), or null. */
   current: Signature | null = null;
+  /** Classes by lower-case name; pass 1 fills it and pass 2 reads it (like `subs`). */
+  readonly classes: Map<string, ClassInfo>;
+  /** The class whose method is being translated, and its attributes as variables (CIE-111). */
+  currentClass: ClassInfo | null = null;
+  attrs: Map<string, Variable> | null = null;
 
-  constructor(subs: Map<string, Signature> = new Map()) {
+  constructor(subs: Map<string, Signature> = new Map(), classes: Map<string, ClassInfo> = new Map()) {
     this.subs = subs;
+    this.classes = classes;
   }
 
   // CIE-03: identifiers are not case-sensitive, so both maps are keyed by the lower-case name.
   lookup(name: string): Variable | undefined {
     const key = name.toLowerCase();
-    return this.locals?.get(key) ?? this.globals.get(key);
+    return this.locals?.get(key) ?? this.attrs?.get(key) ?? this.globals.get(key);
   }
 
   isLocal(name: string): boolean {
