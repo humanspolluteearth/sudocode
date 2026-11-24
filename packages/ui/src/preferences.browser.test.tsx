@@ -14,7 +14,7 @@ describe("MISC preferences language", () => {
     expect(loadPreferences().language).toBe("cie");
   });
   it("MISC an unknown stored language falls back to Edexcel", () => {
-    globalThis.localStorage.setItem("sudocode.preferences", JSON.stringify({ language: "python" }));
+    globalThis.localStorage.setItem("sudocode.preferences", JSON.stringify({ language: "klingon" }));
     expect(loadPreferences().language).toBe("edexcel");
   });
 });
