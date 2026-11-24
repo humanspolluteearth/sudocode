@@ -1,0 +1,6 @@
+print(0.1 + 0.2)
+print(1 / 3)
+print(1e16, 1e-5, 123456789.0, 1.5e300)
+print(10 / 2, 7 / 2)
+print(float("inf"), 3.0, -0.0)
+print(round(2.5), round(3.5), round(-0.5), round(2.675, 2))

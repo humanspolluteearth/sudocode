@@ -13,6 +13,7 @@
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit && pnpm -r typecheck",
     "test": "vitest run",
+    "py:expect": "scripts/py-expect.sh",
     "test:core": "vitest run --project core",
     "spec:coverage": "node scripts/spec-coverage.ts",
     "check": "node scripts/check.ts",

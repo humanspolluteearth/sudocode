@@ -286,3 +286,13 @@ Logged by Claude under /goal. Implemented as below; no golden test depends on th
 ## Q53: rename the assignment-side IR node `field` to `fieldTarget`? (24 Nov 2026)
 
 `Expr` and `AssignTarget` both have a node with `kind: "field"`. A rename is the clean fix, but the merged `src/runtime/records.test.ts` builds IR literals with the old kind (lines 9, 18, 76), so it needs a mechanical edit that is not covered by step 3. I cross-commented both nodes instead (the architecture reviewer allowed either). Approve the test edit and I will do the rename (one line in the test, no assertion changes).
+
+## Q54 (M8): where "not supported" points for Python (24 Nov 2026)
+
+SH-18/PY-02 say unsupported Python syntax gives "not supported in Sudocode", but not at which column. The tests in `tests/errors/python/` use the first token of the construct (`match` at its start, `@` of a decorator, `yield`, `async`, `:=`, `nonlocal`, `*` of `*args`, the name `eval`, `import`, and the `{` of a dict comprehension). Please confirm or give another rule. Those files are hand-specified (they describe Sudocode, not CPython) and are not run through the oracle.
+
+## Q55 (M8): CPython-oracle details to confirm
+
+- Custom exception classes (`class MyError(Exception)`) need classes, which are M9 (PY-19); the M8 tests use only built-in exceptions. Custom exceptions are left for M9.
+- `random`, `math`, `datetime`, `time` modules (PY-40..44) are M9; PY-22 in M8 only covers "any other module gives not supported". The harvested `PY-41-example-guessing-game` stays pending.
+- The harvested Python expected files were made with CPython 3.14 (Q12). Run `pnpm py:expect` is NOT used on them (merged files); `python-full` will report any difference from 3.12 and I will log it here.
