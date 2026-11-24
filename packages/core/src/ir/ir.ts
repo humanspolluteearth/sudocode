@@ -99,10 +99,6 @@ export type Expr =
   | { kind: "logical"; op: LogicalOp; left: Expr; right: Expr; span: Span }
   | { kind: "unary"; op: UnaryOp; operand: Expr; span: Span }
   /**
-   * `target[index]`. `base` is the first index (0 in Edexcel, EDX-22). `text` is the target as written, for
-   * messages ("Index 3 is outside Scores"); `span` starts at the target, where index errors point.
-   */
-  /**
    * A fixed-size array whose items have no value yet (CIE-20, CIE-21). `dims` holds the length of each dimension,
    * so `[3, 3]` is three rows of three. Reading an unset item is the "no value yet" runtime error.
    */
@@ -113,9 +109,8 @@ export type Expr =
    * the items of an array of records.
    */
   | { kind: "newRecord"; fields: { name: string; init: Expr | null }[]; span: Span }
-  /** `record.field` (CIE-30). `text` is the record as written, for "V.F has no value yet". */
   /**
-   * `record.field` read. NOTE: `AssignTarget` has its own node with the same `kind: "field"` (the assignment side);
+   * `record.field` read (CIE-30); `text` is the record as written, for "V.F has no value yet". NOTE: `AssignTarget` has its own node with the same `kind: "field"` (the assignment side);
    * they are different unions, so a `switch` on one never sees the other. Check which union you are in.
    */
   | { kind: "field"; target: Expr; name: string; text: string; span: Span }
@@ -127,6 +122,10 @@ export type Expr =
   | { kind: "enumOrdinal"; operand: Expr; span: Span }
   /** A deep copy of an array or record, so changing one afterwards leaves the other alone (CIE-23, CIE-30). */
   | { kind: "copyArray"; source: Expr; span: Span }
+  /**
+   * `target[index]`. `base` is the first index (0 in Edexcel, EDX-22). `text` is the target as written, for
+   * messages ("Index 3 is outside Scores"); `span` starts at the target, where index errors point.
+   */
   | { kind: "index"; target: Expr; index: Expr; base: number; text: string; span: Span }
   | { kind: "arrayLiteral"; elements: Expr[]; span: Span }
   | { kind: "builtin"; name: BuiltinName; args: Expr[]; span: Span }
@@ -139,8 +138,9 @@ export type AssignTarget =
   | VarRef
   /**
    * `record.field` on the left of an assignment (CIE-30). NOTE: `Expr` has a different node with the same
-   * `kind: "field"` (the read side); renaming this one to `fieldTarget` is logged as Q53. `record` evaluates to the record itself (records are shared by reference, like
-   * arrays, so setting a field changes the stored one); `root` is the variable it lives in, for the trace table.
+   * `kind: "field"` (the read side); renaming this one to `fieldTarget` is logged as Q53.
+   * `record` evaluates to the record itself (records are shared by reference, like arrays, so setting a field
+   * changes the stored one); `root` is the variable it lives in, for the trace table.
    */
   | { kind: "field"; record: Expr; root: VarRef; name: string; text: string; span: Span }
   /**

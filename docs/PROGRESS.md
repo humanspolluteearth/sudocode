@@ -2,12 +2,12 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
-## 24 Nov 2026: M7 (Cambridge 9618) mostly done, NOT complete
+## 24 Nov 2026: M7 (Cambridge 9618) complete
 
-- Front end, runtime reuse, records, enums, CASE (incl. ranges), loops, BYREF/BYVAL, files, TRY/EXCEPT, classes, DATE and built-ins merged in #67-#81. Equivalence, fuzz/property and a 27-program exam corpus added in #81; correctly tagged re-proofs in the follow-up PR.
-- Both reviewer agents ran. Architecture: no MUST FIX (3 SHOULD FIX logged, D21). Tests: 3 MUST FIX; the retag and two pinned-behaviour tests need your OK because merged tests may not be edited (D22, QUESTIONS.md).
-- Not done: CIE-81 (Q46); UI language switch, CIE highlighting wiring and Quick reference panel; files over 400 lines (`cie/statements.ts`, `classes.ts`, `expressions.ts`); `today()` clock injection; 2D arrays with different lower bounds, `ARRAY` parameters, DATE literal.
-- Details: `docs/review/M7.md`. Questions: `docs/review/QUESTIONS.md`.
+- **PRs:** #67-#81 front end, runtime reuse and corpus; #83 your answers; #84 authorised test edits; #85, #86 CIE-81, CIE-10, ELSE IF, per-dimension 2D bounds; #87 TODAY clock; #88 IR comment; #89 file split; #90 UI language switch, CIE highlighting, examples, Quick reference; plus the review follow-up PR. All squash-merged with CI green. #9 and #22 left alone.
+- **State:** checklist ticked in `docs/milestones/M07-cie.md`. Both reviewers ran twice; no unfixed MUST FIX except the merged CIE-10 test with the wrong column (Q52).
+- **Needs you:** Q52 (fix the merged CIE-10 test column), Q53 (rename the `field` assign target), and the notes at the end of `docs/review/M7.md` (RAND seed not wired, test gaps).
+- **Next step:** M8 (not started).
 
 ## 24 Nov 2026: open questions answered
 

@@ -166,6 +166,9 @@ export function App({ workers }: AppProps) {
         }}
         language={language}
         onLanguage={(next) => {
+          // The old language's run and problems no longer apply.
+          session.current?.stop();
+          setDiagnostics([]);
           // An untouched starter program follows the language; anything the student wrote stays.
           if (source === STARTERS[language]) setSource(STARTERS[next]);
           if (tab === "reference" && next !== "cie") setTab("problems");
