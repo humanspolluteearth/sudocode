@@ -1186,3 +1186,74 @@ button.sc-section-head:hover {
     height: 29px;
   }
 }
+
+/* Touch sizes on the compact layouts: 44px on a phone, 40px on a tablet (ui rules; Mobile/Tablet.dc.html). Tabs keep
+   the design's height (34/30px, set above) and get their width from here. */
+.sc-compact {
+  --touch: 44px;
+}
+@media (min-width: 700px) {
+  .sc-compact {
+    --touch: 40px;
+  }
+}
+.sc-compact .sc-tab-btn,
+.sc-compact .sc-tab-close,
+.sc-compact .sc-tab-new,
+.sc-compact .sc-link,
+.sc-compact .sc-panel-title {
+  min-width: var(--touch);
+}
+.sc-compact .sc-tab-close {
+  width: var(--touch);
+  height: 33px;
+  margin-right: 0;
+}
+.sc-compact .sc-link,
+.sc-compact .sc-panel-title,
+.sc-compact .sc-mode,
+.sc-compact .sc-check {
+  min-height: var(--touch);
+}
+.sc-compact .sc-mode,
+.sc-compact .sc-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* The label is the touch target; the box inside is just big enough to see. */
+.sc-compact .sc-mode input,
+.sc-compact .sc-check input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+}
+
+/* Dialog fields are touch targets too on touch screens and narrow windows (they sit outside .sc-compact). */
+@media (pointer: coarse), (max-width: 1100px) {
+  .sc-dialog input:not([type="checkbox"], [type="radio"]),
+  .sc-dialog select,
+  .sc-dialog textarea {
+    box-sizing: border-box;
+    min-height: 44px;
+  }
+}
+.sc-compact .sc-tb {
+  min-width: var(--touch);
+  min-height: var(--touch);
+}
+/* .sc-tab is also the Debugger/Files/Reference tab in the side panel (26px on desktop). A file tab's wrapper takes
+   the strip's height. */
+.sc-compact .sc-side .sc-tab {
+  min-height: var(--touch);
+  min-width: var(--touch);
+}
+.sc-compact .sc-tabstrip .sc-tab {
+  height: auto;
+  padding: 0;
+}
+@media (min-width: 700px) {
+  .sc-compact .sc-tab-close {
+    height: 29px;
+  }
+}
