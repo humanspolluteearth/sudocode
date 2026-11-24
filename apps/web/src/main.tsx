@@ -19,3 +19,11 @@ createRoot(root).render(
     <App workers={workers} />
   </StrictMode>,
 );
+
+// Offline support: register the hand-written worker (built into dist/sw.js) in production only, so dev reloads
+// are never served from a stale cache.
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    void navigator.serviceWorker.register("/sw.js");
+  });
+}
