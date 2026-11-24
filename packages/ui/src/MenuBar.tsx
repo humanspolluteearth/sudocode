@@ -54,9 +54,6 @@ export function MenuBar({ menus }: { menus: readonly MenuDef[] }) {
               onClick={() => {
                 setOpen(open === m.id ? null : m.id);
               }}
-              onMouseEnter={() => {
-                if (open !== null) setOpen(m.id);
-              }}
             >
               {m.label}
             </button>
@@ -80,7 +77,7 @@ export function MenuBar({ menus }: { menus: readonly MenuDef[] }) {
                       }}
                     >
                       <span className="sc-menu-tick" aria-hidden="true">
-                        {it.checked === true ? "✓" : ""}
+                        {it.checked === true && "✓"}
                       </span>
                       <span className="sc-menu-label">{it.label}</span>
                       {it.hint !== undefined && <span className="sc-menu-hint">{it.hint}</span>}

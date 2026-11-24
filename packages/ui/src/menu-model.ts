@@ -88,14 +88,14 @@ export function buildMenus(a: MenuActions): MenuDef[] {
           label: "Zoom in",
           disabled: a.zoom >= ZOOM_MAX,
           onSelect: () => {
-            a.onZoom(Math.min(ZOOM_MAX, a.zoom + ZOOM_STEP));
+            a.onZoom(a.zoom + ZOOM_STEP);
           },
         },
         {
           label: "Zoom out",
           disabled: a.zoom <= ZOOM_MIN,
           onSelect: () => {
-            a.onZoom(Math.max(ZOOM_MIN, a.zoom - ZOOM_STEP));
+            a.onZoom(a.zoom - ZOOM_STEP);
           },
         },
         { sep: true },
