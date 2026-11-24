@@ -953,3 +953,27 @@ button.sc-section-head:hover {
   font-size: 8px;
   color: var(--muted2);
 }
+
+/* Breakpoints switched off in Settings: no gutter. */
+.sc-bp-off .sc-bp-gutter {
+  display: none;
+}
+
+.sc-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+}
+.sc-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+}
+.sc-hint {
+  margin: 8px 0;
+  color: var(--faint);
+}

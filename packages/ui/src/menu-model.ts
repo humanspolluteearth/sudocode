@@ -1,6 +1,7 @@
 // What each menu holds. Everything here is reachable from the toolbar too, except what the design puts only in
 // menus (zoom, theme, language). Items for features that don't exist yet are disabled with a reason.
 import type { Example } from "@sudocode/core";
+import { ALL_TOOLS, type ToolFlags } from "./tools.ts";
 import type { MenuDef } from "./MenuBar.tsx";
 import type { PseudocodeLanguage } from "./preferences.ts";
 import type { SideTab } from "./SidePanel.tsx";
@@ -44,9 +45,14 @@ export interface MenuActions {
   /** The converter is an Advanced tool (docs/PRODUCT.md); in Simple mode the Convert menu isn't shown. */
   advanced: boolean;
   onConvertToPython: () => void;
+  /** Which tools are on (Settings and mode); every tool is on when missing. */
+  tools?: ToolFlags;
+  /** View > Settings… */
+  onSettings?: () => void;
 }
 
 export function buildMenus(a: MenuActions): MenuDef[] {
+  const tools = a.tools ?? ALL_TOOLS;
   const languages: [PseudocodeLanguage, string][] = [
     ["edexcel", "Edexcel pseudocode"],
     ["cie", "Cambridge 9618 pseudocode"],
@@ -68,8 +74,8 @@ export function buildMenus(a: MenuActions): MenuDef[] {
         { label: "Save", onSelect: a.onSave, hint: "Ctrl+S" },
         { label: "Save as…", onSelect: a.onSaveAs, hint: "Ctrl+Shift+S" },
         { label: "Save all", onSelect: a.onSaveAll },
-        { sep: true },
-        ...a.examples.map((x) => ({
+        ...(tools.examples ? [{ sep: true as const }] : []),
+        ...(tools.examples ? a.examples : []).map((x) => ({
           label: x.name,
           checked: a.currentExampleId === x.id,
           onSelect: () => {
@@ -87,14 +93,27 @@ export function buildMenus(a: MenuActions): MenuDef[] {
         { sep: true },
         { label: "Continue", onSelect: a.onContinue, disabled: !a.paused, hint: "F8" },
         { label: "Step over", onSelect: a.onStepOver, disabled: !a.paused && (a.running || !a.canRun), hint: "F10" },
-        { label: "Step into", onSelect: a.onStepInto, disabled: !a.paused && (a.running || !a.canRun), hint: "F11" },
-        { label: "Step out", onSelect: a.onStepOut, disabled: !a.paused, hint: "Shift+F11" },
+        ...(tools.stepInto
+          ? [
+              {
+                label: "Step into",
+                onSelect: a.onStepInto,
+                disabled: !a.paused && (a.running || !a.canRun),
+                hint: "F11",
+              },
+              { label: "Step out", onSelect: a.onStepOut, disabled: !a.paused, hint: "Shift+F11" },
+            ]
+          : []),
         { label: "Pause", onSelect: a.onPause, disabled: !a.running || a.paused },
-        { sep: true },
-        { label: "Clear all breakpoints", onSelect: a.onClearBreakpoints, disabled: a.breakpointCount === 0 },
+        ...(tools.breakpoints
+          ? [
+              { sep: true as const },
+              { label: "Clear all breakpoints", onSelect: a.onClearBreakpoints, disabled: a.breakpointCount === 0 },
+            ]
+          : []),
       ],
     },
-    ...(a.advanced
+    ...(a.advanced && tools.converter
       ? [
           {
             id: "convert",
@@ -134,13 +153,17 @@ export function buildMenus(a: MenuActions): MenuDef[] {
             a.onSideTab("debugger");
           },
         },
-        {
-          label: "Quick reference",
-          checked: a.sideTab === "reference",
-          onSelect: () => {
-            a.onSideTab("reference");
-          },
-        },
+        ...(tools.reference
+          ? [
+              {
+                label: "Quick reference",
+                checked: a.sideTab === "reference",
+                onSelect: () => {
+                  a.onSideTab("reference");
+                },
+              },
+            ]
+          : []),
         { sep: true },
         { label: "Clear console", onSelect: a.onClearConsole },
         { sep: true },
@@ -183,6 +206,7 @@ export function buildMenus(a: MenuActions): MenuDef[] {
             a.onTheme(id);
           },
         })),
+        ...(a.onSettings === undefined ? [] : [{ sep: true as const }, { label: "Settings…", onSelect: a.onSettings }]),
       ],
     },
   ];

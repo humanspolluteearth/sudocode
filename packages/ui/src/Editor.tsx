@@ -35,6 +35,8 @@ export interface EditorProps {
   pausedLine?: number | null;
   /** Which pseudocode to colour; Edexcel by default. */
   language?: "edexcel" | "cie" | "python";
+  /** False when the Breakpoints tool is switched off: the gutter is hidden and ignores clicks and F9. */
+  breakpointsEnabled?: boolean;
 }
 
 // A Compartment is CodeMirror's way to swap one extension later without rebuilding the editor.
@@ -90,6 +92,7 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
     diagnostics,
     ariaLabel = "Program editor",
     onBreakpointsChange,
+    breakpointsEnabled = true,
     onCursorChange,
     pausedLine = null,
     language = "edexcel",
@@ -246,7 +249,7 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
   }));
 
   return (
-    <div className="sc-editor">
+    <div className={`sc-editor${breakpointsEnabled ? "" : " sc-bp-off"}`}>
       <div ref={host} className="sc-editor-host" />
       <p id="sc-editor-hint" className="sc-sr-only">
         Press Escape, then Tab, to leave the editor. Tab on its own indents.

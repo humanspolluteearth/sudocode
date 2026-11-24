@@ -1,6 +1,7 @@
 // The right-hand panel, as in the design: a Debugger tab (stacked Status, Problems, Variables, Call stack,
 // Breakpoints and Trace table sections), a Quick reference tab, and a Files tab in Advanced mode.
 import type { Diagnostic, VirtualFiles } from "@sudocode/core";
+import { ALL_TOOLS, type ToolFlags } from "./tools.ts";
 import { FilesPanel } from "./FilesPanel.tsx";
 import { CallStack } from "./CallStack.tsx";
 import type { GuideId } from "./GuidePage.tsx";
@@ -31,6 +32,8 @@ export interface SidePanelProps {
   /** Quick reference "Insert": type a sample at the editor's cursor. */
   onInsert: (code: string) => void;
   onOpenGuide?: ((guide: GuideId) => void) | undefined;
+  /** Which tools are on (Settings and mode); every tool is on when missing. */
+  tools?: ToolFlags | undefined;
 }
 
 export interface FilesProps {
@@ -52,6 +55,7 @@ export function SidePanel({
   language,
   onInsert,
   onOpenGuide,
+  tools = ALL_TOOLS,
 }: SidePanelProps) {
   const tabButton = (id: SideTab, label: string) => (
     <button
@@ -69,8 +73,8 @@ export function SidePanel({
     <aside className="sc-side" aria-label="Side panel">
       <div className="sc-tabs" role="group" aria-label="Side panel view">
         {tabButton("debugger", "Debugger")}
-        {files !== undefined && tabButton("files", "Files")}
-        {tabButton("reference", "Quick reference")}
+        {files !== undefined && tools.files && tabButton("files", "Files")}
+        {tools.reference && tabButton("reference", "Quick reference")}
         <label className="sc-mode">
           <input
             type="checkbox"
@@ -82,9 +86,9 @@ export function SidePanel({
           Advanced
         </label>
       </div>
-      {tab === "reference" ? (
+      {tab === "reference" && tools.reference ? (
         <QuickReference language={language} onInsert={onInsert} onOpenGuide={onOpenGuide} />
-      ) : tab === "files" && files !== undefined ? (
+      ) : tab === "files" && files !== undefined && tools.files ? (
         <FilesPanel files={files.files} onChange={files.onChange} onDelete={files.onDelete} />
       ) : (
         <div className="sc-debugger" tabIndex={0} role="group" aria-label="Debugger">
@@ -94,32 +98,40 @@ export function SidePanel({
               {run.paused !== null && ` before line ${String(run.paused.line)}`}
             </div>
           </Section>
-          <Problems diagnostics={diagnostics} onSelect={onSelectProblem} />
-          <Section
-            id="variables"
-            title="Variables"
-            count={run.paused !== null ? `line ${String(run.paused.line)}` : undefined}
-            className="sc-vars-panel"
-          >
-            <Variables frame={run.paused?.stack[0] ?? null} previous={run.previous} />
-          </Section>
-          <Section
-            id="breakpoints"
-            defaultOpen={false}
-            title="Breakpoints"
-            count={String(breakpoints.length)}
-            className="sc-bps-panel"
-          >
-            <div className="sc-pad">
-              {breakpoints.length === 0 ? "No breakpoints." : breakpoints.map((n) => `line ${String(n)}`).join(", ")}
-            </div>
-          </Section>
-          <Section id="callstack" defaultOpen={false} title="Call stack" className="sc-stack-panel">
-            <CallStack stack={run.paused?.stack ?? []} />
-          </Section>
-          <Section id="trace" defaultOpen={false} title="Trace table" className="sc-trace-panel">
-            <TraceTable rows={run.trace} recorded={run.traceRecorded} />
-          </Section>
+          {tools.problems && <Problems diagnostics={diagnostics} onSelect={onSelectProblem} />}
+          {tools.variables && (
+            <Section
+              id="variables"
+              title="Variables"
+              count={run.paused !== null ? `line ${String(run.paused.line)}` : undefined}
+              className="sc-vars-panel"
+            >
+              <Variables frame={run.paused?.stack[0] ?? null} previous={run.previous} />
+            </Section>
+          )}
+          {tools.breakpoints && (
+            <Section
+              id="breakpoints"
+              defaultOpen={false}
+              title="Breakpoints"
+              count={String(breakpoints.length)}
+              className="sc-bps-panel"
+            >
+              <div className="sc-pad">
+                {breakpoints.length === 0 ? "No breakpoints." : breakpoints.map((n) => `line ${String(n)}`).join(", ")}
+              </div>
+            </Section>
+          )}
+          {tools.stepInto && (
+            <Section id="callstack" defaultOpen={false} title="Call stack" className="sc-stack-panel">
+              <CallStack stack={run.paused?.stack ?? []} />
+            </Section>
+          )}
+          {tools.traceTable && (
+            <Section id="trace" defaultOpen={false} title="Trace table" className="sc-trace-panel">
+              <TraceTable rows={run.trace} recorded={run.traceRecorded} />
+            </Section>
+          )}
         </div>
       )}
     </aside>
