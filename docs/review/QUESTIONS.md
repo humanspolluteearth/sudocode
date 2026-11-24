@@ -282,3 +282,7 @@ Logged by Claude under /goal. Implemented as below; no golden test depends on th
 ## Q52: wrong column in merged CIE-10 test (24 Nov 2026)
 
 `tests/errors/cie/CIE-10-file-type.expected.json` (merged in #85) expects column 15, but `FILE` in `DECLARE F : FILE` starts at column 13. Merged tests may not be edited, so it stays in `pending.json` (it fails, as pending expects) and `CIE-10-file-type-column` carries the corrected column. Please approve deleting the wrong one.
+
+## Q53: rename the assignment-side IR node `field` to `fieldTarget`? (24 Nov 2026)
+
+`Expr` and `AssignTarget` both have a node with `kind: "field"`. A rename is the clean fix, but the merged `src/runtime/records.test.ts` builds IR literals with the old kind (lines 9, 18, 76), so it needs a mechanical edit that is not covered by step 3. I cross-commented both nodes instead (the architecture reviewer allowed either). Approve the test edit and I will do the rename (one line in the test, no assertion changes).

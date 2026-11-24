@@ -114,6 +114,10 @@ export type Expr =
    */
   | { kind: "newRecord"; fields: { name: string; init: Expr | null }[]; span: Span }
   /** `record.field` (CIE-30). `text` is the record as written, for "V.F has no value yet". */
+  /**
+   * `record.field` read. NOTE: `AssignTarget` has its own node with the same `kind: "field"` (the assignment side);
+   * they are different unions, so a `switch` on one never sees the other. Check which union you are in.
+   */
   | { kind: "field"; target: Expr; name: string; text: string; span: Span }
   /** One value of an enumerated type (CIE-31); `names` lists them in order and `ordinal` is this one's place. */
   | { kind: "enumValue"; type: string; names: string[]; ordinal: number; span: Span }
@@ -134,7 +138,8 @@ export type Expr =
 export type AssignTarget =
   | VarRef
   /**
-   * `record.field` (CIE-30). `record` evaluates to the record itself (records are shared by reference, like
+   * `record.field` on the left of an assignment (CIE-30). NOTE: `Expr` has a different node with the same
+   * `kind: "field"` (the read side); renaming this one to `fieldTarget` is logged as Q53. `record` evaluates to the record itself (records are shared by reference, like
    * arrays, so setting a field changes the stored one); `root` is the variable it lives in, for the trace table.
    */
   | { kind: "field"; record: Expr; root: VarRef; name: string; text: string; span: Span }
