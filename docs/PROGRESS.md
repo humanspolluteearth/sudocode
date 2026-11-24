@@ -2,6 +2,8 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 25 Nov 2026: mobile and tablet fidelity pass done (#138-#147); decisions in docs/review/UI-mobile.md
+
 ## 25 Nov 2026: converter follow-up, Part A (cleaner Python output)
 
 - **PRs:** #136 tests (pending), then the code PR (type inference in `converter/types.ts`; `_show` only for REAL, BOOLEAN and unknown types; helper and its comment only when used). Notes in `docs/review/M10-converter-output.md`.
