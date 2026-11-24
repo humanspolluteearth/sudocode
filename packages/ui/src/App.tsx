@@ -137,6 +137,16 @@ export function App({ workers }: AppProps) {
     send({ type: command });
   };
 
+  // Step with no run going starts one that stops before the first statement, so a teacher can walk through every
+  // line without a breakpoint. The engine's "pause" request is honoured at the next statement, which is the first.
+  const step = (command: "stepOver" | "stepInto") => {
+    if (run.state === "paused") resume(command);
+    else if (!active && workers !== undefined) {
+      start();
+      send({ type: "pause" });
+    }
+  };
+
   // F5 Run (or Continue when paused), Shift+F5 Stop, F8 Continue, F10 Step over.
   const keys = useRef<(e: KeyboardEvent) => void>(() => undefined);
   keys.current = (e) => {
@@ -144,9 +154,9 @@ export function App({ workers }: AppProps) {
     else if (e.key === "F5" && run.state === "paused") resume("continue");
     else if (e.key === "F5") start();
     else if (e.key === "F8") resume("continue");
-    else if (e.key === "F10") resume("stepOver");
+    else if (e.key === "F10") step("stepOver");
     else if (e.key === "F11" && e.shiftKey) resume("stepOut");
-    else if (e.key === "F11") resume("stepInto");
+    else if (e.key === "F11") step("stepInto");
     else if ((e.ctrlKey || e.metaKey) && (e.key === "=" || e.key === "+"))
       update({ ...prefs, zoom: nextZoom(prefs.zoom, 1) });
     else if ((e.ctrlKey || e.metaKey) && e.key === "-") update({ ...prefs, zoom: nextZoom(prefs.zoom, -1) });
@@ -188,10 +198,10 @@ export function App({ workers }: AppProps) {
       resume("continue");
     },
     onStepOver: () => {
-      resume("stepOver");
+      step("stepOver");
     },
     onStepInto: () => {
-      resume("stepInto");
+      step("stepInto");
     },
     onStepOut: () => {
       resume("stepOut");
@@ -232,10 +242,10 @@ export function App({ workers }: AppProps) {
           resume("continue");
         }}
         onStepOver={() => {
-          resume("stepOver");
+          step("stepOver");
         }}
         onStepInto={() => {
-          resume("stepInto");
+          step("stepInto");
         }}
         onStepOut={() => {
           resume("stepOut");
