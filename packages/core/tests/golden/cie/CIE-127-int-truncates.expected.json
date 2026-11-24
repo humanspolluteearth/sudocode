@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-127"],
+  "language": "cie",
+  "expect": {
+    "stdout": "3-35\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "3.7 truncates to 3, -3.7 toward zero to -3, 5 stays 5; list items join with no separator: 3, -3, 5 -> 3-35."
+}

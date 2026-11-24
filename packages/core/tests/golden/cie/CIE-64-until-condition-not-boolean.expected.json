@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-64"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-CONDITION-TYPE",
+        "line": 3,
+        "column": 7
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "UNTIL is columns 1-5, space, 1 at column 7."
+}

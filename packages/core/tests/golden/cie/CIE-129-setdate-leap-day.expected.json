@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-129"],
+  "language": "cie",
+  "expect": {
+    "stdout": "29/02/2024295\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "29 Feb 2024 was a Thursday, so DAYINDEX (Sunday = 1) is 5. D prints 29/02/2024, then DAY 29, then 5, joined with no separator."
+}

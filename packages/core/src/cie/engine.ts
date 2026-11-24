@@ -57,6 +57,7 @@ export const cieEngine: Engine = {
       trace: request.trace,
       breakpoints: request.breakpoints,
       files: request.files,
+      ...(request.today === undefined ? {} : { today: request.today }),
     });
   },
 };
