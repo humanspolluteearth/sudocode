@@ -2,12 +2,12 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
-## 24 Nov 2026: M9 (Python classes, files, modules) built; two items left open
+## 25 Nov 2026: M9 (Python classes, files, modules) complete
 
-- **PRs (all squash-merged, CI green):** #96 tests; #97 classes; #98 files and `with`; #99 modules (`math`, `random`, `time`, `datetime`), PY-50, size budget raised to 340 kB; #100 tests for hashing, ordering dunders, timedelta division; #101 their code; a follow-up PR with `scope.json` and test fixes.
-- **Not done:** reviewer MUST FIX negative-case goldens (PY-44/PY-22 imports, PY-21 mode and error cases) are not written. `PY-19-hashing` and `PY-19-dunders` stay pending until you answer Q57. So the milestone's "every MUST FIX fixed" is NOT met.
-- **Needs you:** Q57 (add PY-54 `info` to two merged expected files); PY-42 (near midnight) and PY-43 (1.1 s real sleep) goldens depend on the clock; the size budget raise; the SHOULD FIX list in `docs/review/M9.md`.
-- **Next step:** answer Q57, then a session for the missing negative goldens (tests PR first) and the SHOULD FIX items; then M10.
+- **PRs (all squash-merged, CI green):** #96 to #101 as before; closing pass #103 to #108: Q57 answer, PY-54 notes on the two PY-19 goldens, negative goldens (PY-21/22/44), four bug fixes they exposed, `vfs.ts` split, clock-injected tests.
+- **State:** checklist ticked. Both reviewers re-ran: no MUST FIX. Deferred SHOULD FIX items are listed in `docs/review/M9.md`.
+- **Needs you:** check the new `.expected.json` files from #105; the deferred list; the PY-42 and PY-43 clock goldens you chose to keep.
+- **Next step:** M10 (not started).
 
 ## 24 Nov 2026: M8 (Python) complete
 
