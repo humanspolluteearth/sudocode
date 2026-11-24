@@ -11,6 +11,7 @@ import { Abandon, CIE_RESERVED, joinSpans, type CieCursor } from "./cursor.ts";
 import type { Env, Variable } from "./env.ts";
 import { arrayType } from "./arrays.ts";
 import { fileStatement } from "./files.ts";
+import { attrAssign, superCall } from "./classes.ts";
 import { placeOf } from "./byref.ts";
 import { startingValue, typeDeclaration } from "./records.ts";
 import { Expressions, type Typed } from "./expressions.ts";
@@ -34,6 +35,7 @@ const OWNER: Readonly<Record<string, string>> = {
   ENDCASE: "CASE",
   ENDPROCEDURE: "PROCEDURE",
   ENDFUNCTION: "FUNCTION",
+  ENDCLASS: "CLASS",
   ENDTRY: "TRY",
   EXCEPT: "TRY",
 };
@@ -48,6 +50,8 @@ export class Statements {
   readonly x: Expressions;
   /** Set by the subprogram part; gives access to `procedure` and `function` parsing. */
   subprogram: ((first: Token, upper: string) => void) | null = null;
+  /** Set by the class part (CIE-110). */
+  classDefinition: ((first: Token) => void) | null = null;
 
   constructor(
     readonly c: CieCursor,
@@ -150,8 +154,19 @@ export class Statements {
       case "TYPE":
         typeDeclaration(c, this.env, first, () => this.typeName());
         return [];
-      case "ARRAY":
       case "CLASS":
+        // A name already declared (even wrongly, as `Class` was) is a variable, not the keyword (CIE-03).
+        if (this.env.lookup(first.text) !== undefined) break;
+        if (this.classDefinition === null) throw new Error("class parser missing");
+        this.classDefinition(first);
+        return [];
+      case "SUPER": {
+        const call = superCall(this.x, first);
+        c.endStatement();
+        if (call?.ir.kind !== "call") return [];
+        return [{ kind: "callStatement", callee: call.ir.callee, args: call.ir.args, span: c.spanFrom(first) }];
+      }
+      case "ARRAY":
       case "FINALLY": // CIE-101: only one EXCEPT clause exists; FINALLY is not supported
         return this.notSupported(first, upper);
       case "OPENFILE":
@@ -203,7 +218,7 @@ export class Statements {
     return t;
   }
 
-  private typeName(scalarOnly = false): Ty {
+  typeName(scalarOnly = false): Ty {
     const c = this.c;
     const t = c.peek();
     if (t.kind === "word") {
@@ -330,6 +345,8 @@ export class Statements {
     }
     c.next();
     const v = this.x.lookupVar(first);
+    if (v?.attr === true && c.isSymbol("←")) return attrAssign(this, first, v);
+    if (v?.attr === true && c.isSymbol("[")) return this.notSupported(first, "assigning to an array attribute");
     if (c.isSymbol(".") || (c.isSymbol("[") && this.fieldFollowsIndex())) return this.fieldAssign(first, v);
     if (c.isSymbol("[")) return this.elementAssign(first, v);
     if (!c.isSymbol("←")) {
@@ -380,9 +397,19 @@ export class Statements {
       return c.failSilently();
     }
     const scope = this.env.isLocal(first.text) ? "local" : "global";
-    const root: VarRef = { kind: "var", name: v.name, scope, span: first.span };
-    const base: Typed = { ir: root, ty: v.ty, oneChar: false, span: first.span };
+    // An attribute of the current class lives in `Self` (CIE-111).
+    const root: VarRef =
+      v.attr === true
+        ? { kind: "var", name: "Self", scope: "local", span: first.span }
+        : { kind: "var", name: v.name, scope, span: first.span };
+    const base: Typed = { ir: v.literal?.(first.span) ?? root, ty: v.ty, oneChar: false, span: first.span };
     const left = this.x.fields(first, c.isSymbol("[") ? this.x.element(first, base) : base);
+    if (left.ir.kind === "call" && !c.isSymbol("←")) {
+      // `Obj.Method(args)` on its own line is a method call statement (CIE-114).
+      c.endStatement();
+      return [{ kind: "callStatement", callee: left.ir.callee, args: left.ir.args, span: c.spanFrom(first) }];
+    }
+    if (isUnknown(left.ty) && !c.isSymbol("←")) return c.failSilently(); // a method error was already reported
     c.expectSymbol("←", "←", "Use <- to store a value: Name.Field <- value.");
     const value = this.x.expr();
     if (left.ir.kind !== "field") return c.failSilently(); // already reported

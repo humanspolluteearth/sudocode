@@ -306,6 +306,20 @@ export const checkerMessages: Catalogue = {
       hint: "Make it PUBLIC, or add a method to the class that gives access to it.",
     },
   },
+  "E-CHK-UNKNOWN-CLASS": {
+    spec: ["CIE-110"],
+    default: {
+      message: "There is no class called {name}",
+      hint: "Check the spelling, or define it with CLASS {name} ... ENDCLASS before this line.",
+    },
+  },
+  "E-CHK-NO-METHOD": {
+    spec: ["CIE-112", "CIE-114"],
+    default: {
+      message: "{name} has no method called {method}",
+      hint: "Its methods are: {methods}.",
+    },
+  },
   "E-CHK-FUNCTION-CALL": {
     spec: ["CIE-72"],
     default: {

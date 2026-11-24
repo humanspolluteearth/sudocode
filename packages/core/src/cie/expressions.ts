@@ -10,6 +10,7 @@ import type { Token } from "../edexcel/tokens.ts";
 import { BUILTINS, KIND_NAME, fitsKind, type BuiltinSignature } from "./builtins.ts";
 import { Abandon, CIE_RESERVED, joinSpans, type CieCursor } from "./cursor.ts";
 import type { Env, Variable } from "./env.ts";
+import { member, ownMethodCall, newObject, superCall } from "./classes.ts";
 import {
   BOOLEAN,
   CHAR,
@@ -246,6 +247,11 @@ export class Expressions {
     if (upper === "DIV" || upper === "MOD") {
       if (c.isSymbol("(", 1)) return this.divModCall(t, upper);
     }
+    if (upper === "NEW" && t.text === upper) return newObject(this, t);
+    if (upper === "SUPER" && t.text === upper) {
+      const call = superCall(this, t);
+      if (call !== null) return call;
+    }
     if (CIE_RESERVED.has(upper) && t.text === upper) return c.fail("a value", "Write a value or a name here.");
     c.next();
     if (c.isSymbol("(")) return this.call(t);
@@ -273,7 +279,10 @@ export class Expressions {
       this.undeclared(t);
       return typed({ kind: "var", name: t.text, scope: "global", span: t.span }, UNKNOWN, t.span);
     }
-    if (v.literal !== undefined) return typed(v.literal(t.span), v.ty, t.span); // CIE-31: an enumerated value
+    if (v.literal !== undefined) {
+      const lit = typed(v.literal(t.span), v.ty, t.span); // CIE-31: an enumerated value; CIE-111: an attribute of Self
+      return v.attr === true ? this.fields(t, this.c.isSymbol("[") ? this.element(t, lit) : lit) : lit;
+    }
     const scope = this.env.isLocal(t.text) ? "local" : "global";
     const whole = typed({ kind: "var", name: v.name, scope, span: t.span }, v.ty, t.span, { name: v.name });
     return this.fields(t, this.c.isSymbol("[") ? this.element(t, whole) : whole);
@@ -293,6 +302,8 @@ export class Expressions {
       const span = joinSpans(t.span, f.span);
       if (isUnknown(left.ty)) {
         left = typed(left.ir, UNKNOWN, span);
+      } else if (left.ty.kind === "CLASS") {
+        left = member(this, left, text, f, span);
       } else if (left.ty.kind !== "RECORD") {
         c.report("E-CHK-NOT-RECORD", f.span, { name: text, type: withArticle(left.ty) });
         left = typed(left.ir, UNKNOWN, span);
@@ -413,6 +424,8 @@ export class Expressions {
     const sig = this.env.subs.get(t.text);
     const builtin = BUILTINS[t.text];
     if (sig === undefined && builtin !== undefined) return this.builtin(t, builtin, args, span);
+    const own = sig === undefined ? ownMethodCall(this, t, args, span) : null;
+    if (own !== null) return own;
     if (sig === undefined) {
       c.report("E-CHK-UNKNOWN-FUNCTION", t.span, { name: t.text });
       return typed({ kind: "call", callee: t.text, args: args.map((a) => a.ir), span }, UNKNOWN, span);
@@ -521,6 +534,7 @@ function fitsArg(a: Typed, into: Ty): boolean {
   if (into.kind === "REAL" && a.ty.kind === "INTEGER") return true;
   if (into.kind === "CHAR" && a.ty.kind === "STRING") return a.oneChar;
   if (into.kind === "STRING" && a.ty.kind === "CHAR") return true;
+  if (into.kind === "CLASS" && a.ty.kind === "CLASS") return a.ty.name === into.name || a.ty.supers.includes(into.name);
   return a.ty.kind === into.kind;
 }
 
