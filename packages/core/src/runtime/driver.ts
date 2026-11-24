@@ -232,7 +232,8 @@ export function runProgram(options: DriverOptions): EngineRun {
       return null;
     },
     assigned: (name, value, span) => {
-      if (tracing) {
+      if (tracing && !name.startsWith("$")) {
+        // `$` names are the front end's hidden variables
         pendingTrace.push({
           kind: "assign",
           line: span.line,
@@ -294,11 +295,13 @@ export function runProgram(options: DriverOptions): EngineRun {
     [...frames].reverse().map((f) => ({
       name: f.name,
       line: f.line,
-      variables: [...(f.locals ?? machine.globals)].map(([name, value]) => ({
-        name,
-        type: typeName(value),
-        value: formatValue(value, program.format),
-      })),
+      variables: [...(f.locals ?? machine.globals)]
+        .filter(([name]) => !name.startsWith("$"))
+        .map(([name, value]) => ({
+          name,
+          type: typeName(value, program.format),
+          value: formatValue(value, program.format),
+        })),
     }));
 
   const pause = (reason: PauseReason): void => {
@@ -313,7 +316,10 @@ export function runProgram(options: DriverOptions): EngineRun {
     const sub = program.subprograms[callee];
     if (sub === undefined) throw new Error(`No subprogram called ${callee}`);
     if (frames.length - 1 >= maxCallDepth) {
-      raise = new RunError("E-RUN-RECURSION-LIMIT", span, { name: callee });
+      raise =
+        program.format === "python"
+          ? new RunError("E-PY-RecursionError", span, { detail: "maximum recursion depth exceeded" })
+          : new RunError("E-RUN-RECURSION-LIMIT", span, { name: callee });
       return;
     }
     const locals = new Map<string, Value>();

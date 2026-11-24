@@ -7,6 +7,8 @@ import type { MessageArgs } from "../messages/index.ts";
 import { cieBuiltin } from "./builtins.ts";
 import { binary, unary } from "./ops.ts";
 import { RunError } from "./run-error.ts";
+import { isPyExpr } from "../ir/python-ir.ts";
+import { pyEval } from "./python/eval.ts";
 import { array, char, characterCount, characters, int, real, type Value } from "./values.ts";
 
 /** What a running body asks the driver for. */
@@ -60,6 +62,8 @@ export type Body = Generator<Request, Value | undefined, unknown>;
 export type Run<T> = Generator<Request, T, unknown>;
 export interface Returned {
   value: Value | undefined;
+  /** Python `break` / `continue` travelling up to the loop that handles them (python/exec.ts). */
+  signal?: "break" | "continue";
 }
 
 export const bug = (what: string): Error => new Error(what);
@@ -83,6 +87,7 @@ const callCache = new WeakMap<Expr, boolean>();
 
 /** Whether evaluating `e` may call a subprogram. Expressions without calls take the plain (non-generator) path. */
 function hasCall(e: Expr): boolean {
+  if (isPyExpr(e)) return true; // Python expressions always take the generator path (python/eval.ts)
   const cached = callCache.get(e);
   if (cached !== undefined) return cached;
   let result: boolean;
@@ -246,6 +251,7 @@ function builtin(e: Extract<Expr, { kind: "builtin" }>, args: Value[], env: Env)
 
 /** Evaluates an expression that contains no call (no generator needed). */
 function evaluate(e: Expr, env: Env): Value {
+  if (isPyExpr(e)) throw bug("A Python expression must be evaluated by the generator path");
   switch (e.kind) {
     case "literal":
       return e.value.kind === "int" ? int(e.value.value) : e.value.kind === "real" ? real(e.value.value) : e.value;
@@ -297,6 +303,7 @@ function evaluate(e: Expr, env: Env): Value {
 
 /** Evaluates any expression; only parts that contain a call go through generators. */
 export function* evaluateWithCalls(e: Expr, env: Env): Run<Value> {
+  if (isPyExpr(e)) return yield* pyEval(e, env);
   if (!hasCall(e)) return evaluate(e, env);
   switch (e.kind) {
     case "binary": {

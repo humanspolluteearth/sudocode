@@ -22,10 +22,12 @@ import {
   type Returned,
   type Run,
 } from "./evaluate.ts";
+import { isPyStmt } from "../ir/python-ir.ts";
+import { pyStatement } from "./python/exec.ts";
 import { formatValue } from "./format.ts";
 import { convertInput } from "./input.ts";
 import { RunError } from "./run-error.ts";
-import { array, char, characters, int, real, type Value } from "./values.ts";
+import { array, char, NONE, characters, int, real, type Value } from "./values.ts";
 
 /** The name of a file: a plain string (Edexcel) or an expression (Cambridge, where it may be a variable). */
 function* fileName(file: string | Expr, env: Env): Run<string> {
@@ -101,6 +103,7 @@ function number(v: Value, what: string): number {
 }
 
 function* statement(s: Stmt, env: Env): Run<Returned | undefined> {
+  if (isPyStmt(s)) return yield* pyStatement(s, env);
   switch (s.kind) {
     case "assign": {
       // As in Python, the value is worked out before the target's index.
@@ -298,5 +301,6 @@ export function* runSubprogram(
     const finals = sub.params.flatMap((p, i) => (sub.byRef?.[i] === true ? [locals.get(p)] : []));
     return array(finals);
   }
-  return done?.value;
+  // Python: a function that finishes without `return` gives None.
+  return machine.format === "python" ? (done?.value ?? NONE) : done?.value;
 }
