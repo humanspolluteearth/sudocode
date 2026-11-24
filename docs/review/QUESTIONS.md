@@ -319,3 +319,10 @@ The budget is 368.0 kB (set in Q56). With the converter the build is 399.5 kB gz
 Until this is decided #130 is not merged, and the later M10 items (Simple/Advanced switches, tablet and mobile layouts, service worker, accessibility pass, reviewers) are not started.
 
 **Answered (25 Nov 2026) Q58:** raise the budget. Done in #130: 368 kB -> 420 kB (430080 bytes), for the converter chunk (31.5 kB) plus room for the service worker and the tablet/mobile UI. Running the conversion in the check worker would win the size back later.
+
+## Q59 (mobile pass): quote style in the samples, guide pages and checker (25 Nov 2026)
+
+The design's sample and the three guide pages write strings with double quotes (`"Amira"`). The editor's sample ("Grade checker") writes them with single quotes (`'Amira'`, from `packages/core/src/examples/`), and the checker warns on double quotes in Edexcel code (EDX-07: "Double-quoted strings are accepted with a warning", LENIENT). For Edexcel the spec says single quotes are the rule (EDX-06, SOURCE), so the guide pages and the design disagree with the spec. Cambridge is different: CIE-04 says STRING is in double quotes and CHAR in single quotes, and CIE-07 warns on a multi-character string in single quotes.
+**Option A:** keep the checker and the spec; change the Edexcel guide page (and the Edexcel Quick reference) to single quotes so the guide, the sample and the checker agree. The design is then the odd one out.
+**Option B:** follow the design: accept double quotes in Edexcel without a warning, and change EDX-06/EDX-07. A student would learn a looser rule than the Edexcel command set prints.
+Recommended: A. Nothing is marked pending and the checker is unchanged; this pass leaves the pages as they are until you answer.
