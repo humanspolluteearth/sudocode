@@ -1,5 +1,5 @@
 import { App } from "./App.tsx";
-import { createRef } from "react";
+import { createRef, useState } from "react";
 import { userEvent } from "vitest/browser";
 import { Editor, type EditorHandle } from "./Editor.tsx";
 import { describe, expect, it, vi } from "vitest";
@@ -7,6 +7,7 @@ import { render } from "vitest-browser-react";
 import { axeViolations } from "./axe.ts";
 import { FileTabs, lineCount } from "./FileTabs.tsx";
 import { MenuBar } from "./MenuBar.tsx";
+import { NoteBanner, type Note } from "./NoteBanner.tsx";
 import { Toolbar } from "./Toolbar.tsx";
 import { buildMenus, type MenuActions } from "./menu-model.ts";
 
@@ -317,5 +318,42 @@ describe("MISC focus rings follow the design", () => {
     for (const q of [".sc-toolbar", "aside"]) {
       expect(await axeViolations(screen.container.querySelector(q) as HTMLElement)).toEqual([]);
     }
+  });
+});
+
+describe("MISC note banner", () => {
+  it("MISC shows its text and is dismissed with the Dismiss button", async () => {
+    const onDismiss = vi.fn();
+    const screen = await render(<NoteBanner note={{ text: "Converted from Python." }} onDismiss={onDismiss} />);
+    await expect.element(screen.getByText("Converted from Python.")).toBeVisible();
+    await screen.getByRole("button", { name: "Dismiss" }).click();
+    expect(onDismiss).toHaveBeenCalledOnce();
+  });
+
+  it("MISC an error note uses the soft red background and a plain note the subtle one", async () => {
+    const screen = await render(<NoteBanner note={{ text: "Problem.", error: true }} onDismiss={() => undefined} />);
+    expect(screen.getByRole("status").element().classList.contains("sc-note-err")).toBe(true);
+    await screen.rerender(<NoteBanner note={{ text: "Fine." }} onDismiss={() => undefined} />);
+    expect(screen.getByRole("status").element().classList.contains("sc-note-err")).toBe(false);
+  });
+
+  it("MISC the banner disappears once dismissed and has no axe violations", async () => {
+    const Harness = () => {
+      const [note, setNote] = useState<Note | null>({ text: "Hello." });
+      return note === null ? (
+        <p>gone</p>
+      ) : (
+        <NoteBanner
+          note={note}
+          onDismiss={() => {
+            setNote(null);
+          }}
+        />
+      );
+    };
+    const screen = await render(<Harness />);
+    expect(await axeViolations(screen.container)).toEqual([]);
+    await screen.getByRole("button", { name: "Dismiss" }).click();
+    await expect.element(screen.getByText("gone")).toBeVisible();
   });
 });
