@@ -3,6 +3,8 @@
 // Compiler concept: *static type checking*. Unlike Edexcel, CIE declares every variable's type (CIE-11), so the
 // checker knows each type before it sees a use. `unknown` is the type of something already reported as an error,
 // and fits everywhere, so one mistake gives one error.
+import type { DeclaredScalar } from "../ir/ir.ts";
+
 export type Ty =
   | { kind: "INTEGER" }
   | { kind: "REAL" }
@@ -90,4 +92,20 @@ export function comparable(a: Ty, b: Ty): boolean {
   if (isText(a) && isText(b)) return true;
   // CIE-48: records (like arrays and dates) cannot be compared; enumerated values can, by order (CIE-31).
   return sameType(a, b) && a.kind !== "ARRAY" && a.kind !== "DATE" && a.kind !== "RECORD" && a.kind !== "CLASS";
+}
+
+/** The declared scalar type name for the converter, or undefined for arrays, records and the rest. */
+export const declaredScalar = (t: Ty): DeclaredScalar | undefined =>
+  t.kind === "INTEGER" || t.kind === "REAL" || t.kind === "BOOLEAN" || t.kind === "STRING" || t.kind === "CHAR"
+    ? t.kind
+    : undefined;
+
+/** Declared scalar types of a name table, by name. */
+export function declaredTable(vars: Iterable<{ name: string; ty: Ty }>): Record<string, DeclaredScalar> {
+  const out: Record<string, DeclaredScalar> = {};
+  for (const v of vars) {
+    const d = declaredScalar(v.ty);
+    if (d !== undefined) out[v.name] = d;
+  }
+  return out;
 }

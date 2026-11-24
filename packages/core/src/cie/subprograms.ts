@@ -3,7 +3,7 @@ import type { Subprogram } from "../ir/ir.ts";
 import type { Token } from "../edexcel/tokens.ts";
 import { CIE_RESERVED } from "./cursor.ts";
 import type { Param, Signature } from "./env.ts";
-import { SCALAR_TYPES, type Ty } from "./types.ts";
+import { declaredScalar, declaredTable, SCALAR_TYPES, type Ty } from "./types.ts";
 import type { Statements } from "./statements.ts";
 
 export function paramType(s: Statements): Ty {
@@ -85,6 +85,8 @@ export function installSubprograms(s: Statements, out: Record<string, Subprogram
     env.locals = locals;
     env.current = sig;
     const body = s.block(first, upper, [closer], closer);
+    const declared = declaredTable(locals.values());
+    const result = returns === null ? undefined : declaredScalar(returns);
     env.locals = null;
     env.current = null;
     c.endStatement();
@@ -93,6 +95,8 @@ export function installSubprograms(s: Statements, out: Record<string, Subprogram
       kind,
       params: ps.map((p) => p.name),
       ...(ps.some((p) => p.byRef) ? { byRef: ps.map((p) => p.byRef) } : {}),
+      ...(Object.keys(declared).length > 0 ? { declared } : {}),
+      ...(result !== undefined ? { returns: result } : {}),
       body: body.stmts,
       span: c.spanFrom(first),
     };

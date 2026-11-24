@@ -4,15 +4,6 @@
     "converter/conformance/edexcel/EDX-21-empty-array",
     "converter/conformance/edexcel/SH-03-real-large-shortest-form",
     "converter/conformance/edexcel/SH-13-recursion-1000-calls-deep",
-    "converter/MISC-refuse-types",
-    "converter/MISC-text-ints-only",
-    "converter/MISC-text-int-arithmetic",
-    "converter/MISC-text-input-and-counter",
-    "converter/MISC-text-string-input",
-    "converter/MISC-text-for-each",
-    "converter/MISC-text-function",
-    "converter/MISC-text-join",
-    "converter/MISC-text-builtins",
-    "converter/MISC-text-join-real"
+    "converter/MISC-refuse-types"
   ]
 }
