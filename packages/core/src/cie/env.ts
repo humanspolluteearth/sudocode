@@ -7,6 +7,8 @@ import type { Expr } from "../ir/ir.ts";
 import type { Ty } from "./types.ts";
 
 export interface Variable {
+  /** How it was first written; every later spelling in another case is the same variable (CIE-03). */
+  name: string;
   ty: Ty;
   constant: boolean;
   /** For the values of an enumerated type: the IR to use wherever the name appears (CIE-31). */
@@ -40,19 +42,21 @@ export class Env {
     this.subs = subs;
   }
 
+  // CIE-03: identifiers are not case-sensitive, so both maps are keyed by the lower-case name.
   lookup(name: string): Variable | undefined {
-    return this.locals?.get(name) ?? this.globals.get(name);
+    const key = name.toLowerCase();
+    return this.locals?.get(key) ?? this.globals.get(key);
   }
 
   isLocal(name: string): boolean {
-    return this.locals?.has(name) === true;
+    return this.locals?.has(name.toLowerCase()) === true;
   }
 
   names(): string[] {
-    return [...(this.locals?.keys() ?? []), ...this.globals.keys()];
+    return [...(this.locals?.values() ?? []), ...this.globals.values()].map((v) => v.name);
   }
 
-  declare(name: string, v: Variable): void {
-    (this.locals ?? this.globals).set(name, v);
+  declare(name: string, v: Omit<Variable, "name">): void {
+    (this.locals ?? this.globals).set(name.toLowerCase(), { ...v, name });
   }
 }

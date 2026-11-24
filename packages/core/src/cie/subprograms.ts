@@ -78,7 +78,7 @@ export function installSubprograms(s: Statements, out: Record<string, Subprogram
         c.report("E-CHK-DUPLICATE-SUBPROGRAM", name.span, { name: name.text, line: earlier.span.line });
       else env.subs.set(name.text, sig);
     }
-    const locals = new Map(ps.map((p) => [p.name, { ty: p.ty, constant: false }]));
+    const locals = new Map(ps.map((p) => [p.name.toLowerCase(), { name: p.name, ty: p.ty, constant: false }]));
     env.locals = locals;
     env.current = sig;
     const body = s.block(first, upper, [closer], closer);

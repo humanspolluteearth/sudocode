@@ -260,7 +260,12 @@ export class Statements {
   }
 
   private ref(t: Token): VarRef {
-    return { kind: "var", name: t.text, scope: this.env.isLocal(t.text) ? "local" : "global", span: t.span };
+    return {
+      kind: "var",
+      name: this.env.lookup(t.text)?.name ?? t.text,
+      scope: this.env.isLocal(t.text) ? "local" : "global",
+      span: t.span,
+    };
   }
 
   private input(first: Token): Ir[] {
@@ -271,7 +276,7 @@ export class Statements {
     if (name.kind !== "word")
       return c.fail("a variable", "Write the variable that receives the input, e.g. INPUT Age.");
     c.next();
-    const v = this.env.lookup(name.text);
+    const v = this.x.lookupVar(name);
     const indexes = c.isSymbol("[") ? this.x.subscripts(name, v?.ty ?? UNKNOWN).indexes : null;
     if (v === undefined) {
       this.x.undeclared(name);
@@ -318,7 +323,7 @@ export class Statements {
       return c.failSilently();
     }
     c.next();
-    const v = this.env.lookup(first.text);
+    const v = this.x.lookupVar(first);
     if (c.isSymbol(".") || (c.isSymbol("[") && this.fieldFollowsIndex())) return this.fieldAssign(first, v);
     if (c.isSymbol("[")) return this.elementAssign(first, v);
     if (!c.isSymbol("←")) {
@@ -369,7 +374,7 @@ export class Statements {
       return c.failSilently();
     }
     const scope = this.env.isLocal(first.text) ? "local" : "global";
-    const root: VarRef = { kind: "var", name: first.text, scope, span: first.span };
+    const root: VarRef = { kind: "var", name: v.name, scope, span: first.span };
     const base: Typed = { ir: root, ty: v.ty, oneChar: false, span: first.span };
     const left = this.x.fields(first, c.isSymbol("[") ? this.x.element(first, base) : base);
     c.expectSymbol("←", "←", "Use <- to store a value: Name.Field <- value.");
@@ -540,7 +545,7 @@ export class Statements {
     const name = c.peek();
     if (name.kind !== "word") return c.fail("a variable", "Write the counter, e.g. FOR i <- 1 TO 10.");
     c.next();
-    const v = this.env.lookup(name.text);
+    const v = this.x.lookupVar(name);
     if (v === undefined) this.x.undeclared(name);
     c.expectSymbol("←", "<-", "Write FOR Counter <- Start TO End.");
     const start = this.x.expr();
@@ -557,7 +562,7 @@ export class Statements {
         kind: "forInclusive",
         variable: {
           kind: "var",
-          name: name.text,
+          name: v?.name ?? name.text,
           scope: this.env.isLocal(name.text) ? "local" : "global",
           span: name.span,
         },
