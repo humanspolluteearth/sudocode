@@ -14,8 +14,11 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
 import { Editor, type EditorHandle } from "./Editor.tsx";
+import { FileTabs } from "./FileTabs.tsx";
 import { applyWrite, loadFiles, putFile, removeFile, saveFiles } from "./files-store.ts";
-import { loadPreferences, savePreferences } from "./preferences.ts";
+import { MenuBar } from "./MenuBar.tsx";
+import { buildMenus } from "./menu-model.ts";
+import { loadPreferences, savePreferences, type PseudocodeLanguage } from "./preferences.ts";
 import { startRun, type RunSession, type SessionCommand, type WorkerFactories } from "./run-session.ts";
 import { initialRunView, runReducer } from "./run-state.ts";
 import { SidePanel, type SideTab } from "./SidePanel.tsx";
@@ -148,9 +151,51 @@ export function App({ workers }: AppProps) {
   };
   const themeClass = (theme: ThemeChoice) => (theme === "system" ? "sys" : theme);
   const paused = run.paused;
+  const changeLanguage = (next: PseudocodeLanguage) => {
+    // The old language's run and problems no longer apply.
+    session.current?.stop();
+    setDiagnostics([]);
+    // An untouched starter program follows the language; anything the student wrote stays.
+    if (source === STARTERS[language]) setSource(STARTERS[next]);
+    if (tab === "reference" && next === "edexcel") setTab("problems");
+    update({ ...prefs, language: next });
+  };
+  const menus = buildMenus({
+    running: active,
+    paused: run.state === "paused",
+    canRun: workers !== undefined,
+    onRun: start,
+    onStop: stop,
+    onContinue: () => {
+      resume("continue");
+    },
+    onStepOver: () => {
+      resume("stepOver");
+    },
+    onStepInto: () => {
+      resume("stepInto");
+    },
+    onStepOut: () => {
+      resume("stepOut");
+    },
+    onPause: () => {
+      send({ type: "pause" });
+    },
+    language,
+    onLanguage: changeLanguage,
+    zoom: prefs.zoom,
+    onZoom: (zoom) => {
+      update({ ...prefs, zoom });
+    },
+    theme: prefs.theme,
+    onTheme: (theme) => {
+      update({ ...prefs, theme });
+    },
+  });
 
   return (
     <div className={`sc-root ${themeClass(prefs.theme)}`} style={{ "--zoom": prefs.zoom / 100 } as React.CSSProperties}>
+      <MenuBar menus={menus} />
       <Toolbar
         running={active}
         paused={run.state === "paused"}
@@ -175,15 +220,7 @@ export function App({ workers }: AppProps) {
           update({ ...prefs, zoom });
         }}
         language={language}
-        onLanguage={(next) => {
-          // The old language's run and problems no longer apply.
-          session.current?.stop();
-          setDiagnostics([]);
-          // An untouched starter program follows the language; anything the student wrote stays.
-          if (source === STARTERS[language]) setSource(STARTERS[next]);
-          if (tab === "reference" && next === "edexcel") setTab("problems");
-          update({ ...prefs, language: next });
-        }}
+        onLanguage={changeLanguage}
         examples={EXAMPLES[language]}
         onExample={(example) => {
           setSource(example.code);
@@ -195,6 +232,7 @@ export function App({ workers }: AppProps) {
       />
       <main className="sc-main">
         <div className="sc-left">
+          <FileTabs language={language} name="untitled" source={source} />
           <Editor
             ref={editor}
             value={source}
