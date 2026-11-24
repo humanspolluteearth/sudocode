@@ -977,3 +977,145 @@ button.sc-section-head:hover {
   margin: 8px 0;
   color: var(--faint);
 }
+
+/* ---------- compact layout (tablet and phone): one view at a time, key bar, view switcher */
+.sc-views,
+.sc-keybar,
+.sc-chip,
+.sc-more {
+  display: none;
+}
+.sc-compact .sc-views {
+  display: flex;
+  flex: none;
+  border-top: 1px solid var(--line);
+  background: var(--chrome);
+}
+.sc-view {
+  position: relative;
+  flex: 1;
+  min-height: 48px;
+  border: 0;
+  border-top: 2px solid transparent;
+  background: transparent;
+  color: var(--muted2);
+}
+.sc-view[aria-current="page"] {
+  border-top-color: var(--fg);
+  color: var(--fg);
+  font-weight: 600;
+}
+.sc-dot {
+  position: absolute;
+  top: 8px;
+  right: 30%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+}
+.sc-compact .sc-keybar {
+  display: flex;
+  gap: 4px;
+  flex: none;
+  padding: 5px 6px;
+  overflow-x: auto;
+  background: var(--chrome);
+  border-top: 1px solid var(--line);
+}
+.sc-key {
+  flex: none;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--code-font);
+}
+.sc-compact .sc-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  min-height: 44px;
+  padding: 4px 10px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: var(--errsoft);
+  color: var(--fg);
+  text-align: left;
+}
+.sc-chip-line,
+.sc-chip-more {
+  color: var(--muted);
+}
+.sc-chip-more {
+  margin-left: auto;
+  color: var(--link);
+}
+.sc-compact .sc-more {
+  display: block;
+  position: relative;
+  margin-left: auto;
+}
+.sc-more-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
+}
+.sc-more-menu button {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  text-align: left;
+}
+.sc-more-menu button[aria-checked="true"]::before {
+  content: "✓ ";
+}
+.sc-compact .sc-menubar,
+.sc-compact .sc-toolbar > :not(.sc-keep, .sc-more),
+.sc-compact .sc-splitter,
+.sc-compact .sc-statusbar .sc-hide-compact {
+  display: none;
+}
+.sc-compact .sc-main {
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+.sc-compact .sc-left,
+.sc-compact .sc-side {
+  flex: 1;
+  width: auto;
+  min-height: 0;
+  border: 0;
+}
+.sc-compact[data-view="code"] .sc-side,
+.sc-compact[data-view="code"] .sc-console,
+.sc-compact[data-view="console"] .sc-side,
+.sc-compact[data-view="console"] .sc-editor,
+.sc-compact[data-view="console"] .sc-tabstrip,
+.sc-compact[data-view="debug"] .sc-left {
+  display: none;
+}
+.sc-compact[data-view="console"] .sc-console {
+  flex: 1;
+  height: auto;
+}
+.sc-compact .sc-keybar {
+  order: 0;
+}
+.sc-compact:not([data-view="code"]) .sc-keybar {
+  display: none;
+}
