@@ -265,3 +265,8 @@ Logged by Claude under /goal. Implemented as below; no golden test depends on th
 - Reading, writing or EOF on a file that was never opened: runtime error `E-RUN-FILE-NOT-OPEN` (new code).
 - OPENFILE on a file that is already open: runtime error `E-RUN-FILE-ALREADY-OPEN` (new code), from "one mode at a time" (CIE-91).
 - Random files: the address starts at 1 after OPENFILE and does not move by itself after GETRECORD/PUTRECORD; SEEK below 1 is `E-RUN-RECORD-EMPTY`. Random-file records live in memory only; they are not shown in the Files panel or kept between runs.
+
+## From the M7 test review (please decide)
+
+- Two merged tests pin behaviour the spec does not decide or contradicts, and I may not edit merged tests: (a) `cie/arrays.test.ts` expects `E-SYN-NOT-SUPPORTED` for a 2D array with different lower bounds (CIE-20/21 allow any bounds; this is a gap in the code); (b) `cie/builtins.test.ts` expects `N <- STR_TO_NUM("5")` to be `E-CHK-TYPE-CHANGE` (CIE-124 says the result is "INTEGER or REAL"; should it be allowed into an INTEGER variable when the text is whole?). Please say whether to replace them.
+- Choices not in the spec: `RAND(0)` returns 0; `IS_NUM("3.")` is FALSE; `MID("abc",3,2)` is an error; `SUPER` outside a subclass is a syntax error.

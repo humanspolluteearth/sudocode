@@ -2,6 +2,13 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 24 Nov 2026: M7 (Cambridge 9618) mostly done, NOT complete
+
+- Front end, runtime reuse, records, enums, CASE (incl. ranges), loops, BYREF/BYVAL, files, TRY/EXCEPT, classes, DATE and built-ins merged in #67-#81. Equivalence, fuzz/property and a 27-program exam corpus added in #81; correctly tagged re-proofs in the follow-up PR.
+- Both reviewer agents ran. Architecture: no MUST FIX (3 SHOULD FIX logged, D21). Tests: 3 MUST FIX; the retag and two pinned-behaviour tests need your OK because merged tests may not be edited (D22, QUESTIONS.md).
+- Not done: CIE-81 (Q46); UI language switch, CIE highlighting wiring and Quick reference panel; files over 400 lines (`cie/statements.ts`, `classes.ts`, `expressions.ts`); `today()` clock injection; 2D arrays with different lower bounds, `ARRAY` parameters, DATE literal.
+- Details: `docs/review/M7.md`. Questions: `docs/review/QUESTIONS.md`.
+
 ## 24 Nov 2026: open questions answered
 
 - Q20-31, 34-39 and 41-45 answered and written into the spec (#64); tests for them added, 5 pending until a code PR (#65): EDX-21 empty array, SH-03 large and too-large REAL, blank file line, CHARACTER wording. Still to do by hand: the `notes` in `errors/edexcel/EDX-24-grid-column-outside.expected.json`.
