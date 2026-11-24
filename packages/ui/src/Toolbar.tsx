@@ -5,7 +5,14 @@ export type ThemeChoice = "system" | "light" | "dark";
 
 export const ZOOM_MIN = 100;
 export const ZOOM_MAX = 150;
-export const ZOOM_STEP = 10;
+/** The sizes the design offers; Zoom in/out and Ctrl+= / Ctrl+- move along this ladder. */
+export const ZOOM_LEVELS = [100, 110, 120, 125, 130, 140, 150] as const;
+/** The next size up (direction 1) or down (-1) from the current zoom; unchanged at either end. */
+export function nextZoom(zoom: number, direction: 1 | -1): number {
+  const levels: readonly number[] = ZOOM_LEVELS;
+  const next = direction === 1 ? levels.find((z) => z > zoom) : levels.findLast((z) => z < zoom);
+  return next ?? zoom;
+}
 
 export interface ToolbarProps {
   running: boolean;
@@ -188,7 +195,7 @@ export function Toolbar(p: ToolbarProps) {
         type="button"
         className="sc-tb"
         onClick={() => {
-          p.onZoom(Math.max(ZOOM_MIN, p.zoom - ZOOM_STEP));
+          p.onZoom(nextZoom(p.zoom, -1));
         }}
         disabled={p.zoom <= ZOOM_MIN}
         aria-label="A− Zoom out"
@@ -201,7 +208,7 @@ export function Toolbar(p: ToolbarProps) {
         type="button"
         className="sc-tb"
         onClick={() => {
-          p.onZoom(Math.min(ZOOM_MAX, p.zoom + ZOOM_STEP));
+          p.onZoom(nextZoom(p.zoom, 1));
         }}
         disabled={p.zoom >= ZOOM_MAX}
         aria-label="A+ Zoom in"

@@ -18,7 +18,7 @@ import { SidePanel, type SideTab } from "./SidePanel.tsx";
 import { NoteBanner, type Note } from "./NoteBanner.tsx";
 import { StatusBar } from "./StatusBar.tsx";
 import { StepLimitDialog } from "./StepLimitDialog.tsx";
-import { Toolbar, type ThemeChoice } from "./Toolbar.tsx";
+import { nextZoom, Toolbar, ZOOM_LEVELS, type ThemeChoice } from "./Toolbar.tsx";
 import "./styles.css";
 
 const EXAMPLES = { edexcel: EDEXCEL_EXAMPLES, cie: CIE_EXAMPLES, python: PYTHON_EXAMPLES } as const;
@@ -146,6 +146,10 @@ export function App({ workers }: AppProps) {
     else if (e.key === "F10") resume("stepOver");
     else if (e.key === "F11" && e.shiftKey) resume("stepOut");
     else if (e.key === "F11") resume("stepInto");
+    else if ((e.ctrlKey || e.metaKey) && (e.key === "=" || e.key === "+"))
+      update({ ...prefs, zoom: nextZoom(prefs.zoom, 1) });
+    else if ((e.ctrlKey || e.metaKey) && e.key === "-") update({ ...prefs, zoom: nextZoom(prefs.zoom, -1) });
+    else if ((e.ctrlKey || e.metaKey) && e.key === "0") update({ ...prefs, zoom: ZOOM_LEVELS[0] });
     else return;
     e.preventDefault();
   };
@@ -204,6 +208,13 @@ export function App({ workers }: AppProps) {
     onTheme: (theme) => {
       update({ ...prefs, theme });
     },
+    sideTab: tab,
+    onSideTab: setTab,
+    onClearConsole: () => {
+      dispatch({ type: "clearOutput" });
+    },
+    breakpointCount: breakpoints.length,
+    onClearBreakpoints: () => editor.current?.clearBreakpoints(),
   });
 
   if (guide !== null) return <GuidePage guide={guide} onNavigate={openGuide} themeClass={themeClass(prefs.theme)} />;
