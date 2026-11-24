@@ -2,11 +2,12 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
-## 24 Nov 2026: M8 (Python) partly done, blocked on the size budget
+## 24 Nov 2026: M8 (Python) complete
 
-- **PRs:** #93 tests and CI (merged); #94 Python front end, runtime, highlighting, examples, Quick reference (open, `build-web` red).
-- **State:** 31 goldens, 10 error programs and unit tests pass; `pnpm check` green locally. Equivalence tests and reviewer pass not done.
-- **Needs you:** Q56 (size budget, 315.8 vs 270 kB), mark `python-sample` required, Q54, Q55; see `docs/review/M8.md`.
+- **PRs:** #93 tests and CI; #94 front end, runtime, UI, equivalence tests, budget raised to 330 kB. Both squash-merged with CI green.
+- **State:** checklist ticked. Both reviewers ran; no MUST FIX. SHOULD FIX items (split `parse-expr.ts`, pausable comprehensions and size caps, `never` checks) are in `docs/review/M8.md`.
+- **Needs you:** mark `python-sample` required in the ruleset; one authorised merged-test edit (`preferences.browser.test.tsx`).
+- **Next step:** M9 (classes, modules, PY-41).
 
 ## 24 Nov 2026: M7 (Cambridge 9618) complete
 
