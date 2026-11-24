@@ -2,7 +2,10 @@
 // menus (zoom, theme, language). Items for features that don't exist yet are disabled with a reason.
 import type { MenuDef } from "./MenuBar.tsx";
 import type { PseudocodeLanguage } from "./preferences.ts";
-import { ZOOM_MAX, ZOOM_MIN, ZOOM_STEP, type ThemeChoice } from "./Toolbar.tsx";
+import type { SideTab } from "./SidePanel.tsx";
+import { nextZoom, ZOOM_MAX, ZOOM_MIN, type ThemeChoice } from "./Toolbar.tsx";
+
+const ZOOM_PRESETS = [100, 110, 125, 150] as const;
 
 export interface MenuActions {
   running: boolean;
@@ -21,6 +24,13 @@ export interface MenuActions {
   onZoom: (zoom: number) => void;
   theme: ThemeChoice;
   onTheme: (theme: ThemeChoice) => void;
+  /** The side panel tab on show, and a way to switch it (View > Debugger, Quick reference). */
+  sideTab: SideTab;
+  onSideTab: (tab: SideTab) => void;
+  onClearConsole: () => void;
+  /** How many breakpoints are set; "Clear all breakpoints" is disabled at 0. */
+  breakpointCount: number;
+  onClearBreakpoints: () => void;
 }
 
 const SOON = "Not available yet";
@@ -32,7 +42,7 @@ export function buildMenus(a: MenuActions): MenuDef[] {
     ["python", "Python"],
   ];
   const themes: [ThemeChoice, string][] = [
-    ["system", "Theme: System"],
+    ["system", "Match system theme"],
     ["light", "Theme: Light"],
     ["dark", "Theme: Dark"],
   ];
@@ -59,6 +69,8 @@ export function buildMenus(a: MenuActions): MenuDef[] {
         { label: "Step into", onSelect: a.onStepInto, disabled: !a.paused, hint: "F11" },
         { label: "Step out", onSelect: a.onStepOut, disabled: !a.paused, hint: "Shift+F11" },
         { label: "Pause", onSelect: a.onPause, disabled: !a.running || a.paused },
+        { sep: true },
+        { label: "Clear all breakpoints", onSelect: a.onClearBreakpoints, disabled: a.breakpointCount === 0 },
       ],
     },
     {
@@ -85,19 +97,53 @@ export function buildMenus(a: MenuActions): MenuDef[] {
       label: "View",
       items: [
         {
+          label: "Debugger",
+          checked: a.sideTab === "debugger",
+          onSelect: () => {
+            a.onSideTab("debugger");
+          },
+        },
+        {
+          label: "Quick reference",
+          checked: a.sideTab === "reference",
+          onSelect: () => {
+            a.onSideTab("reference");
+          },
+        },
+        { sep: true },
+        { label: "Clear console", onSelect: a.onClearConsole },
+        { sep: true },
+        {
           label: "Zoom in",
+          hint: "Ctrl+=",
           disabled: a.zoom >= ZOOM_MAX,
           onSelect: () => {
-            a.onZoom(a.zoom + ZOOM_STEP);
+            a.onZoom(nextZoom(a.zoom, 1));
           },
         },
         {
           label: "Zoom out",
+          hint: "Ctrl+-",
           disabled: a.zoom <= ZOOM_MIN,
           onSelect: () => {
-            a.onZoom(a.zoom - ZOOM_STEP);
+            a.onZoom(nextZoom(a.zoom, -1));
           },
         },
+        {
+          label: "Actual size",
+          hint: "Ctrl+0",
+          disabled: a.zoom === 100,
+          onSelect: () => {
+            a.onZoom(100);
+          },
+        },
+        ...ZOOM_PRESETS.map((z) => ({
+          label: `Zoom ${String(z)}%`,
+          checked: a.zoom === z,
+          onSelect: () => {
+            a.onZoom(z);
+          },
+        })),
         { sep: true },
         ...themes.map(([id, label]) => ({
           label,
