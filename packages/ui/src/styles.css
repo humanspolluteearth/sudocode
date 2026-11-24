@@ -755,3 +755,23 @@ body {
 .sc-tablist {
   display: flex;
 }
+
+/* The full guide pages scroll like a normal page; the design sets the rest inline. */
+.sc-root.sc-guide {
+  display: block;
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+}
+.sc-guide a {
+  color: var(--link);
+}
+.sc-guide a:hover {
+  color: var(--linkhover);
+}
+.sc-ref-full {
+  padding: 10px;
+}
+.sc-ref-full a {
+  color: var(--link);
+}

@@ -14,6 +14,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
 import { Editor, type EditorHandle } from "./Editor.tsx";
+import { GuidePage, guideFromSearch, guideUrl, type GuideId } from "./GuidePage.tsx";
 import { FileTabs } from "./FileTabs.tsx";
 import { applyWrite, loadFiles, putFile, removeFile, saveFiles } from "./files-store.ts";
 import { MenuBar } from "./MenuBar.tsx";
@@ -47,6 +48,23 @@ export function App({ workers }: AppProps) {
   const [run, dispatch] = useReducer(runReducer, initialRunView);
   const [breakpoints, setBreakpoints] = useState<number[]>([]);
   const [tab, setTab] = useState<SideTab>("debugger");
+  // The full guide pages are routes (`?guide=cie`), so the browser's Back button and shared links work.
+  const [guide, setGuide] = useState<GuideId | null>(() =>
+    guideFromSearch(typeof location === "undefined" ? "" : location.search),
+  );
+  useEffect(() => {
+    const onPop = () => {
+      setGuide(guideFromSearch(globalThis.location.search));
+    };
+    window.addEventListener("popstate", onPop);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+    };
+  }, []);
+  const openGuide = (target: GuideId | "ide") => {
+    globalThis.history.pushState(null, "", target === "ide" ? globalThis.location.pathname : guideUrl(target));
+    setGuide(target === "ide" ? null : target);
+  };
   const session = useRef<RunSession | null>(null);
   const checker = useRef<CheckClient | null>(null);
   const editor = useRef<EditorHandle>(null);
@@ -195,6 +213,7 @@ export function App({ workers }: AppProps) {
     },
   });
 
+  if (guide !== null) return <GuidePage guide={guide} onNavigate={openGuide} themeClass={themeClass(prefs.theme)} />;
   return (
     <div className={`sc-root ${themeClass(prefs.theme)}`} style={{ "--zoom": prefs.zoom / 100 } as React.CSSProperties}>
       <MenuBar menus={menus} />
@@ -284,6 +303,8 @@ export function App({ workers }: AppProps) {
               : undefined
           }
           guide={GUIDES[language]}
+          language={language}
+          onOpenGuide={openGuide}
           onUseGuide={(section) => {
             setSource(section.code);
           }}
