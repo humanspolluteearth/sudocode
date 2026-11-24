@@ -10,7 +10,7 @@ const codes = (source: string): string[] =>
 async function out(source: string): Promise<string> {
   const r = await runHeadless(
     createLocalRunner(ENGINES),
-    { language: "python", source, trace: false, breakpoints: [], files: {} },
+    { language: "python", source, trace: false, breakpoints: [], files: {}, seed: 1 },
     [],
   );
   return r.stdout;
