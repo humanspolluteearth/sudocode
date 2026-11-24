@@ -42,9 +42,6 @@ const actions = (over: Partial<MenuActions> = {}): MenuActions => ({
   onSave: () => undefined,
   onSaveAs: () => undefined,
   onSaveAll: () => undefined,
-  examples: [],
-  currentExampleId: null,
-  onExample: () => undefined,
   advanced: true,
   onConvertToPython: () => undefined,
   ...over,
@@ -144,21 +141,6 @@ describe("MISC menu bar", () => {
       await screen.getByRole("menuitem", { name }).click();
       expect(fn).toHaveBeenCalledOnce();
     }
-  });
-
-  it("MISC File lists the examples with a tick on the current one", async () => {
-    const examples = [
-      { id: "a", name: "First", code: "1" },
-      { id: "b", name: "Second", code: "2" },
-    ];
-    const onExample = vi.fn();
-    const screen = await render(
-      <MenuBar menus={buildMenus(actions({ examples, currentExampleId: "b", onExample }))} />,
-    );
-    await screen.getByRole("menuitem", { name: "File", exact: true }).click();
-    await expect.element(screen.getByRole("menuitemradio", { name: "Second" })).toHaveAttribute("aria-checked", "true");
-    await screen.getByRole("menuitemradio", { name: "First" }).click();
-    expect(onExample).toHaveBeenCalledWith(examples[0]);
   });
 
   it("MISC Convert menu converts to Python, is disabled for Python files and is hidden in Simple mode", async () => {
@@ -271,8 +253,6 @@ describe("MISC Toolbar layout", () => {
       onZoom={() => undefined}
       theme="system"
       onTheme={() => undefined}
-      examples={[]}
-      onExample={() => undefined}
       {...over}
     />
   );
@@ -338,10 +318,11 @@ describe("MISC Editor gutter", () => {
 });
 
 describe("MISC Default program", () => {
-  it("MISC the app opens with the Grade checker sample and no problems", async () => {
+  it("MISC the app opens with a blank untitled file and no problems", async () => {
     localStorage.clear();
     const screen = await render(<App />);
-    await expect.element(screen.getByText("# Grade checker")).toBeVisible();
+    await expect.element(screen.getByRole("tab", { name: /EDX\s*untitled\.epc/ })).toBeVisible();
+    await expect.poll(() => screen.getByRole("textbox").first().element().textContent.trim()).toBe("");
     await expect.element(screen.getByText("No problems.")).toBeVisible();
   });
 });

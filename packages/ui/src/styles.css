@@ -533,6 +533,8 @@ button.sc-section-head:hover {
   align-items: center;
   justify-content: center;
   background: rgb(0 0 0 / 35%);
+  /* Above the splitters (z-index 1), which would otherwise draw over and block the dialog's buttons. */
+  z-index: 40;
 }
 .sc-dialog {
   max-width: 420px;

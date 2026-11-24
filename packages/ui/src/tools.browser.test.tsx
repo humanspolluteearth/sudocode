@@ -83,12 +83,6 @@ describe("MISC tool switches (docs/PRODUCT.md)", () => {
       },
     ],
     [
-      "examples",
-      async (s) => {
-        await expect.element(s.getByLabelText("Example")).not.toBeInTheDocument();
-      },
-    ],
-    [
       "stepInto",
       async (s) => {
         await expect.element(s.getByRole("region", { name: "Call stack" })).not.toBeInTheDocument();

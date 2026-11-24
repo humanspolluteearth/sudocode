@@ -227,8 +227,6 @@ describe("MISC debugger toolbar buttons", () => {
       onZoom={() => undefined}
       theme="system"
       onTheme={() => undefined}
-      examples={[]}
-      onExample={() => undefined}
       {...over}
     />
   );
@@ -351,8 +349,6 @@ describe("MISC step into, step out and the call stack panel", () => {
         onZoom={() => undefined}
         theme="system"
         onTheme={() => undefined}
-        examples={[]}
-        onExample={() => undefined}
       />
     );
     const screen = await render(make(false));
