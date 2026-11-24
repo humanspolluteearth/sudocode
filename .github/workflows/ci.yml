@@ -61,6 +61,21 @@ jobs:
 
   # Stage 2: these need stage 1 to be green first. build-web, test-ui and e2e-chromium are meant to be required
   # checks on main (asked in docs/review/M3.md; the ruleset is the owner's to change).
+  # M8, PY-01: Python expected output may only come from CPython 3.12. This job runs the fast subset (the golden
+  # programs) through the oracle and fails if an expected file differs. The nightly `python-full` job runs every
+  # Python program. Hand-specified `errors/python` files (Sudocode's own "not supported" messages) are not run here.
+  python-sample:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - run: python3 scripts/python-oracle.py --check packages/core/tests/golden/python/*.py
+
   build-web:
     needs: [lint, typecheck, test-core, spec-coverage]
     runs-on: ubuntu-latest

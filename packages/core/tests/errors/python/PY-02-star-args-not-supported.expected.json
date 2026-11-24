@@ -1,0 +1,20 @@
+{
+  "spec": ["PY-02"],
+  "language": "python",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-NOT-SUPPORTED",
+        "line": 1,
+        "column": 7,
+        "message": "*args and **kwargs is not supported in Sudocode yet",
+        "hint": "*args and **kwargs are not in the Python subset yet. Use a list parameter instead."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Sudocode's own 'not supported' behaviour (SH-18), not CPython's, so it is hand-specified and never run through the CPython oracle. Position convention: the first token of the unsupported construct (open question: logged in docs/review/QUESTIONS.md)."
+}

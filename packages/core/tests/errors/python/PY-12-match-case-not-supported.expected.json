@@ -1,0 +1,20 @@
+{
+  "spec": ["PY-12"],
+  "language": "python",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-NOT-SUPPORTED",
+        "line": 2,
+        "column": 1,
+        "message": "match/case is not supported in Sudocode yet",
+        "hint": "match/case is not in the Python subset yet. Use if / elif / else instead."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Sudocode's own 'not supported' behaviour (SH-18), not CPython's, so it is hand-specified and never run through the CPython oracle. Position convention: the first token of the unsupported construct (open question: logged in docs/review/QUESTIONS.md)."
+}

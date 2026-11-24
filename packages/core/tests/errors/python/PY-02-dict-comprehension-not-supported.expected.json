@@ -1,0 +1,20 @@
+{
+  "spec": ["PY-02"],
+  "language": "python",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-NOT-SUPPORTED",
+        "line": 1,
+        "column": 5,
+        "message": "Dictionary and set comprehensions is not supported in Sudocode yet",
+        "hint": "Only list comprehensions are in the Python subset. Build the dictionary with a for loop instead."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Sudocode's own 'not supported' behaviour (SH-18), not CPython's, so it is hand-specified and never run through the CPython oracle. Position convention: the first token of the unsupported construct (open question: logged in docs/review/QUESTIONS.md)."
+}
