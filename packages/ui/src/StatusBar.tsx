@@ -3,7 +3,7 @@ import type { Diagnostic } from "@sudocode/core";
 
 export type RunState = "idle" | "checking" | "running" | "paused" | "waiting" | "finished" | "stopped" | "error";
 
-const STATE_TEXT: Record<RunState, string> = {
+export const STATE_TEXT: Record<RunState, string> = {
   idle: "Ready",
   checking: "Checking",
   running: "Running",

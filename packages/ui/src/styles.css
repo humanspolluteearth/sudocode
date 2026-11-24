@@ -243,7 +243,7 @@ body {
   border-bottom: 1px solid var(--line2);
   border-top: 1px solid var(--line);
   font-weight: 600;
-  font-size: 0.92em;
+  font-size: 11px;
   flex: none;
 }
 .sc-panel-title .sc-count {
@@ -377,7 +377,8 @@ body {
   border-bottom: 1px solid var(--line);
 }
 .sc-tab {
-  padding: 4px 12px;
+  height: 26px;
+  padding: 0 12px;
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
@@ -390,17 +391,19 @@ body {
 .sc-debugger {
   flex: 1 1 0;
   min-height: 0;
+  overflow: auto;
   display: flex;
   flex-direction: column;
 }
+.sc-status-body {
+  padding: 4px 8px;
+}
 .sc-vars-panel {
-  flex: 0 1 auto;
-  max-height: 45%;
-  overflow: auto;
+  flex: none;
 }
 .sc-trace-panel {
-  flex: 1 1 0;
-  min-height: 0;
+  flex: 1 0 120px;
+  min-height: 120px;
   display: flex;
   flex-direction: column;
 }

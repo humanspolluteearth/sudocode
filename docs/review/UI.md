@@ -41,3 +41,7 @@ The gutter is 62px wide with the design's number padding and 11px numbers, and t
 ## U5 Default program
 
 The app opens with the "Grade checker" example of the chosen language (the design's sample). Core's example tests already prove every example, including these, runs with no error or warning. The design also pre-fills the input "Amira" and "64"; our Grade checker example sets those values in the program, so no input is pre-filled.
+
+## U6 Side panel
+
+The right panel has the design's stacked Status, Problems, Variables, Breakpoints sections (plus Call stack and Trace table, kept from the app) under a Debugger tab. Problems is no longer a separate tab, so the old "Problems" tab button is gone (no test used it). The design shows a Quick reference tab for every language; the app still shows it only for Cambridge and Python, because Edexcel has no guide in core. The Advanced checkbox keeps its current look (only its size differs from the design).
