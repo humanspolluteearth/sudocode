@@ -19,6 +19,8 @@ export interface Preferences {
   toolsOff: ToolId[];
   /** The startup dialog was closed with "Don't show this again" ticked. */
   welcomeDone: boolean;
+  /** Tablet layout only: the side panel is hidden so the editor has the full width. */
+  sidePanelHidden: boolean;
 }
 
 export const DEFAULT_PREFERENCES: Preferences = {
@@ -28,6 +30,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   language: "edexcel",
   toolsOff: [],
   welcomeDone: false,
+  sidePanelHidden: false,
 };
 
 export function parseTheme(value: unknown): ThemeChoice {
@@ -44,7 +47,10 @@ export function loadPreferences(): Preferences {
   try {
     const raw: unknown = JSON.parse(globalThis.localStorage.getItem(KEY) ?? "null");
     if (typeof raw === "object" && raw !== null) {
-      const { theme, zoom, advanced, language, toolsOff, welcomeDone } = raw as Record<string, unknown>;
+      const { theme, zoom, advanced, language, toolsOff, welcomeDone, sidePanelHidden } = raw as Record<
+        string,
+        unknown
+      >;
       return {
         theme: parseTheme(theme),
         zoom: clampZoom(zoom),
@@ -52,6 +58,7 @@ export function loadPreferences(): Preferences {
         language: language === "cie" || language === "python" ? language : "edexcel",
         toolsOff: parseToolList(toolsOff),
         welcomeDone: welcomeDone === true,
+        sidePanelHidden: sidePanelHidden === true,
       };
     }
   } catch {

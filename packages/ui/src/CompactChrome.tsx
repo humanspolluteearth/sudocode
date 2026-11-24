@@ -96,6 +96,46 @@ export interface OverflowProps {
   onZoom: (zoom: number) => void;
 }
 
+/**
+ * Tablet toolbar button that hides or shows the side panel. `attention` is the small dot shown while the panel is
+ * hidden and something happened in it (a pause or an error): hiding the panel is the student's choice, so the app
+ * never reopens it, it only says there is something to look at.
+ */
+export function SidePanelToggle(p: { shown: boolean; attention: boolean; onToggle: () => void }) {
+  const title = p.shown ? "Hide side panel" : "Show side panel";
+  return (
+    <button
+      type="button"
+      className="sc-tb sc-keep sc-side-toggle"
+      aria-pressed={p.shown}
+      title={title}
+      onClick={p.onToggle}
+    >
+      <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false">
+        <rect x="2.5" y="3.5" width="15" height="13" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <rect
+          x="11"
+          y="3.5"
+          width="6.5"
+          height="13"
+          fill={p.shown ? "currentColor" : "none"}
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+      </svg>
+      <span className="sc-sr-only">{title}</span>
+      {p.attention && !p.shown && (
+        <>
+          <span className="sc-side-dot" aria-hidden="true" />
+          <span className="sc-sr-only" role="status">
+            The program paused or stopped with an error. Show the side panel to see it.
+          </span>
+        </>
+      )}
+    </button>
+  );
+}
+
 export function OverflowMenu(p: OverflowProps) {
   const [open, setOpen] = useState(false);
   const run = (action: () => void) => () => {

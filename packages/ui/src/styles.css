@@ -1278,6 +1278,30 @@ button.sc-section-head:hover {
   width: 380px;
   border-left: 1px solid var(--line);
 }
+/* Side panel hidden (tablet): the editor takes the full width. The panel stays mounted so its state is kept. */
+.sc-tablet .sc-main.sc-side-hidden .sc-side {
+  display: none;
+}
+.sc-side-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0;
+}
+.sc-side-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--red);
+  border: 1px solid var(--bg);
+}
 .sc-tablet .sc-toolbar {
   min-height: 52px;
   padding: 0 8px;

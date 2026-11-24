@@ -48,6 +48,9 @@ export interface MenuActions {
   /** Help > Welcome and disclaimer, and Report a bug (opens the mail link). */
   onWelcome?: () => void;
   onReportBug?: () => void;
+  /** View > Side panel (tablet layout only): given with `sidePanelShown`, the entry has a tick while the panel shows. */
+  onToggleSidePanel?: () => void;
+  sidePanelShown?: boolean;
 }
 
 export function buildMenus(a: MenuActions): MenuDef[] {
@@ -155,6 +158,9 @@ export function buildMenus(a: MenuActions): MenuDef[] {
               },
             ]
           : []),
+        ...(a.onToggleSidePanel === undefined
+          ? []
+          : [{ label: "Side panel", checked: a.sidePanelShown ?? true, onSelect: a.onToggleSidePanel }]),
         { sep: true },
         { label: "Clear console", onSelect: a.onClearConsole },
         { sep: true },
