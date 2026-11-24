@@ -18,3 +18,10 @@ last two loosen a CI gate and the first changes read-only reference material, so
 
 **Decision for you:** if you want it committed, either dismiss that alert as "used in tests / not production code" or
 add `paths-ignore: reference/**` to the CodeQL config, then `git add` the file.
+
+## U2: size budget raised from 340.0 kB to 344.0 kB for the UI conformance work
+
+PR #111 (menu bar and tab strip) was 340.3 kB gzipped in CI (339.6 kB locally; CI's zlib is about 0.7 kB larger),
+0.3 kB over. Main was already at about 338.7 kB, and trimming the new code saved under 0.1 kB. You told me to raise
+the budget, so `scripts/size-budget.json` went up once by 4 kB to cover the whole UI job (menu bar, tab strip,
+toolbar, side panel). Each PR reports its measured size. Earlier milestones (M7, M8, M9) did the same.
