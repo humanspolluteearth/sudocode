@@ -4,6 +4,7 @@ import type { PyArithOp, PyCompareOp } from "../../ir/python-ir.ts";
 import { bool, list, pyint, real, tuple, type Value } from "../values.ts";
 import { pyError, typeError, valueError } from "./errors.ts";
 import { fixedHalfEven } from "./format-spec.ts";
+import { momentArith, momentOrder, momentTypeError } from "./datetime-mod.ts";
 import { pyEq } from "./hash.ts";
 import { pyTypeName } from "./repr.ts";
 
@@ -140,6 +141,11 @@ function setOp(
 export function arith(op: PyArithOp, a: Value, b: Value, span: Span): Value {
   if (isNumeric(a) && isNumeric(b)) return numeric(op, a, b, span);
   if (a.kind === "set" && b.kind === "set") return setOp(op, a, b, span);
+  if (a.kind === "moment" || b.kind === "moment") {
+    const m = momentArith(op, a, b, span);
+    if (m !== undefined) return m;
+    throw momentTypeError(SYMBOL[op], a, b, span);
+  }
   const textA = a.kind === "str" || a.kind === "char";
   const textB = b.kind === "str" || b.kind === "char";
   if (op === "add") {
@@ -199,6 +205,8 @@ export function compareOrder(a: Value, b: Value, symbol: string, span: Span): nu
     }
     return x.length < y.length ? -1 : x.length > y.length ? 1 : 0;
   }
+  const when = momentOrder(a, b);
+  if (when !== null) return when;
   if ((a.kind === "list" && b.kind === "list") || (a.kind === "tuple" && b.kind === "tuple")) {
     const y = (b as { items: Value[] }).items;
     for (let i = 0; i < Math.min(a.items.length, y.length); i++) {

@@ -70,6 +70,8 @@ export function formatValue(value: Value, format: OutputFormat): string {
     case "bound":
     case "super":
     case "file":
+    case "module":
+    case "moment":
     case "env":
       return pyStr(value, setOrder); // Python values only appear in Python programs
     default: {
@@ -123,6 +125,8 @@ export function typeName(value: Value, format: OutputFormat = "pseudocode"): str
     case "bound":
     case "super":
     case "file":
+    case "module":
+    case "moment":
     case "env":
       return pyTypeName(value);
     default: {

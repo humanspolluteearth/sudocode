@@ -68,6 +68,14 @@ export type Value =
   | { kind: "super"; cls: Extract<Value, { kind: "class" }>; self: Value }
   /** A text file from `open()` (PY-21): reading walks `pos` through `text`; writing goes straight to the virtual file. */
   | { kind: "file"; name: string; mode: "r" | "w" | "a"; text: string; pos: number; closed: boolean }
+  /** An imported module such as `math` (PY-22); its members are looked up by name in python/modules.ts. */
+  | { kind: "module"; name: string }
+  /**
+   * A `date`, `datetime` or `timedelta` (PY-42). `days` is the day number (1 = 0001-01-01) for a date or datetime,
+   * and the signed number of days for a timedelta; `secs` and `micros` hold the time of day, or the rest of a
+   * timedelta (always 0 to 86399 and 0 to 999999, as in CPython).
+   */
+  | { kind: "moment"; type: "date" | "datetime" | "timedelta"; days: number; secs: number; micros: number }
   /** One call frame's variables, used to build closures; never visible to the student. */
   | { kind: "env"; locals: Map<string, Value>; parent: Value | null };
 

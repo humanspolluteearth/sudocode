@@ -139,6 +139,14 @@ class PythonLowerer extends ExprLowerer {
         return [this.tryStmt(s)];
       case "with":
         return this.withStmt(s.items, s.body, span);
+      case "import":
+        // `import m as y` is `y = <module m>`; `from m import x` is `x = <member x of m>`.
+        return s.items.map((i) => ({
+          kind: "pyAssign",
+          targets: [this.target(i.target)],
+          value: { kind: "pyModule", module: i.module, member: i.member, span },
+          span,
+        }));
     }
   }
 

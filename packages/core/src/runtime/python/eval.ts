@@ -1,6 +1,8 @@
 // Evaluating Python expressions (PY-10 to PY-36). Every function here is a generator so a call to a student
 // function can `yield` a request to the driver (trampolined calls, see runtime/driver.ts) and the caller resumes
 // with the result: Python recursion never nests JavaScript frames.
+import { MOMENT_TYPES, momentAttr, momentClassMethod, momentMethod } from "./datetime-mod.ts";
+import { importMember, moduleAttr, moduleValue } from "./modules.ts";
 import type { Span } from "../../diagnostics.ts";
 import type { PyCompClause, PyExpr, PyFPart, PyKeyword, PyTarget } from "../../ir/python-ir.ts";
 import type { Env, Run } from "../evaluate.ts";
@@ -173,6 +175,15 @@ function* method(e: Extract<PyExpr, { kind: "pyMethod" }>, env: Env): Run<Value>
     case "file":
       result = fileMethod(target, e.name, ca, env.machine, e.span);
       break;
+    case "module":
+      return yield* callValue(moduleAttr(target, e.name, e.span), args, kwargs, env, e.span);
+    case "moment":
+      result = momentMethod(target, e.name, args, e.span);
+      break;
+    case "type":
+      if (MOMENT_TYPES.has(target.name))
+        return momentClassMethod(target.name, e.name, args, env.machine.nowMs(), e.span);
+      break;
     case "instance":
     case "class":
     case "super":
@@ -284,6 +295,8 @@ export function* pyEval(e: PyExpr, env: Env): Run<Value> {
       const t = yield* pyEval(e.target, env);
       if (t.kind === "func" && e.name === "__doc__") return t.doc === null ? NONE : str(t.doc);
       if ((t.kind === "func" || t.kind === "type" || t.kind === "builtin") && e.name === "__name__") return str(t.name);
+      if (t.kind === "module") return moduleAttr(t, e.name, e.span);
+      if (t.kind === "moment") return momentAttr(t, e.name, e.span);
       if (t.kind === "exc" && e.name === "args") return tuple(t.args);
       if (t.kind === "instance" || t.kind === "class" || t.kind === "super") return getAttr(t, e.name, e.span);
       throw pyError("AttributeError", `'${pyTypeName(t)}' object has no attribute '${e.name}'`, e.span);
@@ -303,6 +316,8 @@ export function* pyEval(e: PyExpr, env: Env): Run<Value> {
       yield* comprehension(e.clauses, 0, e.element, env, out);
       return list(out);
     }
+    case "pyModule":
+      return e.member === null ? moduleValue(e.module) : importMember(e.module, e.member, e.span);
     case "pySuper": {
       const cls = yield* pyEval(e.klass, env);
       const self = yield* pyEval(e.self, env);

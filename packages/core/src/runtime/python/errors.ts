@@ -18,6 +18,7 @@ export const PARENT: Readonly<Record<string, string>> = {
   UnboundLocalError: "NameError",
   RuntimeError: "Exception",
   RecursionError: "RuntimeError",
+  ImportError: "Exception",
   OSError: "Exception",
   FileNotFoundError: "OSError",
   ValueError: "Exception",

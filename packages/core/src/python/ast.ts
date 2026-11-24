@@ -61,6 +61,7 @@ export type SStmt =
   | { kind: "def"; name: string; params: SParam[]; body: SStmt[]; span: Span }
   | { kind: "class"; name: string; bases: SExpr[]; body: SStmt[]; span: Span }
   | { kind: "with"; items: { expr: SExpr; target: SExpr | null }[]; body: SStmt[]; span: Span }
+  | { kind: "import"; items: { module: string; member: string | null; target: SExpr }[]; span: Span }
   | { kind: "return"; value: SExpr | null; span: Span }
   | { kind: "break" | "continue" | "pass"; span: Span }
   | { kind: "global"; names: string[]; span: Span }

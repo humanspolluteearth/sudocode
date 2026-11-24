@@ -16,6 +16,8 @@ export type Request =
   | { type: "step"; span: Span }
   | { type: "call"; callee: string; args: Value[]; span: Span }
   /** Wait for a line of input; `device` is null for the keyboard (EDX-74). Resumed with the line as a STRING. */
+  /** Wait `ms` milliseconds without freezing the app (Python's `time.sleep`, PY-43). */
+  | { type: "sleep"; ms: number; span: Span }
   | { type: "input"; prompt: string; device: string | null; span: Span };
 
 /** What the interpreter needs from the driver. */
@@ -51,6 +53,10 @@ export interface Machine {
   random(max: number): number;
   /** The next random REAL from 0 up to, but not including, 1, from the same seeded generator (CIE-128). */
   randomReal(): number;
+  /** The seed of this run: Python's `random` module starts as `random.seed(runSeed)` (PY-41, SH-12). */
+  readonly runSeed: number;
+  /** The clock in milliseconds since 1970, for `time.time()` and `datetime.now()` (PY-42, PY-43). */
+  nowMs(): number;
   /** Today's date (CIE-129), from the clock; tests pass a fixed one. */
   today(): { day: number; month: number; year: number };
 }

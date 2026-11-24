@@ -4,6 +4,7 @@ import type { Env, Run } from "../evaluate.ts";
 import { bool, list, NONE, pyint, real, str, tuple, type Value } from "../values.ts";
 import { BUILTIN_FUNCTIONS, callBuiltin } from "./builtins.ts";
 import { EXCEPTION_NAMES, pyError, typeError, valueError } from "./errors.ts";
+import { constructMoment, MOMENT_TYPES } from "./datetime-mod.ts";
 import { hashKey, setOrder } from "./hash.ts";
 import { newDict, newSet } from "./methods-coll.ts";
 import { asBig, floatToInt, parseFloatText, parseIntText, toFloat } from "./numbers.ts";
@@ -75,6 +76,7 @@ export function* callValue(fn: Value, args: Value[], kwargs: Map<string, Value>,
     case "builtin":
       return yield* callBuiltin(fn.name, args, kwargs, env, span);
     case "type":
+      if (MOMENT_TYPES.has(fn.name)) return constructMoment(fn.name, args, kwargs, span);
       if (fn.name === "str" && args[0] !== undefined) yield* prepare(args[0], env, span);
       return construct(fn.name, args, kwargs, span);
     case "class":

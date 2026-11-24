@@ -38,6 +38,7 @@ export const pythonEngine: Engine = {
       breakpoints: request.breakpoints,
       files: request.files,
       ...(request.today === undefined ? {} : { today: request.today }),
+      seed: request.seed,
     });
   },
 };

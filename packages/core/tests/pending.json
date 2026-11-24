@@ -8,19 +8,6 @@
     "errors/cie/CIE-10-file-type",
     "errors/edexcel/EDX-23-string-element",
     "errors/edexcel/EDX-82-blank-line-is-not-an-integer",
-    "errors/edexcel/EDX-82-character-line-is-too-long",
-    "golden/python/PY-22-import-forms",
-    "golden/python/PY-40-math",
-    "golden/python/PY-40-math-domain-errors",
-    "golden/python/PY-41-random-errors",
-    "golden/python/PY-41-random-from-run-seed",
-    "golden/python/PY-41-random-seeded",
-    "golden/python/PY-41-random-statistics",
-    "golden/python/PY-42-datetime",
-    "golden/python/PY-42-datetime-errors",
-    "golden/python/PY-43-time",
-    "golden/python/PY-50-additions",
-    "golden/python/PY-50-bad-format-spec",
-    "harvested/python/PY-41-example-guessing-game"
+    "errors/edexcel/EDX-82-character-line-is-too-long"
   ]
 }
