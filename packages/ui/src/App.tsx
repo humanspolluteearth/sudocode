@@ -220,6 +220,14 @@ export function App({ workers }: AppProps) {
   };
   const compact = useCompact();
   const [view, setView] = useState<CompactView>("code");
+  // On a phone only one view shows, so when a run waits for input or ends, move to the Console where the output is.
+  const compactRef = useRef(compact);
+  compactRef.current = compact;
+  useEffect(() => {
+    if (compactRef.current && (run.state === "waiting" || run.state === "finished" || run.state === "error")) {
+      setView("console");
+    }
+  }, [run.state]);
   const menus = buildMenus({
     running: active,
     paused: run.state === "paused",

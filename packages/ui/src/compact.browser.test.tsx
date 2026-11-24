@@ -98,6 +98,22 @@ describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc
     await expect.element(screen.getByRole("textbox", { name: "Program editor" })).toBeVisible();
   });
 
+  it("MISC on a phone, waiting for input and finishing a run both switch to the Console view", async () => {
+    await page.viewport(390, 800);
+    const runner = new FakeWorker();
+    const workers = { createRunWorker: () => runner, createCheckWorker: () => new FakeWorker() };
+    const screen = await render(<App workers={workers} />);
+    await screen.getByRole("button", { name: "Run", exact: true }).click();
+    await expect.poll(() => runner.posted.length).toBeGreaterThan(0);
+    await expect.element(screen.getByRole("textbox", { name: "Program editor" })).toBeVisible();
+    runner.reply({ type: "inputRequest", prompt: "Name? " });
+    await expect.element(screen.getByRole("region", { name: "Console" })).toBeVisible();
+    await screen.getByRole("button", { name: "Code", exact: true }).click();
+    runner.reply({ type: "done", status: "finished" });
+    await expect.element(screen.getByRole("region", { name: "Console" })).toBeVisible();
+    expect(await axeViolations(screen.container)).toEqual([]);
+  });
+
   for (const width of [834, 390]) {
     it(`MISC axe finds nothing at ${String(width)}px in any view`, async () => {
       await page.viewport(width, 800);
