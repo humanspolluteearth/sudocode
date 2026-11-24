@@ -1,12 +1,20 @@
-// The converter's public face: pseudocode -> Python (M10). The implementation arrives in the next PR; until then
-// the round-trip tests (tests/converter/) are pending and fail on this stub.
+// The converter (M10): Edexcel or Cambridge pseudocode in, Python out.
+//
+// Compiler concept: an *IR printer*, a code-generation back end that prints text instead of running the program.
+// The pseudocode is lexed, parsed, checked and lowered by the same front ends the interpreter uses, so the converter
+// never re-reads the student's syntax. It then prints the shared IR as Python. Because IR nodes already say which rule
+// applies (`intDivFloor`, `forInclusive`, a `base` on every index), the printer only has to write the Python that
+// follows that rule. Anything with no faithful Python version is refused with a message, never quietly changed.
+import { analyse as analyseCie } from "../cie/engine.ts";
+import { analyse as analyseEdexcel } from "../edexcel/engine.ts";
 import type { Language } from "../language.ts";
+import { Unprintable } from "./expr.ts";
+import { newCx, preamble } from "./helpers.ts";
+import { findRefusal, refusalWords, type RefusedFeature } from "./refuse.ts";
+import { printProgram } from "./stmt.ts";
 
-/** A pseudocode language the converter can read (Edexcel and Cambridge 9618; Python is the target). */
 export type ConvertFrom = Extract<Language, "edexcel" | "cie">;
-
-/** The parts of a program the converter refuses, because Python can't do them faithfully. */
-export type RefusedFeature = "files" | "types" | "classes" | "errors" | "byref" | "dates" | "devices" | "problems";
+export type { RefusedFeature };
 
 export type ConvertResult =
   | { ok: true; code: string }
@@ -16,11 +24,37 @@ export type ConvertResult =
       feature: RefusedFeature;
       line: number;
       column: number;
-      /** Plain words for a student: what can't be converted. */
       message: string;
       hint: string;
     };
 
+const refused = (feature: RefusedFeature, line: number, column: number): ConvertResult => ({
+  ok: false,
+  code: "E-CONV-UNSUPPORTED",
+  feature,
+  line,
+  column,
+  ...refusalWords(feature),
+});
+
+const NAME: Record<ConvertFrom, string> = { edexcel: "Edexcel pseudocode", cie: "Cambridge pseudocode" };
+
 export function convertToPython(source: string, from: ConvertFrom): ConvertResult {
-  throw new Error(`The converter is not written yet (${from}, ${String(source.length)} characters)`);
+  const { diagnostics, program } = from === "edexcel" ? analyseEdexcel(source) : analyseCie(source);
+  if (program === null) {
+    const first = diagnostics.find((d) => d.severity === "error");
+    return refused("problems", first?.line ?? 1, first?.column ?? 1);
+  }
+  const found = findRefusal(program);
+  if (found !== null) return refused(found.feature, found.line, found.column);
+  try {
+    const cx = newCx();
+    const body = printProgram(program, cx);
+    const head = preamble(cx);
+    const code = [`# Converted from ${NAME[from]} by Sudocode.`, head, body].filter((p) => p !== "").join("\n\n\n");
+    return { ok: true, code: `${code}\n` };
+  } catch (error) {
+    if (error instanceof Unprintable) return refused("problems", 1, 1);
+    throw error;
+  }
 }

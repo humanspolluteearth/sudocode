@@ -44,6 +44,10 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
+      # The converter round-trip tests run each converted program in CPython 3.12.
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
       - run: pnpm test
 
   # Lists every spec ID with the tests that prove it (table in the job summary). Fails if an ID in

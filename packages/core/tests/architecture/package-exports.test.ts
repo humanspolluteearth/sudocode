@@ -7,8 +7,8 @@ const coreDir = join(import.meta.dirname, "..", "..");
 const pkg = JSON.parse(readFileSync(join(coreDir, "package.json"), "utf8")) as { exports: Record<string, string> };
 
 describe("MISC @sudocode/core entry points", () => {
-  it("MISC exports exactly the public, engine and worker entries", () => {
-    expect(Object.keys(pkg.exports).sort()).toEqual([".", "./check-worker", "./engine", "./run-worker"]);
+  it("MISC exports exactly the public, converter, engine and worker entries", () => {
+    expect(Object.keys(pkg.exports).sort()).toEqual([".", "./check-worker", "./converter", "./engine", "./run-worker"]);
   });
 
   it.each(Object.entries(pkg.exports))("MISC %s points at a file that exists", (_entry, path) => {

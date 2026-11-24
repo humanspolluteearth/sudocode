@@ -1,0 +1,58 @@
+// Python names for pseudocode names. A pseudocode variable may be called `list`, `input` or `class`; in Python those
+// would break the program (or our helpers), so they get an underscore on the end. Everything else keeps its name.
+const RESERVED = new Set([
+  // Python keywords
+  "False",
+  "None",
+  "True",
+  "and",
+  "as",
+  "assert",
+  "async",
+  "await",
+  "break",
+  "class",
+  "continue",
+  "def",
+  "del",
+  "elif",
+  "else",
+  "except",
+  "finally",
+  "for",
+  "from",
+  "global",
+  "if",
+  "import",
+  "in",
+  "is",
+  "lambda",
+  "nonlocal",
+  "not",
+  "or",
+  "pass",
+  "raise",
+  "return",
+  "try",
+  "while",
+  "with",
+  "yield",
+  // Built-ins and modules the converter writes
+  "print",
+  "input",
+  "len",
+  "range",
+  "int",
+  "float",
+  "str",
+  "ord",
+  "chr",
+  "round",
+  "isinstance",
+  "list",
+  "random",
+]);
+
+export function pyName(name: string): string {
+  return RESERVED.has(name) ? `${name}_` : name;
+}
