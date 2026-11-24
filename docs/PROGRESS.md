@@ -2,6 +2,13 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 24 Nov 2026: M9 (Python classes, files, modules) built; two items left open
+
+- **PRs (all squash-merged, CI green):** #96 tests; #97 classes; #98 files and `with`; #99 modules (`math`, `random`, `time`, `datetime`), PY-50, size budget raised to 340 kB; #100 tests for hashing, ordering dunders, timedelta division; #101 their code; a follow-up PR with `scope.json` and test fixes.
+- **Not done:** reviewer MUST FIX negative-case goldens (PY-44/PY-22 imports, PY-21 mode and error cases) are not written. `PY-19-hashing` and `PY-19-dunders` stay pending until you answer Q57. So the milestone's "every MUST FIX fixed" is NOT met.
+- **Needs you:** Q57 (add PY-54 `info` to two merged expected files); PY-42 (near midnight) and PY-43 (1.1 s real sleep) goldens depend on the clock; the size budget raise; the SHOULD FIX list in `docs/review/M9.md`.
+- **Next step:** answer Q57, then a session for the missing negative goldens (tests PR first) and the SHOULD FIX items; then M10.
+
 ## 24 Nov 2026: M8 (Python) complete
 
 - **PRs:** #93 tests and CI; #94 front end, runtime, UI, equivalence tests, budget raised to 330 kB. Both squash-merged with CI green.
