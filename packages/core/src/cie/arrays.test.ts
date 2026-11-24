@@ -35,7 +35,10 @@ describe("CIE arrays (checker)", () => {
   it("CIE-20 a name that is not an array cannot be indexed", () => {
     expect(codes("DECLARE N : INTEGER\nN[1] <- 2")).toEqual(["E-CHK-NOT-INDEXABLE 2:1"]);
   });
-  it("MISC a 2D array with different first indexes is not supported yet", () => {
-    expect(codes("DECLARE B : ARRAY[1:3, 0:2] OF CHAR")).toEqual(["E-SYN-NOT-SUPPORTED 1:13"]);
+  it("CIE-21 a 2D array may have different first indexes in each dimension", () => {
+    expect(codes("DECLARE B : ARRAY[1:3, 0:2] OF CHAR")).toEqual([]);
+  });
+  it("CIE-21 three dimensions are still not supported", () => {
+    expect(codes("DECLARE B : ARRAY[1:2, 1:2, 1:2] OF CHAR")).toEqual(["E-SYN-NOT-SUPPORTED 1:13"]);
   });
 });

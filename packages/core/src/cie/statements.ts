@@ -239,6 +239,12 @@ export class Statements {
         return arrayType(c, t, () => this.typeName(true));
       }
     }
+    if (t.kind === "word" && t.text.toUpperCase() === "FILE") {
+      // CIE-10: a file is named by a STRING, there is no FILE type.
+      c.report("E-CHK-FILE-TYPE", t.span);
+      c.next();
+      return UNKNOWN;
+    }
     return c.fail("a type", "Use INTEGER, REAL, CHAR, STRING or BOOLEAN.");
   }
 
@@ -293,6 +299,12 @@ export class Statements {
     const c = this.c;
     c.next();
     c.warnCase(first, "INPUT");
+    // CIE-81: an optional string literal before the variable is the prompt, shown as console output.
+    let prompt: string | undefined;
+    if (c.peek().kind === "string" && c.peek().quote === "double") {
+      prompt = c.peek().value ?? "";
+      c.next();
+    }
     const name = c.peek();
     if (name.kind !== "word")
       return c.fail("a variable", "Write the variable that receives the input, e.g. INPUT Age.");
@@ -312,7 +324,12 @@ export class Statements {
     const item = v.ty.kind === "ARRAY" ? v.ty.of : v.ty;
     const convert = CONVERT[typeName(item)] ?? "str";
     const target = indexes === null ? this.ref(name) : this.elementTarget(name, v.ty, indexes, c.spanFrom(first));
-    return [{ kind: "input", target, convert, device: null, span: c.spanFrom(first) }];
+    const span = c.spanFrom(first);
+    return [
+      prompt === undefined
+        ? { kind: "input", target, convert, device: null, span }
+        : { kind: "input", target, convert, device: null, prompt, span },
+    ];
   }
 
   private output(first: Token): Ir[] {
@@ -454,6 +471,7 @@ export class Statements {
       index: row.ir,
       ...(column === undefined ? {} : { index2: column.ir }),
       base: ty.kind === "ARRAY" ? (ty.lows[0] ?? 1) : 1,
+      ...(ty.kind === "ARRAY" && ty.lows[1] !== undefined && ty.lows[1] !== ty.lows[0] ? { base2: ty.lows[1] } : {}),
       growOnWrite: false, // CIE-20
       text: name.text,
       span,
@@ -542,6 +560,14 @@ export class Statements {
     const then = this.block(first, "IF", ["ELSE", "ENDIF"], "ENDIF");
     let otherwise: Ir[] = [];
     if (then.end === "ELSE") {
+      const elseToken = c.last;
+      if (c.isKeyword("IF")) {
+        // CIE-51 (Q47): ELSE IF continues the chain, so the inner IF closes with the one shared ENDIF.
+        // Lowering: the inner IF becomes the single statement of the outer else branch.
+        c.report("W-CIE-ELSE-IF", elseToken.span);
+        const inner = this.ifStatement(c.peek());
+        return [{ kind: "if", condition: cond.ir, then: then.stmts, else: inner, span: c.spanFrom(first) }];
+      }
       c.endLine();
       otherwise = this.block(first, "IF", ["ENDIF"], "ENDIF").stmts;
     }

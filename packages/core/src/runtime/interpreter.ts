@@ -65,9 +65,9 @@ function* assign(target: AssignTarget, value: Value, env: Env): Run<undefined> {
     if (row === undefined) throw new RunError("E-RUN-ARRAY-GAP", target.span, { array: target.text, index: shown });
     if (row.kind !== "array") throw bug(`A grid row is ${row.kind}`);
     arr = row;
-    where = { ...where, text: `${target.array.name}[${String(shown)}]` }; // a bad column is outside the row, e.g. grid[0]
+    where = { ...where, base: target.base2 ?? target.base, text: `${target.array.name}[${String(shown)}]` }; // a bad column is outside the row, e.g. grid[0]
     shown = asIndex(yield* evaluateWithCalls(target.index2, env));
-    i = shown - target.base;
+    i = shown - (target.base2 ?? target.base);
   }
   if (i < 0 || (i >= arr.elements.length && !target.growOnWrite)) throw indexError(where, shown, arr);
   if (i >= arr.elements.length) {
@@ -115,7 +115,8 @@ function* statement(s: Stmt, env: Env): Run<Returned | undefined> {
     }
     case "input": {
       // The driver waits for the line (SH-05) and resumes this generator with it as a STRING.
-      const line = (yield { type: "input", prompt: "", device: s.device, span: s.span }) as Value | undefined;
+      const line = (yield { type: "input", prompt: s.prompt ?? "", device: s.device, span: s.span }) as
+        Value | undefined;
       if (line?.kind !== "str") throw bug("Input resumed without a line");
       yield* assign(s.target, convertInput(line.value, s.convert, s.span), env);
       return undefined;

@@ -21,8 +21,8 @@ function bound(c: CieCursor): number {
 }
 
 /**
- * Parses an array type after the word ARRAY has been read. `scalar` reads the item type. A 2D array whose two
- * dimensions start at different numbers has no single `base` in the IR, so it is reported as not supported yet.
+ * Parses an array type after the word ARRAY has been read. `scalar` reads the item type. Each dimension keeps its own lower bound
+ * (CIE-21); three or more dimensions are reported as not supported yet.
  */
 export function arrayType(c: CieCursor, arrayWord: Token, scalar: () => Ty): Ty {
   c.expectSymbol("[", "[", "Write the indexes after ARRAY, e.g. ARRAY[1:30] OF STRING.");
@@ -47,13 +47,10 @@ export function arrayType(c: CieCursor, arrayWord: Token, scalar: () => Ty): Ty 
     c.next();
   }
   const close = c.expectSymbol("]", "] or ,", "Close the indexes with ].");
-  if (dims.length > 2 || (lows[1] !== undefined && lows[1] !== lows[0])) {
+  if (dims.length > 2) {
     c.report("E-SYN-NOT-SUPPORTED", joinSpans(arrayWord.span, close.span), {
-      feature:
-        dims.length > 2
-          ? "An ARRAY with more than two dimensions"
-          : "A 2D ARRAY whose indexes start at different numbers",
-      advice: "Use the same first index in both dimensions, e.g. ARRAY[1:3, 1:3].",
+      feature: "An ARRAY with more than two dimensions",
+      advice: "Use one or two dimensions, e.g. ARRAY[1:3, 1:3].",
     });
     return c.failSilently();
   }
