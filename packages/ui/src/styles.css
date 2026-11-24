@@ -1054,7 +1054,8 @@ button.sc-section-head:hover {
   border-radius: 50%;
   background: var(--red);
 }
-.sc-compact .sc-keybar {
+.sc-compact .sc-keybar,
+.sc-keybar.on {
   display: flex;
   gap: 4px;
   flex: none;
@@ -1158,7 +1159,7 @@ button.sc-section-head:hover {
 .sc-compact .sc-keybar {
   order: 0;
 }
-.sc-compact:not([data-view="code"]) .sc-keybar {
+.sc-compact[data-view]:not([data-view="code"]) .sc-keybar {
   display: none;
 }
 
@@ -1258,4 +1259,27 @@ button.sc-section-head:hover {
   .sc-compact .sc-tab-close {
     height: 29px;
   }
+}
+
+/* Tablet (700px to 1100px, Tablet.dc.html): the editor and console sit beside a 380px Debugger/Reference panel, there
+   is no bottom navigation, the toolbar is 52px high and its buttons 40px. */
+.sc-tablet .sc-main {
+  flex-direction: row;
+}
+.sc-tablet .sc-left {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.sc-tablet .sc-side {
+  box-sizing: border-box;
+  flex: 0 0 380px;
+  width: 380px;
+  border-left: 1px solid var(--line);
+}
+.sc-tablet .sc-toolbar {
+  min-height: 52px;
+  padding: 0 8px;
+}
+.sc-tablet .sc-key {
+  min-height: 40px;
 }

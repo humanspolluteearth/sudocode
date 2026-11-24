@@ -18,7 +18,7 @@ describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc
     await expect.element(screen.getByRole("toolbar", { name: "Insert keyword" })).not.toBeInTheDocument();
   });
 
-  for (const width of [834, 390]) {
+  for (const width of [390]) {
     it(`MISC at ${String(width)}px the views switcher shows one view at a time`, async () => {
       await page.viewport(width, 800);
       const screen = await render(<App />);
@@ -198,14 +198,44 @@ describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc
     });
   }
 
-  for (const width of [834, 390]) {
-    it(`MISC axe finds nothing at ${String(width)}px in any view`, async () => {
-      await page.viewport(width, 800);
-      const screen = await render(<App />);
-      for (const view of ["Code", "Console", "Debug"]) {
-        await screen.getByRole("button", { name: view, exact: true }).click();
-        expect(await axeViolations(screen.container)).toEqual([]);
-      }
+  it("MISC axe finds nothing at 390px in any view", async () => {
+    await page.viewport(390, 800);
+    const screen = await render(<App />);
+    for (const view of ["Code", "Console", "Debug"]) {
+      await screen.getByRole("button", { name: view, exact: true }).click();
+      expect(await axeViolations(screen.container)).toEqual([]);
+    }
+  });
+
+  it("MISC at 834px the tablet layout shows the editor, console and a 380px side panel with no bottom navigation", async () => {
+    await page.viewport(834, 1000);
+    const screen = await render(<App />);
+    await expect.element(screen.getByRole("textbox", { name: "Program editor" })).toBeVisible();
+    await expect.element(screen.getByRole("region", { name: "Console" })).toBeVisible();
+    await expect.element(screen.getByRole("region", { name: "Variables" })).toBeVisible();
+    await expect.element(screen.getByRole("navigation", { name: "Views" })).not.toBeInTheDocument();
+    await expect.element(screen.getByRole("toolbar", { name: "Insert keyword" })).toBeVisible();
+    expect(document.querySelector(".sc-side")?.getBoundingClientRect().width).toBe(380);
+    expect(document.querySelector(".sc-toolbar")?.getBoundingClientRect().height).toBe(52);
+    const editor = document.querySelector(".sc-editor")?.getBoundingClientRect();
+    expect(editor?.right).toBeLessThanOrEqual(document.querySelector(".sc-side")?.getBoundingClientRect().left ?? 0);
+    expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(834);
+    expect(await axeViolations(screen.container)).toEqual([]);
+  });
+
+  for (const [width, layout] of [
+    [699, "phone"],
+    [700, "tablet"],
+    [1100, "tablet"],
+    [1101, "desktop"],
+  ] as const) {
+    it(`MISC the layout at ${String(width)}px is ${layout}`, async () => {
+      await page.viewport(width, 900);
+      await render(<App />);
+      const root = document.querySelector(".sc-root");
+      expect(root?.classList.contains("sc-compact")).toBe(layout !== "desktop");
+      expect(root?.classList.contains("sc-tablet")).toBe(layout === "tablet");
+      expect(document.querySelector("nav.sc-views") !== null).toBe(layout === "phone");
     });
   }
 });

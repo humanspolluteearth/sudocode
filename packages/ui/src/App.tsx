@@ -6,7 +6,7 @@ import { lazy, Suspense, useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
 import { KeyBar, OverflowMenu, ProblemChip, ViewSwitcher } from "./CompactChrome.tsx";
-import { useCompact, type CompactView } from "./compact.ts";
+import { useLayout, type CompactView } from "./compact.ts";
 import { Editor, type EditorHandle } from "./Editor.tsx";
 import { GuidePage, guideFromSearch, guideUrl, type GuideId } from "./GuidePage.tsx";
 import { toolFlags } from "./tools.ts";
@@ -218,13 +218,13 @@ export function App({ workers }: AppProps) {
     files$.setLanguage(next);
     update({ ...prefs, language: next });
   };
-  const compact = useCompact();
+  const { compact, phone, tablet, keyBar } = useLayout();
   const [view, setView] = useState<CompactView>("code");
   // On a phone only one view shows, so when a run waits for input or ends, move to the Console where the output is.
-  const compactRef = useRef(compact);
-  compactRef.current = compact;
+  const phoneRef = useRef(phone);
+  phoneRef.current = phone;
   useEffect(() => {
-    if (compactRef.current && (run.state === "waiting" || run.state === "finished" || run.state === "error")) {
+    if (phoneRef.current && (run.state === "waiting" || run.state === "finished" || run.state === "error")) {
       setView("console");
     }
   }, [run.state]);
@@ -287,8 +287,8 @@ export function App({ workers }: AppProps) {
   if (guide !== null) return <GuidePage guide={guide} onNavigate={openGuide} themeClass={themeClass(prefs.theme)} />;
   return (
     <div
-      className={`sc-root ${themeClass(prefs.theme)}${compact ? " sc-compact" : ""}`}
-      data-view={view}
+      className={`sc-root ${themeClass(prefs.theme)}${compact ? " sc-compact" : ""}${tablet ? " sc-tablet" : ""}`}
+      data-view={phone ? view : undefined}
       style={{ "--zoom": prefs.zoom / 100 } as React.CSSProperties}
     >
       <MenuBar menus={menus} />
@@ -430,7 +430,7 @@ export function App({ workers }: AppProps) {
           onOpenGuide={openGuide}
           onInsert={(code) => {
             editor.current?.insertAtCursor(code);
-            if (compactRef.current) setView("code");
+            if (phoneRef.current) setView("code");
           }}
           advanced={prefs.advanced}
           onAdvanced={(advanced) => {
@@ -440,26 +440,26 @@ export function App({ workers }: AppProps) {
         />
       </main>
       {compact && (
-        <>
-          <ProblemChip
-            diagnostics={diagnostics}
-            onOpen={(d) => {
-              setView("code");
-              editor.current?.goTo(d.line, d.column);
-            }}
-          />
-          <KeyBar language={language} onInsert={(text) => editor.current?.insertAtCursor(text)} />
-          <ViewSwitcher
-            view={view}
-            onView={(v) => {
-              // The Guide view is the Quick reference tab; its link opens the full guide page.
-              if (v === "guide") setTab("reference");
-              else if (v === "debug" && tab === "reference") setTab("debugger");
-              setView(v);
-            }}
-            problems={diagnostics.length}
-          />
-        </>
+        <ProblemChip
+          diagnostics={diagnostics}
+          onOpen={(d) => {
+            setView("code");
+            editor.current?.goTo(d.line, d.column);
+          }}
+        />
+      )}
+      {keyBar && <KeyBar language={language} onInsert={(text) => editor.current?.insertAtCursor(text)} />}
+      {phone && (
+        <ViewSwitcher
+          view={view}
+          onView={(v) => {
+            // The Guide view is the Quick reference tab; its link opens the full guide page.
+            if (v === "guide") setTab("reference");
+            else if (v === "debug" && tab === "reference") setTab("debugger");
+            setView(v);
+          }}
+          problems={diagnostics.length}
+        />
       )}
       <StatusBar
         state={run.state}

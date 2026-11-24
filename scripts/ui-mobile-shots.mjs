@@ -35,7 +35,8 @@ try {
   for (const [width, height] of SIZES) {
     if (only !== "" && only !== `${String(width)}x${String(height)}`) continue;
     for (const scheme of ["light", "dark"]) {
-      const touch = width < 900;
+      const touch = width < 1100;
+      const phone = width < 700; // phones have the bottom views; tablets show every panel at once
       const context = await browser.newContext({
         viewport: { width, height },
         colorScheme: scheme,
@@ -97,7 +98,7 @@ try {
         await replaceCode(page, BROKEN);
         await page.getByRole("button", { name: "Run", exact: true }).click();
         await page.waitForTimeout(700);
-        if (touch) await view(page, "Console");
+        if (phone) await view(page, "Console");
       });
       await attempt("five-tabs", async (page) => {
         for (let i = 0; i < 4; i++) await page.getByRole("button", { name: "New tab" }).click();
@@ -107,7 +108,7 @@ try {
         await attempt("overflow-menu", async (page) => {
           await page.getByRole("button", { name: "File and convert actions" }).click();
         });
-        for (const name of ["Console", "Debug", "Guide"]) {
+        for (const name of phone ? ["Console", "Debug", "Guide"] : []) {
           await attempt(`view-${name.toLowerCase()}`, async (page) => {
             await view(page, name);
             await page.waitForTimeout(300);
@@ -118,7 +119,7 @@ try {
         await page.getByRole("button", { name: "Step over" }).click();
         await page.waitForTimeout(500);
       });
-      if (touch) {
+      if (phone) {
         await attempt("paused-debug", async (page) => {
           await page.getByRole("button", { name: "Step over" }).click();
           await page.waitForTimeout(500);
