@@ -17,6 +17,8 @@ export interface Preferences {
   language: PseudocodeLanguage;
   /** Tools the student switched off in Settings (docs/PRODUCT.md: every tool can be disabled). */
   toolsOff: ToolId[];
+  /** The startup dialog was closed with "Don't show this again" ticked. */
+  welcomeDone: boolean;
 }
 
 export const DEFAULT_PREFERENCES: Preferences = {
@@ -25,6 +27,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   advanced: false,
   language: "edexcel",
   toolsOff: [],
+  welcomeDone: false,
 };
 
 export function parseTheme(value: unknown): ThemeChoice {
@@ -41,13 +44,14 @@ export function loadPreferences(): Preferences {
   try {
     const raw: unknown = JSON.parse(globalThis.localStorage.getItem(KEY) ?? "null");
     if (typeof raw === "object" && raw !== null) {
-      const { theme, zoom, advanced, language, toolsOff } = raw as Record<string, unknown>;
+      const { theme, zoom, advanced, language, toolsOff, welcomeDone } = raw as Record<string, unknown>;
       return {
         theme: parseTheme(theme),
         zoom: clampZoom(zoom),
         advanced: advanced === true,
         language: language === "cie" || language === "python" ? language : "edexcel",
         toolsOff: parseToolList(toolsOff),
+        welcomeDone: welcomeDone === true,
       };
     }
   } catch {

@@ -1298,3 +1298,33 @@ button.sc-section-head:hover {
   padding: 0 4px 0 2px;
   text-align: right;
 }
+
+/* Startup dialog: wider than Save, never taller than the screen (360px phones, zoomed text), scrolls if it must. */
+.sc-welcome {
+  box-sizing: border-box;
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+.sc-welcome p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+.sc-welcome .sc-welcome-step {
+  margin: 0 0 4px;
+}
+.sc-welcome h2:focus {
+  outline: none;
+}
+.sc-welcome a {
+  color: var(--link);
+}
+@media (pointer: coarse), (max-width: 1100px) {
+  .sc-welcome .sc-dialog-buttons button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .sc-welcome .sc-check {
+    min-height: 44px;
+  }
+}

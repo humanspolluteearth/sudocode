@@ -23,6 +23,7 @@ import { NoteBanner, type Note } from "./NoteBanner.tsx";
 import { StatusBar, type CursorPosition } from "./StatusBar.tsx";
 import { Splitter } from "./Splitter.tsx";
 import { usePaneSize } from "./use-pane-size.ts";
+import { BUG_MAILTO } from "./bug-report.ts";
 import { StepLimitDialog } from "./StepLimitDialog.tsx";
 import { nextZoom, Toolbar, ZOOM_LEVELS, type ThemeChoice } from "./Toolbar.tsx";
 import "./styles.css";
@@ -31,6 +32,7 @@ const EXAMPLES = { edexcel: EDEXCEL_EXAMPLES, cie: CIE_EXAMPLES, python: PYTHON_
 // The app opens with the design's sample, the "Grade checker" example of the chosen language.
 // Dialogs are only needed when opened, so they load on demand and stay out of the first download (the 2 GB device target).
 const SettingsDialog = lazy(() => import("./SettingsDialog.tsx").then((m) => ({ default: m.SettingsDialog })));
+const WelcomeDialog = lazy(() => import("./WelcomeDialog.tsx").then((m) => ({ default: m.WelcomeDialog })));
 const SaveDialog = lazy(() => import("./SaveDialog.tsx").then((m) => ({ default: m.SaveDialog })));
 
 const starter = (language: PseudocodeLanguage): string => EXAMPLES[language].find((x) => x.id === "grade")?.code ?? "";
@@ -49,6 +51,8 @@ export function App({ workers }: AppProps) {
   // A note under the tab strip; nothing sets one yet (see NoteBanner), so it starts empty.
   const [note, setNote] = useState<Note | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  // The startup dialog shows on every launch until "Don't show this again" was ticked; Help reopens it.
+  const [welcomeOpen, setWelcomeOpen] = useState(() => !loadPreferences().welcomeDone);
   const [breakpoints, setBreakpoints] = useState<number[]>([]);
   const [cursor, setCursor] = useState<CursorPosition>({ line: 1, column: 1 });
   const [tab, setTab] = useState<SideTab>("debugger");
@@ -282,6 +286,12 @@ export function App({ workers }: AppProps) {
     onSettings: () => {
       setSettingsOpen(true);
     },
+    onWelcome: () => {
+      setWelcomeOpen(true);
+    },
+    onReportBug: () => {
+      globalThis.location.href = BUG_MAILTO;
+    },
   });
 
   if (guide !== null) return <GuidePage guide={guide} onNavigate={openGuide} themeClass={themeClass(prefs.theme)} />;
@@ -490,6 +500,14 @@ export function App({ workers }: AppProps) {
             }}
             onClose={() => {
               setSettingsOpen(false);
+            }}
+          />
+        )}
+        {welcomeOpen && (
+          <WelcomeDialog
+            onClose={(dontShowAgain) => {
+              setWelcomeOpen(false);
+              if (dontShowAgain) update({ ...prefs, welcomeDone: true });
             }}
           />
         )}
