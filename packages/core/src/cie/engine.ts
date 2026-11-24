@@ -8,6 +8,7 @@ import { Env } from "./env.ts";
 import { lex } from "./lexer.ts";
 import { Statements } from "./statements.ts";
 import { finishClasses, installClasses } from "./class-definition.ts";
+import { declaredTable } from "./types.ts";
 import { installSubprograms } from "./subprograms.ts";
 
 export interface Analysis {
@@ -25,7 +26,7 @@ function translate(source: string, env: Env, collecting: boolean): { program: Ir
   const main = s.body([]).stmts;
   if (!collecting) finishClasses(env, subprograms);
   return {
-    program: { format: "pseudocode", main, subprograms },
+    program: { format: "pseudocode", main, subprograms, declared: declaredTable(env.globals.values()) },
     diagnostics: [...lexed.diagnostics, ...cursor.diagnostics],
   };
 }

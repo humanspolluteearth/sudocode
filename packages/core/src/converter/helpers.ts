@@ -1,10 +1,16 @@
 // The small Python functions that converted programs carry with them, and the context that records which are needed.
 //
-// Compiler concept: a *runtime library* (helper preamble). The IR has no static types, so the converter can't always
-// tell whether `OUTPUT x` prints an INTEGER, a REAL or a BOOLEAN. Instead of guessing, it calls a helper that decides
-// when the program runs. Only the helpers a program actually uses are written out.
+// Compiler concept: a *runtime library* (helper preamble). When the converter can't tell (types.ts) whether `OUTPUT x`
+// prints an INTEGER, a REAL or a BOOLEAN, it calls a helper that decides when the program runs. INTEGER and STRING
+// values need no helper. Only the helpers a program actually uses are written out.
+
+import type { Types } from "./types.ts";
 
 export interface Cx {
+  /** What the converter knows about the type of each expression (types.ts). */
+  types: Types;
+  /** The subprogram being printed, or null for the main program (so a local name is looked up in the right place). */
+  sub: string | null;
   helpers: Set<HelperName>;
   imports: Set<string>;
   /** The names a function assigns that live outside it (they need a `global` line). */
@@ -13,7 +19,13 @@ export interface Cx {
 
 export type HelperName = "show" | "copy" | "put" | "right" | "mid" | "isNum" | "range";
 
-export const newCx = (): Cx => ({ helpers: new Set(), imports: new Set(), globalsWritten: new Set() });
+export const newCx = (types: Types): Cx => ({
+  types,
+  sub: null,
+  helpers: new Set(),
+  imports: new Set(),
+  globalsWritten: new Set(),
+});
 
 export const use = (cx: Cx, helper: HelperName): void => void cx.helpers.add(helper);
 

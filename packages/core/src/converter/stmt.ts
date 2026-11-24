@@ -115,12 +115,14 @@ export function stmt(s: Stmt, cx: Cx): Lines {
 }
 
 export function printSubprogram(sub: Subprogram, cx: Cx): Lines {
+  cx.sub = sub.name; // so names inside are looked up among this subprogram's own variables
   const outer = new Set(cx.globalsWritten);
   cx.globalsWritten.clear();
   const body = block(sub.body, cx);
   const globals = [...cx.globalsWritten].sort();
   cx.globalsWritten.clear();
   for (const name of outer) cx.globalsWritten.add(name);
+  cx.sub = null;
   const head = `def ${pyName(sub.name)}(${sub.params.map(pyName).join(", ")}):`;
   return [head, ...indent([...(globals.length > 0 ? [`global ${globals.join(", ")}`] : []), ...body])];
 }

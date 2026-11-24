@@ -88,11 +88,11 @@ const isText = (e: Expr): boolean =>
 function textPiece(e: Expr, cx: Cx): Printed {
   if (e.kind === "binary" && e.op === "concatText") return concat(e, cx);
   if (isText(e)) return expr(e, cx);
-  if (e.kind === "literal") {
-    if (e.value.kind === "int") return atom(quote(String(e.value.value)));
-    if (e.value.kind === "bool") return atom(quote(e.value.value ? "TRUE" : "FALSE"));
-  }
-  return shown(e, cx);
+  if (e.kind === "literal" && e.value.kind === "bool") return atom(quote(e.value.value ? "TRUE" : "FALSE"));
+  const ty = cx.types.typeOf(e, cx.sub);
+  if (ty === "str") return expr(e, cx); // already text
+  if (ty === "int") return atom(`str(${expr(e, cx).text})`); // Python prints an int the way the pseudocode does
+  return shown(e, cx); // REAL, BOOLEAN or not known: let the helper decide when the program runs
 }
 
 /** `_show(x)`: the text a value prints as (TRUE / FALSE, no trailing ".0"). */
@@ -105,10 +105,11 @@ function concat(e: Extract<Expr, { kind: "binary" }>, cx: Cx): Printed {
   return { text: `${wrap(textPiece(e.left, cx), ADD)} + ${wrap(textPiece(e.right, cx), ADD + 1)}`, prec: ADD };
 }
 
-/** The text of a value for `OUTPUT`: plain when it is already text, whole numbers as they are, otherwise via `_show`. */
+/** The text of a value for `OUTPUT`: plain when it is text or an INTEGER, otherwise via `_show`. */
 export function printable(e: Expr, cx: Cx): string {
   if (isText(e)) return textPiece(e, cx).text;
-  if (e.kind === "literal" && e.value.kind === "int") return String(e.value.value);
+  const ty = cx.types.typeOf(e, cx.sub);
+  if (ty === "int" || ty === "str") return expr(e, cx).text;
   return textPiece(e, cx).text;
 }
 
@@ -166,7 +167,9 @@ function builtin(e: Extract<Expr, { kind: "builtin" }>, cx: Cx): Printed {
     case "toLower":
       return atom(`${arg(a, ATOM)}.lower()`);
     case "numToStr":
-      return shown(a ?? e, cx);
+      return a !== undefined && cx.types.typeOf(a, cx.sub) === "int"
+        ? atom(`str(${expr(a, cx).text})`)
+        : shown(a ?? e, cx);
     case "strToNum":
       return atom(`float(${arg(a)})`);
     case "isNum":

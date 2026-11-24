@@ -9,6 +9,7 @@ import { analyse as analyseCie } from "../cie/engine.ts";
 import { analyse as analyseEdexcel } from "../edexcel/engine.ts";
 import type { Language } from "../language.ts";
 import { Unprintable } from "./expr.ts";
+import { Types } from "./types.ts";
 import { newCx, preamble } from "./helpers.ts";
 import { findRefusal, refusalWords, type RefusedFeature } from "./refuse.ts";
 import { printProgram } from "./stmt.ts";
@@ -48,7 +49,7 @@ export function convertToPython(source: string, from: ConvertFrom): ConvertResul
   const found = findRefusal(program);
   if (found !== null) return refused(found.feature, found.line, found.column);
   try {
-    const cx = newCx();
+    const cx = newCx(new Types(program));
     const body = printProgram(program, cx);
     const head = preamble(cx);
     const code = [`# Converted from ${NAME[from]} by Sudocode.`, head, body].filter((p) => p !== "").join("\n\n\n");

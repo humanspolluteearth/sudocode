@@ -2,6 +2,11 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 25 Nov 2026: converter follow-up, Part A (cleaner Python output)
+
+- **PRs:** #136 tests (pending), then the code PR (type inference in `converter/types.ts`; `_show` only for REAL, BOOLEAN and unknown types; helper and its comment only when used). Notes in `docs/review/M10-converter-output.md`.
+- **Part B was not supplied** in the `/goal`, so it is not done.
+
 ## 25 Nov 2026: M10 (converter and IDE) complete
 
 - **PRs (squash-merged, CI green):** #128 converter tests, #129 converter, #130 tabs/Save/Open/Convert (budget 420 kB per Q58), #131 tool switches and Simple/Advanced, #132 installable offline web app, #133 tablet and phone layouts, #134 keyboard/screen-reader tests and lazy dialogs, plus the review-fix PR. #9 and #22 left alone.

@@ -223,6 +223,12 @@ export type Stmt =
     }
   | { kind: "return"; value: Expr | null; span: Span };
 
+/**
+ * The scalar type a front end that declares types (Cambridge) gave a variable, parameter or function result. The
+ * runtime ignores it; the converter reads it to print values the way their type needs (converter/types.ts).
+ */
+export type DeclaredScalar = "INTEGER" | "REAL" | "BOOLEAN" | "STRING" | "CHAR";
+
 export interface Subprogram {
   name: string;
   kind: "procedure" | "function";
@@ -232,6 +238,10 @@ export interface Subprogram {
    * those parameters back to its caller, which writes them into the places named in `callStatement.outs`.
    */
   byRef?: boolean[];
+  /** Declared types of the parameters and local variables, by name (Cambridge only). */
+  declared?: Readonly<Record<string, DeclaredScalar>>;
+  /** Declared type of a function's result (Cambridge only). */
+  returns?: DeclaredScalar;
   body: Stmt[];
   span: Span;
 }
@@ -240,4 +250,6 @@ export interface Program {
   format: OutputFormat;
   main: Stmt[];
   subprograms: Readonly<Record<string, Subprogram>>;
+  /** Declared types of the global variables, by name (Cambridge only). */
+  declared?: Readonly<Record<string, DeclaredScalar>>;
 }
