@@ -62,3 +62,5 @@ Items 3 to 6 of the goal were built on separate branches from `main` so they do 
 machine (fails the same with the UI changes stashed, so it is not caused by them; the perf-budget test timed out
 once too under load). Not touched: core tests are not edited from the UI iteration. If CI also times out, it needs
 your call (a longer timeout is a test change).
+
+U7 resolved: you approved raising the size budget; `scripts/size-budget.json` is now 368640 (360 kB).
