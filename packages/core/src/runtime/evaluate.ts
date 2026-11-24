@@ -2,7 +2,7 @@
 // Expressions without a subprogram call are evaluated by plain functions; only those with a call go through
 // generators, so ordinary arithmetic costs no generator objects.
 import type { Span } from "../diagnostics.ts";
-import type { Expr, OutputFormat, VarRef } from "../ir/ir.ts";
+import type { Expr, FileMode, OutputFormat, VarRef } from "../ir/ir.ts";
 import type { MessageArgs } from "../messages/index.ts";
 import { cieBuiltin } from "./builtins.ts";
 import { binary, unary } from "./ops.ts";
@@ -23,9 +23,20 @@ export interface Machine {
   /** Prints one line (its text ends with a newline); `span` is the output statement, for the trace table. */
   output(text: string, span: Span): void;
   /** The next line of a virtual file, without its newline (EDX-82, SH-11); a runtime error when there is none. */
-  readLine(file: string, span: Span): string;
+  readLine(file: string, span: Span, strict?: boolean): string;
   /** Adds one line to a virtual file; the first write of a run replaces the old contents (EDX-83). */
-  writeLine(file: string, text: string, span: Span): void;
+  writeLine(file: string, text: string, span: Span, strict?: boolean): void;
+  /** OPENFILE (CIE-90, CIE-91, CIE-94, CIE-97): WRITE empties the file, APPEND keeps it, the others need it to exist. */
+  openFile(file: string, mode: FileMode, span: Span): void;
+  closeFile(file: string, span: Span): void;
+  /** EOF (CIE-130): TRUE when no lines are left; the file must be open for READ. */
+  eof(file: string, span: Span): boolean;
+  /** Random files (CIE-94, CIE-95): the file must be open FOR RANDOM. */
+  seek(file: string, address: number, span: Span): void;
+  getRecord(file: string, span: Span): Value;
+  putRecord(file: string, value: Value, span: Span): void;
+  /** The first OPENFILE of a file still open now (CIE-96), or null. */
+  leftOpen(): { file: string; span: Span } | null;
   /** A variable was given a value (SH-17 trace table). For an element change, `value` is the whole array. */
   assigned(name: string, value: Value, span: Span): void;
   /** A runtime info note (e.g. I-EDX-ARRAY-GROWS). The driver decides how often it is shown. */
@@ -192,7 +203,7 @@ function enumStep(e: Extract<Expr, { kind: "enumStep" }>, from: Value, by: Value
 }
 
 /** CIE-23: copies an array and any arrays inside it; other values are immutable, so they are shared. */
-function copyOf(v: Value): Value {
+export function copyOf(v: Value): Value {
   if (v.kind === "record") {
     const fields: Record<string, Value | undefined> = {};
     for (const [k, x] of Object.entries(v.fields)) fields[k] = x === undefined ? undefined : copyOf(x);

@@ -44,6 +44,8 @@ export type BinaryOp =
 /** AND / OR evaluate their right side only when it can change the answer (short-circuit, as in Python). */
 export type LogicalOp = "andThen" | "orElse";
 
+export type FileMode = "read" | "write" | "append" | "random";
+
 export type UnaryOp = "negate" | "not";
 
 export type BuiltinName =
@@ -64,6 +66,7 @@ export type BuiltinName =
   | "chr"
   | "truncate"
   | "randomReal"
+  | "eof"
   | "day"
   | "month"
   | "year"
@@ -161,10 +164,20 @@ export type Stmt =
    */
   | { kind: "input"; target: AssignTarget; convert: InputConversion; device: string | null; span: Span }
   /** Reads the next line of a virtual file into `target`, converted like an input line (EDX-82, SH-11). */
-  | { kind: "fileRead"; file: string; target: VarRef; convert: InputConversion; span: Span }
+  | { kind: "fileRead"; file: string | Expr; strict?: boolean; target: VarRef; convert: InputConversion; span: Span }
   /** Writes one line to a virtual file; the first write of a run replaces the old contents (EDX-83). */
-  | { kind: "fileWrite"; file: string; value: Expr; span: Span }
+  | { kind: "fileWrite"; file: string | Expr; strict?: boolean; value: Expr; span: Span }
   | { kind: "if"; condition: Expr; then: Stmt[]; else: Stmt[]; span: Span }
+  /**
+   * Cambridge file statements (CIE-90 to CIE-97). The file is named by an expression (a literal or a STRING
+   * variable). `strict` on fileRead/fileWrite means the file must have been opened with the right mode first.
+   */
+  | { kind: "fileOpen"; file: Expr; mode: FileMode; span: Span }
+  | { kind: "fileClose"; file: Expr; span: Span }
+  /** Random files (CIE-94): `SEEK` sets the address; `GETRECORD` and `PUTRECORD` use the current one. */
+  | { kind: "fileSeek"; file: Expr; address: Expr; span: Span }
+  | { kind: "fileGet"; file: Expr; target: AssignTarget; span: Span }
+  | { kind: "filePut"; file: Expr; value: Expr; span: Span }
   /** Runs `body`; a runtime error inside it (even in a called subprogram) runs `handler` instead (CIE-100). */
   | { kind: "tryCatch"; body: Stmt[]; handler: Stmt[]; span: Span }
   /** Tests before each pass (EDX-50). */
