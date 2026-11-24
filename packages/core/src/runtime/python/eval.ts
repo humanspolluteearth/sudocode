@@ -15,10 +15,10 @@ import { newDict, newSet, dictMethod, listMethod, setMethod, tupleMethod } from 
 import { strMethod, type CallArgs } from "./methods-str.ts";
 import { arith, compareOp, negate, unaryPlus } from "./numbers.ts";
 import { pyStr, pyTypeName } from "./repr.ts";
-import { containsWithEq, prepare, userCompare } from "./class-calls.ts";
+import { containsWithEq, prepare, sortPairsUser, truth, userCompare } from "./class-calls.ts";
 import { getAttr, setAttr } from "./classes.ts";
 import { fileMethod } from "./files.ts";
-import { contains, indexValue, iterate, repr, sliceValue, sortPairs, truthy } from "./seq.ts";
+import { contains, indexValue, iterate, repr, sliceValue, truthy } from "./seq.ts";
 
 const MUTATING = new Set([
   "append",
@@ -128,7 +128,8 @@ function* comprehension(
     return;
   }
   if (c.kind === "if") {
-    if (truthy(yield* pyEval(c.expr, env))) yield* comprehension(clauses, i + 1, element, env, out);
+    if (yield* truth(yield* pyEval(c.expr, env), env, c.expr.span))
+      yield* comprehension(clauses, i + 1, element, env, out);
     return;
   }
   const source = yield* pyEval(c.expr, env);
@@ -159,7 +160,7 @@ function* method(e: Extract<PyExpr, { kind: "pyMethod" }>, env: Env): Run<Value>
             item,
           });
         }
-        target.items = sortPairs(pairs, truthy(kwargs.get("reverse") ?? NONE), e.span);
+        target.items = yield* sortPairsUser(pairs, truthy(kwargs.get("reverse") ?? NONE), env, e.span);
         result = NONE;
       } else result = listMethod(target, e.name, ca, e.span);
       break;
@@ -250,22 +251,23 @@ export function* pyEval(e: PyExpr, env: Env): Run<Value> {
               : undefined;
           result = custom ?? compareOp(op, left, right, e.span);
         }
-        if (!truthy(result)) return result;
+        if (!(yield* truth(result, env, e.span))) return result;
         left = right;
       }
       return result;
     }
     case "pyBoolOp": {
       const left = yield* pyEval(e.left, env);
-      if (e.op === "and" ? !truthy(left) : truthy(left)) return left;
+      const lt = yield* truth(left, env, e.span);
+      if (e.op === "and" ? !lt : lt) return left;
       return yield* pyEval(e.right, env);
     }
     case "pyNot":
-      return bool(!truthy(yield* pyEval(e.operand, env)));
+      return bool(!(yield* truth(yield* pyEval(e.operand, env), env, e.span)));
     case "pyTruth":
-      return bool(truthy(yield* pyEval(e.operand, env)));
+      return bool(yield* truth(yield* pyEval(e.operand, env), env, e.span));
     case "pyIfExpr":
-      return yield* pyEval(truthy(yield* pyEval(e.test, env)) ? e.then : e.else, env);
+      return yield* pyEval((yield* truth(yield* pyEval(e.test, env), env, e.span)) ? e.then : e.else, env);
     case "pyList":
       return list(yield* evalAll(e.items, env));
     case "pyTuple":

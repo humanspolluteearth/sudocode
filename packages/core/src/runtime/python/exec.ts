@@ -10,9 +10,9 @@ import { isSubclass, pyError, typeError } from "./errors.ts";
 import { hashKey, setOrder } from "./hash.ts";
 import { arith, asBig } from "./numbers.ts";
 import { pyStr } from "./repr.ts";
-import { indexValue, iterate, repr, truthy } from "./seq.ts";
+import { indexValue, iterate, repr } from "./seq.ts";
 import { assignTarget, pyEval, setName, storeIndex } from "./eval.ts";
-import { excText } from "./class-calls.ts";
+import { excText, truth } from "./class-calls.ts";
 import { getAttr, makeClass, setAttr } from "./classes.ts";
 
 export function* pyBlock(stmts: readonly PyStmt[], env: Env): Run<Returned | undefined> {
@@ -201,9 +201,9 @@ export function* pyStatement(s: PyStmt, env: Env): Run<Returned | undefined> {
     case "pyAugAssign":
       return yield* augment(s, env);
     case "pyIf":
-      return yield* pyBlock(truthy(yield* pyEval(s.test, env)) ? s.then : s.else, env);
+      return yield* pyBlock((yield* truth(yield* pyEval(s.test, env), env, s.span)) ? s.then : s.else, env);
     case "pyWhile": {
-      for (let k = 0; truthy(yield* pyEval(s.test, env)); k++) {
+      for (let k = 0; yield* truth(yield* pyEval(s.test, env), env, s.span); k++) {
         if (k > 0) yield { type: "step", span: s.span };
         const r = afterBody(yield* pyBlock(s.body, env));
         if (r === "break") return undefined;
@@ -266,7 +266,7 @@ export function* pyStatement(s: PyStmt, env: Env): Run<Returned | undefined> {
       return undefined;
     }
     case "pyAssert": {
-      if (truthy(yield* pyEval(s.test, env))) return undefined;
+      if (yield* truth(yield* pyEval(s.test, env), env, s.span)) return undefined;
       const detail = s.message === null ? "" : pyStr(yield* pyEval(s.message, env), setOrder);
       throw pyError("AssertionError", detail, s.span);
     }

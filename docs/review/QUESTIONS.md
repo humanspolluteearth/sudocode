@@ -304,3 +304,7 @@ SH-18/PY-02 say unsupported Python syntax gives "not supported in Sudocode", but
 **Best guess at the cause:** the budget was set when only two languages existed; the two workers each carry the full runtime. Real fixes: (a) raise `scripts/size-budget.json` to about 320 kB (276480 -> ~330000), (b) make the budget count only what loads on first paint, or (c) share one worker bundle. All three touch CI or the architecture, so per the stop rule I did not do any of them. Tell me which and I will finish #94. Until then #94 is not merged.
 
 **Answered (24 Nov 2026):** Q54 first token of the construct; Q55 defer to M9; Q56 raise the budget to 330 kB (337920 bytes). Done in #94.
+
+## Q57 (M9): two merged goldens miss the PY-54 note (24 Nov 2026)
+
+`tests/golden/python/PY-19-hashing.expected.json` and `PY-19-dunders.expected.json` (merged in #100) have `"info": []`, but their classes set attributes in `__init__` without a declaration comment, so PY-54 reports `I-PY-CLASS-DECLARATIONS` (for `hashing`: lines 1, 13, 24; for `dunders`: lines 1, 12, 33). I may not edit merged expected files, so both stay in `pending.json` and fail only on that. Their printed output is already correct: `src/runtime/python/protocols.test.ts` runs both programs and checks stdout against the CPython text in those files. **Please confirm** adding the three `info` entries to each file, then remove both IDs from `pending.json`.

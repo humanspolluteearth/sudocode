@@ -61,6 +61,8 @@ export type Value =
       attrs: Map<string, Value>;
       /** `str()` / `repr()` text from the student's `__str__` / `__repr__`, filled in before printing. */
       shown: { str?: string | undefined; repr?: string | undefined };
+      /** The dict / set key this instance hashes to (PY-19); null when the class makes it unhashable. */
+      hashed?: string | null | undefined;
     }
   /** A method taken from an instance: the function plus the `self` it will be called with. */
   | { kind: "bound"; fn: Value; self: Value }

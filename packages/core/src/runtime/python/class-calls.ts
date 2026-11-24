@@ -9,10 +9,14 @@ import type { Env, Run } from "../evaluate.ts";
 import { bool, type Value } from "../values.ts";
 import { callValue } from "./call.ts";
 import { baseInitialise, lookupMro, type ClassValue } from "./classes.ts";
-import { typeError } from "./errors.ts";
-import { pyEq, setOrder } from "./hash.ts";
+import { typeError, valueError } from "./errors.ts";
+import { hashKey, pyEq, setOrder } from "./hash.ts";
+import { asBig, compareOrder } from "./numbers.ts";
 import { pyStr, pyTypeName } from "./repr.ts";
-import { truthy } from "./seq.ts";
+import { mergeSort, truthy } from "./seq.ts";
+
+// Identity numbers for instances that are hashed by identity. Only their uniqueness matters, never the value.
+let nextIdentity = 1;
 
 /** `Cat(args)`: make the instance, then run `__init__` (found through the MRO). */
 export function* instantiate(
@@ -27,12 +31,119 @@ export function* instantiate(
   const init = lookupMro(cls, "__init__");
   if (init === undefined) {
     if (!cls.exc && (args.length > 0 || kwargs.size > 0)) throw typeError(`${cls.name}() takes no arguments`, span);
+    yield* fixHash(inst, env, span);
     return inst;
   }
   const result = yield* callValue(init, [inst, ...args], kwargs, env, span);
   if (result.kind !== "none") throw typeError(`__init__() should return None, not '${pyTypeName(result)}'`, span);
+  yield* fixHash(inst, env, span);
   return inst;
 }
+
+/**
+ * Compiler concept: *precomputation for a synchronous table*. A dict or set looks keys up in plain code that cannot
+ * call the student's `__hash__`, so we call it once, right after `__init__`, and keep the key on the instance.
+ * Approximation (logged in M9.md): two keys are equal when their hashes are equal, and the key is not refreshed
+ * if the object changes later. A class with `__eq__` but no `__hash__` is unhashable, as in CPython.
+ */
+function* fixHash(inst: Extract<Value, { kind: "instance" }>, env: Env, span: Span): Run<void> {
+  const own = lookupMro(inst.cls, "__hash__");
+  if (own !== undefined) {
+    if (own.kind === "none") {
+      inst.hashed = null;
+      return;
+    }
+    const h = yield* callValue(own, [inst], new Map(), env, span);
+    if (asBig(h) === null) throw typeError("__hash__ method should return an integer", span);
+    inst.hashed = hashKey(h, span).replace(/^n:/, "h:");
+    return;
+  }
+  inst.hashed = lookupMro(inst.cls, "__eq__") !== undefined ? null : `i:${String(nextIdentity++)}`;
+}
+
+/** `hash(x)` as a number: an instance's hash comes from its key; other values are hashed by their key text. */
+export function hashNumber(v: Value, span: Span): bigint {
+  const key = hashKey(v, span);
+  if (/^[nh]:-?\d+$/.test(key)) return BigInt(key.slice(2)) === -1n ? -2n : BigInt(key.slice(2));
+  let h = 0n;
+  for (const ch of key) h = (h * 131n + BigInt(ch.codePointAt(0) ?? 0)) % (1n << 61n);
+  return h;
+}
+
+/** Truthiness that honours `__bool__` and `__len__` on instances (the plain `truthy` cannot call student code). */
+export function* truth(v: Value, env: Env, span: Span): Run<boolean> {
+  if (v.kind !== "instance") return truthy(v);
+  const b = lookupMro(v.cls, "__bool__");
+  if (b !== undefined) {
+    const r = yield* callValue(b, [v], new Map(), env, span);
+    if (r.kind !== "bool") throw typeError(`__bool__ should return bool, returned ${pyTypeName(r)}`, span);
+    return r.value;
+  }
+  const n = yield* userLength(v, env, span);
+  return n === undefined ? true : n > 0;
+}
+
+/** `len(x)` through `__len__`, or undefined when the class has none. */
+export function* userLength(v: Value, env: Env, span: Span): Run<number | undefined> {
+  if (v.kind !== "instance") return undefined;
+  const fn = lookupMro(v.cls, "__len__");
+  if (fn === undefined) return undefined;
+  const r = yield* callValue(fn, [v], new Map(), env, span);
+  const n = asBig(r);
+  if (n === null || r.kind === "real")
+    throw typeError(`'${pyTypeName(r)}' object cannot be interpreted as an integer`, span);
+  if (n < 0n) throw valueError("__len__() should return >= 0", span);
+  return Number(n);
+}
+
+/** `a < b` for sorting: the student's `__lt__` when an instance is involved, else the built-in order. */
+export function* lessThan(a: Value, b: Value, env: Env, span: Span): Run<boolean> {
+  if (a.kind === "instance" || b.kind === "instance") {
+    const r = yield* userCompare("lt", a, b, env, span);
+    if (r !== undefined) return yield* truth(r, env, span);
+  }
+  return compareOrder(a, b, "<", span) < 0;
+}
+
+/** A stable merge sort whose comparison may run student code (a generator version of `mergeSort`). */
+export function* sortWith<T>(items: T[], less: (a: T, b: T) => Run<boolean>): Run<T[]> {
+  if (items.length < 2) return items.slice();
+  const mid = items.length >> 1;
+  const left = yield* sortWith(items.slice(0, mid), less);
+  const right = yield* sortWith(items.slice(mid), less);
+  const out: T[] = [];
+  let i = 0;
+  let j = 0;
+  while (i < left.length && j < right.length) {
+    if (yield* less(right[j] as T, left[i] as T)) out.push(right[j++] as T);
+    else out.push(left[i++] as T);
+  }
+  while (i < left.length) out.push(left[i++] as T);
+  while (j < right.length) out.push(right[j++] as T);
+  return out;
+}
+
+/** Sorts pairs by key like `sortPairs`, but with `__lt__` support. */
+export function* sortPairsUser(
+  pairs: { key: Value; item: Value }[],
+  reverse: boolean,
+  env: Env,
+  span: Span,
+): Run<Value[]> {
+  if (!pairs.some((p) => p.key.kind === "instance")) return sortPlain(pairs, reverse, span);
+  const ordered = reverse ? pairs.slice().reverse() : pairs;
+  const sorted = yield* sortWith(ordered, (a, b) => lessThan(a.key, b.key, env, span));
+  return (reverse ? sorted.reverse() : sorted).map((p) => p.item);
+}
+
+function sortPlain(pairs: { key: Value; item: Value }[], reverse: boolean, span: Span): Value[] {
+  const ordered = reverse ? pairs.slice().reverse() : pairs;
+  const sorted = mergeSort(ordered, (a, b) => compareOrder(a.key, b.key, "<", span) < 0);
+  return (reverse ? sorted.reverse() : sorted).map((p) => p.item);
+}
+
+/** `NotImplemented`: what a dunder returns to say "ask the other operand". */
+export const isNotImplemented = (v: Value): boolean => v.kind === "builtin" && v.name === "NotImplemented";
 
 function* show(
   inst: Extract<Value, { kind: "instance" }>,
@@ -106,7 +217,9 @@ export function* userCompare(op: string, left: Value, right: Value, env: Env, sp
   const call = function* (self: Value, other: Value, name: string): Run<Value | undefined> {
     if (self.kind !== "instance") return undefined;
     const fn = lookupMro(self.cls, name);
-    return fn === undefined ? undefined : yield* callValue(fn, [self, other], new Map(), env, span);
+    if (fn === undefined) return undefined;
+    const r = yield* callValue(fn, [self, other], new Map(), env, span);
+    return isNotImplemented(r) ? undefined : r;
   };
   const direct = yield* call(left, right, DUNDER[op] as string);
   if (direct !== undefined) return direct;

@@ -354,7 +354,35 @@ export function momentArith(op: string, a: Value, b: Value, span: Span): Value |
     const k = isDelta(d) ? asBig(n) : null;
     if (isDelta(d) && k !== null) return fromMicros("timedelta", micros(d) * k, span);
   }
+  if ((op === "truediv" || op === "floordiv") && isDelta(a)) {
+    const zero = (): Error => pyError("ZeroDivisionError", "integer division or modulo by zero", span);
+    if (isDelta(b)) {
+      if (micros(b) === 0n) throw zero();
+      return op === "floordiv" ? pyint(floorDiv(micros(a), micros(b))) : real(Number(micros(a)) / Number(micros(b)));
+    }
+    const k = asBig(b);
+    if (k !== null) {
+      if (k === 0n) throw zero();
+      return fromMicros("timedelta", op === "floordiv" ? floorDiv(micros(a), k) : roundDiv(micros(a), k), span);
+    }
+  }
   return undefined;
+}
+
+/** Floor division on BigInts (BigInt `/` truncates toward zero, Python's `//` rounds toward minus infinity). */
+function floorDiv(n: bigint, d: bigint): bigint {
+  const q = n / d;
+  return n % d !== 0n && n < 0n !== d < 0n ? q - 1n : q;
+}
+
+/** Division rounded to the nearest whole number, ties to even (how CPython rounds `timedelta / int`). */
+function roundDiv(n: bigint, d: bigint): bigint {
+  const q = floorDiv(n, d);
+  const twice = 2n * (n - q * d);
+  const abs = d < 0n ? -d : d;
+  const up = d < 0n ? -twice : twice;
+  if (up > abs || (up === abs && q % 2n !== 0n)) return q + 1n;
+  return q;
 }
 
 export function momentTypeError(symbol: string, a: Value, b: Value, span: Span): Error {

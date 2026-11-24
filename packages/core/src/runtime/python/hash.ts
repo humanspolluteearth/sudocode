@@ -33,6 +33,9 @@ export function hashKey(v: Value, span: Span): string {
     case "builtin":
     case "type":
       return `o:${v.kind}:${"name" in v ? v.name : ""}`;
+    case "instance":
+      if (typeof v.hashed === "string") return v.hashed;
+      throw typeError(`unhashable type: '${v.cls.name}'`, span);
     default:
       throw typeError(`unhashable type: '${pyTypeName(v)}'`, span);
   }

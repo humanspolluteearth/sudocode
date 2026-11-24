@@ -6,14 +6,14 @@ import type { Env, Run } from "../evaluate.ts";
 import { bool, list, NONE, pyint, real, str, tuple, type Value } from "../values.ts";
 import { callValue } from "./call.ts";
 import { pyError, typeError, valueError } from "./errors.ts";
-import { arith, asBig, compareOrder, isNumeric, pyRound, toFloat } from "./numbers.ts";
+import { arith, asBig, isNumeric, pyRound, toFloat } from "./numbers.ts";
 import { pyStr, pyTypeName } from "./repr.ts";
-import { iterate, lengthOf, repr, sortPairs, truthy } from "./seq.ts";
+import { iterate, lengthOf, repr, truthy } from "./seq.ts";
 import { setOrder } from "./hash.ts";
 import { formatWithSpec } from "./format-spec.ts";
 import { callModuleFunction } from "./modules.ts";
 import { openFile } from "./files.ts";
-import { prepare } from "./class-calls.ts";
+import { hashNumber, lessThan, prepare, sortPairsUser, userLength } from "./class-calls.ts";
 import { baseInitialise, isClassSubclass } from "./classes.ts";
 
 export const BUILTIN_FUNCTIONS = new Set([
@@ -46,6 +46,8 @@ export const BUILTIN_FUNCTIONS = new Set([
   "bin",
   "oct",
   "issubclass",
+  "hash",
+  "NotImplemented",
 ]);
 
 type Kwargs = Map<string, Value>;
@@ -157,7 +159,12 @@ export function* callBuiltin(name: string, args: Value[], kwargs: Kwargs, env: E
     }
     case "len":
       exactly("len", args, 1, span);
-      return pyint(BigInt(lengthOf(a0 as Value, span)));
+      return pyint(BigInt((yield* userLength(a0 as Value, env, span)) ?? lengthOf(a0 as Value, span)));
+    case "hash":
+      exactly("hash", args, 1, span);
+      return pyint(hashNumber(a0 as Value, span));
+    case "NotImplemented":
+      throw typeError("'NotImplementedType' object is not callable", span);
     case "abs": {
       exactly("abs", args, 1, span);
       const v = a0 as Value;
@@ -170,7 +177,6 @@ export function* callBuiltin(name: string, args: Value[], kwargs: Kwargs, env: E
     case "max": {
       const items = args.length === 1 ? iterate(a0 as Value, span) : args;
       const key = kwargs.get("key");
-      const symbol = name === "min" ? "<" : ">";
       if (items.length === 0) {
         const d = kwargs.get("default");
         if (d !== undefined) return d;
@@ -181,7 +187,8 @@ export function* callBuiltin(name: string, args: Value[], kwargs: Kwargs, env: E
         key === undefined || key.kind === "none" ? best : yield* callValue(key, [best], new Map(), env, span);
       for (const item of items.slice(1)) {
         const k = key === undefined || key.kind === "none" ? item : yield* callValue(key, [item], new Map(), env, span);
-        if (compareOrder(k, bestKey, symbol, span) * (name === "min" ? 1 : -1) < 0) {
+        const before = name === "min" ? yield* lessThan(k, bestKey, env, span) : yield* lessThan(bestKey, k, env, span);
+        if (before) {
           best = item;
           bestKey = k;
         }
@@ -212,7 +219,7 @@ export function* callBuiltin(name: string, args: Value[], kwargs: Kwargs, env: E
           key: key === undefined || key.kind === "none" ? item : yield* callValue(key, [item], new Map(), env, span),
           item,
         });
-      return list(sortPairs(pairs, truthy(kwargs.get("reverse") ?? NONE), span));
+      return list(yield* sortPairsUser(pairs, truthy(kwargs.get("reverse") ?? NONE), env, span));
     }
     case "reversed":
       return list(
