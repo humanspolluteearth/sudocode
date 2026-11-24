@@ -10,6 +10,7 @@ import type { Token } from "../edexcel/tokens.ts";
 import { Abandon, CIE_RESERVED, joinSpans, type CieCursor } from "./cursor.ts";
 import type { Env, Variable } from "./env.ts";
 import { arrayType } from "./arrays.ts";
+import { startingValue, typeDeclaration } from "./records.ts";
 import { Expressions, type Typed } from "./expressions.ts";
 import { SCALAR_TYPES, fits, isUnknown, typeName, withArticle, UNKNOWN, type Ty } from "./types.ts";
 
@@ -140,8 +141,10 @@ export class Statements {
         if (this.subprogram === null) throw new Error("subprogram parser missing");
         this.subprogram(first, upper);
         return [];
-      case "ARRAY":
       case "TYPE":
+        typeDeclaration(c, this.env, first, () => this.typeName());
+        return [];
+      case "ARRAY":
       case "CLASS":
       case "OPENFILE":
       case "READFILE":
@@ -203,6 +206,11 @@ export class Statements {
         c.warnCase(t, t.text.toUpperCase());
         return ty;
       }
+      const declared = this.env.types.get(t.text);
+      if (declared !== undefined) {
+        c.next();
+        return declared;
+      }
       if (t.text.toUpperCase() === "ARRAY" && !scalarOnly) {
         c.next();
         c.warnCase(t, "ARRAY");
@@ -226,15 +234,13 @@ export class Statements {
     const ty = this.typeName();
     for (const n of names) this.env.declare(n.text, { ty, constant: false });
     c.endStatement();
-    // An array exists from its DECLARE, with every item unset (CIE-20); other types get their value on assignment.
-    if (ty.kind !== "ARRAY") return [];
+    // An array or record exists from its DECLARE, with every item unset (CIE-20, CIE-30); other types get their
+    // value on assignment.
     const span = c.spanFrom(first);
-    return names.map((n) => ({
-      kind: "assign",
-      target: this.ref(n),
-      value: { kind: "newArray", dims: ty.dims, span },
-      span,
-    }));
+    return names.flatMap((n): Ir[] => {
+      const value = startingValue(ty, span);
+      return value === null ? [] : [{ kind: "assign", target: this.ref(n), value, span }];
+    });
   }
 
   private constant(first: Token): Ir[] {
@@ -312,6 +318,7 @@ export class Statements {
     }
     c.next();
     const v = this.env.lookup(first.text);
+    if (c.isSymbol(".") || (c.isSymbol("[") && this.fieldFollowsIndex())) return this.fieldAssign(first, v);
     if (c.isSymbol("[")) return this.elementAssign(first, v);
     if (!c.isSymbol("←")) {
       if (v === undefined) {
@@ -333,10 +340,69 @@ export class Statements {
     this.checkFits(first.text, v.ty, value);
     c.endStatement();
     // CIE-23: `B <- A` copies the items, so changing A later leaves B alone.
-    const whole = v.ty.kind === "ARRAY" ? ({ kind: "copyArray", source: value.ir, span: value.span } as const) : null;
+    const whole = this.copyOf(v.ty, value);
     return [
       { kind: "assign", target: this.ref(first), value: whole ?? this.valueFor(v.ty, value), span: c.spanFrom(first) },
     ];
+  }
+
+  /** After a name and `[`: does the matching `]` have a `.` after it (`Form[2].Name <- ...`)? */
+  private fieldFollowsIndex(): boolean {
+    let depth = 0;
+    for (let i = 0; ; i++) {
+      const t = this.c.peek(i);
+      if (t.kind === "newline" || t.kind === "eof") return false;
+      if (t.kind === "symbol" && t.text === "[") depth++;
+      if (t.kind === "symbol" && t.text === "]" && --depth === 0) {
+        const next = this.c.peek(i + 1);
+        return next.kind === "symbol" && next.text === ".";
+      }
+    }
+  }
+
+  /** `Rec.Field <- value`, `Form[i].Field <- value` (CIE-30). The left side is read like an expression, then used as a target. */
+  private fieldAssign(first: Token, v: Variable | undefined): Ir[] {
+    const c = this.c;
+    if (v === undefined) {
+      this.x.undeclared(first);
+      return c.failSilently();
+    }
+    const scope = this.env.isLocal(first.text) ? "local" : "global";
+    const root: VarRef = { kind: "var", name: first.text, scope, span: first.span };
+    const base: Typed = { ir: root, ty: v.ty, oneChar: false, span: first.span };
+    const left = this.x.fields(first, c.isSymbol("[") ? this.x.element(first, base) : base);
+    c.expectSymbol("←", "←", "Use <- to store a value: Name.Field <- value.");
+    const value = this.x.expr();
+    if (left.ir.kind !== "field") return c.failSilently(); // already reported
+    if (v.constant) {
+      c.report("E-CHK-CONSTANT-ASSIGN", first.span, { name: first.text });
+      return c.failSilently();
+    }
+    this.checkFits(c.text(left.span), left.ty, value);
+    c.endStatement();
+    const target: AssignTarget = {
+      kind: "field",
+      record: left.ir.target,
+      root,
+      name: left.ir.name,
+      text: left.ir.text,
+      span: c.spanFrom(first),
+    };
+    return [
+      {
+        kind: "assign",
+        target,
+        value: this.copyOf(left.ty, value) ?? this.valueFor(left.ty, value),
+        span: c.spanFrom(first),
+      },
+    ];
+  }
+
+  /** Arrays and records are copied when assigned whole, so the two variables stay separate (CIE-23, CIE-30). */
+  private copyOf(ty: Ty, value: Typed): IrExpr | null {
+    return ty.kind === "ARRAY" || ty.kind === "RECORD"
+      ? { kind: "copyArray", source: value.ir, span: value.span }
+      : null;
   }
 
   /** The IR target for `A[i]` or `A[i, j]`: counting starts at the declared lower bound and the length is fixed. */
@@ -378,7 +444,14 @@ export class Statements {
     this.checkFits(first.text, item, value);
     c.endStatement();
     const target = this.elementTarget(first, ty, indexes, c.spanFrom(first));
-    return [{ kind: "assign", target, value: this.valueFor(item, value), span: c.spanFrom(first) }];
+    return [
+      {
+        kind: "assign",
+        target,
+        value: this.copyOf(item, value) ?? this.valueFor(item, value),
+        span: c.spanFrom(first),
+      },
+    ];
   }
 
   /** CIE-13, CIE-49: the value must fit the variable's type. */

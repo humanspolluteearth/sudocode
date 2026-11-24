@@ -12,6 +12,10 @@ export type Ty =
   | { kind: "DATE" }
   /** A fixed-size array (CIE-20): `dims` is the length of each dimension, `lows` the first index of each. */
   | { kind: "ARRAY"; of: Ty; lows: number[]; dims: number[] }
+  /** A record type declared with TYPE ... ENDTYPE (CIE-30). */
+  | { kind: "RECORD"; name: string; fields: { name: string; ty: Ty }[] }
+  /** An enumerated type (CIE-31): its values in order. */
+  | { kind: "ENUM"; name: string; names: string[] }
   | { kind: "unknown" };
 
 export const INTEGER: Ty = { kind: "INTEGER" };
@@ -30,7 +34,23 @@ export const isNumber = (t: Ty): boolean => t.kind === "INTEGER" || t.kind === "
 export const isText = (t: Ty): boolean => t.kind === "STRING" || t.kind === "CHAR";
 
 export const typeName = (t: Ty): string =>
-  t.kind === "unknown" ? "unknown" : t.kind === "ARRAY" ? `ARRAY OF ${typeName(t.of)}` : t.kind;
+  t.kind === "unknown"
+    ? "unknown"
+    : t.kind === "ARRAY"
+      ? `ARRAY OF ${typeName(t.of)}`
+      : t.kind === "RECORD" || t.kind === "ENUM"
+        ? t.name
+        : t.kind;
+
+/** The same type: scalars by kind, user types by name (a TYPE name is unique), arrays by shape and item type. */
+export function sameType(a: Ty, b: Ty): boolean {
+  if (a.kind === "ARRAY" && b.kind === "ARRAY") {
+    return a.dims.length === b.dims.length && a.dims.every((d, i) => d === b.dims[i]) && sameType(a.of, b.of);
+  }
+  if ((a.kind === "RECORD" && b.kind === "RECORD") || (a.kind === "ENUM" && b.kind === "ENUM"))
+    return a.name === b.name;
+  return a.kind === b.kind;
+}
 
 /** With its article, for messages such as "but this is an INTEGER". */
 export function withArticle(t: Ty): string {
@@ -47,17 +67,11 @@ export function fits(value: Ty, oneChar: boolean, into: Ty): boolean {
   if (into.kind === "REAL" && value.kind === "INTEGER") return true;
   // CIE-23: a whole array goes into another when the size and the item type match.
   if (into.kind === "ARRAY" || value.kind === "ARRAY") {
-    return (
-      into.kind === "ARRAY" &&
-      value.kind === "ARRAY" &&
-      into.dims.length === value.dims.length &&
-      into.dims.every((d, i) => d === value.dims[i]) &&
-      into.of.kind === value.of.kind
-    );
+    return sameType(into, value);
   }
   if (into.kind === "CHAR" && value.kind === "STRING") return oneChar;
   if (into.kind === "STRING" && value.kind === "CHAR") return true;
-  return value.kind === into.kind;
+  return sameType(value, into);
 }
 
 /** CIE-46: comparable when the types match, except REAL with INTEGER and CHAR with STRING (both allowed). */
@@ -65,5 +79,6 @@ export function comparable(a: Ty, b: Ty): boolean {
   if (isUnknown(a) || isUnknown(b)) return true;
   if (isNumber(a) && isNumber(b)) return true;
   if (isText(a) && isText(b)) return true;
-  return a.kind === b.kind && a.kind !== "ARRAY" && a.kind !== "DATE";
+  // CIE-48: records (like arrays and dates) cannot be compared; enumerated values can, by order (CIE-31).
+  return sameType(a, b) && a.kind !== "ARRAY" && a.kind !== "DATE" && a.kind !== "RECORD";
 }

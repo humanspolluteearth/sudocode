@@ -257,6 +257,20 @@ export const checkerMessages: Catalogue = {
       hint: "Use [ ] after an array or a STRING, e.g. Scores[0].",
     },
   },
+  "E-CHK-NO-FIELD": {
+    spec: ["CIE-30"],
+    default: {
+      message: "{name} has no field called {field}",
+      hint: "Its fields are: {fields}.",
+    },
+  },
+  "E-CHK-NOT-RECORD": {
+    spec: ["CIE-30"],
+    default: {
+      message: "{name} is {type}, so it has no fields",
+      hint: "Use a dot only after a variable declared with a TYPE ... ENDTYPE record.",
+    },
+  },
   "E-CHK-STRING-ELEMENT": {
     spec: ["EDX-23"],
     default: {

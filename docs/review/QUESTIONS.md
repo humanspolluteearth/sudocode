@@ -252,3 +252,8 @@ D14 in `docs/review/M4.md`). If you answer differently, the tests and code chang
     `RIGHT`, `MID` asking for more characters than there are is a runtime error, not a shorter result. (d) A DATE
     prints `dd/mm/yyyy` with zero padding, and DATEs can't be compared. Tests for these edges are `MISC`-named unit
     tests in `src/cie/builtins.test.ts`, not goldens, until you decide.
+50. **CIE-31: what happens when an enumerated value is stepped past either end?** The spec gives `S + 1` and
+    comparison but is silent on `S + 1` at the last value, `S - 1` at the first, and on `- n` in general. I raise the
+    runtime error `E-RUN-ENUM-RANGE` ("Summer is a Season, and moving 1 place from it goes past the end of the list"),
+    and only the probe-level unit test `MISC` in `src/runtime/records.test.ts` pins it. Please confirm the error (the
+    alternative is wrapping round) and the wording.

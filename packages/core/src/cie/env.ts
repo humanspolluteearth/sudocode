@@ -3,11 +3,14 @@
 // Compiler concept: a *symbol table* maps each name to what the checker knows about it. CIE declares every
 // variable (CIE-11), so a name that is not in the table is an error at its first use.
 import type { Span } from "../diagnostics.ts";
+import type { Expr } from "../ir/ir.ts";
 import type { Ty } from "./types.ts";
 
 export interface Variable {
   ty: Ty;
   constant: boolean;
+  /** For the values of an enumerated type: the IR to use wherever the name appears (CIE-31). */
+  literal?: (span: Span) => Expr;
 }
 
 export interface Param {
@@ -25,6 +28,8 @@ export interface Signature {
 }
 
 export class Env {
+  /** Types declared with TYPE (CIE-30, CIE-31), by name. */
+  readonly types = new Map<string, Ty>();
   readonly globals = new Map<string, Variable>();
   readonly subs: Map<string, Signature>;
   locals: Map<string, Variable> | null = null;
