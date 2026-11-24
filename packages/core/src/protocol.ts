@@ -21,6 +21,8 @@ export interface RunRequest {
   files: VirtualFiles;
   /** Random seed (SH-12): fresh for normal runs, fixed for tests and replay. */
   seed: number;
+  /** Today's date for TODAY() (CIE-129). Left out in the app, which then reads the real clock; tests fix it. */
+  today?: { day: number; month: number; year: number };
   /** 1-based source lines with a breakpoint. */
   breakpoints: number[];
   /** Record trace rows (SH-17). Off when the trace panel is hidden, to save memory on small devices. */

@@ -1,0 +1,3 @@
+REPEAT
+  OUTPUT "x"
+UNTIL 1

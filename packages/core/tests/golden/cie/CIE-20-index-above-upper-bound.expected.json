@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-20"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INDEX-RANGE",
+        "line": 2,
+        "column": 8
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Index 4 is past the upper bound 3. Column 8 is where A[4] starts."
+}

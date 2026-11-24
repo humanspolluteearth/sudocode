@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-25"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INDEX-RANGE",
+        "line": 3,
+        "column": 8
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Strings count from 1, so S[0] is outside. Column 8 is where S[0] starts."
+}

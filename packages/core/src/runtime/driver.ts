@@ -41,6 +41,8 @@ export interface DriverOptions {
   trace?: boolean;
   /** Seed for RANDOM (SH-12); a fresh one when left out. */
   seed?: number;
+  /** The date TODAY() returns; the real clock when left out (dependency injection, so tests are repeatable). */
+  today?: { day: number; month: number; year: number };
   /** Files that exist before the run: name -> contents (SH-11). */
   files?: VirtualFiles;
   /** Runs `resume` later; setTimeout by default (exists in Node and in Web Workers). */
@@ -242,6 +244,7 @@ export function runProgram(options: DriverOptions): EngineRun {
     random: (max) => Math.floor(nextRandom() * (max + 1)),
     randomReal: () => nextRandom(),
     today: () => {
+      if (options.today !== undefined) return options.today;
       const now = new Date();
       return { day: now.getDate(), month: now.getMonth() + 1, year: now.getFullYear() };
     },
