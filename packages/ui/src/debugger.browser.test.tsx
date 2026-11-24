@@ -1,3 +1,4 @@
+import "./styles.css";
 import type { StackFrame, TraceRow } from "@sudocode/core";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
@@ -80,7 +81,7 @@ describe("MISC console input box", () => {
     expect(onInput).toHaveBeenCalledWith("");
   });
 
-  it("SH-05 Cancel, or Escape in the box, ends the program", async () => {
+  it("SH-05 Escape on the input line ends the program", async () => {
     const onCancel = vi.fn();
     const screen = await render(
       <Console
@@ -92,11 +93,26 @@ describe("MISC console input box", () => {
         onCancel={onCancel}
       />,
     );
-    await screen.getByRole("button", { name: "Cancel" }).click();
-    expect(onCancel).toHaveBeenCalledTimes(1);
     await screen.getByRole("textbox", { name: "Input" }).click();
     await userEvent.keyboard("{Escape}");
-    expect(onCancel).toHaveBeenCalledTimes(2);
+    expect(onCancel).toHaveBeenCalledTimes(1);
+  });
+
+  it("MISC input is typed on the prompt's own line, with no separate input area", async () => {
+    const screen = await render(
+      <div className="sc-root dark">
+        <Console output="Name? " error={null} finishedNote={null} onClear={() => undefined} waiting={{ prompt: "" }} />
+      </div>,
+    );
+    const out = screen.container.querySelector(".sc-out")?.getBoundingClientRect();
+    const box = screen.getByRole("textbox", { name: "Input" }).element().getBoundingClientRect();
+    expect(out).toBeDefined();
+    // Same line: the input's vertical middle falls inside the prompt's box, and it starts to the right of it.
+    expect(box.top + box.height / 2).toBeGreaterThan(out?.top ?? 0);
+    expect(box.top + box.height / 2).toBeLessThan(out?.bottom ?? 0);
+    expect(box.left).toBeGreaterThan((out?.left ?? 0) + 10);
+    expect(screen.container.querySelector("form")).toBeNull();
+    expect(screen.container.querySelector("button.sc-tb")).toBeNull();
   });
 
   it("MISC there is no input box when the program isn't waiting", async () => {

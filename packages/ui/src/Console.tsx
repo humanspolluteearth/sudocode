@@ -1,4 +1,4 @@
-// The console: what the program printed, a runtime error if it stopped with one, and an input box while the
+// The console: what the program printed, a runtime error if it stopped with one, and an input on the last line while the
 // program waits for a line (SH-05).
 import type { Diagnostic } from "@sudocode/core";
 import { useEffect, useRef, useState } from "react";
@@ -43,7 +43,9 @@ export function Console({ output, error, finishedNote, onClear, waiting = null, 
       </div>
       <div className="sc-console-log" role="log" aria-live="polite" ref={log} tabIndex={0}>
         {empty && <div className="sc-hint">Press Run to see your program&apos;s output here.</div>}
-        {output !== "" && <pre className="sc-out">{output}</pre>}
+        {/* While the program waits, the input sits on the same line as the prompt it printed, like a terminal. */}
+        {output !== "" && <pre className={`sc-out${waiting !== null ? " inline" : ""}`}>{output}</pre>}
+        {waiting !== null && <InlineInput waiting={waiting} onInput={onInput} onCancel={onCancel} />}
         {error !== null && (
           <div className="sc-error">
             {`Error (line ${String(error.line)}): ${error.message}`}
@@ -52,55 +54,43 @@ export function Console({ output, error, finishedNote, onClear, waiting = null, 
         )}
         {finishedNote !== null && <div className="sc-hint">{finishedNote}</div>}
       </div>
-      {waiting !== null && <InputBox waiting={waiting} onInput={onInput} onCancel={onCancel} />}
     </section>
   );
 }
 
-interface InputBoxProps {
+interface InlineInputProps {
   waiting: InputWait;
   onInput: ((text: string) => void) | undefined;
   onCancel: (() => void) | undefined;
 }
 
-function InputBox({ waiting, onInput, onCancel }: InputBoxProps) {
+function InlineInput({ waiting, onInput, onCancel }: InlineInputProps) {
   const [text, setText] = useState("");
   const box = useRef<HTMLInputElement>(null);
-  // The program is waiting: put the cursor in the box so the student can just type.
+  // The program is waiting: put the cursor on the line so the student can just type. Enter sends it, Esc cancels.
   useEffect(() => {
     box.current?.focus();
+    box.current?.scrollIntoView({ block: "nearest" });
   }, [waiting]);
   const label = waiting.device === undefined ? "Input" : `Input from ${waiting.device}`;
   return (
-    <form
-      className="sc-input"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onInput?.(text);
-        setText("");
+    <input
+      ref={box}
+      className="sc-input-inline"
+      aria-label={label}
+      value={text}
+      autoComplete="off"
+      spellCheck={false}
+      onChange={(e) => {
+        setText(e.target.value);
       }}
-    >
-      <label>
-        <span>{label}</span>
-        <input
-          ref={box}
-          value={text}
-          autoComplete="off"
-          spellCheck={false}
-          onChange={(e) => {
-            setText(e.target.value);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") onCancel?.();
-          }}
-        />
-      </label>
-      <button type="submit" className="sc-tb">
-        Enter
-      </button>
-      <button type="button" className="sc-tb" onClick={onCancel} title="Cancel (Esc) ends the program">
-        Cancel
-      </button>
-    </form>
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          onInput?.(text);
+          setText("");
+        } else if (e.key === "Escape") onCancel?.();
+      }}
+    />
   );
 }

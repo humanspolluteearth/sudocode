@@ -8,6 +8,7 @@ import { QuickReference } from "./QuickReference.tsx";
 import { Problems } from "./Problems.tsx";
 import type { RunView } from "./run-state.ts";
 import { TraceTable } from "./TraceTable.tsx";
+import { Section } from "./Section.tsx";
 import { STATE_TEXT } from "./StatusBar.tsx";
 import { Variables } from "./Variables.tsx";
 
@@ -87,44 +88,32 @@ export function SidePanel({
         <FilesPanel files={files.files} onChange={files.onChange} onDelete={files.onDelete} />
       ) : (
         <div className="sc-debugger" tabIndex={0} role="group" aria-label="Debugger">
-          <section aria-label="Status" className="sc-status-panel">
-            <div className="sc-panel-title">
-              <span>Status</span>
-            </div>
-            <div className="sc-status-body">
+          <Section id="status" title="Status" className="sc-status-panel">
+            <div className="sc-pad">
               {STATE_TEXT[run.state]}
               {run.paused !== null && ` before line ${String(run.paused.line)}`}
             </div>
-          </section>
+          </Section>
           <Problems diagnostics={diagnostics} onSelect={onSelectProblem} />
-          <section aria-label="Variables" className="sc-vars-panel">
-            <div className="sc-panel-title">
-              <span>Variables</span>
-              {run.paused !== null && <span className="sc-count">{`line ${String(run.paused.line)}`}</span>}
-            </div>
+          <Section
+            id="variables"
+            title="Variables"
+            count={run.paused !== null ? `line ${String(run.paused.line)}` : undefined}
+            className="sc-vars-panel"
+          >
             <Variables frame={run.paused?.stack[0] ?? null} previous={run.previous} />
-          </section>
-          <section aria-label="Breakpoints" className="sc-bps-panel">
-            <div className="sc-panel-title">
-              <span>Breakpoints</span>
-              <span className="sc-count">{breakpoints.length}</span>
-            </div>
-            <div className="sc-status-body">
+          </Section>
+          <Section id="breakpoints" title="Breakpoints" count={String(breakpoints.length)} className="sc-bps-panel">
+            <div className="sc-pad">
               {breakpoints.length === 0 ? "No breakpoints." : breakpoints.map((n) => `line ${String(n)}`).join(", ")}
             </div>
-          </section>
-          <section aria-label="Call stack" className="sc-stack-panel">
-            <div className="sc-panel-title">
-              <span>Call stack</span>
-            </div>
+          </Section>
+          <Section id="callstack" title="Call stack" className="sc-stack-panel">
             <CallStack stack={run.paused?.stack ?? []} />
-          </section>
-          <section aria-label="Trace table" className="sc-trace-panel">
-            <div className="sc-panel-title">
-              <span>Trace table</span>
-            </div>
+          </Section>
+          <Section id="trace" title="Trace table" className="sc-trace-panel">
             <TraceTable rows={run.trace} recorded={run.traceRecorded} />
-          </section>
+          </Section>
         </div>
       )}
     </aside>
