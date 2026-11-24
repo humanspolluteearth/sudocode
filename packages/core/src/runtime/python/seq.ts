@@ -1,4 +1,5 @@
 // Sequences and containers: iteration, indexing, slicing, membership, sorting (PY-12, PY-33, PY-34).
+import { momentIsTruthy } from "./datetime-mod.ts";
 import type { Span } from "../../diagnostics.ts";
 import { list, pyint, str, tuple, type Value } from "../values.ts";
 import { fileLines } from "./files.ts";
@@ -80,6 +81,8 @@ export function truthy(v: Value): boolean {
       return v.map.size > 0;
     case "range":
       return rangeLength(v) > 0n;
+    case "moment":
+      return momentIsTruthy(v);
     default:
       return true;
   }

@@ -10,6 +10,8 @@ import { arith, asBig, compareOrder, isNumeric, pyRound, toFloat } from "./numbe
 import { pyStr, pyTypeName } from "./repr.ts";
 import { iterate, lengthOf, repr, sortPairs, truthy } from "./seq.ts";
 import { setOrder } from "./hash.ts";
+import { formatWithSpec } from "./format-spec.ts";
+import { callModuleFunction } from "./modules.ts";
 import { openFile } from "./files.ts";
 import { prepare } from "./class-calls.ts";
 import { baseInitialise, isClassSubclass } from "./classes.ts";
@@ -40,6 +42,7 @@ export const BUILTIN_FUNCTIONS = new Set([
   "type",
   "repr",
   "hex",
+  "format",
   "bin",
   "oct",
   "issubclass",
@@ -122,6 +125,7 @@ export function typeMatches(value: Value, cls: Value, span: Span): boolean {
   const own = pyTypeName(value);
   if (own === cls.name) return true;
   if (cls.name === "int" && value.kind === "bool") return true;
+  if (cls.name === "date" && value.kind === "moment" && value.type === "datetime") return true;
   if (value.kind === "exc") return isSubclassName(value.name, cls.name);
   return cls.name === "object";
 }
@@ -131,6 +135,7 @@ const isSubclassName = isSubclass;
 
 export function* callBuiltin(name: string, args: Value[], kwargs: Kwargs, env: Env, span: Span): Run<Value> {
   const a0 = args[0];
+  if (name.includes(".")) return yield* callModuleFunction(name, args, env, span);
   switch (name) {
     case "print": {
       const sep = kwargs.get("sep");
@@ -296,6 +301,14 @@ export function* callBuiltin(name: string, args: Value[], kwargs: Kwargs, env: E
     case "$base_init":
       baseInitialise(a0 ?? NONE, args.slice(1));
       return NONE;
+    case "format": {
+      if (args.length < 1 || args.length > 2)
+        throw typeError(`format expected at most 2 arguments, got ${String(args.length)}`, span);
+      const spec = args[1];
+      if (spec !== undefined && spec.kind !== "str")
+        throw typeError(`format() argument 2 must be str, not ${pyTypeName(spec)}`, span);
+      return str(formatWithSpec(a0 as Value, spec?.value ?? "", span));
+    }
     case "hex":
       return radix(name, "0x", 16, a0, span);
     case "bin":

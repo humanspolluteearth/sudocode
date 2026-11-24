@@ -377,25 +377,57 @@ class StatementParser extends ExprParser {
     return this.tok.type === "newline" || this.tok.type === "eof" || this.isOp(";");
   }
 
-  /** Modules are M9: for now `import` is a friendly "not supported yet" (PY-22). */
+  /**
+   * `import m [as y]` and `from m import x [as y], ...` (PY-22), for the four modules in the subset. Anything else,
+   * `pickle` included (PY-44), is a friendly "not supported" error at the start of the statement.
+   */
   private importStatement(): SStmt {
     const first = this.tok.span;
     const kw = this.next();
-    const m =
-      kw.value === "from" && this.tok.type === "name" ? this.tok.value : this.tok.type === "name" ? this.tok.value : "";
-    if (MODULES.includes(m)) {
-      return this.unsupported(
-        first,
-        `The ${m} module`,
-        `The ${m} module is not available yet. It will arrive in a later version of Sudocode.`,
-      );
+    const items: { module: string; member: string | null; target: SExpr }[] = [];
+    const moduleName = (): string => {
+      const n = this.tok;
+      if (n.type !== "name" || KEYWORDS.has(n.value)) this.fail(n.span);
+      const m = this.next().value;
+      if (!MODULES.includes(m) || this.isOp(".")) {
+        this.unsupported(
+          first,
+          `The ${m} module`,
+          "Only the math, random, datetime and time modules are available. Remove the import.",
+        );
+      }
+      return m;
+    };
+    const bound = (fallback: string, at: Span): SExpr => {
+      let name = fallback;
+      let span = at;
+      if (this.acceptWord("as")) {
+        const n = this.tok;
+        if (n.type !== "name" || KEYWORDS.has(n.value)) this.fail(n.span);
+        name = this.next().value;
+        span = n.span;
+      }
+      return { kind: "name", name, span };
+    };
+    if (kw.value === "import") {
+      do {
+        const at = this.tok.span;
+        const module = moduleName();
+        items.push({ module, member: null, target: bound(module, at) });
+      } while (this.acceptOp(","));
+    } else {
+      const module = moduleName();
+      if (!this.acceptWord("import")) this.fail(this.tok.span);
+      if (this.isOp("*"))
+        this.unsupported(this.tok.span, "import *", "Name what you need, like: from math import sqrt");
+      do {
+        const n = this.tok;
+        if (n.type !== "name" || KEYWORDS.has(n.value)) this.fail(n.span);
+        const member = this.next().value;
+        items.push({ module, member, target: bound(member, n.span) });
+      } while (this.acceptOp(","));
     }
-    const shown = m === "" ? "Modules" : `The ${m} module`;
-    return this.unsupported(
-      first,
-      shown,
-      "Only the math, random, datetime and time modules are available. Remove the import.",
-    );
+    return { kind: "import", items, span: this.since(first) };
   }
 }
 

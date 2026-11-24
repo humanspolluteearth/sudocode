@@ -1,5 +1,6 @@
 // How Python values print: `str()` for print, `repr()` inside containers (PY-30, PY-31).
 import type { Value } from "../values.ts";
+import { momentRepr, momentStr } from "./datetime-mod.ts";
 
 /** Python's float repr: the shortest digits that round-trip, in fixed form for exponents -4..15 (PY-31). */
 export function floatRepr(x: number): string {
@@ -76,6 +77,8 @@ export function pyTypeName(v: Value): string {
       return "type";
     case "file":
       return "TextIOWrapper";
+    case "moment":
+      return v.type;
     case "instance":
       return v.cls.name;
     case "bound":
@@ -147,6 +150,10 @@ export function pyStr(v: Value, setItems: Orderer, inner = false): string {
       return inner ? `${v.name}(${v.args.map(rep).join(", ")})` : v.detail;
     case "class":
       return `<class '__main__.${v.name}'>`;
+    case "moment":
+      return inner ? momentRepr(v) : momentStr(v);
+    case "module":
+      return `<module '${v.name}' (built-in)>`;
     case "file":
       return `<_io.TextIOWrapper name='${v.name}' mode='${v.mode}' encoding='UTF-8'>`;
     case "bound":

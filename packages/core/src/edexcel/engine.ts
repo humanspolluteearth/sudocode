@@ -43,6 +43,7 @@ export const edexcelEngine: Engine = {
       trace: request.trace,
       breakpoints: request.breakpoints,
       files: request.files,
+      seed: request.seed,
     });
   },
 };

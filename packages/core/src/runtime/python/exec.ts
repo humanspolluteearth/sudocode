@@ -8,7 +8,7 @@ import { NONE, pyint, str, type Value } from "../values.ts";
 import { callValue } from "./call.ts";
 import { isSubclass, pyError, typeError } from "./errors.ts";
 import { hashKey, setOrder } from "./hash.ts";
-import { arith } from "./numbers.ts";
+import { arith, asBig } from "./numbers.ts";
 import { pyStr } from "./repr.ts";
 import { indexValue, iterate, repr, truthy } from "./seq.ts";
 import { assignTarget, pyEval, setName, storeIndex } from "./eval.ts";
@@ -89,9 +89,13 @@ function* del(t: PyTarget, env: Env, span: Span): Run<void> {
   const container = yield* pyEval(t.target, env);
   const index = yield* pyEval(t.index, env);
   if (container.kind === "list") {
-    indexValue(container, index, span); // raises the right IndexError / TypeError
-    const n = index.kind === "pyint" ? Number(index.value) : index.kind === "bool" && index.value ? 1 : 0;
-    container.items.splice(n < 0 ? n + container.items.length : n, 1);
+    const big = asBig(index);
+    if (big === null) indexValue(container, index, span); // raises the TypeError for a non-integer index
+    const n = Number(big);
+    const at = n < 0 ? n + container.items.length : n;
+    // CPython words a bad `del` index as an assignment one, unlike a read.
+    if (at < 0 || at >= container.items.length) throw pyError("IndexError", "list assignment index out of range", span);
+    container.items.splice(at, 1);
   } else if (container.kind === "dict") {
     if (!container.map.delete(hashKey(index, span))) throw pyError("KeyError", repr(index), span);
   } else throw typeError(`'${container.kind}' object doesn't support item deletion`, span);

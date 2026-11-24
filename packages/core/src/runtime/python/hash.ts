@@ -4,6 +4,7 @@
 // same key. We map every hashable value to a string key and keep the real key beside it, in insertion order.
 import type { Span } from "../../diagnostics.ts";
 import type { Value } from "../values.ts";
+import { momentEquals } from "./datetime-mod.ts";
 import { typeError } from "./errors.ts";
 import { pyTypeName } from "./repr.ts";
 
@@ -26,6 +27,8 @@ export function hashKey(v: Value, span: Span): string {
       return `t(${v.items.map((i) => hashKey(i, span)).join(",")})`;
     case "range":
       return `r:${String(v.start)}:${String(v.stop)}:${String(v.step)}`;
+    case "moment":
+      return `m:${v.type}:${String(v.days)}:${String(v.secs)}:${String(v.micros)}`;
     case "func":
     case "builtin":
     case "type":
@@ -56,6 +59,7 @@ export function pyEq(a: Value, b: Value): boolean {
   }
   if ((a.kind === "str" || a.kind === "char") && (b.kind === "str" || b.kind === "char")) return a.value === b.value;
   if (a.kind === "none" || b.kind === "none") return a.kind === b.kind;
+  if (a.kind === "moment") return momentEquals(a, b);
   if ((a.kind === "list" && b.kind === "list") || (a.kind === "tuple" && b.kind === "tuple")) {
     const y = (b as { items: Value[] }).items;
     return a.items.length === y.length && a.items.every((v, i) => pyEq(v, y[i] as Value));

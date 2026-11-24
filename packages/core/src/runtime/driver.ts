@@ -47,6 +47,8 @@ export interface DriverOptions {
   files?: VirtualFiles;
   /** Runs `resume` later; setTimeout by default (exists in Node and in Web Workers). */
   schedule?: (resume: () => void) => void;
+  /** Runs `resume` after `ms` milliseconds, for Python's `time.sleep` (PY-43); setTimeout by default. */
+  sleep?: (ms: number, resume: () => void) => void;
 }
 
 interface Frame {
@@ -58,13 +60,14 @@ interface Frame {
   column: number;
 }
 
-type State = "running" | "paused" | "input" | "done";
+type State = "running" | "paused" | "input" | "sleeping" | "done";
 
 export function runProgram(options: DriverOptions): EngineRun {
   const { language, program, emit } = options;
   const maxCallDepth = options.maxCallDepth ?? DEFAULT_CALL_DEPTH;
   const stepLimit = options.stepLimit ?? DEFAULT_STEP_LIMIT;
-  const nextRandom = seededRandom(options.seed ?? Math.floor(Math.random() * 2 ** 32));
+  const runSeed = options.seed ?? Math.floor(Math.random() * 2 ** 32);
+  const nextRandom = seededRandom(runSeed);
   const sliceSteps = options.sliceSteps ?? 50_000;
   const schedule = options.schedule ?? ((resume: () => void) => setTimeout(resume, 0));
 
@@ -253,6 +256,8 @@ export function runProgram(options: DriverOptions): EngineRun {
     },
     random: (max) => Math.floor(nextRandom() * (max + 1)),
     randomReal: () => nextRandom(),
+    runSeed,
+    nowMs: () => Date.now(),
     today: () => {
       if (options.today !== undefined) return options.today;
       const now = new Date();
@@ -413,6 +418,16 @@ export function runProgram(options: DriverOptions): EngineRun {
         return "step";
       case "call":
         call(request.callee, request.args, request.span);
+        return "yield";
+      case "sleep":
+        // The run waits on a timer instead of a loop, so the page stays responsive while it sleeps (PY-43).
+        state = "sleeping";
+        flush();
+        (options.sleep ?? ((ms, resume) => void setTimeout(resume, ms)))(request.ms, () => {
+          if (state !== "sleeping") return;
+          state = "running";
+          schedule(slice);
+        });
         return "yield";
       case "input":
         state = "input";

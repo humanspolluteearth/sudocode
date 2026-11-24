@@ -61,6 +61,8 @@ export type PyExpr =
   | { kind: "pyAttr"; target: PyExpr; name: string; span: Span }
   | { kind: "pyCall"; callee: PyExpr; args: PyExpr[]; keywords: PyKeyword[]; span: Span }
   | { kind: "pyMethod"; target: PyExpr; name: string; args: PyExpr[]; keywords: PyKeyword[]; span: Span }
+  /** `import m` (member null) or `from m import member`: looks the module up in the runtime's module table (PY-22). */
+  | { kind: "pyModule"; module: string; member: string | null; span: Span }
   | { kind: "pyFString"; parts: PyFPart[]; span: Span }
   /** Zero-argument `super()` inside a method: the class being defined and the method's first parameter (PY-19). */
   | { kind: "pySuper"; klass: PyExpr; self: PyExpr; span: Span }
