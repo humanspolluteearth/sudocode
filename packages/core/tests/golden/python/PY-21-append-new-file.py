@@ -1,0 +1,7 @@
+f = open("log.txt", "a")
+f.write("one\n")
+f.close()
+g = open("log.txt", "a")
+g.write("two\n")
+g.close()
+print(open("log.txt").read())
