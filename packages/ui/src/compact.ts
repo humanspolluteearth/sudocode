@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import type { PseudocodeLanguage } from "./preferences.ts";
 
 export const COMPACT_MAX_WIDTH = 900;
-export type CompactView = "code" | "console" | "debug";
+export type CompactView = "code" | "console" | "debug" | "guide";
 
 /** True while the window is narrow enough for the compact layout (matchMedia, so it follows rotation too). */
 export function useCompact(): boolean {

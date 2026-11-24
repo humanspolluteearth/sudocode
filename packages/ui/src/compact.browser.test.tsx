@@ -155,6 +155,36 @@ describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc
     expect(document.querySelector(".sc-tabstrip")?.getBoundingClientRect().height).toBe(30);
   });
 
+  it("MISC on a phone the Guide view shows the Quick reference, and its link opens the full guide", async () => {
+    await page.viewport(390, 800);
+    const screen = await render(<App />);
+    await screen.getByRole("button", { name: "Guide", exact: true }).click();
+    await expect.element(screen.getByRole("region", { name: "Quick reference" })).toBeVisible();
+    await expect.element(screen.getByRole("link", { name: /full .*guide/i })).toBeVisible();
+    expect(document.querySelector(".sc-compact")?.getAttribute("data-view")).toBe("guide");
+    expect(await axeViolations(screen.container)).toEqual([]);
+  });
+
+  it("MISC open files and typed code survive a trip to the full guide page and back", async () => {
+    await page.viewport(390, 800);
+    const screen = await render(<App />);
+    await screen.getByRole("button", { name: "New tab" }).click();
+    const editor = screen.getByRole("textbox", { name: "Program editor" });
+    await editor.click();
+    await userEvent.keyboard("DISPLAY 42");
+    const before = document.querySelector(".cm-content")?.textContent ?? "";
+    expect(before).toContain("DISPLAY 42");
+    await screen.getByRole("button", { name: "Guide", exact: true }).click();
+    await screen.getByRole("link", { name: /full .*guide/i }).click();
+    await expect.element(screen.getByRole("navigation", { name: "Guide language" })).toBeVisible();
+    history.back();
+    // The IDE comes back on the same view (Guide); go to the code.
+    await screen.getByRole("button", { name: "Code", exact: true }).click();
+    await expect.element(screen.getByRole("textbox", { name: "Program editor" })).toBeVisible();
+    await expect.poll(() => document.querySelectorAll(".sc-tab-btn").length).toBe(2);
+    expect(document.querySelector(".cm-content")?.textContent).toBe(before);
+  });
+
   for (const width of [390, 360]) {
     it(`MISC the status bar fits one row at ${String(width)}px and drops the language name`, async () => {
       await page.viewport(width, 800);

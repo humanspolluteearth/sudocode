@@ -1143,10 +1143,12 @@ button.sc-section-head:hover {
 }
 .sc-compact[data-view="code"] .sc-side,
 .sc-compact[data-view="code"] .sc-console,
+.sc-compact[data-view="guide"] .sc-console,
 .sc-compact[data-view="console"] .sc-side,
 .sc-compact[data-view="console"] .sc-editor,
 .sc-compact[data-view="console"] .sc-tabstrip,
-.sc-compact[data-view="debug"] .sc-left {
+.sc-compact[data-view="debug"] .sc-left,
+.sc-compact[data-view="guide"] .sc-left {
   display: none;
 }
 .sc-compact[data-view="console"] .sc-console {

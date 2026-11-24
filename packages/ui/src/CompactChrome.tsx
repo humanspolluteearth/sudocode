@@ -12,14 +12,10 @@ const VIEWS: readonly { id: CompactView; label: string }[] = [
   { id: "code", label: "Code" },
   { id: "console", label: "Console" },
   { id: "debug", label: "Debug" },
+  { id: "guide", label: "Guide" },
 ];
 
-export function ViewSwitcher(p: {
-  view: CompactView;
-  onView: (v: CompactView) => void;
-  onGuide: () => void;
-  problems: number;
-}) {
+export function ViewSwitcher(p: { view: CompactView; onView: (v: CompactView) => void; problems: number }) {
   return (
     <nav className="sc-views" aria-label="Views">
       {VIEWS.map((v) => (
@@ -42,9 +38,6 @@ export function ViewSwitcher(p: {
           )}
         </button>
       ))}
-      <button type="button" className="sc-view" onClick={p.onGuide}>
-        Guide
-      </button>
     </nav>
   );
 }
