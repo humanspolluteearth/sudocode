@@ -12,6 +12,7 @@ import { ParseFail } from "./cursor.ts";
 import { KEYWORDS, ExprParser } from "./parse-expr.ts";
 import { lex } from "./lexer.ts";
 import type { Locator, Reporter } from "./locator.ts";
+import { noteMissingDeclarations } from "./class-notes.ts";
 import type { Span } from "../diagnostics.ts";
 
 const AUGMENTED: Record<string, PyArithOp> = {
@@ -143,11 +144,7 @@ class StatementParser extends ExprParser {
           "match/case is not in the Python subset yet. Use if / elif / else instead.",
         );
       case "class":
-        return this.unsupported(
-          t.span,
-          "Classes",
-          "Classes are not in the Python subset yet. Use functions, lists and dictionaries instead.",
-        );
+        return this.classStatement();
       case "with":
         return this.unsupported(
           t.span,
@@ -218,6 +215,32 @@ class StatementParser extends ExprParser {
     this.colon();
     const body = this.block(`function definition`, first.span.line);
     return { kind: "def", name: name.value, params, body, span: this.since(first.span) };
+  }
+
+  private classStatement(): SStmt {
+    const first = this.next();
+    const name = this.tok;
+    if (name.type !== "name" || KEYWORDS.has(name.value)) this.fail(name.span);
+    this.next();
+    const bases: SExpr[] = [];
+    if (this.acceptOp("(")) {
+      while (!this.isOp(")")) {
+        if (this.isOp("*") || this.isOp("**") || (this.tok.type === "name" && this.isOp("=", this.peek())))
+          this.unsupported(
+            this.tok.span,
+            "Class keywords",
+            "Only plain base classes are in the Python subset, e.g. class Dog(Animal).",
+          );
+        bases.push(this.expression());
+        if (!this.acceptOp(",")) break;
+      }
+      this.expectOp(")", "'(' was never closed");
+    }
+    this.colon();
+    const body = this.block("class definition", first.span.line);
+    const span = this.since(first.span);
+    noteMissingDeclarations(name.value, body, first.span, this.loc.source, this.report);
+    return { kind: "class", name: name.value, bases, body, span };
   }
 
   private tryStatement(): SStmt {

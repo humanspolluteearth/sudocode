@@ -47,7 +47,7 @@ export interface Diagnostic {
 }
 
 /** Codes: E- error, W- warning, I- info (the letter decides the severity); Python exceptions are E-PY-<Name>. */
-const CODE_PATTERN = /^([EWI]-[A-Z][A-Z0-9]*(-[A-Z0-9]+)*|E-PY-[A-Z][A-Za-z]*)$/;
+const CODE_PATTERN = /^([EWI]-[A-Z][A-Z0-9]*(-[A-Z0-9]+)*|E-PY-[A-Z][A-Za-z0-9_]*)$/;
 
 export function isDiagnosticCode(code: string): boolean {
   return CODE_PATTERN.test(code);

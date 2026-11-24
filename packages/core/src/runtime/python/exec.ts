@@ -12,6 +12,8 @@ import { arith } from "./numbers.ts";
 import { pyStr } from "./repr.ts";
 import { indexValue, iterate, repr, truthy } from "./seq.ts";
 import { assignTarget, pyEval, setName, storeIndex } from "./eval.ts";
+import { excText } from "./class-calls.ts";
+import { getAttr, makeClass, setAttr } from "./classes.ts";
 
 export function* pyBlock(stmts: readonly PyStmt[], env: Env): Run<Returned | undefined> {
   for (const s of stmts) {
@@ -37,6 +39,13 @@ function* augment(s: Extract<PyStmt, { kind: "pyAugAssign" }>, env: Env): Run<un
     const current = yield* pyEval({ kind: "pyName", name: t.name, where: t.where, hops: 0, span: t.span }, env);
     const rhs = yield* pyEval(s.value, env);
     setName(t.name, t.where, inPlace(s.op, current, rhs, s.span), env, s.span);
+    return undefined;
+  }
+  if (t.kind === "attr") {
+    const obj = yield* pyEval(t.target, env);
+    const rhs = yield* pyEval(s.value, env);
+    setAttr(obj, t.name, inPlace(s.op, getAttr(obj, t.name, s.span), rhs, s.span), s.span);
+    if (t.root !== null) env.machine.assigned(t.root, obj, s.span);
     return undefined;
   }
   const container = yield* pyEval(t.target, env);
@@ -71,6 +80,12 @@ function* del(t: PyTarget, env: Env, span: Span): Run<void> {
     for (const x of t.items) yield* del(x, env, span);
     return;
   }
+  if (t.kind === "attr") {
+    const obj = yield* pyEval(t.target, env);
+    if ((obj.kind !== "instance" && obj.kind !== "class") || !obj.attrs.delete(t.name)) getAttr(obj, t.name, span);
+    if (t.root !== null) env.machine.assigned(t.root, obj, span);
+    return;
+  }
   const container = yield* pyEval(t.target, env);
   const index = yield* pyEval(t.index, env);
   if (container.kind === "list") {
@@ -86,20 +101,28 @@ function* del(t: PyTarget, env: Env, span: Span): Run<void> {
 function* raise(s: Extract<PyStmt, { kind: "pyRaise" }>, env: Env): Run<never> {
   if (s.exc === null) throw pyError("RuntimeError", "No active exception to reraise", s.span);
   let v = yield* pyEval(s.exc, env);
-  if (v.kind === "type") v = yield* callValue(v, [], new Map(), env, s.span);
+  if (v.kind === "type" || v.kind === "class") v = yield* callValue(v, [], new Map(), env, s.span);
+  if (v.kind === "instance" && v.cls.exc) {
+    throw new RunError(`E-PY-${v.cls.name}`, s.span, { detail: yield* excText(v, env, s.span) }, undefined, v);
+  }
   if (v.kind !== "exc") throw typeError("exceptions must derive from BaseException", s.span);
   throw new RunError(`E-PY-${v.name}`, s.reraise ? (v.origin ?? s.span) : s.span, { detail: v.detail });
 }
 
-function* handles(types: PyExpr, exc: Extract<Value, { kind: "exc" }>, env: Env, span: Span): Run<boolean> {
+function* handles(types: PyExpr, exc: Value, env: Env, span: Span): Run<boolean> {
   const t = yield* pyEval(types, env);
   const options = t.kind === "tuple" ? t.items : [t];
   for (const o of options) {
-    if (o.kind !== "type" || !isSubclass(o.name, o.name) || !isExceptionType(o.name)) {
-      throw typeError("catching classes that do not inherit from BaseException is not allowed", span);
-    }
+    const ok = o.kind === "class" ? o.exc : o.kind === "type" && isExceptionType(o.name);
+    if (!ok) throw typeError("catching classes that do not inherit from BaseException is not allowed", span);
   }
-  return options.some((o) => o.kind === "type" && isSubclass(exc.name, o.name));
+  return options.some((o) => {
+    if (exc.kind === "instance")
+      return o.kind === "class"
+        ? exc.cls.mro.includes(o)
+        : exc.cls.mro.some((c) => c.kind === "type" && c.name === (o as { name: string }).name);
+    return o.kind === "type" && exc.kind === "exc" && isSubclass(exc.name, o.name);
+  });
 }
 
 const isExceptionType = (name: string): boolean => name === "BaseException" || isSubclass(name, "BaseException");
@@ -116,7 +139,7 @@ function* tryCore(s: Extract<PyStmt, { kind: "pyTry" }>, env: Env): Run<Returned
   }
   if (caught === null) return flow === undefined && s.orelse.length > 0 ? yield* pyBlock(s.orelse, env) : flow;
   const detail = String(caught.args["detail"] ?? "");
-  const exc: Value = {
+  const exc: Value = caught.payload ?? {
     kind: "exc",
     name: caught.code.slice(5),
     detail,
@@ -153,6 +176,12 @@ function* tryStatement(s: Extract<PyStmt, { kind: "pyTry" }>, env: Env): Run<Ret
   if (fin !== undefined) return fin; // a return / break in `finally` replaces the pending error
   if (failed) throw pending;
   return flow;
+}
+
+function* evalAllBases(bases: readonly PyExpr[], env: Env): Run<Value[]> {
+  const out: Value[] = [];
+  for (const b of bases) out.push(yield* pyEval(b, env));
+  return out;
 }
 
 export function* pyStatement(s: PyStmt, env: Env): Run<Returned | undefined> {
@@ -215,6 +244,23 @@ export function* pyStatement(s: PyStmt, env: Env): Run<Returned | undefined> {
       return yield* raise(s, env);
     case "pyTry":
       return yield* tryStatement(s, env);
+    case "pyClass": {
+      const bases = yield* evalAllBases(s.bases, env);
+      // The body runs in its own namespace; whatever it assigns becomes the class's attributes.
+      const parent = env.locals?.get("$closure");
+      const enclosing: Value | null =
+        env.locals === null
+          ? null
+          : { kind: "env", locals: env.locals, parent: parent !== undefined && parent.kind === "env" ? parent : null };
+      const locals = new Map<string, Value>([["$isclass", NONE]]);
+      if (enclosing !== null) locals.set("$closure", enclosing);
+      const done = yield* pyBlock(s.body, { ...env, locals });
+      if (done !== undefined) return done;
+      const attrs = new Map([...locals].filter(([k]) => !k.startsWith("$")));
+      const cls = makeClass(s.name, bases, attrs, s.span);
+      yield* assignTarget(s.target, cls, env, s.span);
+      return undefined;
+    }
     case "pyAssert": {
       if (truthy(yield* pyEval(s.test, env))) return undefined;
       const detail = s.message === null ? "" : pyStr(yield* pyEval(s.message, env), setOrder);

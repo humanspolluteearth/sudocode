@@ -76,6 +76,7 @@ export function pyEq(a: Value, b: Value): boolean {
   if (a.kind === "range" && b.kind === "range") return a.start === b.start && a.stop === b.stop && a.step === b.step;
   if (a.kind === "exc" && b.kind === "exc") return a === b;
   if (a.kind === "func" && b.kind === "func") return a === b;
+  if (a.kind === "instance" || a.kind === "class" || a.kind === "bound") return a === b; // identity, unless __eq__
   if ((a.kind === "type" || a.kind === "builtin") && a.kind === b.kind) return a.name === (b as { name: string }).name;
   return false;
 }

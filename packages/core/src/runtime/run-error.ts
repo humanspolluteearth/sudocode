@@ -3,19 +3,23 @@
 // properties, so Node can run this file without a TypeScript build step.
 import type { Span } from "../diagnostics.ts";
 import type { MessageArgs } from "../messages/index.ts";
+import type { Value } from "./values.ts";
 
 export class RunError extends Error {
   readonly code: string;
   readonly span: Span;
   readonly args: MessageArgs;
   readonly variant: string | undefined;
+  /** For a Python exception raised from an instance of the student's own class: that instance, so `except` gets it back. */
+  readonly payload: Value | undefined;
 
-  constructor(code: string, span: Span, args: MessageArgs = {}, variant?: string) {
+  constructor(code: string, span: Span, args: MessageArgs = {}, variant?: string, payload?: Value) {
     super(code);
     this.name = "RunError";
     this.code = code;
     this.span = span;
     this.args = args;
     this.variant = variant;
+    this.payload = payload;
   }
 }

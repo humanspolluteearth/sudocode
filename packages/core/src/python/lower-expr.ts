@@ -15,6 +15,8 @@ export abstract class ExprLowerer {
   /** Comprehension variables in scope, innermost last: surface name -> hidden variable name. */
   protected comps: Map<string, string>[] = [];
   protected hiddenCount = 0;
+  /** The class whose body (and methods) are being lowered, for name mangling and `super()` (PY-19). */
+  protected className: string | null = null;
   protected readonly keys = new Map<string, number>();
   readonly subprograms: Record<string, Subprogram> = {};
 
@@ -50,6 +52,7 @@ export abstract class ExprLowerer {
     this.keys.set(name, count);
     const key = count === 1 ? name : `${name}#${String(count)}`;
     const names = params.map((p) => p.name);
+    const qual = this.scope?.isClass === true && this.className !== null ? `${this.className}.${name}` : name;
     const saved = { scope: this.scope, comps: this.comps, loops: this.enterFunction() };
     this.scope = new FuncScope(saved.scope, names, Array.isArray(body) ? body : []);
     this.comps = [];
@@ -66,13 +69,23 @@ export abstract class ExprLowerer {
     this.comps = saved.comps;
     this.leaveFunction(saved.loops);
     this.subprograms[key] = { name, kind: "procedure", params: [...names, "$closure"], body: stmts, span };
-    return { kind: "pyFunction", sub: key, name, params: names, defaults, doc, span };
+    return { kind: "pyFunction", sub: key, name, params: names, defaults, doc, qual, span };
   }
 
   protected target(e: SExpr): PyTarget {
     switch (e.kind) {
-      case "name":
-        return { kind: "name", ...this.where(e.name), span: e.span };
+      case "name": {
+        const w = this.where(e.name);
+        return { kind: "name", ...w, name: this.scope?.isClass === true ? this.mangle(w.name) : w.name, span: e.span };
+      }
+      case "attr":
+        return {
+          kind: "attr",
+          target: this.expr(e.target),
+          name: this.mangle(e.name),
+          root: this.rootOf(e.target),
+          span: e.span,
+        };
       case "index":
         return {
           kind: "index",
@@ -92,7 +105,6 @@ export abstract class ExprLowerer {
           str: "literal",
           const: "literal",
           binop: "expression",
-          attr: "attribute",
           compare: "comparison",
           boolop: "expression",
           slice: "slice",
@@ -103,6 +115,15 @@ export abstract class ExprLowerer {
         return { kind: "name", name: "$bad", where: "global", span: e.span };
       }
     }
+  }
+
+  /**
+   * Compiler concept: *name mangling*. Inside `class C`, a name like `__balance` (two leading underscores, not
+   * two trailing) is renamed `_C__balance` while lowering, so outside code that writes `obj.__balance` misses it.
+   */
+  protected mangle(name: string): string {
+    if (this.className === null || !name.startsWith("__") || name.endsWith("__")) return name;
+    return `_${this.className.replace(/^_+/, "")}${name}`;
   }
 
   private where(name: string): { name: string; where: PyWhere } {
@@ -179,14 +200,31 @@ export abstract class ExprLowerer {
         };
       }
       case "attr":
-        return { kind: "pyAttr", target: this.expr(e.target), name: e.name, span };
+        return { kind: "pyAttr", target: this.expr(e.target), name: this.mangle(e.name), span };
       case "call": {
         const args = e.args.filter((a) => a.name === null).map((a) => this.expr(a.value));
         const keywords: PyKeyword[] = e.args
           .filter((a) => a.name !== null)
           .map((a) => ({ name: a.name as string, value: this.expr(a.value) }));
+        if (e.callee.kind === "name" && e.callee.name === "super" && args.length === 0 && this.className !== null) {
+          const self = this.scope?.params[0];
+          if (self !== undefined)
+            return {
+              kind: "pySuper",
+              klass: { kind: "pyName", ...this.resolve(this.className), span },
+              self: { kind: "pyName", ...this.resolve(self), span },
+              span,
+            };
+        }
         if (e.callee.kind === "attr")
-          return { kind: "pyMethod", target: this.expr(e.callee.target), name: e.callee.name, args, keywords, span };
+          return {
+            kind: "pyMethod",
+            target: this.expr(e.callee.target),
+            name: this.mangle(e.callee.name),
+            args,
+            keywords,
+            span,
+          };
         return { kind: "pyCall", callee: this.expr(e.callee), args, keywords, span };
       }
       case "comp":

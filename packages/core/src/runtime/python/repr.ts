@@ -72,6 +72,14 @@ export function pyTypeName(v: Value): string {
       return "type";
     case "exc":
       return v.name;
+    case "class":
+      return "type";
+    case "instance":
+      return v.cls.name;
+    case "bound":
+      return "method";
+    case "super":
+      return "super";
     default:
       return v.kind;
   }
@@ -87,6 +95,8 @@ export function pyRepr(v: Value, setItems: Orderer): string {
       return strRepr(v.value);
     case "exc":
       return `${v.name}(${v.args.map((a) => pyRepr(a, setItems)).join(", ")})`;
+    case "instance":
+      return pyStr(v, setItems, true);
     default:
       return pyStr(v, setItems, true);
   }
@@ -133,6 +143,22 @@ export function pyStr(v: Value, setItems: Orderer, inner = false): string {
       return `<class '${v.name}'>`;
     case "exc":
       return inner ? `${v.name}(${v.args.map(rep).join(", ")})` : v.detail;
+    case "class":
+      return `<class '__main__.${v.name}'>`;
+    case "bound":
+      return `<bound method ${pyStr(v.fn, setItems)}>`;
+    case "instance": {
+      // `shown` was filled by the student's __str__ / __repr__ before printing (see class-calls.ts).
+      const custom = inner ? v.shown.repr : (v.shown.str ?? v.shown.repr);
+      if (custom !== undefined) return custom;
+      const args = v.attrs.get("args");
+      if (v.cls.exc && args?.kind === "tuple") {
+        if (inner) return `${v.cls.name}(${args.items.map(rep).join(", ")})`;
+        if (args.items.length === 0) return "";
+        return args.items.length === 1 ? pyStr(args.items[0] as Value, setItems) : rep(args);
+      }
+      return `<__main__.${v.cls.name} object at 0x7f0000000000>`;
+    }
     case "env":
       return "<frame>";
     default:

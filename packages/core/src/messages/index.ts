@@ -46,7 +46,7 @@ function fill(template: string, args: MessageArgs, code: string): string {
 
 // CPython exceptions not in the catalogue still get CPython's own wording (PY-03).
 function pythonFallback(code: string): CatalogueEntry | undefined {
-  const name = /^E-PY-([A-Z][A-Za-z]*)$/.exec(code)?.[1];
+  const name = /^E-PY-([A-Z][A-Za-z0-9_]*)$/.exec(code)?.[1];
   if (name === undefined) return undefined;
   return {
     spec: ["PY-03"],

@@ -9,6 +9,7 @@ import { newDict, newSet } from "./methods-coll.ts";
 import { asBig, floatToInt, parseFloatText, parseIntText, toFloat } from "./numbers.ts";
 import { pyStr, pyTypeName } from "./repr.ts";
 import { iterate, repr, truthy } from "./seq.ts";
+import { instantiate, prepare } from "./class-calls.ts";
 
 export const TYPE_NAMES = new Set(["int", "float", "str", "bool", "list", "tuple", "dict", "set", "range", "object"]);
 
@@ -37,15 +38,15 @@ function bind(fn: Extract<Value, { kind: "func" }>, args: Value[], kwargs: Map<s
         ? plural(n, "positional argument")
         : `from ${String(required)} to ${String(n)} positional arguments`;
     throw typeError(
-      `${fn.name}() takes ${takes} but ${String(args.length)} ${args.length === 1 ? "was" : "were"} given`,
+      `${fn.qual}() takes ${takes} but ${String(args.length)} ${args.length === 1 ? "was" : "were"} given`,
       span,
     );
   }
   const bound: (Value | undefined)[] = fn.params.map((_, i) => args[i]);
   for (const [k, v] of kwargs) {
     const i = fn.params.indexOf(k);
-    if (i < 0) throw typeError(`${fn.name}() got an unexpected keyword argument '${k}'`, span);
-    if (bound[i] !== undefined) throw typeError(`${fn.name}() got multiple values for argument '${k}'`, span);
+    if (i < 0) throw typeError(`${fn.qual}() got an unexpected keyword argument '${k}'`, span);
+    if (bound[i] !== undefined) throw typeError(`${fn.qual}() got multiple values for argument '${k}'`, span);
     bound[i] = v;
   }
   const missing: string[] = [];
@@ -57,7 +58,7 @@ function bind(fn: Extract<Value, { kind: "func" }>, args: Value[], kwargs: Map<s
   });
   if (missing.length > 0) {
     throw typeError(
-      `${fn.name}() missing ${plural(missing.length, "required positional argument")}: ${quotedList(missing)}`,
+      `${fn.qual}() missing ${plural(missing.length, "required positional argument")}: ${quotedList(missing)}`,
       span,
     );
   }
@@ -74,7 +75,12 @@ export function* callValue(fn: Value, args: Value[], kwargs: Map<string, Value>,
     case "builtin":
       return yield* callBuiltin(fn.name, args, kwargs, env, span);
     case "type":
+      if (fn.name === "str" && args[0] !== undefined) yield* prepare(args[0], env, span);
       return construct(fn.name, args, kwargs, span);
+    case "class":
+      return yield* instantiate(fn, args, kwargs, env, span);
+    case "bound":
+      return yield* callValue(fn.fn, [fn.self, ...args], kwargs, env, span);
     default:
       throw typeError(`'${pyTypeName(fn)}' object is not callable`, span);
   }

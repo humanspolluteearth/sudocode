@@ -37,11 +37,35 @@ export type Value =
       defaults: Value[];
       closure: Value | null;
       doc: string | null;
+      /** `Class.method` for a method, so CPython's error wording can name it (PY-19). */
+      qual: string;
     }
   | { kind: "builtin"; name: string }
   /** A class such as `int` or `ValueError`, callable and usable in `isinstance` and `except`. */
   | { kind: "type"; name: string }
   | { kind: "exc"; name: string; detail: string; args: Value[]; origin: Span | null }
+  // ---- Classes (M9, PY-19). A class owns its attributes and a linearised list of ancestors (its MRO).
+  | {
+      kind: "class";
+      name: string;
+      bases: Value[];
+      /** Method resolution order: this class first, then ancestors (classes and built-in `type` values). */
+      mro: Value[];
+      attrs: Map<string, Value>;
+      /** True when the class inherits from a built-in exception, so its instances can be raised (PY-20). */
+      exc: boolean;
+    }
+  | {
+      kind: "instance";
+      cls: Extract<Value, { kind: "class" }>;
+      attrs: Map<string, Value>;
+      /** `str()` / `repr()` text from the student's `__str__` / `__repr__`, filled in before printing. */
+      shown: { str?: string | undefined; repr?: string | undefined };
+    }
+  /** A method taken from an instance: the function plus the `self` it will be called with. */
+  | { kind: "bound"; fn: Value; self: Value }
+  /** What `super()` gives: attribute lookup starts after `cls` in the MRO of `self`'s class. */
+  | { kind: "super"; cls: Extract<Value, { kind: "class" }>; self: Value }
   /** One call frame's variables, used to build closures; never visible to the student. */
   | { kind: "env"; locals: Map<string, Value>; parent: Value | null };
 
