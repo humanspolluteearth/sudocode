@@ -66,3 +66,11 @@ your call (a longer timeout is a test change).
 U7 resolved: you approved raising the size budget; `scripts/size-budget.json` is now 368640 (360 kB).
 
 U9: the Quick reference snippets for all three languages (design data, ~4 kB gzipped) took the build to 362.2 kB; budget raised to 368 kB (376832) under your standing OK to raise it.
+
+## U10 — iteration 1 differences still open
+
+- Design's Insert appends at the end; ours inserts at the cursor (goal wording).
+- Screenshot comparison with `scripts/ui-compare.mjs` was not run per PR; no baselines changed. Please look at the CI screenshot tests.
+- Status bar still lacks the design's lint text ("Syntax error on line N"), breakpoint count and "Spaces: 4".
+- The note banner has no feature that sets a note (fixture only, as agreed).
+- Merging needed `gh pr update-branch` because the ruleset wants checks on an up-to-date branch.
