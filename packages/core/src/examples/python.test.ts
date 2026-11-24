@@ -14,7 +14,7 @@ describe("MISC the Python examples and guide are valid programs", () => {
   it("MISC every example has a unique id", () => {
     expect(new Set(PYTHON_EXAMPLES.map((e) => e.id)).size).toBe(PYTHON_EXAMPLES.length);
   });
-  it("MISC no example or guide snippet has an error or a warning", async () => {
+  it("MISC every example and guide snippet runs cleanly (no error or warning; output is checked below)", async () => {
     for (const e of [
       ...PYTHON_EXAMPLES.map((x) => ({ id: x.id, code: x.code })),
       ...PYTHON_GUIDE.map((x) => ({ id: x.title, code: x.code })),
@@ -31,6 +31,7 @@ describe("MISC the Python examples and guide are valid programs", () => {
     ["try-except", "Not a number\n"],
   ])("MISC the %s example prints what CPython prints", async (id, expected) => {
     const example = PYTHON_EXAMPLES.find((e) => e.id === id);
-    expect((await run(example?.code ?? "")).stdout).toBe(expected);
+    if (example === undefined) throw new Error(`no example with id ${id}`);
+    expect((await run(example.code)).stdout).toBe(expected);
   });
 });

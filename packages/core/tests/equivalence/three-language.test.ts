@@ -58,15 +58,13 @@ const TRIPLES: readonly (readonly [string, string, string, string, string])[] = 
 
 describe("three-language equivalence", () => {
   for (const [name, edexcel, cie, python, expected] of TRIPLES) {
-    it(name, async () => {
-      for (const [language, source] of [
-        ["edexcel", edexcel],
-        ["cie", cie],
-        ["python", python],
-      ] as const) {
-        const r = await out(language, source);
-        expect({ language, ...r }).toEqual({ language, stdout: expected, errors: [] });
-      }
+    it.each([
+      ["edexcel", edexcel],
+      ["cie", cie],
+      ["python", python],
+    ] as const)(`${name} (%s)`, async (language, source) => {
+      const r = await out(language, source);
+      expect(r).toEqual({ stdout: expected, errors: [] });
     });
   }
 });
