@@ -18,6 +18,8 @@ export interface EditorHandle {
   goTo: (line: number, column: number) => void;
   /** Removes every breakpoint (the toolbar's "Clear breakpoints"). */
   clearBreakpoints: () => void;
+  /** Types text at the cursor (replacing any selection) and focuses the editor (Quick reference "Insert"). */
+  insertAtCursor: (text: string) => void;
 }
 
 export interface EditorProps {
@@ -168,6 +170,18 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
       // toggleBreakpoint takes the document position of the line start, not the line number.
       const effects = breakpointLines(v.state).map((n) => toggleBreakpoint.of(v.state.doc.line(n).from));
       v.dispatch({ effects });
+    },
+    insertAtCursor(text) {
+      const v = view.current;
+      if (v === null) return;
+      const { from, to } = v.state.selection.main;
+      v.dispatch({
+        changes: { from, to, insert: text },
+        selection: { anchor: from + text.length },
+        scrollIntoView: true,
+        userEvent: "input.paste",
+      });
+      v.focus();
     },
     goTo(line, column) {
       const v = view.current;

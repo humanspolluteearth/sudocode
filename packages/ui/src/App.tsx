@@ -1,15 +1,7 @@
 // The IDE's root component: toolbar, editor, console, side panel (Problems / Debugger) and status bar (layout
 // from the prototype's desktop design, docs/PRODUCT.md). The shell passes in the worker factories, so this
 // package never imports a worker.
-import {
-  CIE_EXAMPLES,
-  CIE_GUIDE,
-  EDEXCEL_EXAMPLES,
-  PYTHON_EXAMPLES,
-  PYTHON_GUIDE,
-  type Diagnostic,
-  type VirtualFiles,
-} from "@sudocode/core";
+import { CIE_EXAMPLES, EDEXCEL_EXAMPLES, PYTHON_EXAMPLES, type Diagnostic, type VirtualFiles } from "@sudocode/core";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
@@ -32,7 +24,6 @@ const EXAMPLES = { edexcel: EDEXCEL_EXAMPLES, cie: CIE_EXAMPLES, python: PYTHON_
 // The app opens with the design's sample, the "Grade checker" example of the chosen language.
 const starter = (language: PseudocodeLanguage): string => EXAMPLES[language].find((x) => x.id === "grade")?.code ?? "";
 const STARTERS = { edexcel: starter("edexcel"), cie: starter("cie"), python: starter("python") } as const;
-const GUIDES = { edexcel: undefined, cie: CIE_GUIDE, python: PYTHON_GUIDE } as const;
 const LANGUAGE_NAMES = { edexcel: "Edexcel pseudocode", cie: "Cambridge 9618 pseudocode", python: "Python" } as const;
 
 export interface AppProps {
@@ -177,7 +168,6 @@ export function App({ workers }: AppProps) {
     setDiagnostics([]);
     // An untouched starter program follows the language; anything the student wrote stays.
     if (source === STARTERS[language]) setSource(STARTERS[next]);
-    if (tab === "reference" && next === "edexcel") setTab("debugger");
     update({ ...prefs, language: next });
   };
   const menus = buildMenus({
@@ -302,12 +292,9 @@ export function App({ workers }: AppProps) {
                 }
               : undefined
           }
-          guide={GUIDES[language]}
           language={language}
           onOpenGuide={openGuide}
-          onUseGuide={(section) => {
-            setSource(section.code);
-          }}
+          onInsert={(code) => editor.current?.insertAtCursor(code)}
           advanced={prefs.advanced}
           onAdvanced={(advanced) => {
             update({ ...prefs, advanced });

@@ -1,6 +1,6 @@
 // The right-hand panel, as in the design: a Debugger tab (stacked Status, Problems, Variables, Call stack,
 // Breakpoints and Trace table sections), a Quick reference tab, and a Files tab in Advanced mode.
-import type { Diagnostic, GuideSection, VirtualFiles } from "@sudocode/core";
+import type { Diagnostic, VirtualFiles } from "@sudocode/core";
 import { FilesPanel } from "./FilesPanel.tsx";
 import { CallStack } from "./CallStack.tsx";
 import type { GuideId } from "./GuidePage.tsx";
@@ -25,11 +25,10 @@ export interface SidePanelProps {
   onAdvanced: (advanced: boolean) => void;
   /** Advanced mode only: shows the Files tab. */
   files?: FilesProps | undefined;
-  /** Quick reference sections; the tab shows only when there are some. */
-  guide?: readonly GuideSection[] | undefined;
-  onUseGuide?: ((section: GuideSection) => void) | undefined;
-  /** Which language's full guide the Quick reference links to. */
-  language?: GuideId | undefined;
+  /** Which language's Quick reference and full guide to show. */
+  language: GuideId;
+  /** Quick reference "Insert": type a sample at the editor's cursor. */
+  onInsert: (code: string) => void;
   onOpenGuide?: ((guide: GuideId) => void) | undefined;
 }
 
@@ -49,9 +48,8 @@ export function SidePanel({
   files,
   advanced,
   onAdvanced,
-  guide,
-  onUseGuide,
   language,
+  onInsert,
   onOpenGuide,
 }: SidePanelProps) {
   const tabButton = (id: SideTab, label: string) => (
@@ -71,7 +69,7 @@ export function SidePanel({
       <div className="sc-tabs" role="group" aria-label="Side panel view">
         {tabButton("debugger", "Debugger")}
         {files !== undefined && tabButton("files", "Files")}
-        {guide !== undefined && tabButton("reference", "Quick reference")}
+        {tabButton("reference", "Quick reference")}
         <label className="sc-mode">
           <input
             type="checkbox"
@@ -83,13 +81,8 @@ export function SidePanel({
           Advanced
         </label>
       </div>
-      {tab === "reference" && guide !== undefined ? (
-        <QuickReference
-          sections={guide}
-          onUse={(section) => onUseGuide?.(section)}
-          language={language}
-          onOpenGuide={onOpenGuide}
-        />
+      {tab === "reference" ? (
+        <QuickReference language={language} onInsert={onInsert} onOpenGuide={onOpenGuide} />
       ) : tab === "files" && files !== undefined ? (
         <FilesPanel files={files.files} onChange={files.onChange} onDelete={files.onDelete} />
       ) : (
