@@ -2,6 +2,13 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 25 Nov 2026: M10 (converter and IDE) complete
+
+- **PRs (squash-merged, CI green):** #128 converter tests, #129 converter, #130 tabs/Save/Open/Convert (budget 420 kB per Q58), #131 tool switches and Simple/Advanced, #132 installable offline web app, #133 tablet and phone layouts, #134 keyboard/screen-reader tests and lazy dialogs, plus the review-fix PR. #9 and #22 left alone.
+- **State:** checklist ticked except round-trip `[~]`: 4 converter tests stay pending (EDX-21-empty-array, SH-03-real-large-shortest-form, SH-13-recursion-1000-calls-deep, MISC-refuse-types). Both reviewers ran; MUST FIX items fixed or shown to be approved (budget). SHOULD FIX list is in `docs/review/M10.md`.
+- **Needs you:** the "Things to check by hand" in `docs/review/M10.md` (tablet/mobile screenshots, a real phone install, editor Tab stop); `scripts/ui-compare.mjs` only covers 1440; the SHOULD FIX list.
+- **Next step:** M11 (not started).
+
 ## 25 Nov 2026: M9 (Python classes, files, modules) complete
 
 - **PRs (all squash-merged, CI green):** #96 to #101 as before; closing pass #103 to #108: Q57 answer, PY-54 notes on the two PY-19 goldens, negative goldens (PY-21/22/44), four bug fixes they exposed, `vfs.ts` split, clock-injected tests.

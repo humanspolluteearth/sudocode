@@ -45,7 +45,7 @@ async function inSudocode(language: "python" | ConvertFrom, source: string, inpu
   );
 }
 
-function inCPython(code: string, inputs: readonly string[]): { stdout: string; stderr: string } {
+function inCPython(code: string, inputs: readonly string[]): { stdout: string; stderr: string; failed: boolean } {
   const dir = mkdtempSync(join(tmpdir(), "sudocode-conv-"));
   try {
     const file = join(dir, "converted.py");
@@ -56,7 +56,8 @@ function inCPython(code: string, inputs: readonly string[]): { stdout: string; s
       encoding: "utf8",
       env: { PYTHONHASHSEED: "0", PATH: process.env["PATH"] ?? "" },
     });
-    return { stdout: r.stdout, stderr: r.stderr };
+    // A missing interpreter (r.error) or a crash after printing (non-zero status) is a failure, not just a mismatch.
+    return { stdout: r.stdout, stderr: r.stderr, failed: r.error !== undefined || r.status !== 0 };
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -93,6 +94,7 @@ async function roundTrip(
         problems.push(`Sudocode Python printed ${JSON.stringify(sudocode.stdout)}, expected ${JSON.stringify(stdout)}`);
       }
       const cpython = inCPython(result.code, inputs);
+      if (cpython.failed) problems.push(`CPython did not exit cleanly: ${cpython.stderr.slice(-200)}`);
       if (cpython.stdout !== stdout) {
         problems.push(
           `CPython printed ${JSON.stringify(cpython.stdout)}, expected ${JSON.stringify(stdout)} ${cpython.stderr.slice(-200)}`,
