@@ -43,6 +43,12 @@ export function formatValue(value: Value, format: OutputFormat): string {
       return value.value;
     case "date":
       return `${pad(value.day, 2)}/${pad(value.month, 2)}/${pad(value.year, 4)}`;
+    case "enum":
+      return value.names[value.ordinal] ?? "";
+    case "record":
+      return `{${Object.entries(value.fields)
+        .map(([k, v]) => `${k}: ${v === undefined ? "(no value)" : quoted(v, format)}`)
+        .join(", ")}}`;
     case "array":
       return `[${value.elements.map((e) => (e === undefined ? "(no value)" : quoted(e, format))).join(", ")}]`;
     default: {
@@ -73,6 +79,10 @@ export function typeName(value: Value): string {
       return "STRING";
     case "date":
       return "DATE";
+    case "enum":
+      return value.type;
+    case "record":
+      return "RECORD";
     case "array":
       return "ARRAY";
     default: {

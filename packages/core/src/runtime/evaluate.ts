@@ -100,6 +100,19 @@ function hasCall(e: Expr): boolean {
     case "newArray":
       result = false;
       break;
+    case "newRecord":
+    case "enumValue":
+      result = false;
+      break;
+    case "field":
+      result = hasCall(e.target);
+      break;
+    case "enumStep":
+      result = hasCall(e.operand) || hasCall(e.by);
+      break;
+    case "enumOrdinal":
+      result = hasCall(e.operand);
+      break;
     case "copyArray":
       result = hasCall(e.source);
       break;
@@ -141,14 +154,50 @@ export function indexError(node: { text: string; span: Span; base: number }, sho
 }
 
 /** CIE-20: an array of the given dimensions with no item set yet. */
-function unsetArray(dims: readonly number[]): Value {
+function unsetArray(dims: readonly number[], fill: Expr | undefined, env: Env): Value {
   const [first, ...rest] = dims;
   if (first === undefined) throw bug("An array needs at least one dimension");
-  return array(Array.from({ length: first }, () => (rest.length === 0 ? undefined : unsetArray(rest))));
+  // `fill` (an array of records) builds a fresh record for every item, so no two items share one.
+  const item = (): Value | undefined =>
+    rest.length === 0 ? (fill === undefined ? undefined : evaluate(fill, env)) : unsetArray(rest, fill, env);
+  return array(Array.from({ length: first }, item));
+}
+
+function newRecord(e: Extract<Expr, { kind: "newRecord" }>, env: Env): Value {
+  const fields: Record<string, Value | undefined> = {};
+  for (const f of e.fields) fields[f.name] = f.init === null ? undefined : evaluate(f.init, env);
+  return { kind: "record", fields };
+}
+
+function fieldOf(e: Extract<Expr, { kind: "field" }>, target: Value): Value {
+  if (target.kind !== "record") throw bug(`Field access got ${target.kind}`);
+  const v = target.fields[e.name];
+  if (v === undefined) throw new RunError("E-RUN-NO-VALUE", e.span, { name: `${e.text}.${e.name}` });
+  return v;
+}
+
+function enumOf(v: Value): Extract<Value, { kind: "enum" }> {
+  if (v.kind !== "enum") throw bug(`An enumerated value got ${v.kind}`);
+  return v;
+}
+
+function enumStep(e: Extract<Expr, { kind: "enumStep" }>, from: Value, by: Value): Value {
+  const v = enumOf(from);
+  const steps = asIndex(by);
+  const to = v.ordinal + steps;
+  if (v.names[to] === undefined || to < 0) {
+    throw new RunError("E-RUN-ENUM-RANGE", e.span, { value: v.names[v.ordinal] ?? "", type: v.type, steps });
+  }
+  return { kind: "enum", type: v.type, names: v.names, ordinal: to };
 }
 
 /** CIE-23: copies an array and any arrays inside it; other values are immutable, so they are shared. */
 function copyOf(v: Value): Value {
+  if (v.kind === "record") {
+    const fields: Record<string, Value | undefined> = {};
+    for (const [k, x] of Object.entries(v.fields)) fields[k] = x === undefined ? undefined : copyOf(x);
+    return { kind: "record", fields };
+  }
   return v.kind === "array" ? array(v.elements.map((x) => (x === undefined ? undefined : copyOf(x)))) : v;
 }
 
@@ -205,7 +254,17 @@ function evaluate(e: Expr, env: Env): Value {
     case "arrayLiteral":
       return array(e.elements.map((x) => evaluate(x, env)));
     case "newArray":
-      return unsetArray(e.dims);
+      return unsetArray(e.dims, e.fill, env);
+    case "newRecord":
+      return newRecord(e, env);
+    case "field":
+      return fieldOf(e, evaluate(e.target, env));
+    case "enumValue":
+      return { kind: "enum", type: e.type, names: e.names, ordinal: e.ordinal };
+    case "enumStep":
+      return enumStep(e, evaluate(e.operand, env), evaluate(e.by, env));
+    case "enumOrdinal":
+      return int(enumOf(evaluate(e.operand, env)).ordinal);
     case "copyArray":
       return copyOf(evaluate(e.source, env));
     case "builtin":
@@ -247,8 +306,12 @@ export function* evaluateWithCalls(e: Expr, env: Env): Run<Value> {
     }
     case "arrayLiteral":
       return array(yield* evaluateAll(e.elements, env));
-    case "newArray":
-      return unsetArray(e.dims);
+    case "field":
+      return fieldOf(e, yield* evaluateWithCalls(e.target, env));
+    case "enumStep":
+      return enumStep(e, yield* evaluateWithCalls(e.operand, env), yield* evaluateWithCalls(e.by, env));
+    case "enumOrdinal":
+      return int(enumOf(yield* evaluateWithCalls(e.operand, env)).ordinal);
     case "copyArray":
       return copyOf(yield* evaluateWithCalls(e.source, env));
     case "builtin":

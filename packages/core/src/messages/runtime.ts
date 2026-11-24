@@ -37,6 +37,13 @@ export const runtimeMessages: Catalogue = {
     spec: ["EDX-27"],
     default: { message: "{array}[{index}] has no value yet", hint: "Give that element a value before reading it." },
   },
+  "E-RUN-ENUM-RANGE": {
+    spec: ["CIE-31"],
+    default: {
+      message: "{value} is a {type}, and moving {steps} place(s) from it goes past the end of the list",
+      hint: "Check that the value is not the first or last one before you add or take away.",
+    },
+  },
   "E-RUN-BAD-ARGUMENT": {
     spec: ["CIE-120", "CIE-124", "CIE-126", "CIE-129"],
     default: {
