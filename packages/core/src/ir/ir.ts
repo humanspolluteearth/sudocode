@@ -180,13 +180,25 @@ export type Stmt =
   | { kind: "forInclusive"; variable: VarRef; start: Expr; end: Expr; step: Expr | null; body: Stmt[]; span: Span }
   /** Visits each element of an array, or each character of a string, in order (EDX-57). */
   | { kind: "forEach"; variable: VarRef; iterable: Expr; body: Stmt[]; span: Span }
-  | { kind: "callStatement"; callee: string; args: Expr[]; span: Span }
+  | {
+      kind: "callStatement";
+      callee: string;
+      args: Expr[];
+      /** For each argument, the place to write a BYREF parameter's final value back to, or null (CIE-73). */
+      outs?: (AssignTarget | null)[];
+      span: Span;
+    }
   | { kind: "return"; value: Expr | null; span: Span };
 
 export interface Subprogram {
   name: string;
   kind: "procedure" | "function";
   params: string[];
+  /**
+   * Which parameters are BYREF (CIE-73), in order. A procedure with a BYREF parameter gives the final values of
+   * those parameters back to its caller, which writes them into the places named in `callStatement.outs`.
+   */
+  byRef?: boolean[];
   body: Stmt[];
   span: Span;
 }

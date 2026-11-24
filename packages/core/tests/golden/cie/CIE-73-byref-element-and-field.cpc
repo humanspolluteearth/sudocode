@@ -1,0 +1,13 @@
+TYPE Pupil
+  DECLARE Score : INTEGER
+ENDTYPE
+PROCEDURE Bump(BYREF N : INTEGER)
+  N <- N + 10
+ENDPROCEDURE
+DECLARE A : ARRAY[1:3] OF INTEGER
+DECLARE P : Pupil
+A[2] <- 5
+P.Score <- 7
+CALL Bump(A[2])
+CALL Bump(P.Score)
+OUTPUT A[2], " ", P.Score
