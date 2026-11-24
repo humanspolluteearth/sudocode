@@ -131,4 +131,5 @@ Newest entry first. Updated at the end of each milestone (and each session).
 - Prototype audited (`docs/AUDIT.md`): rewrite to the confirmed architecture, keep the knowledge; runtime needs an
   explicit call stack for 1,000-deep recursion.
 - Test plan and CI in `docs/TEST-PLAN.md`; product defaults in `docs/PRODUCT.md`; milestones in `docs/milestones/`.
+- Web UI matches the design (menu bar, tab strip, toolbar, gutter, side panel, Grade checker default); gaps in `docs/review/UI.md`.
 - Next step: M0 (`docs/milestones/M00-bootstrap.md`).
