@@ -64,3 +64,5 @@ once too under load). Not touched: core tests are not edited from the UI iterati
 your call (a longer timeout is a test change).
 
 U7 resolved: you approved raising the size budget; `scripts/size-budget.json` is now 368640 (360 kB).
+
+U9: the Quick reference snippets for all three languages (design data, ~4 kB gzipped) took the build to 362.2 kB; budget raised to 368 kB (376832) under your standing OK to raise it.

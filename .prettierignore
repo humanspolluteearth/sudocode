@@ -9,3 +9,5 @@ packages/core/tests/**/*.py
 docs/language-spec/
 # Generated from the design by scripts/gen-guides.mjs.
 packages/ui/src/guides/
+# Generated from the design by scripts/gen-snippets.mjs.
+packages/ui/src/snippets.json

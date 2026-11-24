@@ -49,6 +49,6 @@ test("switching to Cambridge pseudocode runs a CIE program and shows the Quick r
   await page.getByRole("button", { name: "Run" }).click();
   await expect(page.getByRole("log")).toContainText("Hello, Cambridge");
   await page.getByRole("button", { name: "Quick reference" }).click();
-  await expect(page.getByRole("region", { name: "Quick reference" })).toContainText("Variables and constants");
+  await expect(page.getByRole("region", { name: "Quick reference" })).toContainText("Variables and input/output");
   await expect(page.getByRole("status", { name: "Status bar" })).toContainText("Cambridge");
 });

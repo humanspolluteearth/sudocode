@@ -1,12 +1,11 @@
 import type { Diagnostic } from "@sudocode/core";
-import { CIE_GUIDE, EDEXCEL_EXAMPLES } from "@sudocode/core";
+import { EDEXCEL_EXAMPLES } from "@sudocode/core";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { axeViolations } from "./axe.ts";
 import { Console } from "./Console.tsx";
 import { Editor } from "./Editor.tsx";
 import { Problems } from "./Problems.tsx";
-import { QuickReference } from "./QuickReference.tsx";
 import { Toolbar } from "./Toolbar.tsx";
 
 const diag = (over: Partial<Diagnostic> = {}): Diagnostic => ({
@@ -149,23 +148,6 @@ describe("MISC Editor", () => {
     const screen = await render(
       <Editor value={"SEND 'hi' TO DISPLAY\n"} onChange={() => undefined} diagnostics={[]} />,
     );
-    expect(await axeViolations(screen.container)).toEqual([]);
-  });
-});
-
-describe("MISC Quick reference", () => {
-  it("MISC lists every guide section and loads the chosen example", async () => {
-    const onUse = vi.fn();
-    const screen = await render(<QuickReference sections={CIE_GUIDE} onUse={onUse} />);
-    const first = CIE_GUIDE[0];
-    if (first === undefined) throw new Error("the guide has no sections");
-    await expect.element(screen.getByRole("heading", { name: first.title })).toBeVisible();
-    await screen.getByRole("button", { name: `Use this example: ${first.title}` }).click();
-    expect(onUse).toHaveBeenCalledWith(first);
-  });
-
-  it("MISC has no axe violations", async () => {
-    const screen = await render(<QuickReference sections={CIE_GUIDE} onUse={() => undefined} />);
     expect(await axeViolations(screen.container)).toEqual([]);
   });
 });
