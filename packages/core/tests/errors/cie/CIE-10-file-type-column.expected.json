@@ -1,0 +1,20 @@
+{
+  "spec": ["CIE-10"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-FILE-TYPE",
+        "line": 1,
+        "column": 13,
+        "message": "FILE isn't a type in Sudocode",
+        "hint": "Name the file with a STRING instead, e.g. OPENFILE \"data.txt\" FOR READ."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Corrects the column of CIE-10-file-type (FILE starts at column 13, not 15). 'DECLARE F : FILE': DECLARE is columns 1-7, F is 9, colon 11, FILE 13."
+}

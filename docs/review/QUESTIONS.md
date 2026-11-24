@@ -278,3 +278,7 @@ Logged by Claude under /goal. Implemented as below; no golden test depends on th
 - Answer (24 Nov 2026): **(a) 2D arrays with different lower bounds are allowed** (CIE-21 extended); the merged test in `cie/arrays.test.ts` may be replaced to match. **(b) STR_TO_NUM into an INTEGER stays an error** (see Q49a); the merged test already pins that, so it needs no change. **CIE-10:** `DECLARE F : FILE` is a checker error with a hint to use a STRING file name (CIE-10 extended).
 - Choices not in the spec: `RAND(0)` returns 0; `IS_NUM("3.")` is FALSE; `MID("abc",3,2)` is an error; `SUPER` outside a subclass is a syntax error.
   - Answer (24 Nov 2026): **All four confirmed as implemented**; written into CIE-113, CIE-128, CIE-125 and CIE-120.
+
+## Q52: wrong column in merged CIE-10 test (24 Nov 2026)
+
+`tests/errors/cie/CIE-10-file-type.expected.json` (merged in #85) expects column 15, but `FILE` in `DECLARE F : FILE` starts at column 13. Merged tests may not be edited, so it stays in `pending.json` (it fails, as pending expects) and `CIE-10-file-type-column` carries the corrected column. Please approve deleting the wrong one.
