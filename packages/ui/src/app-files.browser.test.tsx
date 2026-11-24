@@ -1,5 +1,6 @@
 import "./styles.css";
 import { describe, expect, it } from "vitest";
+import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-react";
 import { App } from "./App.tsx";
 import { axeViolations } from "./axe.ts";
@@ -34,6 +35,8 @@ describe("MISC files in the app: tabs and Convert", () => {
       .toHaveTextContent(
         "Converted from Edexcel pseudocode to Python. Your original is still open in its own tab. Run it to check it does the same.Dismiss",
       );
+    // The new tab holds Python, not the original pseudocode.
+    await expect.poll(() => screen.getByRole("textbox").first().element().textContent).toContain("print(");
     // The original is still there, in its own tab.
     await expect.element(screen.getByRole("tab", { name: /untitled\.epc/ })).toBeVisible();
   });
@@ -50,7 +53,17 @@ describe("MISC files in the app: tabs and Convert", () => {
     await expect.element(screen.getByRole("dialog", { name: "Save file" })).toBeVisible();
     expect(await axeViolations(screen.getByRole("dialog").element() as HTMLElement)).toEqual([]);
     await screen.getByLabelText("File name").click();
-    await screen.getByRole("button", { name: "Cancel" }).click();
+    await userEvent.keyboard("{Escape}");
     await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("MISC Save as with a new name renames the tab", async () => {
+    localStorage.clear();
+    const screen = await render(<App />);
+    await menu(screen, "File", /^Save as/);
+    await screen.getByLabelText("File name").fill("mine");
+    await userEvent.keyboard("{Enter}");
+    await expect.element(screen.getByRole("dialog")).not.toBeInTheDocument();
+    await expect.poll(() => screen.getByRole("tab", { selected: true }).element().textContent).toContain("mine.epc");
   });
 });

@@ -8,9 +8,9 @@ import { axeViolations } from "./axe.ts";
 // M10: examples for all three languages and a language picker. Each language is chosen from the Language menu, then
 // an example is chosen from the File menu and gets the tick.
 const cases = [
-  { name: /Edexcel/, tab: /\.epc/, examples: EDEXCEL_EXAMPLES },
-  { name: /Cambridge/, tab: /\.cpc/, examples: CIE_EXAMPLES },
-  { name: "Python", tab: /\.py/, examples: PYTHON_EXAMPLES },
+  { name: /Edexcel/, tab: ".epc", examples: EDEXCEL_EXAMPLES },
+  { name: /Cambridge/, tab: ".cpc", examples: CIE_EXAMPLES },
+  { name: "Python", tab: ".py", examples: PYTHON_EXAMPLES },
 ] as const;
 
 describe("MISC language picker and examples", () => {
@@ -25,6 +25,14 @@ describe("MISC language picker and examples", () => {
       if (pick === undefined) throw new Error("no example");
       await screen.getByRole("menuitem", { name: "File", exact: true }).click();
       await screen.getByRole("menuitemradio", { name: pick.name }).click();
+      // The picker really switched: the active tab has this language's extension and the editor holds the example.
+      await expect.poll(() => screen.getByRole("tab", { selected: true }).element().textContent).toContain(c.tab);
+      const firstLine =
+        pick.code
+          .split("\n")
+          .find((l) => l.trim() !== "")
+          ?.trim() ?? "";
+      await expect.poll(() => screen.getByRole("textbox").first().element().textContent).toContain(firstLine);
       await screen.getByRole("menuitem", { name: "File", exact: true }).click();
       await expect
         .element(screen.getByRole("menuitemradio", { name: pick.name }))

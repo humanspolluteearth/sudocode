@@ -14,8 +14,14 @@ beforeEach(() => {
 
 describe("MISC tool switches (docs/PRODUCT.md)", () => {
   it("MISC Simple mode turns the Advanced-only tools off whatever the switches say", () => {
+    // Written out from the "Simple mode" column of docs/PRODUCT.md, not from TOOLS, so flipping a flag fails here.
+    const off = ["stepInto", "files", "converter"];
     const flags = toolFlags(false, []);
-    for (const t of TOOLS) expect(flags[t.id]).toBe(!t.advancedOnly);
+    for (const t of TOOLS) expect(flags[t.id], t.id).toBe(!off.includes(t.id));
+  });
+  it("MISC Simple mode still honours a tool the student switched off", () => {
+    expect(toolFlags(false, ["problems"]).problems).toBe(false);
+    expect(toolFlags(false, []).problems).toBe(true);
   });
   it("MISC Advanced mode turns everything on except what the student switched off", () => {
     const flags = toolFlags(true, ["traceTable"]);
@@ -27,6 +33,8 @@ describe("MISC tool switches (docs/PRODUCT.md)", () => {
     const screen = await render(<App />);
     await expect.element(screen.getByRole("button", { name: "Files", exact: true })).not.toBeInTheDocument();
     await expect.element(screen.getByRole("region", { name: "Call stack" })).not.toBeInTheDocument();
+    await expect.element(screen.getByRole("button", { name: "Step into" })).not.toBeInTheDocument();
+    await expect.element(screen.getByRole("button", { name: "Step out" })).not.toBeInTheDocument();
     await expect.element(screen.getByRole("menuitem", { name: "Convert", exact: true })).not.toBeInTheDocument();
     await expect.element(screen.getByLabelText("Convert to")).not.toBeInTheDocument();
     await expect.element(screen.getByRole("region", { name: "Trace table" })).toBeVisible();
@@ -84,6 +92,8 @@ describe("MISC tool switches (docs/PRODUCT.md)", () => {
       "stepInto",
       async (s) => {
         await expect.element(s.getByRole("region", { name: "Call stack" })).not.toBeInTheDocument();
+        await expect.element(s.getByRole("button", { name: "Step into" })).not.toBeInTheDocument();
+        await expect.element(s.getByRole("button", { name: "Step out" })).not.toBeInTheDocument();
       },
     ],
     [
