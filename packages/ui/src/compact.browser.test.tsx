@@ -1,0 +1,111 @@
+import "./styles.css";
+import { beforeEach, describe, expect, it } from "vitest";
+import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-react";
+import { App } from "./App.tsx";
+import { FakeWorker } from "./fake-worker.ts";
+import { axeViolations } from "./axe.ts";
+
+beforeEach(() => {
+  localStorage.clear();
+});
+
+describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc.html)", () => {
+  it("MISC a desktop-width window has no view switcher or key bar", async () => {
+    await page.viewport(1280, 800);
+    const screen = await render(<App />);
+    await expect.element(screen.getByRole("navigation", { name: "Views" })).not.toBeInTheDocument();
+    await expect.element(screen.getByRole("toolbar", { name: "Insert keyword" })).not.toBeInTheDocument();
+  });
+
+  for (const width of [834, 390]) {
+    it(`MISC at ${String(width)}px the views switcher shows one view at a time`, async () => {
+      await page.viewport(width, 800);
+      const screen = await render(<App />);
+      await expect.element(screen.getByRole("navigation", { name: "Views" })).toBeVisible();
+      await expect.element(screen.getByRole("textbox", { name: "Program editor" })).toBeVisible();
+      await expect.element(screen.getByRole("region", { name: "Console" })).not.toBeInTheDocument();
+      await screen.getByRole("button", { name: "Console", exact: true }).click();
+      await expect.element(screen.getByRole("region", { name: "Console" })).toBeVisible();
+      await expect.element(screen.getByRole("textbox", { name: "Program editor" })).not.toBeInTheDocument();
+      await screen.getByRole("button", { name: "Debug", exact: true }).click();
+      await expect.element(screen.getByRole("region", { name: "Variables" })).toBeVisible();
+      await expect.element(screen.getByRole("region", { name: "Console" })).not.toBeInTheDocument();
+    });
+  }
+
+  it("MISC the Insert keyword bar types a keyword into the editor", async () => {
+    await page.viewport(390, 800);
+    const screen = await render(<App />);
+    await screen.getByRole("textbox", { name: "Program editor" }).click();
+    await userEvent.keyboard("{Control>}a{/Control}{Delete}");
+    await screen.getByRole("button", { name: "Insert SEND" }).click();
+    await screen.getByRole("button", { name: "Insert DISPLAY" }).click();
+    expect(document.querySelector(".cm-content")?.textContent).toBe("SENDDISPLAY");
+  });
+
+  it("MISC the key bar follows the language", async () => {
+    await page.viewport(390, 800);
+    localStorage.setItem("sudocode.preferences", JSON.stringify({ language: "python" }));
+    const screen = await render(<App />);
+    await expect.element(screen.getByRole("button", { name: "Insert print(" })).toBeVisible();
+    await expect.element(screen.getByRole("button", { name: "Insert SEND" })).not.toBeInTheDocument();
+  });
+
+  it("MISC the File and convert actions menu offers Save, New tab and the text sizes", async () => {
+    await page.viewport(390, 800);
+    const screen = await render(<App />);
+    await screen.getByRole("button", { name: "File and convert actions" }).click();
+    for (const name of ["New tab", "Save", "Save as…", "Close tab"])
+      await expect.element(screen.getByRole("menuitem", { name, exact: true })).toBeVisible();
+    await expect.element(screen.getByRole("menuitemradio", { name: "Text size 125%" })).toBeVisible();
+    await screen.getByRole("menuitemradio", { name: "Text size 125%" }).click();
+    expect(localStorage.getItem("sudocode.preferences")).toContain('"zoom":125');
+  });
+
+  it("MISC the menu has no Convert item in Simple mode, and has it in Advanced mode", async () => {
+    await page.viewport(390, 800);
+    const simple = await render(<App />);
+    await simple.getByRole("button", { name: "File and convert actions" }).click();
+    await expect.element(simple.getByRole("menuitem", { name: "Convert to Python" })).not.toBeInTheDocument();
+    await simple.unmount();
+    localStorage.setItem("sudocode.preferences", JSON.stringify({ advanced: true }));
+    const advanced = await render(<App />);
+    await advanced.getByRole("button", { name: "File and convert actions" }).click();
+    await expect.element(advanced.getByRole("menuitem", { name: "Convert to Python" })).toBeVisible();
+  });
+
+  it("MISC a problem shows the chip and a dot on Debug, and the chip jumps back to the code", async () => {
+    await page.viewport(390, 800);
+    const check = new FakeWorker();
+    const workers = { createRunWorker: () => new FakeWorker(), createCheckWorker: () => check };
+    const screen = await render(<App workers={workers} />);
+    await screen.getByRole("textbox", { name: "Program editor" }).click();
+    await userEvent.keyboard("x");
+    await expect.poll(() => check.posted.length).toBeGreaterThan(0);
+    const id = (check.posted.at(-1) as { id: number }).id;
+    const diagnostic = {
+      code: "E-ENDIF",
+      line: 1,
+      column: 1,
+      message: "Needs an END IF.",
+      hint: "",
+      severity: "error",
+    };
+    check.reply({ type: "checked", id, diagnostics: [diagnostic] });
+    await expect.element(screen.getByRole("img", { name: "1 problem" })).toBeVisible();
+    await screen.getByRole("button", { name: /Line 1/ }).click();
+    await expect.element(screen.getByRole("textbox", { name: "Program editor" })).toBeVisible();
+  });
+
+  for (const width of [834, 390]) {
+    it(`MISC axe finds nothing at ${String(width)}px in any view`, async () => {
+      await page.viewport(width, 800);
+      const screen = await render(<App />);
+      for (const view of ["Code", "Console", "Debug"]) {
+        await screen.getByRole("button", { name: view, exact: true }).click();
+        expect(await axeViolations(screen.container)).toEqual([]);
+      }
+    });
+  }
+});

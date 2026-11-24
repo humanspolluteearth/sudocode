@@ -16,6 +16,8 @@ export function nextZoom(zoom: number, direction: 1 | -1): number {
 }
 
 export interface ToolbarProps {
+  /** Extra controls at the end of the bar (the compact layout's overflow menu). */
+  extra?: React.ReactNode;
   running: boolean;
   /** False while there is no way to run (no worker factory supplied). */
   canRun: boolean;
@@ -69,7 +71,13 @@ export function Toolbar(p: ToolbarProps) {
   const tools = p.tools ?? ALL_TOOLS;
   return (
     <div className="sc-toolbar" role="toolbar" aria-label="Run controls">
-      <button type="button" className="sc-tb" onClick={p.onRun} disabled={p.running || !p.canRun} title="Run (F5)">
+      <button
+        type="button"
+        className="sc-tb sc-keep"
+        onClick={p.onRun}
+        disabled={p.running || !p.canRun}
+        title="Run (F5)"
+      >
         <Icon>
           <path d="M4 2.5v11l9-5.5z" style={{ fill: p.running || !p.canRun ? "currentColor" : "var(--green)" }} />
         </Icon>
@@ -78,7 +86,7 @@ export function Toolbar(p: ToolbarProps) {
       {tools.breakpoints && (
         <button
           type="button"
-          className="sc-tb"
+          className="sc-tb sc-keep"
           onClick={p.onStepOver}
           disabled={!paused && (p.running || !p.canRun)}
           title="Step over (F10)"
@@ -92,14 +100,14 @@ export function Toolbar(p: ToolbarProps) {
           Step
         </button>
       )}
-      <button type="button" className="sc-tb" onClick={p.onContinue} disabled={!paused} title="Continue (F8)">
+      <button type="button" className="sc-tb sc-keep" onClick={p.onContinue} disabled={!paused} title="Continue (F8)">
         <Icon>
           <rect x="2.5" y="3" width="2" height="10" style={{ fill: "currentColor" }} />
           <path d="M6.5 3v10l7-5z" style={{ fill: paused ? "var(--green)" : "currentColor" }} />
         </Icon>
         Continue
       </button>
-      <button type="button" className="sc-tb" onClick={p.onStop} disabled={!p.running} title="Reset (Shift+F5)">
+      <button type="button" className="sc-tb sc-keep" onClick={p.onStop} disabled={!p.running} title="Reset (Shift+F5)">
         <Icon>
           <rect x="3.5" y="3.5" width="9" height="9" style={{ fill: p.running ? "var(--red)" : "currentColor" }} />
         </Icon>
@@ -245,6 +253,7 @@ export function Toolbar(p: ToolbarProps) {
       >
         A+
       </button>
+      {p.extra}
     </div>
   );
 }

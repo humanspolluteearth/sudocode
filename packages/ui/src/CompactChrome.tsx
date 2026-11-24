@@ -1,0 +1,164 @@
+// The extra controls of the compact layout (design: Tablet.dc.html, Mobile.dc.html): a bottom view switcher, the
+// "Insert keyword" key bar, the "1 problem" chip and the "File and convert actions" overflow menu.
+import type { Diagnostic } from "@sudocode/core";
+import { useState } from "react";
+import { KEYSETS, type CompactView } from "./compact.ts";
+import type { PseudocodeLanguage } from "./preferences.ts";
+
+/** The text sizes the design offers on a small screen. */
+const TEXT_SIZES = [100, 110, 125, 150] as const;
+
+const VIEWS: readonly { id: CompactView; label: string }[] = [
+  { id: "code", label: "Code" },
+  { id: "console", label: "Console" },
+  { id: "debug", label: "Debug" },
+];
+
+export function ViewSwitcher(p: {
+  view: CompactView;
+  onView: (v: CompactView) => void;
+  onGuide: () => void;
+  problems: number;
+}) {
+  return (
+    <nav className="sc-views" aria-label="Views">
+      {VIEWS.map((v) => (
+        <button
+          key={v.id}
+          type="button"
+          className="sc-view"
+          aria-current={p.view === v.id ? "page" : undefined}
+          onClick={() => {
+            p.onView(v.id);
+          }}
+        >
+          {v.label}
+          {v.id === "debug" && p.problems > 0 && (
+            <span
+              className="sc-dot"
+              role="img"
+              aria-label={`${String(p.problems)} ${p.problems === 1 ? "problem" : "problems"}`}
+            />
+          )}
+        </button>
+      ))}
+      <button type="button" className="sc-view" onClick={p.onGuide}>
+        Guide
+      </button>
+    </nav>
+  );
+}
+
+/** One tap per keyword: pressing a key must not steal focus from the editor, so mousedown is cancelled. */
+export function KeyBar(p: { language: PseudocodeLanguage; onInsert: (text: string) => void }) {
+  return (
+    <div role="toolbar" aria-label="Insert keyword" className="sc-keybar">
+      {KEYSETS[p.language].map((k) => (
+        <button
+          key={k}
+          type="button"
+          className="sc-key"
+          aria-label={k === "\t" ? "Insert indent" : `Insert ${k}`}
+          onMouseDown={(e) => {
+            e.preventDefault();
+          }}
+          onClick={() => {
+            p.onInsert(k === "\t" ? "    " : k);
+          }}
+        >
+          {k === "\t" ? "⇥" : k}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export function ProblemChip(p: { diagnostics: readonly Diagnostic[]; onOpen: (d: Diagnostic) => void }) {
+  const first = p.diagnostics[0];
+  if (first === undefined) return null;
+  return (
+    <button
+      type="button"
+      className="sc-chip"
+      onClick={() => {
+        p.onOpen(first);
+      }}
+    >
+      <span className="sc-chip-line">Line {first.line}: </span>
+      {first.message}
+      <span className="sc-chip-more">Details</span>
+    </button>
+  );
+}
+
+export interface OverflowProps {
+  onNew: () => void;
+  onSave: () => void;
+  onSaveAs: () => void;
+  /** Present only when the converter is on and the language can be converted. */
+  onConvert?: (() => void) | undefined;
+  onCloseTab: () => void;
+  canCloseTab: boolean;
+  zoom: number;
+  onZoom: (zoom: number) => void;
+}
+
+export function OverflowMenu(p: OverflowProps) {
+  const [open, setOpen] = useState(false);
+  const run = (action: () => void) => () => {
+    setOpen(false);
+    action();
+  };
+  return (
+    <div className="sc-more">
+      <button
+        type="button"
+        className="sc-tb"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label="File and convert actions"
+        onClick={() => {
+          setOpen(!open);
+        }}
+      >
+        ⋯
+      </button>
+      {open && (
+        <div role="menu" aria-label="File and convert actions" className="sc-more-menu">
+          <button type="button" role="menuitem" onClick={run(p.onNew)}>
+            New tab
+          </button>
+          <button type="button" role="menuitem" onClick={run(p.onSave)}>
+            Save
+          </button>
+          <button type="button" role="menuitem" onClick={run(p.onSaveAs)}>
+            Save as…
+          </button>
+          {p.onConvert !== undefined && (
+            <button type="button" role="menuitem" onClick={run(p.onConvert)}>
+              Convert to Python
+            </button>
+          )}
+          <button type="button" role="menuitem" disabled={!p.canCloseTab} onClick={run(p.onCloseTab)}>
+            Close tab
+          </button>
+          <div role="group" aria-label="Text size">
+            {TEXT_SIZES.map((z) => (
+              <button
+                key={z}
+                type="button"
+                role="menuitemradio"
+                aria-checked={p.zoom === z}
+                onClick={run(() => {
+                  p.onZoom(z);
+                })}
+              >
+                Text size {z}%
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

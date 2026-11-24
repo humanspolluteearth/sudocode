@@ -11,6 +11,9 @@ export default defineConfig({
       enabled: true,
       headless: true,
       provider: playwright(),
+      // Desktop size by default: the default (414 wide) would put every test in the compact layout. Compact tests
+      // ask for their own width with page.viewport().
+      viewport: { width: 1280, height: 800 },
       instances: [{ browser: "chromium" }],
     },
   },

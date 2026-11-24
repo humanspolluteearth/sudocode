@@ -5,6 +5,8 @@ import { CIE_EXAMPLES, EDEXCEL_EXAMPLES, PYTHON_EXAMPLES, type Diagnostic, type 
 import { useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
+import { KeyBar, OverflowMenu, ProblemChip, ViewSwitcher } from "./CompactChrome.tsx";
+import { useCompact, type CompactView } from "./compact.ts";
 import { Editor, type EditorHandle } from "./Editor.tsx";
 import { GuidePage, guideFromSearch, guideUrl, type GuideId } from "./GuidePage.tsx";
 import { SettingsDialog } from "./SettingsDialog.tsx";
@@ -214,6 +216,8 @@ export function App({ workers }: AppProps) {
     files$.setLanguage(next);
     update({ ...prefs, language: next });
   };
+  const compact = useCompact();
+  const [view, setView] = useState<CompactView>("code");
   const menus = buildMenus({
     running: active,
     paused: run.state === "paused",
@@ -272,7 +276,11 @@ export function App({ workers }: AppProps) {
 
   if (guide !== null) return <GuidePage guide={guide} onNavigate={openGuide} themeClass={themeClass(prefs.theme)} />;
   return (
-    <div className={`sc-root ${themeClass(prefs.theme)}`} style={{ "--zoom": prefs.zoom / 100 } as React.CSSProperties}>
+    <div
+      className={`sc-root ${themeClass(prefs.theme)}${compact ? " sc-compact" : ""}`}
+      data-view={view}
+      style={{ "--zoom": prefs.zoom / 100 } as React.CSSProperties}
+    >
       <MenuBar menus={menus} />
       <Toolbar
         running={active}
@@ -313,6 +321,26 @@ export function App({ workers }: AppProps) {
             : undefined
         }
         canConvert={language !== "python"}
+        extra={
+          compact ? (
+            <OverflowMenu
+              onNew={files$.newFile}
+              onSave={files$.save}
+              onSaveAs={files$.saveAs}
+              onConvert={
+                prefs.advanced && tools.converter && language !== "python" ? files$.convertToPython : undefined
+              }
+              onCloseTab={() => {
+                files$.close(files$.ws.activeId);
+              }}
+              canCloseTab={files$.ws.tabs.length > 1}
+              zoom={prefs.zoom}
+              onZoom={(zoom) => {
+                update({ ...prefs, zoom });
+              }}
+            />
+          ) : undefined
+        }
         tools={tools}
         theme={prefs.theme}
         onTheme={(theme) => {
@@ -398,6 +426,26 @@ export function App({ workers }: AppProps) {
           }}
         />
       </main>
+      {compact && (
+        <>
+          <ProblemChip
+            diagnostics={diagnostics}
+            onOpen={(d) => {
+              setView("code");
+              editor.current?.goTo(d.line, d.column);
+            }}
+          />
+          <KeyBar language={language} onInsert={(text) => editor.current?.insertAtCursor(text)} />
+          <ViewSwitcher
+            view={view}
+            onView={setView}
+            onGuide={() => {
+              openGuide(language);
+            }}
+            problems={diagnostics.length}
+          />
+        </>
+      )}
       <StatusBar
         state={run.state}
         line={run.state === "error" ? (run.error?.line ?? null) : (run.paused?.line ?? null)}

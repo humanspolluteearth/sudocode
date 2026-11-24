@@ -183,6 +183,9 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
         ],
       }),
     });
+    // On a narrow screen the line numbers and text scroll sideways; the scroller must be reachable for axe and for
+    // keyboard users (tabindex 0, which axe requires of a scrollable region).
+    created.scrollDOM.tabIndex = 0;
     view.current = created;
     return () => {
       created.destroy();
