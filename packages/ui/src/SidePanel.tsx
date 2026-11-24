@@ -3,6 +3,7 @@
 import type { Diagnostic, GuideSection, VirtualFiles } from "@sudocode/core";
 import { FilesPanel } from "./FilesPanel.tsx";
 import { CallStack } from "./CallStack.tsx";
+import type { GuideId } from "./GuidePage.tsx";
 import { QuickReference } from "./QuickReference.tsx";
 import { Problems } from "./Problems.tsx";
 import type { RunView } from "./run-state.ts";
@@ -27,6 +28,9 @@ export interface SidePanelProps {
   /** Quick reference sections; the tab shows only when there are some. */
   guide?: readonly GuideSection[] | undefined;
   onUseGuide?: ((section: GuideSection) => void) | undefined;
+  /** Which language's full guide the Quick reference links to. */
+  language?: GuideId | undefined;
+  onOpenGuide?: ((guide: GuideId) => void) | undefined;
 }
 
 export interface FilesProps {
@@ -47,6 +51,8 @@ export function SidePanel({
   onAdvanced,
   guide,
   onUseGuide,
+  language,
+  onOpenGuide,
 }: SidePanelProps) {
   const tabButton = (id: SideTab, label: string) => (
     <button
@@ -78,7 +84,12 @@ export function SidePanel({
         </label>
       </div>
       {tab === "reference" && guide !== undefined ? (
-        <QuickReference sections={guide} onUse={(section) => onUseGuide?.(section)} />
+        <QuickReference
+          sections={guide}
+          onUse={(section) => onUseGuide?.(section)}
+          language={language}
+          onOpenGuide={onOpenGuide}
+        />
       ) : tab === "files" && files !== undefined ? (
         <FilesPanel files={files.files} onChange={files.onChange} onDelete={files.onDelete} />
       ) : (

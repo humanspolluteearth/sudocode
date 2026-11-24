@@ -7,3 +7,5 @@ packages/core/tests/**/*.cpc
 packages/core/tests/**/*.py
 # The language spec is hand-maintained; keep its tables byte-for-byte so diffs show only rule changes.
 docs/language-spec/
+# Generated from the design by scripts/gen-guides.mjs.
+packages/ui/src/guides/
