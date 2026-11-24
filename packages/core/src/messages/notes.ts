@@ -59,6 +59,13 @@ export const noteMessages: Catalogue = {
       hint: "Write only one ENDIF at the end, after the last ELSE.",
     },
   },
+  "I-PY-CLASS-DECLARATIONS": {
+    spec: ["PY-54"],
+    default: {
+      message: "Class {name} has no commented attribute declarations",
+      hint: "Cambridge Paper 4 asks for them as comments at the top of the class, e.g. # {example}.",
+    },
+  },
   "I-EDX-ARRAY-GROWS": {
     spec: ["EDX-27", "Q-EDX-1"],
     default: {

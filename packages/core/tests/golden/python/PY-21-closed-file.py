@@ -1,0 +1,5 @@
+f = open("a.txt", "w")
+f.write("x")
+f.close()
+print("closed")
+f.write("y")
