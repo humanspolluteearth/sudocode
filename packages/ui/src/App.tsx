@@ -17,6 +17,8 @@ import { initialRunView, runReducer } from "./run-state.ts";
 import { SidePanel, type SideTab } from "./SidePanel.tsx";
 import { NoteBanner, type Note } from "./NoteBanner.tsx";
 import { StatusBar, type CursorPosition } from "./StatusBar.tsx";
+import { Splitter } from "./Splitter.tsx";
+import { usePaneSize } from "./use-pane-size.ts";
 import { StepLimitDialog } from "./StepLimitDialog.tsx";
 import { nextZoom, Toolbar, ZOOM_LEVELS, type ThemeChoice } from "./Toolbar.tsx";
 import "./styles.css";
@@ -43,6 +45,8 @@ export function App({ workers }: AppProps) {
   const [breakpoints, setBreakpoints] = useState<number[]>([]);
   const [cursor, setCursor] = useState<CursorPosition>({ line: 1, column: 1 });
   const [tab, setTab] = useState<SideTab>("debugger");
+  const [sideWidth, setSideWidth] = usePaneSize("sudocode.side-w", 340, 220, 720);
+  const [consoleHeight, setConsoleHeight] = usePaneSize("sudocode.console-h", 210, 80, 600);
   // The full guide pages are routes (`?guide=cie`), so the browser's Back button and shared links work.
   const [guide, setGuide] = useState<GuideId | null>(() =>
     guideFromSearch(typeof location === "undefined" ? "" : location.search),
@@ -267,8 +271,8 @@ export function App({ workers }: AppProps) {
           update({ ...prefs, theme });
         }}
       />
-      <main className="sc-main">
-        <div className="sc-left">
+      <main className="sc-main" style={{ "--side-w": `${String(sideWidth)}px` } as React.CSSProperties}>
+        <div className="sc-left" style={{ "--console-h": `${String(consoleHeight)}px` } as React.CSSProperties}>
           <FileTabs language={language} name="untitled" source={source} />
           {note !== null && (
             <NoteBanner
@@ -291,6 +295,7 @@ export function App({ workers }: AppProps) {
             onCursorChange={setCursor}
             pausedLine={paused === null || paused.reason === "stepLimit" ? null : paused.line}
           />
+          <Splitter orientation="horizontal" label="Resize console" size={consoleHeight} onResize={setConsoleHeight} />
           <Console
             output={run.output}
             error={run.error}
@@ -306,6 +311,7 @@ export function App({ workers }: AppProps) {
             onCancel={stop}
           />
         </div>
+        <Splitter orientation="vertical" label="Resize side panel" size={sideWidth} onResize={setSideWidth} />
         <SidePanel
           tab={tab}
           onTab={setTab}

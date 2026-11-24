@@ -226,7 +226,8 @@ body {
   flex-direction: column;
 }
 .sc-side {
-  flex: 1 1 280px;
+  flex: none;
+  width: var(--side-w, 340px);
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -250,14 +251,75 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 22px;
-  padding: 0 8px;
+  box-sizing: border-box;
+  min-height: calc(28px * var(--zoom, 1));
+  padding: 0 12px;
   background: var(--chrome);
   border-bottom: 1px solid var(--line2);
   border-top: 1px solid var(--line);
   font-weight: 600;
-  font-size: 11px;
+  font-size: calc(12.5px * var(--zoom, 1));
   flex: none;
+}
+button.sc-section-head {
+  width: 100%;
+  margin: 0;
+  border-left: 0;
+  border-right: 0;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+button.sc-section-head:hover {
+  background: var(--hover);
+}
+.sc-chevron {
+  width: 10px;
+  color: var(--muted2);
+}
+.sc-section {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+}
+.sc-section-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.sc-pad {
+  padding: 8px 12px;
+}
+.sc-splitter {
+  flex: none;
+  background: var(--line);
+  position: relative;
+  z-index: 1;
+}
+.sc-splitter.vertical {
+  width: 1px;
+  cursor: col-resize;
+}
+.sc-splitter.horizontal {
+  height: 1px;
+  cursor: row-resize;
+}
+/* A wider invisible hit area, so the 1px line is easy to grab. */
+.sc-splitter::after {
+  content: "";
+  position: absolute;
+}
+.sc-splitter.vertical::after {
+  inset: 0 -4px;
+}
+.sc-splitter.horizontal::after {
+  inset: -4px 0;
+}
+.sc-splitter:hover,
+.sc-splitter:focus-visible {
+  background: var(--link);
 }
 .sc-panel-title .sc-count {
   font-weight: 400;
@@ -277,7 +339,7 @@ body {
 
 .sc-console {
   flex: none;
-  height: 210px;
+  height: var(--console-h, 210px);
   display: flex;
   flex-direction: column;
 }
@@ -303,8 +365,8 @@ body {
 }
 
 .sc-problems {
-  flex: 1 1 0;
-  min-height: 0;
+  flex: none;
+  max-height: 40vh;
   overflow: auto;
   margin: 0;
   padding: 0;
@@ -316,7 +378,7 @@ body {
   gap: 2px;
   width: 100%;
   box-sizing: border-box;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border: 0;
   border-bottom: 1px solid var(--line3);
   background: transparent;
@@ -345,7 +407,7 @@ body {
   font-weight: 600;
 }
 .sc-empty {
-  padding: 6px 10px;
+  padding: 8px 12px;
   color: var(--muted2);
 }
 
@@ -379,6 +441,10 @@ body {
     border-left: 0;
     border-top: 1px solid var(--line);
     flex: 0 0 140px;
+    width: auto;
+  }
+  .sc-splitter.vertical {
+    display: none;
   }
 }
 
@@ -408,17 +474,8 @@ body {
   display: flex;
   flex-direction: column;
 }
-.sc-status-body {
-  padding: 4px 8px;
-}
-.sc-vars-panel {
-  flex: none;
-}
-.sc-trace-panel {
-  flex: 1 0 120px;
-  min-height: 120px;
-  display: flex;
-  flex-direction: column;
+.sc-trace-panel:not(.closed) {
+  flex: 1 0 140px;
 }
 .sc-trace-wrap {
   flex: 1 1 0;
@@ -454,28 +511,20 @@ body {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
-.sc-input {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  padding: 4px 8px;
-  border-top: 1px solid var(--line2);
-  background: var(--chrome);
-  flex: none;
+.sc-out.inline {
+  display: inline;
 }
-.sc-input label {
-  display: flex;
-  flex: 1;
-  gap: 6px;
-  align-items: center;
-}
-.sc-input input {
-  flex: 1;
-  min-width: 0;
-  font: calc(13px * var(--zoom, 1)) / 1.5 var(--code-font);
+.sc-input-inline {
+  field-sizing: content;
+  min-width: 8ch;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
   color: var(--fg);
-  background: var(--bg);
-  border: 1px solid var(--field);
+  font: inherit;
+  caret-color: var(--fg);
 }
 .sc-dialog-backdrop {
   position: fixed;
@@ -507,8 +556,6 @@ body {
 @media (pointer: coarse) {
   .sc-tb,
   .sc-tab,
-  .sc-input input,
-  .sc-input button,
   .sc-dialog-buttons button {
     min-width: 44px;
     min-height: 44px;
@@ -520,7 +567,7 @@ body {
 
 .sc-stack {
   margin: 0;
-  padding: 0 8px 8px;
+  padding: 8px 12px;
   list-style: none;
 }
 .sc-stack li {

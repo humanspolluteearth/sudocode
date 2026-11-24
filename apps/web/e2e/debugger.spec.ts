@@ -66,6 +66,8 @@ test("SH-17 the trace table of a run matches the program", async ({ page }) => {
   await page.goto("/");
   await typeProgram(page, PROGRAM);
   await page.getByRole("button", { name: "Debugger" }).click();
+  // The Trace table section starts folded; open it to read it.
+  await page.getByRole("button", { name: /Trace table/ }).click();
   await page.getByRole("button", { name: "Run" }).click();
   await expect(page.getByRole("log")).toContainText("Finished.");
   expect(await cells(page, "Trace table")).toEqual([

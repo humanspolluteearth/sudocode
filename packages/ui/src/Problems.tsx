@@ -1,5 +1,6 @@
 // The Problems list: every error, warning and note from the check worker. Clicking one jumps to its line.
 import type { Diagnostic, Severity } from "@sudocode/core";
+import { Section } from "./Section.tsx";
 
 const KIND: Record<Severity, string> = { error: "Error", warning: "Warning", info: "Note" };
 
@@ -10,11 +11,7 @@ export interface ProblemsProps {
 
 export function Problems({ diagnostics, onSelect }: ProblemsProps) {
   return (
-    <section aria-label="Problems" className="sc-problems-panel" style={{ display: "contents" }}>
-      <div className="sc-panel-title">
-        <span>Problems</span>
-        <span className="sc-count">{diagnostics.length}</span>
-      </div>
+    <Section id="problems" title="Problems" count={String(diagnostics.length)} className="sc-problems-panel">
       {diagnostics.length === 0 ? (
         <div className="sc-empty">No problems.</div>
       ) : (
@@ -39,6 +36,6 @@ export function Problems({ diagnostics, onSelect }: ProblemsProps) {
           ))}
         </ul>
       )}
-    </section>
+    </Section>
   );
 }

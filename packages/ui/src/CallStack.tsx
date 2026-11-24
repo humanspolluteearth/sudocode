@@ -2,7 +2,7 @@
 import type { StackFrame } from "@sudocode/core";
 
 export function CallStack({ stack }: { stack: readonly StackFrame[] }) {
-  if (stack.length === 0) return <p className="sc-empty">Pause the program to see the calls it is inside.</p>;
+  if (stack.length === 0) return <div className="sc-empty">Pause the program to see the calls it is inside.</div>;
   return (
     <ol className="sc-stack" aria-label="Active calls, innermost first">
       {stack.map((f, i) => (

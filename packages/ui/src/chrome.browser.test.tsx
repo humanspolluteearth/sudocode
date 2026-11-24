@@ -1,3 +1,4 @@
+import "./styles.css";
 import { App } from "./App.tsx";
 import { FakeWorker } from "./fake-worker.ts";
 import { createRef, useState } from "react";
@@ -9,6 +10,7 @@ import { axeViolations } from "./axe.ts";
 import { FileTabs, lineCount } from "./FileTabs.tsx";
 import { MenuBar } from "./MenuBar.tsx";
 import { NoteBanner, type Note } from "./NoteBanner.tsx";
+import { Splitter } from "./Splitter.tsx";
 import { Toolbar } from "./Toolbar.tsx";
 import { buildMenus, type MenuActions } from "./menu-model.ts";
 
@@ -281,6 +283,8 @@ describe("MISC Side panel", () => {
     for (const name of ["Status", "Problems", "Variables", "Breakpoints"]) {
       await expect.element(screen.getByRole("region", { name })).toBeVisible();
     }
+    // Breakpoints starts folded; opening it shows its text.
+    await screen.getByRole("button", { name: /Breakpoints/ }).click();
     await expect.element(screen.getByText("No breakpoints.")).toBeVisible();
     await expect.element(screen.getByRole("button", { name: "Debugger" })).toHaveAttribute("aria-pressed", "true");
   });
@@ -412,5 +416,65 @@ describe("MISC Step with no run going", () => {
     await userEvent.keyboard("{F10}");
     const types = (created[0]?.posted ?? []).map((m) => (m as { type: string }).type);
     expect(types).toEqual(["run", "pause"]);
+  });
+});
+
+describe("MISC debugger sections and resizing", () => {
+  it("MISC Status, Problems and Variables start open; the others start folded", async () => {
+    globalThis.localStorage.clear();
+    const screen = await render(<App />);
+    for (const name of ["Status", "Problems", "Variables"]) {
+      await expect
+        .element(screen.getByRole("button", { name: new RegExp(name) }))
+        .toHaveAttribute("aria-expanded", "true");
+    }
+    for (const name of ["Breakpoints", "Call stack", "Trace table"]) {
+      await expect
+        .element(screen.getByRole("button", { name: new RegExp(name) }))
+        .toHaveAttribute("aria-expanded", "false");
+    }
+  });
+
+  it("MISC a debugger section folds away and opens again from its title", async () => {
+    globalThis.localStorage.clear();
+    const screen = await render(<App />);
+    const title = screen.getByRole("button", { name: /Variables/ });
+    await expect.element(title).toHaveAttribute("aria-expanded", "true");
+    await title.click();
+    await expect.element(title).toHaveAttribute("aria-expanded", "false");
+    expect(screen.container.querySelector(".sc-vars-panel .sc-section-body")).toBeNull();
+    await title.click();
+    await expect.element(title).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("MISC a splitter resizes with the arrow keys, 10px a step and 40px with Shift", async () => {
+    function Harness() {
+      const [w, setW] = useState(300);
+      return (
+        <div style={{ display: "flex", height: 100 }}>
+          <Splitter orientation="vertical" label="Resize side panel" size={w} onResize={setW} />
+        </div>
+      );
+    }
+    const screen = await render(<Harness />);
+    // The viewport is narrow, where the side splitter is hidden by CSS; keys are sent straight to the element.
+    const bar = screen.container.querySelector<HTMLElement>('[role="separator"]');
+    const press = (key: string, shiftKey = false) =>
+      bar?.dispatchEvent(new KeyboardEvent("keydown", { key, shiftKey, bubbles: true }));
+    press("ArrowLeft");
+    await expect.poll(() => bar?.getAttribute("aria-valuenow")).toBe("310");
+    press("ArrowRight", true);
+    await expect.poll(() => bar?.getAttribute("aria-valuenow")).toBe("270");
+  });
+
+  it("MISC the console height changes from the app's splitter", async () => {
+    globalThis.localStorage.clear();
+    const screen = await render(<App />);
+    const cons = screen.getByRole("separator", { name: "Resize console" });
+    await expect.element(cons).toBeVisible();
+    const h = Number(cons.element().getAttribute("aria-valuenow"));
+    cons.element().focus();
+    await userEvent.keyboard("{ArrowUp}");
+    expect(Number(cons.element().getAttribute("aria-valuenow"))).toBe(h + 10);
   });
 });
