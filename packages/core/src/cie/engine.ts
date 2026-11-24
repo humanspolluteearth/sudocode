@@ -7,7 +7,7 @@ import { CieCursor } from "./cursor.ts";
 import { Env } from "./env.ts";
 import { lex } from "./lexer.ts";
 import { Statements } from "./statements.ts";
-import { finishClasses, installClasses } from "./classes.ts";
+import { finishClasses, installClasses } from "./class-definition.ts";
 import { installSubprograms } from "./subprograms.ts";
 
 export interface Analysis {
