@@ -8,6 +8,9 @@
     "errors/cie/CIE-10-file-type",
     "errors/edexcel/EDX-23-string-element",
     "errors/edexcel/EDX-82-blank-line-is-not-an-integer",
-    "errors/edexcel/EDX-82-character-line-is-too-long"
+    "errors/edexcel/EDX-82-character-line-is-too-long",
+    "golden/python/PY-19-dunders",
+    "golden/python/PY-19-hashing",
+    "golden/python/PY-42-timedelta-division"
   ]
 }

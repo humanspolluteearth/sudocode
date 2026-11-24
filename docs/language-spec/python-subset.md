@@ -28,7 +28,7 @@ Both courses allow Python (Edexcel spec topic 2; CIE syllabus Paper 4) but neith
 | PY-16 | Dictionaries | Literals, get/set/delete by key, iteration, `in` | CIE (ADT: dictionary) |
 | PY-17 | Sets | Literals, `add`, `remove`, `in`, union/intersection operators | CIE (set type) |
 | PY-18 | Functions | `def`, parameters with defaults, keyword arguments, `return` (incl. multiple values), recursion, `global` | Both |
-| PY-19 | Classes | `class`, `__init__`, attributes, methods, inheritance, `super()`, method overriding, `__str__` / `__repr__`, getters/setters as plain methods, `__name` private-by-convention (name mangling as CPython), `isinstance` | CIE (OOP) |
+| PY-19 | Classes | `class`, `__init__`, attributes, methods, inheritance, `super()`, method overriding, `__str__` / `__repr__`, getters/setters as plain methods, `__name` private-by-convention (name mangling as CPython), `isinstance`. **Added to M9 (user decision, 24 Nov 2026):** instances are hashable (default by identity; a class that defines `__eq__` without `__hash__` is unhashable, as CPython), so they work as dict keys and set members; `__hash__`, `__len__` (and so `len()` and truthiness), `__lt__`/`__le__`/`__gt__`/`__ge__` (used by `<`, `sorted`, `min`, `max`, `list.sort`), and `NotImplemented` returned from a binary dunder | CIE (OOP) |
 | PY-20 | Exceptions | `try / except [Type [as e]] / else / finally`, `raise`, built-in exception classes, custom exception classes | CIE (20.2) |
 | PY-21 | Files | `open(name, mode)` with `r`, `w`, `a`; `read`, `readline`, `readlines`, `write`, `close`, iterating over a file, `with open(...) as f` | Both |
 | PY-22 | Imports | `import m`, `from m import x`, `import m as y` for the modules in 4.4 only | Both |
@@ -52,13 +52,13 @@ Both courses allow Python (Edexcel spec topic 2; CIE syllabus Paper 4) but neith
 | --- | --- | --- |
 | PY-40 | `math` | `sqrt`, `floor`, `ceil`, `pi`, `e`, `pow`, `fabs`, `trunc`, `log`, `sin`/`cos`/`tan` |
 | PY-41 | `random` | `randint`, `random`, `randrange`, `choice`, `shuffle`, `uniform`, `seed` (SH-12) |
-| PY-42 | `datetime` | `date`, `datetime`, `timedelta`; `date.today()`, `datetime.now()`, attributes (`day`, `month`, `year`…), arithmetic with timedelta, `strftime` for common codes |
+| PY-42 | `datetime` | `date`, `datetime`, `timedelta`; `date.today()`, `datetime.now()`, attributes (`day`, `month`, `year`…), arithmetic with timedelta (including `timedelta / int`, `timedelta // int`, `timedelta / timedelta`, `timedelta // timedelta`), `strftime` for common codes |
 | PY-43 | `time` | `time()`, `sleep()` (pauses the run without freezing the app) |
 | PY-44 | `pickle` | Not in v1: Cambridge states Paper 4 source files are never binary, and random files are simulated by hashing into data structures (Q-PY-1) |
 
 ### 4.5 Not supported (clear message instead)
 
-Generators and `yield`, decorators, `async`/`await`, `match`/`case` (PY-12 note), the walrus operator `:=`, `nonlocal`, `*args`/`**kwargs`, multiple inheritance, operator overloading beyond `__str__`/`__repr__`/`__eq__`, any module not in 4.4, `eval`/`exec`. **Supported after all (Q-PY-2):** list comprehensions and simple `lambda` expressions (for example `sorted(x, key=lambda p: p[1])`); dict and set comprehensions are not.
+Generators and `yield`, decorators, `async`/`await`, `match`/`case` (PY-12 note), the walrus operator `:=`, `nonlocal`, `*args`/`**kwargs`, multiple inheritance, operator overloading beyond `__str__`/`__repr__`/`__eq__`/`__hash__`/`__len__`/`__lt__`/`__le__`/`__gt__`/`__ge__` (PY-19), any module not in 4.4, `eval`/`exec`. **Supported after all (Q-PY-2):** list comprehensions and simple `lambda` expressions (for example `sorted(x, key=lambda p: p[1])`); dict and set comprehensions are not.
 
 ### 4.6 What the exam boards' Python looks like (research)
 
