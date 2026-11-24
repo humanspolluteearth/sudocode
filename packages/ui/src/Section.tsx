@@ -2,20 +2,22 @@
 // Enter or Space). Whether each section is open is remembered in this browser only, as a convenience.
 import { useState, type ReactNode } from "react";
 
-const KEY = "sudocode.collapsed";
+const KEY = "sudocode.sections";
 
-function loadCollapsed(): readonly string[] {
+/** Which sections the student has opened (true) or folded (false); a section not in here uses its default. */
+function loadOpen(): Record<string, boolean> {
   try {
-    const parsed: unknown = JSON.parse(globalThis.localStorage.getItem(KEY) ?? "[]");
-    return Array.isArray(parsed) ? parsed.filter((x): x is string => typeof x === "string") : [];
+    const parsed: unknown = JSON.parse(globalThis.localStorage.getItem(KEY) ?? "{}");
+    if (typeof parsed !== "object" || parsed === null) return {};
+    return Object.fromEntries(Object.entries(parsed).filter(([, v]) => typeof v === "boolean"));
   } catch {
-    return [];
+    return {};
   }
 }
 
-function saveCollapsed(ids: readonly string[]): void {
+function saveOpen(id: string, open: boolean): void {
   try {
-    globalThis.localStorage.setItem(KEY, JSON.stringify(ids));
+    globalThis.localStorage.setItem(KEY, JSON.stringify({ ...loadOpen(), [id]: open }));
   } catch {
     // Storage can be blocked (private window); the section still works for this visit.
   }
@@ -27,17 +29,17 @@ export interface SectionProps {
   title: string;
   /** Small muted text after the title (a count, a line number). */
   count?: string | undefined;
+  /** Whether it starts open (default true); a choice the student made earlier wins. */
+  defaultOpen?: boolean;
   className?: string;
   children: ReactNode;
 }
 
-export function Section({ id, title, count, className = "", children }: SectionProps) {
-  const [closed, setClosed] = useState(() => loadCollapsed().includes(id));
+export function Section({ id, title, count, defaultOpen = true, className = "", children }: SectionProps) {
+  const [closed, setClosed] = useState(() => !(loadOpen()[id] ?? defaultOpen));
   const toggle = () => {
-    const next = !closed;
-    setClosed(next);
-    const rest = loadCollapsed().filter((x) => x !== id);
-    saveCollapsed(next ? [...rest, id] : rest);
+    setClosed(!closed);
+    saveOpen(id, closed);
   };
   return (
     <section aria-label={title} className={`sc-section ${closed ? "closed" : ""} ${className}`}>

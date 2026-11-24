@@ -283,6 +283,8 @@ describe("MISC Side panel", () => {
     for (const name of ["Status", "Problems", "Variables", "Breakpoints"]) {
       await expect.element(screen.getByRole("region", { name })).toBeVisible();
     }
+    // Breakpoints starts folded; opening it shows its text.
+    await screen.getByRole("button", { name: /Breakpoints/ }).click();
     await expect.element(screen.getByText("No breakpoints.")).toBeVisible();
     await expect.element(screen.getByRole("button", { name: "Debugger" })).toHaveAttribute("aria-pressed", "true");
   });
@@ -418,14 +420,29 @@ describe("MISC Step with no run going", () => {
 });
 
 describe("MISC debugger sections and resizing", () => {
+  it("MISC Status, Problems and Variables start open; the others start folded", async () => {
+    globalThis.localStorage.clear();
+    const screen = await render(<App />);
+    for (const name of ["Status", "Problems", "Variables"]) {
+      await expect
+        .element(screen.getByRole("button", { name: new RegExp(name) }))
+        .toHaveAttribute("aria-expanded", "true");
+    }
+    for (const name of ["Breakpoints", "Call stack", "Trace table"]) {
+      await expect
+        .element(screen.getByRole("button", { name: new RegExp(name) }))
+        .toHaveAttribute("aria-expanded", "false");
+    }
+  });
+
   it("MISC a debugger section folds away and opens again from its title", async () => {
     globalThis.localStorage.clear();
     const screen = await render(<App />);
-    const title = screen.getByRole("button", { name: /Trace table/ });
+    const title = screen.getByRole("button", { name: /Variables/ });
     await expect.element(title).toHaveAttribute("aria-expanded", "true");
     await title.click();
     await expect.element(title).toHaveAttribute("aria-expanded", "false");
-    expect(screen.container.querySelector(".sc-trace-wrap, .sc-trace-panel .sc-empty")).toBeNull();
+    expect(screen.container.querySelector(".sc-vars-panel .sc-section-body")).toBeNull();
     await title.click();
     await expect.element(title).toHaveAttribute("aria-expanded", "true");
   });

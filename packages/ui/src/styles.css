@@ -365,8 +365,8 @@ button.sc-section-head:hover {
 }
 
 .sc-problems {
-  flex: 1 1 0;
-  min-height: 0;
+  flex: none;
+  max-height: 40vh;
   overflow: auto;
   margin: 0;
   padding: 0;

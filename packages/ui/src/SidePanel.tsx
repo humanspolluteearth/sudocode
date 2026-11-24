@@ -103,15 +103,21 @@ export function SidePanel({
           >
             <Variables frame={run.paused?.stack[0] ?? null} previous={run.previous} />
           </Section>
-          <Section id="breakpoints" title="Breakpoints" count={String(breakpoints.length)} className="sc-bps-panel">
+          <Section
+            id="breakpoints"
+            defaultOpen={false}
+            title="Breakpoints"
+            count={String(breakpoints.length)}
+            className="sc-bps-panel"
+          >
             <div className="sc-pad">
               {breakpoints.length === 0 ? "No breakpoints." : breakpoints.map((n) => `line ${String(n)}`).join(", ")}
             </div>
           </Section>
-          <Section id="callstack" title="Call stack" className="sc-stack-panel">
+          <Section id="callstack" defaultOpen={false} title="Call stack" className="sc-stack-panel">
             <CallStack stack={run.paused?.stack ?? []} />
           </Section>
-          <Section id="trace" title="Trace table" className="sc-trace-panel">
+          <Section id="trace" defaultOpen={false} title="Trace table" className="sc-trace-panel">
             <TraceTable rows={run.trace} recorded={run.traceRecorded} />
           </Section>
         </div>
