@@ -43,13 +43,13 @@ describe("MISC Toolbar", () => {
     expect(onRun).toHaveBeenCalledOnce();
     await screen.rerender(toolbar({ running: true, onRun }));
     await expect.element(screen.getByRole("button", { name: "Run" })).toBeDisabled();
-    await expect.element(screen.getByRole("button", { name: "Stop" })).toBeEnabled();
+    await expect.element(screen.getByRole("button", { name: "Reset" })).toBeEnabled();
   });
 
   it("MISC choosing an example calls onExample with that example", async () => {
     const onExample = vi.fn();
     const screen = await render(toolbar({ onExample }));
-    await screen.getByRole("combobox", { name: /Examples/ }).selectOptions(EDEXCEL_EXAMPLES[0]?.id ?? "");
+    await screen.getByRole("combobox", { name: /Example/ }).selectOptions(EDEXCEL_EXAMPLES[0]?.id ?? "");
     expect(onExample).toHaveBeenCalledWith(EDEXCEL_EXAMPLES[0]);
   });
 

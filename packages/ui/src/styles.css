@@ -185,10 +185,24 @@ body {
   margin: 0 6px;
 }
 .sc-toolbar select {
-  height: 26px;
+  height: 22px;
+  padding: 0 4px;
   border: 1px solid var(--field);
   border-radius: 2px;
   background: var(--bg);
+}
+.sc-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+  color: var(--fg4);
+}
+.sc-field-first {
+  margin-left: auto;
+}
+.sc-theme {
+  margin-left: 6px;
 }
 
 .sc-main {

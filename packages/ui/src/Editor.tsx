@@ -7,7 +7,7 @@ import { Compartment, EditorState } from "@codemirror/state";
 import { EditorView, drawSelection, highlightActiveLine, keymap, lineNumbers } from "@codemirror/view";
 import type { Diagnostic } from "@sudocode/core";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import { breakpointField, breakpointLines, debugGutter, setPausedLine } from "./debug-gutter.ts";
+import { breakpointField, breakpointLines, debugGutter, setPausedLine, toggleBreakpoint } from "./debug-gutter.ts";
 import { toCodeMirrorDiagnostics } from "./diagnostics-bridge.ts";
 import { cieLanguage } from "./cie-language.ts";
 import { pythonLanguage } from "./python-language.ts";
@@ -16,6 +16,8 @@ import { edexcelHighlight, edexcelLanguage } from "./edexcel-language.ts";
 export interface EditorHandle {
   /** Moves the cursor to a 1-based line and column and focuses the editor (used by the Problems list). */
   goTo: (line: number, column: number) => void;
+  /** Removes every breakpoint (the toolbar's "Clear breakpoints"). */
+  clearBreakpoints: () => void;
 }
 
 export interface EditorProps {
@@ -144,6 +146,12 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
   }, [pausedLine]);
 
   useImperativeHandle(ref, () => ({
+    clearBreakpoints() {
+      const v = view.current;
+      if (v === null) return;
+      // Toggling a line that has a breakpoint removes it; the update listener reports the new (empty) list.
+      v.dispatch({ effects: breakpointLines(v.state).map((line) => toggleBreakpoint.of(line)) });
+    },
     goTo(line, column) {
       const v = view.current;
       if (v === null) return;

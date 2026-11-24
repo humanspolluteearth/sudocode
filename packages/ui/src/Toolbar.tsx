@@ -1,6 +1,6 @@
 // The toolbar: Run, the debugger buttons (Continue, Step over, Pause), Stop, zoom and theme. Buttons are real <button>s with visible text for screen readers.
 import type { Example } from "@sudocode/core";
-import { parseTheme, type PseudocodeLanguage } from "./preferences.ts";
+import type { PseudocodeLanguage } from "./preferences.ts";
 export type ThemeChoice = "system" | "light" | "dark";
 
 export const ZOOM_MIN = 100;
@@ -20,6 +20,8 @@ export interface ToolbarProps {
   onStepInto?: () => void;
   onStepOut?: () => void;
   onPause?: () => void;
+  /** Removes every breakpoint. */
+  onClearBreakpoints?: () => void;
   zoom: number;
   onZoom: (zoom: number) => void;
   theme: ThemeChoice;
@@ -30,89 +32,112 @@ export interface ToolbarProps {
   onExample: (example: Example) => void;
 }
 
+const Icon = ({ children }: { children: React.ReactNode }) => (
+  <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+    {children}
+  </svg>
+);
+const stroke = { fill: "none", stroke: "currentColor", strokeWidth: 1.4 } as const;
+const NEXT_THEME = { system: "light", light: "dark", dark: "system" } as const;
+const THEME_NAME = { system: "System", light: "Light", dark: "Dark" } as const;
+const SOON = "Not available yet";
+
+/**
+ * Layout from the design: Run, Step, Continue, Reset | Clear breakpoints | Save, Convert to, then the Language and
+ * Example selects and Theme on the right. Step into, Step out and Pause only appear while a program is running
+ * (they have nothing to do otherwise); Save and Convert are shown disabled until they exist. Zoom is also in the
+ * View menu.
+ */
 export function Toolbar(p: ToolbarProps) {
+  const paused = p.paused === true;
   return (
     <div className="sc-toolbar" role="toolbar" aria-label="Run controls">
       <button type="button" className="sc-tb" onClick={p.onRun} disabled={p.running || !p.canRun} title="Run (F5)">
-        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+        <Icon>
           <path d="M4 2.5v11l9-5.5z" style={{ fill: p.running || !p.canRun ? "currentColor" : "var(--green)" }} />
-        </svg>
+        </Icon>
         Run
-      </button>
-      <button type="button" className="sc-tb" onClick={p.onStop} disabled={!p.running} title="Stop (Shift+F5)">
-        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-          <rect x="3.5" y="3.5" width="9" height="9" style={{ fill: p.running ? "var(--red)" : "currentColor" }} />
-        </svg>
-        Stop
-      </button>
-      <span className="sc-sep" aria-hidden="true" />
-      <button type="button" className="sc-tb" onClick={p.onContinue} disabled={p.paused !== true} title="Continue (F8)">
-        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-          <rect x="2.5" y="3" width="2" height="10" style={{ fill: "currentColor" }} />
-          <path d="M6.5 3v10l7-5z" style={{ fill: p.paused === true ? "var(--green)" : "currentColor" }} />
-        </svg>
-        Continue
       </button>
       <button
         type="button"
         className="sc-tb"
         onClick={p.onStepOver}
-        disabled={p.paused !== true}
+        disabled={!paused}
         title="Step over (F10)"
+        aria-label="Step over"
       >
-        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M2 9a6 6 0 0 1 11-3" style={{ fill: "none", stroke: "currentColor", strokeWidth: 1.5 }} />
+        <Icon>
+          <path d="M2 9a6 6 0 0 1 11-3" style={stroke} />
           <path d="M14 3v4h-4z" style={{ fill: "currentColor" }} />
           <circle cx="8" cy="13" r="1.6" style={{ fill: "currentColor" }} />
-        </svg>
-        Step over
+        </Icon>
+        Step
       </button>
-      <button
-        type="button"
-        className="sc-tb"
-        onClick={p.onStepInto}
-        disabled={p.paused !== true}
-        title="Step into (F11)"
-      >
-        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-          <path
-            d="M8 2v9M4.5 7.5 8 11l3.5-3.5M3 14h10"
-            style={{ fill: "none", stroke: "currentColor", strokeWidth: 1.5 }}
-          />
-        </svg>
-        Step into
+      <button type="button" className="sc-tb" onClick={p.onContinue} disabled={!paused} title="Continue (F8)">
+        <Icon>
+          <rect x="2.5" y="3" width="2" height="10" style={{ fill: "currentColor" }} />
+          <path d="M6.5 3v10l7-5z" style={{ fill: paused ? "var(--green)" : "currentColor" }} />
+        </Icon>
+        Continue
       </button>
-      <button
-        type="button"
-        className="sc-tb"
-        onClick={p.onStepOut}
-        disabled={p.paused !== true}
-        title="Step out (Shift+F11)"
-      >
-        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-          <path
-            d="M8 11V2M4.5 5.5 8 2l3.5 3.5M3 14h10"
-            style={{ fill: "none", stroke: "currentColor", strokeWidth: 1.5 }}
-          />
-        </svg>
-        Step out
+      <button type="button" className="sc-tb" onClick={p.onStop} disabled={!p.running} title="Reset (Shift+F5)">
+        <Icon>
+          <rect x="3.5" y="3.5" width="9" height="9" style={{ fill: p.running ? "var(--red)" : "currentColor" }} />
+        </Icon>
+        Reset
       </button>
-      <button
-        type="button"
-        className="sc-tb"
-        onClick={p.onPause}
-        disabled={!p.running || p.paused === true}
-        title="Pause"
-      >
-        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-          <rect x="4" y="3" width="2.5" height="10" style={{ fill: "currentColor" }} />
-          <rect x="9.5" y="3" width="2.5" height="10" style={{ fill: "currentColor" }} />
-        </svg>
-        Pause
+      {p.running && (
+        <>
+          <button type="button" className="sc-tb" onClick={p.onStepInto} disabled={!paused} title="Step into (F11)">
+            <Icon>
+              <path d="M8 2v9M4.5 7.5 8 11l3.5-3.5M3 14h10" style={stroke} />
+            </Icon>
+            Step into
+          </button>
+          <button type="button" className="sc-tb" onClick={p.onStepOut} disabled={!paused} title="Step out (Shift+F11)">
+            <Icon>
+              <path d="M8 11V2M4.5 5.5 8 2l3.5 3.5M3 14h10" style={stroke} />
+            </Icon>
+            Step out
+          </button>
+          <button type="button" className="sc-tb" onClick={p.onPause} disabled={paused} title="Pause">
+            <Icon>
+              <rect x="4" y="3" width="2.5" height="10" style={{ fill: "currentColor" }} />
+              <rect x="9.5" y="3" width="2.5" height="10" style={{ fill: "currentColor" }} />
+            </Icon>
+            Pause
+          </button>
+        </>
+      )}
+      <span className="sc-sep" aria-hidden="true" />
+      <button type="button" className="sc-tb" onClick={p.onClearBreakpoints} title="Remove all breakpoints">
+        <Icon>
+          <circle cx="8" cy="8" r="4.5" style={{ fill: "none", stroke: "var(--red)", strokeWidth: 1.4 }} />
+          <path d="M3 13L13 3" style={stroke} />
+        </Icon>
+        Clear breakpoints
       </button>
       <span className="sc-sep" aria-hidden="true" />
+      <button type="button" className="sc-tb" disabled title={SOON}>
+        <Icon>
+          <path d="M2.5 2.5h9l2 2v9h-11zM5 2.5v3.5h5V2.5M4.5 13.5V9h7v4.5" style={{ ...stroke, strokeWidth: 1.3 }} />
+        </Icon>
+        Save
+      </button>
+      <button type="button" className="sc-tb" disabled title={SOON} aria-haspopup="true">
+        <Icon>
+          <path
+            d="M2.5 5h9.5M9.5 2.5 12 5 9.5 7.5M13.5 11H4M6.5 8.5 4 11l2.5 2.5"
+            style={{ ...stroke, strokeWidth: 1.3 }}
+          />
+        </Icon>
+        Convert to
+        <svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true">
+          <path d="M2 3.5l3 3 3-3" style={{ ...stroke, strokeWidth: 1.3 }} />
+        </svg>
+      </button>
       {p.language !== undefined && (
-        <label className="sc-field">
+        <label className="sc-field sc-field-first">
           Language
           <select
             value={p.language}
@@ -128,7 +153,7 @@ export function Toolbar(p: ToolbarProps) {
         </label>
       )}
       <label className="sc-field">
-        Examples
+        Example
         <select
           value=""
           onChange={(e) => {
@@ -136,7 +161,7 @@ export function Toolbar(p: ToolbarProps) {
             if (picked !== undefined) p.onExample(picked);
           }}
         >
-          <option value="">Choose…</option>
+          <option value="">(untitled)</option>
           {p.examples.map((x) => (
             <option key={x.id} value={x.id}>
               {x.name}
@@ -144,6 +169,20 @@ export function Toolbar(p: ToolbarProps) {
           ))}
         </select>
       </label>
+      <button
+        type="button"
+        className="sc-tb sc-theme"
+        onClick={() => {
+          p.onTheme(NEXT_THEME[p.theme]);
+        }}
+        title={`Theme: ${THEME_NAME[p.theme]} (click for ${THEME_NAME[NEXT_THEME[p.theme]]})`}
+      >
+        <Icon>
+          <circle cx="8" cy="8" r="5.5" style={{ ...stroke, strokeWidth: 1.3 }} />
+          <path d="M8 2.5a5.5 5.5 0 0 1 0 11z" style={{ fill: "currentColor" }} />
+        </Icon>
+        Theme
+      </button>
       <span className="sc-sep" aria-hidden="true" />
       <button
         type="button"
@@ -170,20 +209,6 @@ export function Toolbar(p: ToolbarProps) {
       >
         A+
       </button>
-      <span className="sc-sep" aria-hidden="true" />
-      <label>
-        <span style={{ marginRight: 4 }}>Theme</span>
-        <select
-          value={p.theme}
-          onChange={(e) => {
-            p.onTheme(parseTheme(e.target.value));
-          }}
-        >
-          <option value="system">System</option>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
-      </label>
     </div>
   );
 }

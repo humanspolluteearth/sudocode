@@ -215,6 +215,7 @@ export function App({ workers }: AppProps) {
           resume("stepOut");
         }}
         onPause={() => send({ type: "pause" })}
+        onClearBreakpoints={() => editor.current?.clearBreakpoints()}
         zoom={prefs.zoom}
         onZoom={(zoom) => {
           update({ ...prefs, zoom });
