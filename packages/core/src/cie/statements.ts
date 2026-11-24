@@ -33,6 +33,8 @@ const OWNER: Readonly<Record<string, string>> = {
   ENDCASE: "CASE",
   ENDPROCEDURE: "PROCEDURE",
   ENDFUNCTION: "FUNCTION",
+  ENDTRY: "TRY",
+  EXCEPT: "TRY",
 };
 
 export interface BodyResult {
@@ -115,6 +117,8 @@ export class Statements {
       return c.fail("a statement", "Statements start with a keyword such as OUTPUT or IF, or a variable name.");
     const upper = first.text.toUpperCase();
     switch (upper) {
+      case "TRY":
+        return this.tryStatement(first);
       case "DECLARE":
         return this.declare(first);
       case "CONSTANT":
@@ -151,7 +155,7 @@ export class Statements {
       case "READFILE":
       case "WRITEFILE":
       case "CLOSEFILE":
-      case "TRY":
+      case "FINALLY": // CIE-101: only one EXCEPT clause exists; FINALLY is not supported
       case "SEEK":
       case "GETRECORD":
       case "PUTRECORD":
@@ -479,6 +483,22 @@ export class Statements {
     if (value.ty.kind !== "BOOLEAN" && !isUnknown(value.ty)) {
       this.c.report("E-CHK-CONDITION-TYPE", value.span, { type: withArticle(value.ty), name: this.c.text(value.span) });
     }
+  }
+
+  /** TRY ... EXCEPT ... ENDTRY (CIE-100): one handler catches every runtime error. */
+  private tryStatement(first: Token): Ir[] {
+    const c = this.c;
+    c.next();
+    c.warnCase(first, "TRY");
+    c.endStatement();
+    const body = this.block(first, "TRY", ["EXCEPT", "ENDTRY"], "ENDTRY");
+    let handler: Ir[] = [];
+    if (body.end === "EXCEPT") {
+      c.endLine();
+      handler = this.block(first, "TRY", ["ENDTRY"], "ENDTRY").stmts;
+    }
+    c.endStatement();
+    return [{ kind: "tryCatch", body: body.stmts, handler, span: c.spanFrom(first) }];
   }
 
   private ifStatement(first: Token): Ir[] {
