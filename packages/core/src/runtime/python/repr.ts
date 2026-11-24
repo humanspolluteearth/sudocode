@@ -143,7 +143,7 @@ export function pyStr(v: Value, setItems: Orderer, inner = false): string {
     case "func":
       return `<function ${v.name}>`;
     case "builtin":
-      return `<built-in function ${v.name}>`;
+      return v.name === "NotImplemented" ? v.name : `<built-in function ${v.name}>`;
     case "type":
       return `<class '${v.name}'>`;
     case "exc":

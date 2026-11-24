@@ -10,7 +10,7 @@ import { newDict, newSet } from "./methods-coll.ts";
 import { asBig, floatToInt, parseFloatText, parseIntText, toFloat } from "./numbers.ts";
 import { pyStr, pyTypeName } from "./repr.ts";
 import { iterate, repr, truthy } from "./seq.ts";
-import { instantiate, prepare } from "./class-calls.ts";
+import { instantiate, prepare, truth } from "./class-calls.ts";
 
 export const TYPE_NAMES = new Set(["int", "float", "str", "bool", "list", "tuple", "dict", "set", "range", "object"]);
 
@@ -77,6 +77,7 @@ export function* callValue(fn: Value, args: Value[], kwargs: Map<string, Value>,
       return yield* callBuiltin(fn.name, args, kwargs, env, span);
     case "type":
       if (MOMENT_TYPES.has(fn.name)) return constructMoment(fn.name, args, kwargs, span);
+      if (fn.name === "bool" && args[0]?.kind === "instance") return bool(yield* truth(args[0], env, span));
       if (fn.name === "str" && args[0] !== undefined) yield* prepare(args[0], env, span);
       return construct(fn.name, args, kwargs, span);
     case "class":
