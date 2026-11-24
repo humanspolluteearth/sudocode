@@ -697,7 +697,8 @@ body {
   display: flex;
   align-items: stretch;
   min-width: 0;
-  overflow-x: auto;
+  /* No scrollbars: the tabs' -1px margin made a vertical one, and one tab at a time fits. */
+  overflow: hidden;
 }
 .sc-tab {
   display: flex;

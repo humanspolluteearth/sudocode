@@ -50,6 +50,10 @@ const theme = EditorView.theme({
     lineHeight: "calc(19px * var(--zoom, 1))",
   },
   ".cm-content": { fontVariantLigatures: "none" },
+  // Selected text is tinted with the link colour in both themes (CodeMirror's default is a pale grey/white).
+  "&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground": {
+    background: "color-mix(in srgb, var(--link) 35%, transparent)",
+  },
   ".cm-line": { padding: "0 12px" },
   ".cm-lineNumbers": { flex: "1 1 auto" },
   ".cm-lineNumbers .cm-gutterElement": { padding: "0 8px 0 5px", fontSize: "calc(11px * var(--zoom, 1))" },

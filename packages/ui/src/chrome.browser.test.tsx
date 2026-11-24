@@ -357,3 +357,27 @@ describe("MISC note banner", () => {
     await expect.element(screen.getByText("gone")).toBeVisible();
   });
 });
+
+describe("MISC editor selection and tab strip", () => {
+  it("MISC selected text is not drawn on a white background", async () => {
+    const screen = await render(
+      <div className="sc-root dark">
+        <Editor value={"hello"} onChange={() => undefined} diagnostics={[]} />
+      </div>,
+    );
+    await screen.getByRole("textbox").click();
+    await userEvent.keyboard("{Control>}a{/Control}");
+    const layer = screen.container.querySelector(".cm-selectionBackground");
+    expect(layer).not.toBeNull();
+    const bg = getComputedStyle(layer as Element).backgroundColor;
+    expect(bg).not.toBe("rgb(255, 255, 255)");
+    expect(bg).not.toBe("rgba(0, 0, 0, 0)");
+  });
+
+  it("MISC the file tab strip has no scrollbars", async () => {
+    const screen = await render(<FileTabs language="edexcel" name="untitled" source={"a\n"} />);
+    const tabs = screen.container.querySelector(".sc-tabs") as HTMLElement;
+    expect(getComputedStyle(tabs).overflowX).toBe("hidden");
+    expect(getComputedStyle(tabs).overflowY).toBe("hidden");
+  });
+});
