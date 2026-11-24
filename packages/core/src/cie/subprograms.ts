@@ -13,7 +13,7 @@ export function installSubprograms(s: Statements, out: Record<string, Subprogram
 
   const paramType = (): Ty => {
     const t = c.peek();
-    const ty = t.kind === "word" ? SCALAR_TYPES[t.text.toUpperCase()] : undefined;
+    const ty = t.kind === "word" ? (SCALAR_TYPES[t.text.toUpperCase()] ?? env.types.get(t.text)) : undefined;
     if (ty === undefined) return c.fail("a type", "Use INTEGER, REAL, CHAR, STRING or BOOLEAN.");
     c.next();
     return ty;

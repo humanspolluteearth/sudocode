@@ -118,6 +118,7 @@ export class Expressions {
         this.c.report("E-CHK-COMPARE-TYPES", t.span, { left: withArticle(l.ty), right: withArticle(r.ty) });
         return typed({ kind: "fail", code: "E-RUN-INTERNAL", args: {}, span }, UNKNOWN, span);
       }
+      if (l.ty.kind === "ENUM") return enumCompare(bin, infix, t, l, r, span);
       return bin(BOOLEAN);
     }
     switch (infix.op) {
@@ -142,6 +143,11 @@ export class Expressions {
         }
         return bin(INTEGER);
       default: {
+        // CIE-31: `Season + 1` is the next value of the type; `- 1` the one before.
+        if (l.ty.kind === "ENUM" && r.ty.kind === "INTEGER" && (infix.op === "+" || infix.op === "-")) {
+          const by: Ir = infix.op === "+" ? r.ir : { kind: "unary", op: "negate", operand: r.ir, span: t.span };
+          return make(l.ty, { kind: "enumStep", operand: l.ir, by, span: t.span });
+        }
         if (!(isNumber(l.ty) || isUnknown(l.ty)) || !(isNumber(r.ty) || isUnknown(r.ty))) return bad("arithmetic");
         if (infix.op === "/") return bin(REAL);
         const both = l.ty.kind === "INTEGER" && r.ty.kind === "INTEGER";
@@ -267,9 +273,45 @@ export class Expressions {
       this.undeclared(t);
       return typed({ kind: "var", name: t.text, scope: "global", span: t.span }, UNKNOWN, t.span);
     }
+    if (v.literal !== undefined) return typed(v.literal(t.span), v.ty, t.span); // CIE-31: an enumerated value
     const scope = this.env.isLocal(t.text) ? "local" : "global";
     const whole = typed({ kind: "var", name: t.text, scope, span: t.span }, v.ty, t.span, { name: t.text });
-    return this.c.isSymbol("[") ? this.element(t, whole) : whole;
+    return this.fields(t, this.c.isSymbol("[") ? this.element(t, whole) : whole);
+  }
+
+  /**
+   * CIE-30: `.field` after a name or an item, as often as it is written (`Form[2].Name`, `A.Inner.F`). The result's
+   * `path` is the text so far, for messages such as "A.F has no value yet".
+   */
+  fields(t: Token, base: Typed): Typed {
+    const c = this.c;
+    let left = base;
+    let text = this.text(joinSpans(t.span, base.span));
+    while (c.isSymbol(".") && c.peek(1).kind === "word") {
+      c.next();
+      const f = c.next();
+      const span = joinSpans(t.span, f.span);
+      if (isUnknown(left.ty)) {
+        left = typed(left.ir, UNKNOWN, span);
+      } else if (left.ty.kind !== "RECORD") {
+        c.report("E-CHK-NOT-RECORD", f.span, { name: text, type: withArticle(left.ty) });
+        left = typed(left.ir, UNKNOWN, span);
+      } else {
+        const field = left.ty.fields.find((x) => x.name === f.text);
+        if (field === undefined) {
+          c.report("E-CHK-NO-FIELD", f.span, {
+            name: text,
+            field: f.text,
+            fields: left.ty.fields.map((x) => x.name).join(", "),
+          });
+          left = typed(left.ir, UNKNOWN, span);
+        } else {
+          left = typed({ kind: "field", target: left.ir, name: f.text, text, span }, field.ty, span);
+        }
+      }
+      text = `${text}.${f.text}`;
+    }
+    return left;
   }
 
   /**
@@ -277,7 +319,7 @@ export class Expressions {
    * row, the second the item (the runtime has no 2D read of its own). Lower bounds go in `base`, so the IR states
    * where counting starts; a STRING counts from 1 (CIE-25).
    */
-  private element(t: Token, whole: Typed): Typed {
+  element(t: Token, whole: Typed): Typed {
     const { indexes, span } = this.subscripts(t, whole.ty);
     const full = joinSpans(t.span, span);
     if (isUnknown(whole.ty)) return typed(whole.ir, UNKNOWN, full);
@@ -458,4 +500,12 @@ function fitsArg(a: Typed, into: Ty): boolean {
   if (into.kind === "CHAR" && a.ty.kind === "STRING") return a.oneChar;
   if (into.kind === "STRING" && a.ty.kind === "CHAR") return true;
   return a.ty.kind === into.kind;
+}
+
+/** CIE-31: values of an enumerated type compare by their place in the list, so both sides become INTEGERs first. */
+function enumCompare(bin: (ty: Ty) => Typed, infix: Infix, t: Token, l: Typed, r: Typed, span: Span): Typed {
+  const place = (e: Typed): Ir => ({ kind: "enumOrdinal", operand: e.ir, span: e.span });
+  const op = infix.ir;
+  if (op === "andThen" || op === "orElse") return bin(BOOLEAN);
+  return typed({ kind: "binary", op, symbol: infix.op, left: place(l), right: place(r), span: t.span }, BOOLEAN, span);
 }
