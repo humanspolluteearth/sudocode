@@ -52,6 +52,13 @@ export const noteMessages: Catalogue = {
       fix: "Write {name}",
     },
   },
+  "W-CIE-ELSE-IF": {
+    spec: ["CIE-51"],
+    default: {
+      message: "ELSE IF continues the same IF, so one ENDIF closes the whole chain",
+      hint: "Write only one ENDIF at the end, after the last ELSE.",
+    },
+  },
   "I-EDX-ARRAY-GROWS": {
     spec: ["EDX-27", "Q-EDX-1"],
     default: {

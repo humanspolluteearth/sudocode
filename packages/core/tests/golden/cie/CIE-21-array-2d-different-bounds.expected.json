@@ -1,0 +1,12 @@
+{
+  "spec": ["CIE-21", "CIE-20"],
+  "language": "cie",
+  "expect": {
+    "stdout": "16\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Each dimension has its own bounds (24 Nov 2026 answer). 7 + 9 = 16."
+}

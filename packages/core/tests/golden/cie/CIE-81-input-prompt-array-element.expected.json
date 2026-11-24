@@ -1,0 +1,13 @@
+{
+  "spec": ["CIE-81", "CIE-80"],
+  "language": "cie",
+  "inputs": ["5"],
+  "expect": {
+    "stdout": "Value? 6\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q46. 5 + 1 = 6, worked by hand."
+}

@@ -334,4 +334,11 @@ export const checkerMessages: Catalogue = {
       hint: "Pass a variable, an array item or a record field, not a value.",
     },
   },
+  "E-CHK-FILE-TYPE": {
+    spec: ["CIE-10"],
+    default: {
+      message: "FILE isn't a type in Sudocode",
+      hint: 'Name the file with a STRING instead, e.g. OPENFILE "data.txt" FOR READ.',
+    },
+  },
 };

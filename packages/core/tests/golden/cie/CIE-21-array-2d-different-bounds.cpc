@@ -1,0 +1,4 @@
+DECLARE B : ARRAY[1:3, 0:2] OF INTEGER
+B[3, 0] <- 7
+B[1, 2] <- 9
+OUTPUT B[3, 0] + B[1, 2]

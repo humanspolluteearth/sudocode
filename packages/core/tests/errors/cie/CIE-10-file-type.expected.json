@@ -1,0 +1,20 @@
+{
+  "spec": ["CIE-10"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-CHK-FILE-TYPE",
+        "line": 1,
+        "column": 15,
+        "message": "FILE isn't a type in Sudocode",
+        "hint": "Name the file with a STRING instead, e.g. OPENFILE \"data.txt\" FOR READ."
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "24 Nov 2026 answer (CIE-10)."
+}

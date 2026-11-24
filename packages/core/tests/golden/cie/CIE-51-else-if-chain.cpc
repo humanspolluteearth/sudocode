@@ -1,0 +1,9 @@
+DECLARE N : INTEGER
+N <- 5
+IF N < 3 THEN
+  OUTPUT "small"
+ELSE IF N < 10 THEN
+  OUTPUT "medium"
+ELSE
+  OUTPUT "large"
+ENDIF
