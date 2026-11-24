@@ -44,7 +44,7 @@ export function FileTabs({ tabs, activeId, onSwitch, onClose, onNew }: FileTabsP
                   <span className="sc-badge">{BADGES[tab.language]}</span>
                   {file}
                   {isDirty(tab) && (
-                    <span className="sc-dot" role="img" aria-label="unsaved changes" title="Unsaved changes">
+                    <span className="sc-unsaved" role="img" aria-label="unsaved changes" title="Unsaved changes">
                       ●
                     </span>
                   )}

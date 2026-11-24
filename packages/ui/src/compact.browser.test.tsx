@@ -114,6 +114,18 @@ describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc
     expect(await axeViolations(screen.container)).toEqual([]);
   });
 
+  it("MISC on a phone an unsaved tab adds no problem dot: Debug holds the only one", async () => {
+    await page.viewport(390, 800);
+    const screen = await render(<App />);
+    await screen.getByRole("textbox", { name: "Program editor" }).click();
+    await userEvent.keyboard("x");
+    await expect.element(screen.getByRole("img", { name: "unsaved changes" })).toBeVisible();
+    const dot = screen.getByRole("img", { name: "unsaved changes" }).element();
+    expect(getComputedStyle(dot).position).not.toBe("absolute");
+    expect(document.querySelectorAll(".sc-dot")).toHaveLength(0);
+    expect(await axeViolations(screen.container)).toEqual([]);
+  });
+
   for (const width of [834, 390]) {
     it(`MISC axe finds nothing at ${String(width)}px in any view`, async () => {
       await page.viewport(width, 800);

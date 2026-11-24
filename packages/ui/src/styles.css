@@ -948,7 +948,7 @@ button.sc-section-head:hover {
   font-size: 12px;
   cursor: pointer;
 }
-.sc-dot {
+.sc-unsaved {
   margin-left: 6px;
   font-size: 8px;
   color: var(--muted2);
