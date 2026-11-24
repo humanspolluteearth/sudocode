@@ -126,6 +126,16 @@ function* statement(s: Stmt, env: Env): Run<Returned | undefined> {
       const yes = asBoolean(yield* evaluateWithCalls(s.condition, env));
       return yield* block(yes ? s.then : s.else, env);
     }
+    case "tryCatch": {
+      // Exception handling: the driver re-throws a failing call's RunError into this generator, so a JS
+      // try/catch around the delegated `yield*` catches errors from the body and from subprograms it calls.
+      try {
+        return yield* block(s.body, env);
+      } catch (e) {
+        if (!(e instanceof RunError)) throw e;
+        return yield* block(s.handler, env);
+      }
+    }
     case "while":
       while (asBoolean(yield* evaluateWithCalls(s.condition, env))) {
         const done = yield* block(s.body, env);

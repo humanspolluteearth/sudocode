@@ -165,6 +165,8 @@ export type Stmt =
   /** Writes one line to a virtual file; the first write of a run replaces the old contents (EDX-83). */
   | { kind: "fileWrite"; file: string; value: Expr; span: Span }
   | { kind: "if"; condition: Expr; then: Stmt[]; else: Stmt[]; span: Span }
+  /** Runs `body`; a runtime error inside it (even in a called subprogram) runs `handler` instead (CIE-100). */
+  | { kind: "tryCatch"; body: Stmt[]; handler: Stmt[]; span: Span }
   /** Tests before each pass (EDX-50). */
   | { kind: "while"; condition: Expr; body: Stmt[]; span: Span }
   /** Runs at least once, then stops when the condition is TRUE (EDX-51). */
