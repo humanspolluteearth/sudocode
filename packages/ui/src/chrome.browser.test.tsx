@@ -1,5 +1,5 @@
 import { App } from "./App.tsx";
-import { createRef } from "react";
+import { createRef, useState } from "react";
 import { userEvent } from "vitest/browser";
 import { Editor, type EditorHandle } from "./Editor.tsx";
 import { describe, expect, it, vi } from "vitest";
@@ -7,6 +7,7 @@ import { render } from "vitest-browser-react";
 import { axeViolations } from "./axe.ts";
 import { FileTabs, lineCount } from "./FileTabs.tsx";
 import { MenuBar } from "./MenuBar.tsx";
+import { NoteBanner, type Note } from "./NoteBanner.tsx";
 import { Toolbar } from "./Toolbar.tsx";
 import { buildMenus, type MenuActions } from "./menu-model.ts";
 
@@ -27,7 +28,76 @@ const actions = (over: Partial<MenuActions> = {}): MenuActions => ({
   onZoom: () => undefined,
   theme: "system",
   onTheme: () => undefined,
+  sideTab: "debugger",
+  onSideTab: () => undefined,
+  onClearConsole: () => undefined,
+  breakpointCount: 0,
+  onClearBreakpoints: () => undefined,
   ...over,
+});
+
+describe("MISC view and run menu entries", () => {
+  const open = async (menu: string, over: Partial<MenuActions> = {}) => {
+    const screen = await render(<MenuBar menus={buildMenus(actions(over))} />);
+    await screen.getByRole("menuitem", { name: menu, exact: true }).click();
+    return screen;
+  };
+
+  it("MISC View > Quick reference and Debugger switch the side tab", async () => {
+    const onSideTab = vi.fn();
+    const screen = await open("View", { onSideTab });
+    await screen.getByRole("menuitemradio", { name: /Quick reference/ }).click();
+    expect(onSideTab).toHaveBeenCalledWith("reference");
+    await screen.getByRole("menuitem", { name: "View", exact: true }).click();
+    await screen.getByRole("menuitemradio", { name: /Debugger/ }).click();
+    expect(onSideTab).toHaveBeenCalledWith("debugger");
+  });
+
+  it("MISC View > Clear console calls onClearConsole", async () => {
+    const onClearConsole = vi.fn();
+    const screen = await open("View", { onClearConsole });
+    await screen.getByRole("menuitem", { name: /Clear console/ }).click();
+    expect(onClearConsole).toHaveBeenCalledOnce();
+  });
+
+  it("MISC View zoom presets set 125 and Actual size sets 100 (disabled at 100)", async () => {
+    const onZoom = vi.fn();
+    const screen = await open("View", { onZoom, zoom: 110 });
+    await screen.getByRole("menuitemradio", { name: /Zoom 125%/ }).click();
+    expect(onZoom).toHaveBeenLastCalledWith(125);
+    await screen.getByRole("menuitem", { name: "View", exact: true }).click();
+    await screen.getByRole("menuitem", { name: /Actual size/ }).click();
+    expect(onZoom).toHaveBeenLastCalledWith(100);
+  });
+
+  it("MISC View Zoom in follows the design ladder (125 to 130)", async () => {
+    const onZoom = vi.fn();
+    const screen = await open("View", { onZoom, zoom: 125 });
+    await screen.getByRole("menuitem", { name: /^Zoom in/ }).click();
+    expect(onZoom).toHaveBeenCalledWith(130);
+  });
+
+  it("MISC View > Match system theme sets the system theme", async () => {
+    const onTheme = vi.fn();
+    const screen = await open("View", { onTheme, theme: "dark" });
+    await screen.getByRole("menuitemradio", { name: /Match system theme/ }).click();
+    expect(onTheme).toHaveBeenCalledWith("system");
+  });
+
+  it("MISC Run > Clear all breakpoints is disabled with none and works with some", async () => {
+    const onClearBreakpoints = vi.fn();
+    const none = await open("Run", { onClearBreakpoints });
+    await expect.element(none.getByRole("menuitem", { name: /Clear all breakpoints/ })).toBeDisabled();
+    await none.unmount();
+    const some = await open("Run", { onClearBreakpoints, breakpointCount: 2 });
+    await some.getByRole("menuitem", { name: /Clear all breakpoints/ }).click();
+    expect(onClearBreakpoints).toHaveBeenCalledOnce();
+  });
+
+  it("MISC the open View menu has no axe violations", async () => {
+    const screen = await open("View");
+    expect(await axeViolations(screen.container)).toEqual([]);
+  });
 });
 
 describe("MISC menu bar", () => {
@@ -70,7 +140,7 @@ describe("MISC menu bar", () => {
     const onTheme = vi.fn();
     const screen = await render(<MenuBar menus={buildMenus(actions({ onZoom, onTheme }))} />);
     await screen.getByRole("menuitem", { name: "View", exact: true }).click();
-    await screen.getByRole("menuitem", { name: "Zoom in" }).click();
+    await screen.getByRole("menuitem", { name: /^Zoom in/ }).click();
     expect(onZoom).toHaveBeenCalledWith(110);
     await screen.getByRole("menuitem", { name: "View", exact: true }).click();
     await screen.getByRole("menuitemradio", { name: "Theme: Dark" }).click();
@@ -185,6 +255,24 @@ describe("MISC Default program", () => {
   });
 });
 
+describe("MISC zoom shortcuts", () => {
+  it("MISC Ctrl+= and Ctrl+- move along the ladder and Ctrl+0 returns to 100", async () => {
+    localStorage.clear();
+    const screen = await render(<App />);
+    const zoom = () => (screen.container.querySelector(".sc-root") as HTMLElement).style.getPropertyValue("--zoom");
+    await userEvent.keyboard("{Control>}={/Control}");
+    expect(zoom()).toBe("1.1");
+    await userEvent.keyboard("{Control>}={/Control}{Control>}={/Control}");
+    expect(zoom()).toBe("1.25");
+    await userEvent.keyboard("{Control>}-{/Control}");
+    expect(zoom()).toBe("1.2");
+    await userEvent.keyboard("{Control>}0{/Control}");
+    expect(zoom()).toBe("1");
+    await userEvent.keyboard("{Control>}-{/Control}");
+    expect(zoom()).toBe("1");
+  });
+});
+
 describe("MISC Side panel", () => {
   it("MISC the Debugger tab stacks Status, Problems, Variables and Breakpoints", async () => {
     localStorage.clear();
@@ -230,5 +318,42 @@ describe("MISC focus rings follow the design", () => {
     for (const q of [".sc-toolbar", "aside"]) {
       expect(await axeViolations(screen.container.querySelector(q) as HTMLElement)).toEqual([]);
     }
+  });
+});
+
+describe("MISC note banner", () => {
+  it("MISC shows its text and is dismissed with the Dismiss button", async () => {
+    const onDismiss = vi.fn();
+    const screen = await render(<NoteBanner note={{ text: "Converted from Python." }} onDismiss={onDismiss} />);
+    await expect.element(screen.getByText("Converted from Python.")).toBeVisible();
+    await screen.getByRole("button", { name: "Dismiss" }).click();
+    expect(onDismiss).toHaveBeenCalledOnce();
+  });
+
+  it("MISC an error note uses the soft red background and a plain note the subtle one", async () => {
+    const screen = await render(<NoteBanner note={{ text: "Problem.", error: true }} onDismiss={() => undefined} />);
+    expect(screen.getByRole("status").element().classList.contains("sc-note-err")).toBe(true);
+    await screen.rerender(<NoteBanner note={{ text: "Fine." }} onDismiss={() => undefined} />);
+    expect(screen.getByRole("status").element().classList.contains("sc-note-err")).toBe(false);
+  });
+
+  it("MISC the banner disappears once dismissed and has no axe violations", async () => {
+    const Harness = () => {
+      const [note, setNote] = useState<Note | null>({ text: "Hello." });
+      return note === null ? (
+        <p>gone</p>
+      ) : (
+        <NoteBanner
+          note={note}
+          onDismiss={() => {
+            setNote(null);
+          }}
+        />
+      );
+    };
+    const screen = await render(<Harness />);
+    expect(await axeViolations(screen.container)).toEqual([]);
+    await screen.getByRole("button", { name: "Dismiss" }).click();
+    await expect.element(screen.getByText("gone")).toBeVisible();
   });
 });

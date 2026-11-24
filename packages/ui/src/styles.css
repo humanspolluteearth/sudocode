@@ -238,6 +238,10 @@ body {
   overflow: hidden;
   background: var(--bg);
 }
+.sc-editor {
+  position: relative;
+}
+.sc-editor-host,
 .sc-editor .cm-editor {
   height: 100%;
 }
@@ -862,4 +866,37 @@ body {
 .sc-ref-note {
   color: var(--fg4);
   line-height: 1.45;
+}
+
+.sc-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px 4px 10px;
+  background: var(--subtle);
+  border-bottom: 1px solid var(--line2);
+  font-size: 12px;
+  color: var(--fg3);
+  flex: none;
+}
+.sc-note-err {
+  background: var(--errsoft);
+}
+.sc-note-icon {
+  flex: none;
+}
+.sc-note-text {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.4;
+}
+.sc-note-dismiss {
+  flex: none;
+  padding: 2px 4px;
+  border: 0;
+  background: transparent;
+  color: var(--link);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
 }
