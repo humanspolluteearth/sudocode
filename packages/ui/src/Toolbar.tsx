@@ -1,6 +1,6 @@
 // The toolbar: Run, the debugger buttons (Continue, Step over, Pause), Stop, zoom and theme. Buttons are real <button>s with visible text for screen readers.
 import type { Example } from "@sudocode/core";
-import { parseTheme } from "./preferences.ts";
+import { parseTheme, type PseudocodeLanguage } from "./preferences.ts";
 export type ThemeChoice = "system" | "light" | "dark";
 
 export const ZOOM_MIN = 100;
@@ -24,6 +24,8 @@ export interface ToolbarProps {
   onZoom: (zoom: number) => void;
   theme: ThemeChoice;
   onTheme: (theme: ThemeChoice) => void;
+  language?: PseudocodeLanguage;
+  onLanguage?: (language: PseudocodeLanguage) => void;
   examples: readonly Example[];
   onExample: (example: Example) => void;
 }
@@ -109,6 +111,20 @@ export function Toolbar(p: ToolbarProps) {
         Pause
       </button>
       <span className="sc-sep" aria-hidden="true" />
+      {p.language !== undefined && (
+        <label className="sc-field">
+          Language
+          <select
+            value={p.language}
+            onChange={(e) => {
+              p.onLanguage?.(e.target.value === "cie" ? "cie" : "edexcel");
+            }}
+          >
+            <option value="edexcel">Edexcel pseudocode</option>
+            <option value="cie">Cambridge 9618 pseudocode</option>
+          </select>
+        </label>
+      )}
       <label className="sc-field">
         Examples
         <select

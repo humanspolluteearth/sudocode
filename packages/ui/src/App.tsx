@@ -1,7 +1,7 @@
 // The IDE's root component: toolbar, editor, console, side panel (Problems / Debugger) and status bar (layout
 // from the prototype's desktop design, docs/PRODUCT.md). The shell passes in the worker factories, so this
 // package never imports a worker.
-import { EDEXCEL_EXAMPLES, type Diagnostic, type VirtualFiles } from "@sudocode/core";
+import { CIE_EXAMPLES, CIE_GUIDE, EDEXCEL_EXAMPLES, type Diagnostic, type VirtualFiles } from "@sudocode/core";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
@@ -16,7 +16,8 @@ import { StepLimitDialog } from "./StepLimitDialog.tsx";
 import { Toolbar, type ThemeChoice } from "./Toolbar.tsx";
 import "./styles.css";
 
-const STARTER = 'SEND "Hello" TO DISPLAY\n';
+const STARTERS = { edexcel: 'SEND "Hello" TO DISPLAY\n', cie: 'OUTPUT "Hello"\n' } as const;
+const LANGUAGE_NAMES = { edexcel: "Edexcel pseudocode", cie: "Cambridge 9618 pseudocode" } as const;
 
 export interface AppProps {
   /** Without workers (tests, a bare page) the app shows the editor but Run stays disabled. */
@@ -24,14 +25,15 @@ export interface AppProps {
 }
 
 export function App({ workers }: AppProps) {
-  const [source, setSource] = useState(STARTER);
+  const [prefs, setPrefs] = useState(loadPreferences);
+  const language = prefs.language;
+  const [source, setSource] = useState<string>(STARTERS[prefs.language]);
   const [diagnostics, setDiagnostics] = useState<readonly Diagnostic[]>([]);
   const [run, dispatch] = useReducer(runReducer, initialRunView);
   const [breakpoints, setBreakpoints] = useState<number[]>([]);
   const [tab, setTab] = useState<SideTab>("problems");
   const session = useRef<RunSession | null>(null);
   const checker = useRef<CheckClient | null>(null);
-  const [prefs, setPrefs] = useState(loadPreferences);
   const editor = useRef<EditorHandle>(null);
   // The student's virtual files: loaded from IndexedDB once, saved after every change. `filesRef` is what a run
   // starts with and what its fileWrite events update (state alone would be stale inside the run callback).
@@ -61,16 +63,16 @@ export function App({ workers }: AppProps) {
   // The check worker lives as long as the editor.
   useEffect(() => {
     if (workers === undefined) return;
-    const client = createCheckClient(workers.createCheckWorker(), "edexcel", setDiagnostics);
+    const client = createCheckClient(workers.createCheckWorker(), language, setDiagnostics);
     checker.current = client;
     return () => {
       client.dispose();
       checker.current = null;
     };
-  }, [workers]);
+  }, [workers, language]);
   useEffect(() => {
     checker.current?.request(source);
-  }, [source, workers]);
+  }, [source, workers, language]);
   useEffect(() => () => session.current?.stop(), []);
 
   // A pause at a breakpoint or after a step opens the Debugger, where the variables are.
@@ -86,7 +88,7 @@ export function App({ workers }: AppProps) {
     dispatch({ type: "start", trace });
     session.current = startRun(
       workers.createRunWorker,
-      "edexcel",
+      language,
       source,
       (event) => {
         if (event.type === "diagnostics") setDiagnostics(event.diagnostics);
@@ -162,7 +164,14 @@ export function App({ workers }: AppProps) {
         onZoom={(zoom) => {
           update({ ...prefs, zoom });
         }}
-        examples={EDEXCEL_EXAMPLES}
+        language={language}
+        onLanguage={(next) => {
+          // An untouched starter program follows the language; anything the student wrote stays.
+          if (source === STARTERS[language]) setSource(STARTERS[next]);
+          if (tab === "reference" && next !== "cie") setTab("problems");
+          update({ ...prefs, language: next });
+        }}
+        examples={language === "cie" ? CIE_EXAMPLES : EDEXCEL_EXAMPLES}
         onExample={(example) => {
           setSource(example.code);
         }}
@@ -182,6 +191,7 @@ export function App({ workers }: AppProps) {
               setBreakpoints(lines);
               send({ type: "setBreakpoints", lines });
             }}
+            language={language}
             pausedLine={paused === null || paused.reason === "stepLimit" ? null : paused.line}
           />
           <Console
@@ -218,6 +228,10 @@ export function App({ workers }: AppProps) {
                 }
               : undefined
           }
+          guide={language === "cie" ? CIE_GUIDE : undefined}
+          onUseGuide={(section) => {
+            setSource(section.code);
+          }}
           advanced={prefs.advanced}
           onAdvanced={(advanced) => {
             update({ ...prefs, advanced });
@@ -225,7 +239,7 @@ export function App({ workers }: AppProps) {
           }}
         />
       </main>
-      <StatusBar state={run.state} diagnostics={diagnostics} languageName="Edexcel pseudocode" />
+      <StatusBar state={run.state} diagnostics={diagnostics} languageName={LANGUAGE_NAMES[language]} />
       {paused?.reason === "stepLimit" && (
         <StepLimitDialog
           line={paused.line}

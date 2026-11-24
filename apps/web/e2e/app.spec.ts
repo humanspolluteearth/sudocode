@@ -41,3 +41,14 @@ test("a syntax error shows in Problems", async ({ page }) => {
   await expect(problems.getByRole("button").first()).toBeVisible({ timeout: 5000 });
   await expect(problems).not.toContainText("No problems.");
 });
+
+test("switching to Cambridge pseudocode runs a CIE program and shows the Quick reference", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("combobox", { name: /Language/ }).selectOption("cie");
+  await typeProgram(page, 'OUTPUT "Hello, Cambridge"');
+  await page.getByRole("button", { name: "Run" }).click();
+  await expect(page.getByRole("log")).toContainText("Hello, Cambridge");
+  await page.getByRole("button", { name: "Quick reference" }).click();
+  await expect(page.getByRole("region", { name: "Quick reference" })).toContainText("Variables and constants");
+  await expect(page.getByRole("status", { name: "Status bar" })).toContainText("Cambridge");
+});

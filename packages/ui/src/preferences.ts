@@ -1,5 +1,7 @@
 // Per-viewer settings kept in the browser (theme and zoom). Storage can be missing or blocked (private windows,
 // tests), so every read and write is wrapped: the app works the same without it.
+export type PseudocodeLanguage = "edexcel" | "cie";
+
 import { ZOOM_MAX, ZOOM_MIN, type ThemeChoice } from "./Toolbar.tsx";
 
 const KEY = "sudocode.preferences";
@@ -9,9 +11,11 @@ export interface Preferences {
   zoom: number;
   /** Advanced mode (docs/PRODUCT.md): shows the Files panel. Simple is the default. */
   advanced: boolean;
+  /** Which pseudocode the editor, checker and runs use. */
+  language: PseudocodeLanguage;
 }
 
-export const DEFAULT_PREFERENCES: Preferences = { theme: "system", zoom: 100, advanced: false };
+export const DEFAULT_PREFERENCES: Preferences = { theme: "system", zoom: 100, advanced: false, language: "edexcel" };
 
 export function parseTheme(value: unknown): ThemeChoice {
   return value === "light" || value === "dark" || value === "system" ? value : DEFAULT_PREFERENCES.theme;
@@ -26,8 +30,13 @@ export function loadPreferences(): Preferences {
   try {
     const raw: unknown = JSON.parse(globalThis.localStorage.getItem(KEY) ?? "null");
     if (typeof raw === "object" && raw !== null) {
-      const { theme, zoom, advanced } = raw as Record<string, unknown>;
-      return { theme: parseTheme(theme), zoom: clampZoom(zoom), advanced: advanced === true };
+      const { theme, zoom, advanced, language } = raw as Record<string, unknown>;
+      return {
+        theme: parseTheme(theme),
+        zoom: clampZoom(zoom),
+        advanced: advanced === true,
+        language: language === "cie" ? "cie" : "edexcel",
+      };
     }
   } catch {
     // Missing, blocked or corrupt storage: use the defaults.
