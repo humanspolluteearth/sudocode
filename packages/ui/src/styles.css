@@ -775,3 +775,91 @@ body {
 .sc-ref-full a {
   color: var(--link);
 }
+
+/* Quick reference (the design's Find box and snippet list) */
+.sc-reference {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+}
+.sc-ref-find {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line2);
+  background: var(--chrome);
+}
+.sc-ref-find label {
+  font-size: 11px;
+  color: var(--fg4);
+}
+.sc-ref-find input {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  box-sizing: border-box;
+  padding: 0 6px;
+  border: 1px solid var(--field);
+  border-radius: 2px;
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  font-size: 12px;
+}
+.sc-ref-empty {
+  padding: 8px 10px;
+  color: var(--muted2);
+}
+.sc-ref-section-title {
+  margin: 0;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  background: var(--chrome);
+  border-bottom: 1px solid var(--line2);
+  font-weight: 600;
+  font-size: 11px;
+}
+.sc-ref-item {
+  padding: 8px 10px 10px;
+  border-bottom: 1px solid var(--line3);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.sc-ref-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.sc-ref-title {
+  font-weight: 600;
+}
+.sc-ref-insert {
+  margin-left: auto;
+  min-height: 26px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--link);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.sc-ref-item pre {
+  margin: 0;
+  padding: 5px 8px;
+  background: var(--subtle);
+  border: 1px solid var(--line2);
+  overflow-x: auto;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11.5px;
+  line-height: 17px;
+  color: var(--fg);
+}
+.sc-ref-note {
+  color: var(--fg4);
+  line-height: 1.45;
+}
