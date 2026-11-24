@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-81"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-SYN-EXPECTED",
+        "line": 2,
+        "column": 15
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "A prompt with no variable after it. The string occupies columns 7 to 14, so the missing variable is reported at column 15 (end of the line)."
+}

@@ -1,0 +1,3 @@
+DECLARE A : ARRAY[1:2] OF INTEGER
+INPUT "Value? " A[2]
+OUTPUT A[2] + 1

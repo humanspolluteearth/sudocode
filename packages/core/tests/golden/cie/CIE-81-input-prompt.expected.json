@@ -1,0 +1,13 @@
+{
+  "spec": ["CIE-81", "SH-06"],
+  "language": "cie",
+  "inputs": ["21"],
+  "expect": {
+    "stdout": "Enter a number: 42\n",
+    "errors": [],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q46: the prompt is console output with no newline, so the answer 42 follows it on the same line. 21 * 2 = 42, worked by hand."
+}

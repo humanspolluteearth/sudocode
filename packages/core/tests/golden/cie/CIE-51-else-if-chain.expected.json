@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-51"],
+  "language": "cie",
+  "expect": {
+    "stdout": "medium\n",
+    "errors": [],
+    "warnings": [
+      {
+        "code": "W-CIE-ELSE-IF",
+        "line": 5,
+        "column": 1
+      }
+    ],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Q47: ELSE IF continues the chain and one ENDIF closes it. N is 5: not below 3, below 10, so 'medium'."
+}

@@ -1,0 +1,3 @@
+DECLARE N : INTEGER
+INPUT "Enter a number: " N
+OUTPUT N * 2

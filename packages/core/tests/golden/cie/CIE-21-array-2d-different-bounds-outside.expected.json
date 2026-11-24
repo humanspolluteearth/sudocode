@@ -1,0 +1,18 @@
+{
+  "spec": ["CIE-21"],
+  "language": "cie",
+  "expect": {
+    "stdout": "",
+    "errors": [
+      {
+        "code": "E-RUN-INDEX-RANGE",
+        "line": 2,
+        "column": 1
+      }
+    ],
+    "warnings": [],
+    "files": null,
+    "trace": null
+  },
+  "notes": "Second index 3 is above the upper bound 2 of 0:2. Column 1 is where the assignment starts."
+}
