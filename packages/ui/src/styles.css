@@ -1126,7 +1126,6 @@ button.sc-section-head:hover {
 .sc-more-menu button[aria-checked="true"]::before {
   content: "✓ ";
 }
-.sc-compact .sc-menubar,
 .sc-compact .sc-toolbar > :not(.sc-keep, .sc-more),
 .sc-compact .sc-splitter,
 .sc-compact .sc-statusbar .sc-hide-compact {
@@ -1310,6 +1309,30 @@ button.sc-section-head:hover {
   min-height: 40px;
 }
 
+/* Compact layouts keep the desktop menu bar (File, Edit, View...), taller for fingers; a menu list opens under the
+   whole bar so it can never run off the right edge of a phone. */
+.sc-compact .sc-menubar {
+  position: relative;
+  height: 44px;
+}
+.sc-compact .sc-menu {
+  position: static;
+}
+.sc-compact .sc-menu-btn {
+  height: 44px;
+  min-width: 44px;
+  padding: 0 9px;
+}
+.sc-compact .sc-menu-list {
+  left: 0;
+  right: 0;
+  min-width: 0;
+}
+.sc-compact .sc-menu-item {
+  min-height: 44px;
+  align-items: center;
+}
+
 /* Compact layouts: the gutter sizes to its content instead of the desktop's fixed 62px, with room for 4-digit line
    numbers at any text size (4ch is relative to the gutter's own font, so it follows the zoom). */
 .sc-compact .sc-editor .cm-gutters {
@@ -1353,4 +1376,15 @@ button.sc-section-head:hover {
   .sc-welcome .sc-check {
     min-height: 44px;
   }
+}
+
+/* Phones: line numbers are smaller and tighter (they are the widest thing in the gutter), still fitting 4 digits. */
+.sc-compact:not(.sc-tablet) .sc-editor .cm-lineNumbers .cm-gutterElement {
+  font-size: 0.75em;
+  padding: 0 2px 0 1px;
+}
+.sc-compact:not(.sc-tablet) .sc-editor .cm-gutter.sc-bp-gutter,
+.sc-compact:not(.sc-tablet) .sc-editor .sc-bp-gutter .cm-gutterElement {
+  width: 14px;
+  min-width: 14px;
 }
