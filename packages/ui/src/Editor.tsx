@@ -3,12 +3,13 @@
 import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
 import { bracketMatching, indentOnInput } from "@codemirror/language";
 import { setDiagnostics } from "@codemirror/lint";
-import { EditorState } from "@codemirror/state";
+import { Compartment, EditorState } from "@codemirror/state";
 import { EditorView, drawSelection, highlightActiveLine, keymap, lineNumbers } from "@codemirror/view";
 import type { Diagnostic } from "@sudocode/core";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { breakpointField, breakpointLines, debugGutter, setPausedLine } from "./debug-gutter.ts";
 import { toCodeMirrorDiagnostics } from "./diagnostics-bridge.ts";
+import { cieLanguage } from "./cie-language.ts";
 import { edexcelHighlight, edexcelLanguage } from "./edexcel-language.ts";
 
 export interface EditorHandle {
@@ -25,7 +26,13 @@ export interface EditorProps {
   onBreakpointsChange?: (lines: number[]) => void;
   /** The line the debugger is paused before, highlighted; null when not paused. */
   pausedLine?: number | null;
+  /** Which pseudocode to colour; Edexcel by default. */
+  language?: "edexcel" | "cie";
 }
+
+// A Compartment is CodeMirror's way to swap one extension later without rebuilding the editor.
+const languageSlot = new Compartment();
+const languageExtension = (language: "edexcel" | "cie") => (language === "cie" ? cieLanguage : edexcelLanguage);
 
 const theme = EditorView.theme({
   "&": { height: "100%", color: "var(--fg)", backgroundColor: "var(--bg)" },
@@ -50,7 +57,15 @@ const theme = EditorView.theme({
 });
 
 export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
-  { value, onChange, diagnostics, ariaLabel = "Program editor", onBreakpointsChange, pausedLine = null },
+  {
+    value,
+    onChange,
+    diagnostics,
+    ariaLabel = "Program editor",
+    onBreakpointsChange,
+    pausedLine = null,
+    language = "edexcel",
+  },
   ref,
 ) {
   const host = useRef<HTMLDivElement>(null);
@@ -75,7 +90,7 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
           highlightActiveLine(),
           indentOnInput(),
           bracketMatching(),
-          edexcelLanguage,
+          languageSlot.of(languageExtension(language)),
           edexcelHighlight,
           keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
           EditorView.contentAttributes.of({ "aria-label": ariaLabel, spellcheck: "false", autocapitalize: "off" }),
@@ -112,6 +127,10 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
     if (v === null) return;
     v.dispatch(setDiagnostics(v.state, toCodeMirrorDiagnostics(v.state.doc.toString(), diagnostics)));
   }, [diagnostics, value]);
+
+  useEffect(() => {
+    view.current?.dispatch({ effects: languageSlot.reconfigure(languageExtension(language)) });
+  }, [language]);
 
   useEffect(() => {
     const v = view.current;

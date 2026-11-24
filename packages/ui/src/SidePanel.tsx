@@ -1,13 +1,14 @@
 // The right-hand panel: Problems, or the Debugger (Variables and the trace table), per docs/PRODUCT.md.
-import type { Diagnostic, VirtualFiles } from "@sudocode/core";
+import type { Diagnostic, GuideSection, VirtualFiles } from "@sudocode/core";
 import { FilesPanel } from "./FilesPanel.tsx";
 import { CallStack } from "./CallStack.tsx";
+import { QuickReference } from "./QuickReference.tsx";
 import { Problems } from "./Problems.tsx";
 import type { RunView } from "./run-state.ts";
 import { TraceTable } from "./TraceTable.tsx";
 import { Variables } from "./Variables.tsx";
 
-export type SideTab = "problems" | "debugger" | "files";
+export type SideTab = "problems" | "debugger" | "files" | "reference";
 
 export interface SidePanelProps {
   tab: SideTab;
@@ -19,6 +20,9 @@ export interface SidePanelProps {
   onAdvanced: (advanced: boolean) => void;
   /** Advanced mode only: shows the Files tab. */
   files?: FilesProps | undefined;
+  /** Quick reference sections; the tab shows only when there are some. */
+  guide?: readonly GuideSection[] | undefined;
+  onUseGuide?: ((section: GuideSection) => void) | undefined;
 }
 
 export interface FilesProps {
@@ -36,6 +40,8 @@ export function SidePanel({
   files,
   advanced,
   onAdvanced,
+  guide,
+  onUseGuide,
 }: SidePanelProps) {
   const tabButton = (id: SideTab, label: string) => (
     <button
@@ -55,6 +61,7 @@ export function SidePanel({
         {tabButton("problems", "Problems")}
         {tabButton("debugger", "Debugger")}
         {files !== undefined && tabButton("files", "Files")}
+        {guide !== undefined && tabButton("reference", "Quick reference")}
         <label className="sc-mode">
           <input
             type="checkbox"
@@ -66,7 +73,9 @@ export function SidePanel({
           Advanced
         </label>
       </div>
-      {tab === "files" && files !== undefined ? (
+      {tab === "reference" && guide !== undefined ? (
+        <QuickReference sections={guide} onUse={(section) => onUseGuide?.(section)} />
+      ) : tab === "files" && files !== undefined ? (
         <FilesPanel files={files.files} onChange={files.onChange} onDelete={files.onDelete} />
       ) : tab === "problems" ? (
         <Problems diagnostics={diagnostics} onSelect={onSelectProblem} />
