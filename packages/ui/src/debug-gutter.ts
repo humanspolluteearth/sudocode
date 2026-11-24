@@ -72,7 +72,11 @@ const pausedField = StateField.define<DecorationSet>({
 });
 
 /** F9 sets or clears a breakpoint on the cursor's line, so the gutter also works from the keyboard. */
+// Breakpoints can be switched off in Settings; the editor then carries `sc-bp-off` and the gutter does nothing.
+const bpOff = (view: EditorView): boolean => view.dom.closest(".sc-bp-off") !== null;
+
 function toggleAtCursor(view: EditorView): boolean {
+  if (bpOff(view)) return false;
   const line = view.state.doc.lineAt(view.state.selection.main.head);
   view.dispatch({ effects: toggleBreakpoint.of(line.from) });
   return true;
@@ -89,6 +93,7 @@ export function debugGutter(): Extension {
       initialSpacer: () => breakpointMarker,
       domEventHandlers: {
         mousedown(view, line) {
+          if (bpOff(view)) return false;
           view.dispatch({ effects: toggleBreakpoint.of(line.from) });
           return true;
         },

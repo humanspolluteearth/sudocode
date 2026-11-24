@@ -1,5 +1,6 @@
 // Per-viewer settings kept in the browser (theme and zoom). Storage can be missing or blocked (private windows,
 // tests), so every read and write is wrapped: the app works the same without it.
+import { parseToolList, type ToolId } from "./tools.ts";
 import { ZOOM_LEVELS, type ThemeChoice } from "./Toolbar.tsx";
 
 /** The languages the editor offers. */
@@ -14,9 +15,17 @@ export interface Preferences {
   advanced: boolean;
   /** Which pseudocode the editor, checker and runs use. */
   language: PseudocodeLanguage;
+  /** Tools the student switched off in Settings (docs/PRODUCT.md: every tool can be disabled). */
+  toolsOff: ToolId[];
 }
 
-export const DEFAULT_PREFERENCES: Preferences = { theme: "system", zoom: 100, advanced: false, language: "edexcel" };
+export const DEFAULT_PREFERENCES: Preferences = {
+  theme: "system",
+  zoom: 100,
+  advanced: false,
+  language: "edexcel",
+  toolsOff: [],
+};
 
 export function parseTheme(value: unknown): ThemeChoice {
   return value === "light" || value === "dark" || value === "system" ? value : DEFAULT_PREFERENCES.theme;
@@ -32,12 +41,13 @@ export function loadPreferences(): Preferences {
   try {
     const raw: unknown = JSON.parse(globalThis.localStorage.getItem(KEY) ?? "null");
     if (typeof raw === "object" && raw !== null) {
-      const { theme, zoom, advanced, language } = raw as Record<string, unknown>;
+      const { theme, zoom, advanced, language, toolsOff } = raw as Record<string, unknown>;
       return {
         theme: parseTheme(theme),
         zoom: clampZoom(zoom),
         advanced: advanced === true,
         language: language === "cie" || language === "python" ? language : "edexcel",
+        toolsOff: parseToolList(toolsOff),
       };
     }
   } catch {

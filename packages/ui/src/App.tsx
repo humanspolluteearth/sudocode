@@ -7,6 +7,8 @@ import { createCheckClient, type CheckClient } from "./check-client.ts";
 import { Console } from "./Console.tsx";
 import { Editor, type EditorHandle } from "./Editor.tsx";
 import { GuidePage, guideFromSearch, guideUrl, type GuideId } from "./GuidePage.tsx";
+import { SettingsDialog } from "./SettingsDialog.tsx";
+import { toolFlags } from "./tools.ts";
 import { SaveDialog } from "./SaveDialog.tsx";
 import { useWorkspace } from "./use-workspace.ts";
 import { FileTabs } from "./FileTabs.tsx";
@@ -42,6 +44,7 @@ export function App({ workers }: AppProps) {
   const [run, dispatch] = useReducer(runReducer, initialRunView);
   // A note under the tab strip; nothing sets one yet (see NoteBanner), so it starts empty.
   const [note, setNote] = useState<Note | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [breakpoints, setBreakpoints] = useState<number[]>([]);
   const [cursor, setCursor] = useState<CursorPosition>({ line: 1, column: 1 });
   const [tab, setTab] = useState<SideTab>("debugger");
@@ -199,6 +202,7 @@ export function App({ workers }: AppProps) {
     setPrefs(next);
     savePreferences(next);
   };
+  const tools = toolFlags(prefs.advanced, prefs.toolsOff);
   const themeClass = (theme: ThemeChoice) => (theme === "system" ? "sys" : theme);
   const paused = run.paused;
   const changeLanguage = (next: PseudocodeLanguage) => {
@@ -260,6 +264,10 @@ export function App({ workers }: AppProps) {
     },
     advanced: prefs.advanced,
     onConvertToPython: files$.convertToPython,
+    tools,
+    onSettings: () => {
+      setSettingsOpen(true);
+    },
   });
 
   if (guide !== null) return <GuidePage guide={guide} onNavigate={openGuide} themeClass={themeClass(prefs.theme)} />;
@@ -298,13 +306,14 @@ export function App({ workers }: AppProps) {
         }}
         onSave={files$.save}
         onConvert={
-          prefs.advanced
+          prefs.advanced && tools.converter
             ? () => {
                 files$.convertToPython();
               }
             : undefined
         }
         canConvert={language !== "python"}
+        tools={tools}
         theme={prefs.theme}
         onTheme={(theme) => {
           update({ ...prefs, theme });
@@ -338,6 +347,7 @@ export function App({ workers }: AppProps) {
             }}
             language={language}
             onCursorChange={setCursor}
+            breakpointsEnabled={tools.breakpoints}
             pausedLine={paused === null || paused.reason === "stepLimit" ? null : paused.line}
           />
           <Splitter orientation="horizontal" label="Resize console" size={consoleHeight} onResize={setConsoleHeight} />
@@ -364,8 +374,9 @@ export function App({ workers }: AppProps) {
           onSelectProblem={(d) => editor.current?.goTo(d.line, d.column)}
           run={run}
           breakpoints={breakpoints}
+          tools={tools}
           files={
-            prefs.advanced
+            tools.files
               ? {
                   files,
                   onChange: (name, contents) => {
@@ -394,6 +405,30 @@ export function App({ workers }: AppProps) {
         diagnostics={diagnostics}
         languageName={LANGUAGE_NAMES[language]}
       />
+      {settingsOpen && (
+        <SettingsDialog
+          advanced={prefs.advanced}
+          onAdvanced={(advanced) => {
+            update({ ...prefs, advanced });
+          }}
+          theme={prefs.theme}
+          onTheme={(theme) => {
+            update({ ...prefs, theme });
+          }}
+          zoom={prefs.zoom}
+          onZoom={(zoom) => {
+            update({ ...prefs, zoom });
+          }}
+          toolsOff={prefs.toolsOff}
+          onTool={(id, on) => {
+            if (id === "breakpoints" && !on) editor.current?.clearBreakpoints();
+            update({ ...prefs, toolsOff: on ? prefs.toolsOff.filter((t) => t !== id) : [...prefs.toolsOff, id] });
+          }}
+          onClose={() => {
+            setSettingsOpen(false);
+          }}
+        />
+      )}
       {files$.dialog !== null && (
         <SaveDialog
           name={files$.dialog.name}

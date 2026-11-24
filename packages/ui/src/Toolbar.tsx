@@ -1,4 +1,5 @@
 // The toolbar: Run, the debugger buttons (Continue, Step over, Pause), Stop, zoom and theme. Buttons are real <button>s with visible text for screen readers.
+import { ALL_TOOLS, type ToolFlags } from "./tools.ts";
 import type { Example } from "@sudocode/core";
 import type { PseudocodeLanguage } from "./preferences.ts";
 export type ThemeChoice = "system" | "light" | "dark";
@@ -43,6 +44,8 @@ export interface ToolbarProps {
   canConvert?: boolean;
   examples: readonly Example[];
   onExample: (example: Example) => void;
+  /** Which tools are on (Settings and mode); every tool is on when missing. */
+  tools?: ToolFlags;
 }
 
 const Icon = ({ children }: { children: React.ReactNode }) => (
@@ -63,6 +66,7 @@ const SOON = "Not available yet";
  */
 export function Toolbar(p: ToolbarProps) {
   const paused = p.paused === true;
+  const tools = p.tools ?? ALL_TOOLS;
   return (
     <div className="sc-toolbar" role="toolbar" aria-label="Run controls">
       <button type="button" className="sc-tb" onClick={p.onRun} disabled={p.running || !p.canRun} title="Run (F5)">
@@ -71,21 +75,23 @@ export function Toolbar(p: ToolbarProps) {
         </Icon>
         Run
       </button>
-      <button
-        type="button"
-        className="sc-tb"
-        onClick={p.onStepOver}
-        disabled={!paused && (p.running || !p.canRun)}
-        title="Step over (F10)"
-        aria-label="Step over"
-      >
-        <Icon>
-          <path d="M2 9a6 6 0 0 1 11-3" style={stroke} />
-          <path d="M14 3v4h-4z" style={{ fill: "currentColor" }} />
-          <circle cx="8" cy="13" r="1.6" style={{ fill: "currentColor" }} />
-        </Icon>
-        Step
-      </button>
+      {tools.breakpoints && (
+        <button
+          type="button"
+          className="sc-tb"
+          onClick={p.onStepOver}
+          disabled={!paused && (p.running || !p.canRun)}
+          title="Step over (F10)"
+          aria-label="Step over"
+        >
+          <Icon>
+            <path d="M2 9a6 6 0 0 1 11-3" style={stroke} />
+            <path d="M14 3v4h-4z" style={{ fill: "currentColor" }} />
+            <circle cx="8" cy="13" r="1.6" style={{ fill: "currentColor" }} />
+          </Icon>
+          Step
+        </button>
+      )}
       <button type="button" className="sc-tb" onClick={p.onContinue} disabled={!paused} title="Continue (F8)">
         <Icon>
           <rect x="2.5" y="3" width="2" height="10" style={{ fill: "currentColor" }} />
@@ -99,7 +105,7 @@ export function Toolbar(p: ToolbarProps) {
         </Icon>
         Reset
       </button>
-      {p.running && (
+      {p.running && tools.stepInto && (
         <>
           <button type="button" className="sc-tb" onClick={p.onStepInto} disabled={!paused} title="Step into (F11)">
             <Icon>
@@ -123,13 +129,15 @@ export function Toolbar(p: ToolbarProps) {
         </>
       )}
       <span className="sc-sep" aria-hidden="true" />
-      <button type="button" className="sc-tb" onClick={p.onClearBreakpoints} title="Remove all breakpoints">
-        <Icon>
-          <circle cx="8" cy="8" r="4.5" style={{ fill: "none", stroke: "var(--red)", strokeWidth: 1.4 }} />
-          <path d="M3 13L13 3" style={stroke} />
-        </Icon>
-        Clear breakpoints
-      </button>
+      {tools.breakpoints && (
+        <button type="button" className="sc-tb" onClick={p.onClearBreakpoints} title="Remove all breakpoints">
+          <Icon>
+            <circle cx="8" cy="8" r="4.5" style={{ fill: "none", stroke: "var(--red)", strokeWidth: 1.4 }} />
+            <path d="M3 13L13 3" style={stroke} />
+          </Icon>
+          Clear breakpoints
+        </button>
+      )}
       <span className="sc-sep" aria-hidden="true" />
       <button
         type="button"
@@ -143,7 +151,7 @@ export function Toolbar(p: ToolbarProps) {
         </Icon>
         Save
       </button>
-      {p.onConvert !== undefined && (
+      {p.onConvert !== undefined && tools.converter && (
         <label className="sc-field">
           Convert to
           <select
@@ -178,23 +186,25 @@ export function Toolbar(p: ToolbarProps) {
           </select>
         </label>
       )}
-      <label className="sc-field">
-        Example
-        <select
-          value=""
-          onChange={(e) => {
-            const picked = p.examples.find((x) => x.id === e.target.value);
-            if (picked !== undefined) p.onExample(picked);
-          }}
-        >
-          <option value="">(untitled)</option>
-          {p.examples.map((x) => (
-            <option key={x.id} value={x.id}>
-              {x.name}
-            </option>
-          ))}
-        </select>
-      </label>
+      {tools.examples && (
+        <label className="sc-field">
+          Example
+          <select
+            value=""
+            onChange={(e) => {
+              const picked = p.examples.find((x) => x.id === e.target.value);
+              if (picked !== undefined) p.onExample(picked);
+            }}
+          >
+            <option value="">(untitled)</option>
+            {p.examples.map((x) => (
+              <option key={x.id} value={x.id}>
+                {x.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
       <button
         type="button"
         className="sc-tb sc-theme"

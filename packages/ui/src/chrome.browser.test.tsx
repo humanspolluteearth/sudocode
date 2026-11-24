@@ -510,6 +510,8 @@ describe("MISC Step with no run going", () => {
 describe("MISC debugger sections and resizing", () => {
   it("MISC Status, Problems and Variables start open; the others start folded", async () => {
     globalThis.localStorage.clear();
+    // Call stack is an Advanced tool (docs/PRODUCT.md), so this test switches Advanced on (listed in M10.md).
+    globalThis.localStorage.setItem("sudocode.preferences", JSON.stringify({ advanced: true }));
     const screen = await render(<App />);
     for (const name of ["Status", "Problems", "Variables"]) {
       await expect
