@@ -62,6 +62,8 @@ export type PyExpr =
   | { kind: "pyCall"; callee: PyExpr; args: PyExpr[]; keywords: PyKeyword[]; span: Span }
   | { kind: "pyMethod"; target: PyExpr; name: string; args: PyExpr[]; keywords: PyKeyword[]; span: Span }
   | { kind: "pyFString"; parts: PyFPart[]; span: Span }
+  /** Zero-argument `super()` inside a method: the class being defined and the method's first parameter (PY-19). */
+  | { kind: "pySuper"; klass: PyExpr; self: PyExpr; span: Span }
   /** A list comprehension, or a generator expression that is consumed at once (PY-32). */
   | { kind: "pyComp"; element: PyExpr; clauses: PyCompClause[]; span: Span }
   /** `def` / `lambda`: makes a function value that remembers the frame it was made in (a closure). */
@@ -74,6 +76,8 @@ export type PyExpr =
       /** Default values for the LAST `defaults.length` parameters, evaluated when the function is made. */
       defaults: PyExpr[];
       doc: string | null;
+      /** `Class.method` for a method defined directly in a class body, else just the name. */
+      qual: string;
       span: Span;
     };
 
@@ -81,6 +85,8 @@ export type PyTarget =
   | { kind: "name"; name: string; where: PyWhere; span: Span }
   /** `target[index] = value`; `root` is the variable it changes, for the trace table. */
   | { kind: "index"; target: PyExpr; index: PyExpr; root: string | null; span: Span }
+  /** `target.name = value`; `root` is the variable it changes, for the trace table. */
+  | { kind: "attr"; target: PyExpr; name: string; root: string | null; span: Span }
   | { kind: "tuple"; items: PyTarget[]; span: Span };
 
 export interface PyHandler {
@@ -110,6 +116,8 @@ export type PyStmt =
   /** `raise expr`; `reraise` marks a bare `raise`, whose `exc` is the hidden handler variable. */
   | { kind: "pyRaise"; exc: PyExpr | null; reraise: boolean; span: Span }
   | { kind: "pyTry"; body: PyStmt[]; handlers: PyHandler[]; orelse: PyStmt[]; final: PyStmt[]; span: Span }
+  /** `class Name(bases): body`. The body runs once in its own namespace, which becomes the class's attributes. */
+  | { kind: "pyClass"; name: string; target: PyTarget; bases: PyExpr[]; body: PyStmt[]; span: Span }
   | { kind: "pyAssert"; test: PyExpr; message: PyExpr | null; span: Span };
 
 export type PyNode = PyExpr | PyStmt;

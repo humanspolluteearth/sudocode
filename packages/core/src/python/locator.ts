@@ -45,6 +45,11 @@ export class Reporter {
     );
   }
 
+  /** A friendly note that is not a mistake (code starts with I-). */
+  info(code: string, span: Span, args: Record<string, string>): void {
+    this.diagnostics.push(makeDiagnostic({ code, language: "python", span, args }));
+  }
+
   get failed(): boolean {
     return this.diagnostics.some((d) => d.severity === "error");
   }

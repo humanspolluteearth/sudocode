@@ -9,14 +9,6 @@
     "errors/edexcel/EDX-23-string-element",
     "errors/edexcel/EDX-82-blank-line-is-not-an-integer",
     "errors/edexcel/EDX-82-character-line-is-too-long",
-    "golden/python/PY-19-class-basics",
-    "golden/python/PY-19-eq-and-str",
-    "golden/python/PY-19-inheritance",
-    "golden/python/PY-19-methods-calling-methods",
-    "golden/python/PY-19-name-mangling",
-    "golden/python/PY-19-uncaught-attribute-error",
-    "golden/python/PY-19-wrong-argument-count",
-    "golden/python/PY-20-custom-exceptions",
     "golden/python/PY-21-closed-file",
     "golden/python/PY-21-existing-file",
     "golden/python/PY-21-missing-file",
@@ -34,7 +26,6 @@
     "golden/python/PY-43-time",
     "golden/python/PY-50-additions",
     "golden/python/PY-50-bad-format-spec",
-    "golden/python/PY-54-declaration-hint",
     "harvested/python/PY-41-example-guessing-game"
   ]
 }

@@ -13,6 +13,8 @@ import { newDict, newSet, dictMethod, listMethod, setMethod, tupleMethod } from 
 import { strMethod, type CallArgs } from "./methods-str.ts";
 import { arith, compareOp, negate, unaryPlus } from "./numbers.ts";
 import { pyStr, pyTypeName } from "./repr.ts";
+import { containsWithEq, prepare, userCompare } from "./class-calls.ts";
+import { getAttr, setAttr } from "./classes.ts";
 import { contains, indexValue, iterate, repr, sliceValue, sortPairs, truthy } from "./seq.ts";
 
 const MUTATING = new Set([
@@ -101,6 +103,7 @@ function* fstringText(parts: readonly PyFPart[], env: Env, span: Span): Run<stri
       continue;
     }
     let v = yield* pyEval(p.value, env);
+    yield* prepare(v, env, span, p.conversion === "r" || p.conversion === "a" ? "repr" : "str");
     if (p.conversion === "r" || p.conversion === "a") v = str(repr(v));
     else if (p.conversion === "s") v = str(pyStr(v, setOrder));
     const spec = yield* fstringText(p.spec, env, span);
@@ -166,6 +169,10 @@ function* method(e: Extract<PyExpr, { kind: "pyMethod" }>, env: Env): Run<Value>
     case "set":
       result = setMethod(target, e.name, ca, e.span);
       break;
+    case "instance":
+    case "class":
+    case "super":
+      return yield* callValue(getAttr(target, e.name, e.span), args, kwargs, env, e.span);
     default:
       break;
   }
@@ -216,11 +223,18 @@ export function* pyEval(e: PyExpr, env: Env): Run<Value> {
       for (let i = 0; i < e.ops.length; i++) {
         const right = yield* pyEval(e.operands[i + 1] as PyExpr, env);
         const op = e.ops[i] as (typeof e.ops)[number];
-        if (op === "in") result = bool(contains(right, left, e.span));
-        else if (op === "notIn") result = bool(!contains(right, left, e.span));
-        else if (op === "is") result = bool(same(left, right));
+        if (op === "in" || op === "notIn") {
+          const found = (yield* containsWithEq(right, left, env, e.span)) ?? contains(right, left, e.span);
+          result = bool(op === "in" ? found : !found);
+        } else if (op === "is") result = bool(same(left, right));
         else if (op === "isNot") result = bool(!same(left, right));
-        else result = compareOp(op, left, right, e.span);
+        else {
+          const custom =
+            left.kind === "instance" || right.kind === "instance"
+              ? yield* userCompare(op, left, right, env, e.span)
+              : undefined;
+          result = custom ?? compareOp(op, left, right, e.span);
+        }
         if (!truthy(result)) return result;
         left = right;
       }
@@ -267,6 +281,7 @@ export function* pyEval(e: PyExpr, env: Env): Run<Value> {
       if (t.kind === "func" && e.name === "__doc__") return t.doc === null ? NONE : str(t.doc);
       if ((t.kind === "func" || t.kind === "type" || t.kind === "builtin") && e.name === "__name__") return str(t.name);
       if (t.kind === "exc" && e.name === "args") return tuple(t.args);
+      if (t.kind === "instance" || t.kind === "class" || t.kind === "super") return getAttr(t, e.name, e.span);
       throw pyError("AttributeError", `'${pyTypeName(t)}' object has no attribute '${e.name}'`, e.span);
     }
     case "pyCall": {
@@ -284,14 +299,24 @@ export function* pyEval(e: PyExpr, env: Env): Run<Value> {
       yield* comprehension(e.clauses, 0, e.element, env, out);
       return list(out);
     }
+    case "pySuper": {
+      const cls = yield* pyEval(e.klass, env);
+      const self = yield* pyEval(e.self, env);
+      if (cls.kind !== "class") throw typeError("super(): __class__ cell not found", e.span);
+      return { kind: "super", cls, self };
+    }
     case "pyFunction": {
       const defaults = yield* evalAll(e.defaults, env);
       const parent = env.locals?.get("$closure");
+      const enclosing = parent !== undefined && parent.kind === "env" ? parent : null;
+      // A method's closure skips the class body: Python scoping ignores class variables inside methods (PY-19).
       const closure: Value | null =
         env.locals === null
           ? null
-          : { kind: "env", locals: env.locals, parent: parent !== undefined && parent.kind === "env" ? parent : null };
-      return { kind: "func", name: e.name, sub: e.sub, params: e.params, defaults, closure, doc: e.doc };
+          : env.locals.has("$isclass")
+            ? enclosing
+            : { kind: "env", locals: env.locals, parent: enclosing };
+      return { kind: "func", name: e.name, sub: e.sub, params: e.params, defaults, closure, doc: e.doc, qual: e.qual };
     }
   }
   throw new Error(`Unknown Python expression ${(e as { kind: string }).kind}`);
@@ -324,6 +349,12 @@ export function* assignTarget(t: PyTarget, value: Value, env: Env, span: Span): 
     case "name":
       setName(t.name, t.where, value, env, span);
       return;
+    case "attr": {
+      const container = yield* pyEval(t.target, env);
+      setAttr(container, t.name, value, span);
+      if (t.root !== null) env.machine.assigned(t.root, container, span);
+      return;
+    }
     case "index": {
       const container = yield* pyEval(t.target, env);
       const index = yield* pyEval(t.index, env);

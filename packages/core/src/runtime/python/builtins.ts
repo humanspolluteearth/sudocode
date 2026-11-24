@@ -10,6 +10,8 @@ import { arith, asBig, compareOrder, isNumeric, pyRound, toFloat } from "./numbe
 import { pyStr, pyTypeName } from "./repr.ts";
 import { iterate, lengthOf, repr, sortPairs, truthy } from "./seq.ts";
 import { setOrder } from "./hash.ts";
+import { prepare } from "./class-calls.ts";
+import { baseInitialise, isClassSubclass } from "./classes.ts";
 
 export const BUILTIN_FUNCTIONS = new Set([
   "print",
@@ -38,6 +40,7 @@ export const BUILTIN_FUNCTIONS = new Set([
   "hex",
   "bin",
   "oct",
+  "issubclass",
 ]);
 
 type Kwargs = Map<string, Value>;
@@ -110,7 +113,10 @@ function radix(name: string, prefix: string, base: number, v: Value | undefined,
 
 export function typeMatches(value: Value, cls: Value, span: Span): boolean {
   if (cls.kind === "tuple") return cls.items.some((c) => typeMatches(value, c, span));
+  if (cls.kind === "class") return value.kind === "instance" && value.cls.mro.includes(cls);
   if (cls.kind !== "type") throw typeError("isinstance() arg 2 must be a type, a tuple of types, or a union", span);
+  if (value.kind === "instance")
+    return cls.name === "object" || value.cls.mro.some((c) => c.kind === "type" && c.name === cls.name);
   const own = pyTypeName(value);
   if (own === cls.name) return true;
   if (cls.name === "int" && value.kind === "bool") return true;
@@ -127,6 +133,7 @@ export function* callBuiltin(name: string, args: Value[], kwargs: Kwargs, env: E
     case "print": {
       const sep = kwargs.get("sep");
       const end = kwargs.get("end");
+      for (const a of args) yield* prepare(a, env, span);
       const text = args
         .map((a) => pyStr(a, setOrder))
         .join(sep === undefined || sep.kind === "none" ? " " : pyStr(sep, setOrder));
@@ -262,10 +269,29 @@ export function* callBuiltin(name: string, args: Value[], kwargs: Kwargs, env: E
       return bool(typeMatches(a0 as Value, args[1] as Value, span));
     case "type":
       exactly("type", args, 1, span);
+      if ((a0 as Value).kind === "instance") return (a0 as Extract<Value, { kind: "instance" }>).cls;
       return { kind: "type", name: pyTypeName(a0 as Value) };
     case "repr":
       exactly("repr", args, 1, span);
+      yield* prepare(a0 as Value, env, span, "repr");
       return str(repr(a0 as Value));
+    case "issubclass": {
+      exactly("issubclass", args, 2, span);
+      const [c, t] = [a0 as Value, args[1] as Value];
+      if (c.kind !== "class" && c.kind !== "type") throw typeError("issubclass() arg 1 must be a class", span);
+      const targets = t.kind === "tuple" ? t.items : [t];
+      const own = c.kind === "class" ? c : null;
+      return bool(
+        targets.some((x) =>
+          own !== null
+            ? isClassSubclass(own, x)
+            : x.kind === "type" && (x.name === "object" || isSubclassName((c as { name: string }).name, x.name)),
+        ),
+      );
+    }
+    case "$base_init":
+      baseInitialise(a0 ?? NONE, args.slice(1));
+      return NONE;
     case "hex":
       return radix(name, "0x", 16, a0, span);
     case "bin":

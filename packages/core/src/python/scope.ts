@@ -13,8 +13,10 @@ export class FuncScope {
 
   constructor(
     readonly parent: FuncScope | null,
-    params: readonly string[],
+    readonly params: readonly string[],
     body: readonly SStmt[],
+    /** A class body is a namespace, not an enclosing scope: methods inside it cannot see its names (PY-19). */
+    readonly isClass = false,
   ) {
     for (const p of params) this.locals.add(p);
     this.scan(body);
@@ -54,6 +56,7 @@ export class FuncScope {
           this.scan(s.else);
           break;
         case "def":
+        case "class":
           this.locals.add(s.name);
           break;
         case "global":
@@ -84,9 +87,11 @@ export class FuncScope {
     if (this.globals.has(name)) return { where: "global", hops: 0 };
     if (this.locals.has(name)) return { where: "local", hops: 0 };
     let hops = 1;
-    for (let p = this.parent; p !== null; p = p.parent, hops++) {
+    for (let p = this.parent; p !== null; p = p.parent) {
+      if (p.isClass) continue;
       if (p.globals.has(name)) break;
       if (p.locals.has(name)) return { where: "free", hops };
+      hops++;
     }
     return { where: "global", hops: 0 };
   }

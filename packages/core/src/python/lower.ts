@@ -4,6 +4,7 @@ import type { Program } from "../ir/ir.ts";
 import type { PyHandler, PyStmt } from "../ir/python-ir.ts";
 import type { SStmt } from "./ast.ts";
 import { ExprLowerer } from "./lower-expr.ts";
+import { FuncScope } from "./scope.ts";
 
 interface FnState {
   loops: number;
@@ -96,6 +97,22 @@ class PythonLowerer extends ExprLowerer {
       case "def": {
         const fn = this.makeFunction(s.name, s.params, s.body, span);
         return [{ kind: "pyAssign", targets: [this.target({ kind: "name", name: s.name, span })], value: fn, span }];
+      }
+      case "class": {
+        const name = s.name;
+        const bases = s.bases.map((b) => this.expr(b));
+        const target = this.target({ kind: "name", name, span });
+        // The body is lowered in its own scope; names assigned in it become the class's attributes.
+        const saved = { scope: this.scope, comps: this.comps, cls: this.className, loops: this.enterFunction() };
+        this.scope = new FuncScope(saved.scope, [], s.body, true);
+        this.comps = [];
+        this.className = name;
+        const body = this.lowerBlock(s.body);
+        this.scope = saved.scope;
+        this.comps = saved.comps;
+        this.className = saved.cls;
+        this.leaveFunction(saved.loops);
+        return [{ kind: "pyClass", name, target, bases, body, span }];
       }
       case "del":
         return [{ kind: "pyDel", targets: s.targets.map((t) => this.target(t)), span }];
