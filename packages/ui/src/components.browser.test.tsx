@@ -6,6 +6,7 @@ import { axeViolations } from "./axe.ts";
 import { Console } from "./Console.tsx";
 import { Editor } from "./Editor.tsx";
 import { Problems } from "./Problems.tsx";
+import { StatusBar } from "./StatusBar.tsx";
 import { Toolbar } from "./Toolbar.tsx";
 
 const diag = (over: Partial<Diagnostic> = {}): Diagnostic => ({
@@ -161,5 +162,27 @@ describe("MISC Editor language", () => {
       const spans = [...screen.container.querySelectorAll(".cm-line span")].map((e) => e.textContent);
       expect(spans).toContain("OUTPUT");
     });
+  });
+});
+
+describe("MISC Status bar wording and cursor", () => {
+  it.each([
+    ["idle", null, "Ready"],
+    ["waiting", null, "Waiting for input"],
+    ["finished", null, "Finished"],
+    ["paused", 7, "Paused at line 7"],
+    ["error", 3, "Error, line 3"],
+    ["error", null, "Error"],
+  ] as const)("MISC state %s with line %s reads %s", async (state, line, text) => {
+    const screen = await render(<StatusBar state={state} line={line} diagnostics={[]} languageName="Python" />);
+    await expect.element(screen.getByText(text, { exact: true })).toBeVisible();
+  });
+
+  it("MISC the status bar shows the cursor as Ln and Col", async () => {
+    const screen = await render(
+      <StatusBar state="idle" cursor={{ line: 4, column: 9 }} diagnostics={[]} languageName="Python" />,
+    );
+    await expect.element(screen.getByText("Ln 4, Col 9")).toBeVisible();
+    expect(await axeViolations(screen.container)).toEqual([]);
   });
 });

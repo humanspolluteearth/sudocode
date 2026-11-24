@@ -29,6 +29,8 @@ export interface EditorProps {
   ariaLabel?: string;
   /** Called with the breakpoint lines whenever the student sets or clears one (or edits move them). */
   onBreakpointsChange?: (lines: number[]) => void;
+  /** Called with the cursor's line and column (both 1-based) whenever it moves. */
+  onCursorChange?: (cursor: { line: number; column: number }) => void;
   /** The line the debugger is paused before, highlighted; null when not paused. */
   pausedLine?: number | null;
   /** Which pseudocode to colour; Edexcel by default. */
@@ -84,6 +86,7 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
     diagnostics,
     ariaLabel = "Program editor",
     onBreakpointsChange,
+    onCursorChange,
     pausedLine = null,
     language = "edexcel",
   },
@@ -94,6 +97,8 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
   // The latest callback, so the editor is created once and never rebuilt when the parent re-renders.
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
+  const onCursorRef = useRef(onCursorChange);
+  onCursorRef.current = onCursorChange;
   // Keyboard escape hatch (the design's): Escape arms it, and the next Tab (or Shift+Tab at any time) moves focus out
   // of the editor instead of indenting. Any other key disarms it.
   const escArmed = useRef(false);
@@ -155,6 +160,11 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
           }),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) onChangeRef.current(update.state.doc.toString());
+            if (update.selectionSet || update.docChanged) {
+              const head = update.state.selection.main.head;
+              const at = update.state.doc.lineAt(head);
+              onCursorRef.current?.({ line: at.number, column: head - at.from + 1 });
+            }
             const before = update.startState.field(breakpointField);
             const after = update.state.field(breakpointField);
             if (before !== after) {

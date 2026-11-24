@@ -14,21 +14,44 @@ export const STATE_TEXT: Record<RunState, string> = {
   error: "Stopped with an error",
 };
 
+/** The status bar's wording from the design: "Paused at line 7", "Error, line 3", "Waiting for input", "Finished", "Ready". */
+export function statusText(state: RunState, line: number | null): string {
+  if (state === "paused" && line !== null) return `Paused at line ${String(line)}`;
+  if (state === "error") return line === null ? "Error" : `Error, line ${String(line)}`;
+  return STATE_TEXT[state];
+}
+
+export interface CursorPosition {
+  line: number;
+  column: number;
+}
+
 export interface StatusBarProps {
   state: RunState;
+  /** The line the run is paused at, or the line of its error. */
+  line?: number | null;
+  /** Where the editor's cursor is (1-based). */
+  cursor?: CursorPosition;
   diagnostics: readonly Diagnostic[];
   languageName: string;
 }
 
-export function StatusBar({ state, diagnostics, languageName }: StatusBarProps) {
+export function StatusBar({
+  state,
+  line = null,
+  cursor = { line: 1, column: 1 },
+  diagnostics,
+  languageName,
+}: StatusBarProps) {
   const errors = diagnostics.filter((d) => d.severity === "error").length;
   const warnings = diagnostics.filter((d) => d.severity === "warning").length;
   return (
-    <footer className="sc-statusbar" role="status" aria-label="Status bar">
-      <span>{STATE_TEXT[state]}</span>
+    <div className="sc-statusbar" role="status" aria-label="Status bar">
+      <span>{statusText(state, line)}</span>
       <span>{`${String(errors)} ${errors === 1 ? "error" : "errors"}, ${String(warnings)} ${warnings === 1 ? "warning" : "warnings"}`}</span>
       <span className="sc-grow" />
+      <span>{`Ln ${String(cursor.line)}, Col ${String(cursor.column)}`}</span>
       <span>{languageName}</span>
-    </footer>
+    </div>
   );
 }
