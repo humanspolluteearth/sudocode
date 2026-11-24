@@ -35,6 +35,12 @@ export interface ToolbarProps {
   onTheme: (theme: ThemeChoice) => void;
   language?: PseudocodeLanguage;
   onLanguage?: (language: PseudocodeLanguage) => void;
+  /** Save the active file; the button is disabled while this is missing. */
+  onSave?: () => void;
+  /** Open the converted program in a new tab. Missing in Simple mode (the converter is an Advanced tool). */
+  onConvert?: ((target: "python") => void) | undefined;
+  /** False when the active file is already Python, so there is nothing to convert to. */
+  canConvert?: boolean;
   examples: readonly Example[];
   onExample: (example: Example) => void;
 }
@@ -125,24 +131,37 @@ export function Toolbar(p: ToolbarProps) {
         Clear breakpoints
       </button>
       <span className="sc-sep" aria-hidden="true" />
-      <button type="button" className="sc-tb" disabled title={SOON}>
+      <button
+        type="button"
+        className="sc-tb"
+        disabled={p.onSave === undefined}
+        title={p.onSave === undefined ? SOON : "Save (Ctrl+S)"}
+        onClick={p.onSave}
+      >
         <Icon>
           <path d="M2.5 2.5h9l2 2v9h-11zM5 2.5v3.5h5V2.5M4.5 13.5V9h7v4.5" style={{ ...stroke, strokeWidth: 1.3 }} />
         </Icon>
         Save
       </button>
-      <button type="button" className="sc-tb" disabled title={SOON} aria-haspopup="true">
-        <Icon>
-          <path
-            d="M2.5 5h9.5M9.5 2.5 12 5 9.5 7.5M13.5 11H4M6.5 8.5 4 11l2.5 2.5"
-            style={{ ...stroke, strokeWidth: 1.3 }}
-          />
-        </Icon>
-        Convert to
-        <svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true">
-          <path d="M2 3.5l3 3 3-3" style={{ ...stroke, strokeWidth: 1.3 }} />
-        </svg>
-      </button>
+      {p.onConvert !== undefined && (
+        <label className="sc-field">
+          Convert to
+          <select
+            aria-label="Convert to"
+            value=""
+            disabled={p.canConvert === false}
+            title={p.canConvert === false ? "This file is already Python" : "Open a converted copy in a new tab"}
+            onChange={(e) => {
+              if (e.target.value === "python") p.onConvert?.("python");
+            }}
+          >
+            <option value="" disabled>
+              Choose…
+            </option>
+            <option value="python">Python</option>
+          </select>
+        </label>
+      )}
       {p.language !== undefined && (
         <label className="sc-field sc-field-first">
           Language

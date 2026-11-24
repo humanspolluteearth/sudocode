@@ -12,6 +12,7 @@ import { MenuBar } from "./MenuBar.tsx";
 import { NoteBanner, type Note } from "./NoteBanner.tsx";
 import { Splitter } from "./Splitter.tsx";
 import { Toolbar } from "./Toolbar.tsx";
+import type { PseudocodeLanguage } from "./preferences.ts";
 import { buildMenus, type MenuActions } from "./menu-model.ts";
 
 const actions = (over: Partial<MenuActions> = {}): MenuActions => ({
@@ -36,6 +37,16 @@ const actions = (over: Partial<MenuActions> = {}): MenuActions => ({
   onClearConsole: () => undefined,
   breakpointCount: 0,
   onClearBreakpoints: () => undefined,
+  onNewFile: () => undefined,
+  onOpenFile: () => undefined,
+  onSave: () => undefined,
+  onSaveAs: () => undefined,
+  onSaveAll: () => undefined,
+  examples: [],
+  currentExampleId: null,
+  onExample: () => undefined,
+  advanced: true,
+  onConvertToPython: () => undefined,
   ...over,
 });
 
@@ -119,12 +130,50 @@ describe("MISC menu bar", () => {
     expect(onRun).toHaveBeenCalledOnce();
   });
 
-  it("MISC unsupported items are shown disabled with a title", async () => {
-    const screen = await render(<MenuBar menus={buildMenus(actions())} />);
+  it("MISC File > Save, Save as, Save all, New file and Open call their handlers", async () => {
+    const h = { onSave: vi.fn(), onSaveAs: vi.fn(), onSaveAll: vi.fn(), onNewFile: vi.fn(), onOpenFile: vi.fn() };
+    const screen = await render(<MenuBar menus={buildMenus(actions(h))} />);
+    for (const [name, fn] of [
+      [/^Save\s*Ctrl\+S/, h.onSave],
+      [/^Save as/, h.onSaveAs],
+      [/^Save all/, h.onSaveAll],
+      [/^New file/, h.onNewFile],
+      [/^Open/, h.onOpenFile],
+    ] as const) {
+      await screen.getByRole("menuitem", { name: "File", exact: true }).click();
+      await screen.getByRole("menuitem", { name }).click();
+      expect(fn).toHaveBeenCalledOnce();
+    }
+  });
+
+  it("MISC File lists the examples with a tick on the current one", async () => {
+    const examples = [
+      { id: "a", name: "First", code: "1" },
+      { id: "b", name: "Second", code: "2" },
+    ];
+    const onExample = vi.fn();
+    const screen = await render(
+      <MenuBar menus={buildMenus(actions({ examples, currentExampleId: "b", onExample }))} />,
+    );
     await screen.getByRole("menuitem", { name: "File", exact: true }).click();
-    const save = screen.getByRole("menuitem", { name: /^Save/ });
-    await expect.element(save).toBeDisabled();
-    await expect.element(save).toHaveAttribute("title", "Not available yet");
+    await expect.element(screen.getByRole("menuitemradio", { name: "Second" })).toHaveAttribute("aria-checked", "true");
+    await screen.getByRole("menuitemradio", { name: "First" }).click();
+    expect(onExample).toHaveBeenCalledWith(examples[0]);
+  });
+
+  it("MISC Convert menu converts to Python, is disabled for Python files and is hidden in Simple mode", async () => {
+    const onConvertToPython = vi.fn();
+    const screen = await render(<MenuBar menus={buildMenus(actions({ onConvertToPython }))} />);
+    await screen.getByRole("menuitem", { name: "Convert", exact: true }).click();
+    await screen.getByRole("menuitem", { name: "Convert to Python" }).click();
+    expect(onConvertToPython).toHaveBeenCalledOnce();
+    await screen.unmount();
+    const py = await render(<MenuBar menus={buildMenus(actions({ language: "python" }))} />);
+    await py.getByRole("menuitem", { name: "Convert", exact: true }).click();
+    await expect.element(py.getByRole("menuitem", { name: "Convert to Python" })).toBeDisabled();
+    await py.unmount();
+    const simple = await render(<MenuBar menus={buildMenus(actions({ advanced: false }))} />);
+    await expect.element(simple.getByRole("menuitem", { name: "Convert", exact: true })).not.toBeInTheDocument();
   });
 
   it("MISC the Language menu marks the current language and switches it", async () => {
@@ -157,18 +206,45 @@ describe("MISC menu bar", () => {
   });
 });
 
+const strip = (language: PseudocodeLanguage, source: string) => ({
+  tabs: [{ id: 1, name: "untitled", language, source, savedSource: source, named: false }],
+  activeId: 1,
+  onSwitch: () => undefined,
+  onClose: () => undefined,
+  onNew: () => undefined,
+});
+
 describe("MISC file tab strip", () => {
   it("MISC shows the badge, file name and line count", async () => {
-    const screen = await render(<FileTabs language="edexcel" name="untitled" source={"a\nb\nc\n"} />);
+    const screen = await render(<FileTabs {...strip("edexcel", "a\nb\nc\n")} />);
     await expect.element(screen.getByRole("tab", { name: /EDX\s*untitled\.epc/ })).toBeVisible();
     await expect.element(screen.getByText("3 lines")).toBeVisible();
   });
 
-  it("MISC close and + are disabled with a title, not removed", async () => {
-    const screen = await render(<FileTabs language="python" name="untitled" source="print(1)" />);
-    await expect.element(screen.getByRole("button", { name: "New tab" })).toBeDisabled();
+  it("MISC the only tab can't be closed, and + opens a new file", async () => {
+    const props = strip("python", "print(1)");
+    const onNew = vi.fn();
+    const screen = await render(<FileTabs {...props} onNew={onNew} />);
+    await screen.getByRole("button", { name: "New tab" }).click();
+    expect(onNew).toHaveBeenCalledOnce();
     await expect.element(screen.getByRole("button", { name: /^Close/ })).toBeDisabled();
     await expect.element(screen.getByText("1 line", { exact: true })).toBeVisible();
+  });
+
+  it("MISC several tabs: switch, close and an unsaved dot", async () => {
+    const base = strip("edexcel", "a");
+    const tabs = [
+      ...base.tabs,
+      { id: 2, name: "second", language: "python" as const, source: "x", savedSource: "", named: true },
+    ];
+    const onSwitch = vi.fn();
+    const onClose = vi.fn();
+    const screen = await render(<FileTabs {...base} tabs={tabs} onSwitch={onSwitch} onClose={onClose} />);
+    await expect.element(screen.getByRole("img", { name: "unsaved changes" })).toBeVisible();
+    await screen.getByRole("tab", { name: /second\.py/ }).click();
+    expect(onSwitch).toHaveBeenCalledWith(2);
+    await screen.getByRole("button", { name: "Close second.py" }).click();
+    expect(onClose).toHaveBeenCalledWith(2);
   });
 
   it("MISC lineCount ignores one trailing newline and counts an empty file as 1", () => {
@@ -179,7 +255,7 @@ describe("MISC file tab strip", () => {
   });
 
   it("MISC the tab strip has no axe violations", async () => {
-    const screen = await render(<FileTabs language="cie" name="untitled" source="x" />);
+    const screen = await render(<FileTabs {...strip("cie", "x")} />);
     expect(await axeViolations(screen.container)).toEqual([]);
   });
 });
@@ -200,12 +276,24 @@ describe("MISC Toolbar layout", () => {
       {...over}
     />
   );
-  it("MISC Save and Convert to are shown disabled with a title", async () => {
-    const screen = await render(bar());
-    const save = screen.getByRole("button", { name: "Save" });
-    await expect.element(save).toBeDisabled();
-    await expect.element(save).toHaveAttribute("title", "Not available yet");
-    await expect.element(screen.getByRole("button", { name: /Convert to/ })).toBeDisabled();
+  it("MISC Save is disabled without a handler and calls it when given one", async () => {
+    const without = await render(bar());
+    await expect.element(without.getByRole("button", { name: "Save" })).toBeDisabled();
+    await without.unmount();
+    const onSave = vi.fn();
+    const screen = await render(bar({ onSave }));
+    await screen.getByRole("button", { name: "Save" }).click();
+    expect(onSave).toHaveBeenCalledOnce();
+  });
+
+  it("MISC Convert to is absent without a handler (Simple mode) and picks Python when given one", async () => {
+    const without = await render(bar());
+    await expect.element(without.getByLabelText("Convert to")).not.toBeInTheDocument();
+    await without.unmount();
+    const onConvert = vi.fn();
+    const screen = await render(bar({ onConvert }));
+    await screen.getByLabelText("Convert to").selectOptions("python");
+    expect(onConvert).toHaveBeenCalledWith("python");
   });
   it("MISC Clear breakpoints calls its handler", async () => {
     const onClearBreakpoints = vi.fn();
@@ -380,7 +468,7 @@ describe("MISC editor selection and tab strip", () => {
   });
 
   it("MISC the file tab strip has no scrollbars", async () => {
-    const screen = await render(<FileTabs language="edexcel" name="untitled" source={"a\n"} />);
+    const screen = await render(<FileTabs {...strip("edexcel", "a\n")} />);
     const tabs = screen.container.querySelector(".sc-tabs") as HTMLElement;
     expect(getComputedStyle(tabs).overflowX).toBe("hidden");
     expect(getComputedStyle(tabs).overflowY).toBe("hidden");
