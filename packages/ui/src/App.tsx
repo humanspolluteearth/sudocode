@@ -15,6 +15,7 @@ import { loadPreferences, savePreferences, type PseudocodeLanguage } from "./pre
 import { startRun, type RunSession, type SessionCommand, type WorkerFactories } from "./run-session.ts";
 import { initialRunView, runReducer } from "./run-state.ts";
 import { SidePanel, type SideTab } from "./SidePanel.tsx";
+import { NoteBanner, type Note } from "./NoteBanner.tsx";
 import { StatusBar } from "./StatusBar.tsx";
 import { StepLimitDialog } from "./StepLimitDialog.tsx";
 import { Toolbar, type ThemeChoice } from "./Toolbar.tsx";
@@ -37,6 +38,8 @@ export function App({ workers }: AppProps) {
   const [source, setSource] = useState<string>(STARTERS[prefs.language]);
   const [diagnostics, setDiagnostics] = useState<readonly Diagnostic[]>([]);
   const [run, dispatch] = useReducer(runReducer, initialRunView);
+  // A note under the tab strip; nothing sets one yet (see NoteBanner), so it starts empty.
+  const [note, setNote] = useState<Note | null>(null);
   const [breakpoints, setBreakpoints] = useState<number[]>([]);
   const [tab, setTab] = useState<SideTab>("debugger");
   // The full guide pages are routes (`?guide=cie`), so the browser's Back button and shared links work.
@@ -245,6 +248,14 @@ export function App({ workers }: AppProps) {
       <main className="sc-main">
         <div className="sc-left">
           <FileTabs language={language} name="untitled" source={source} />
+          {note !== null && (
+            <NoteBanner
+              note={note}
+              onDismiss={() => {
+                setNote(null);
+              }}
+            />
+          )}
           <Editor
             ref={editor}
             value={source}
