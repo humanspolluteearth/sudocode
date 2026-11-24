@@ -1,0 +1,11 @@
+{
+  "name": "Sudocode",
+  "short_name": "Sudocode",
+  "description": "Write, run and debug Edexcel and Cambridge pseudocode and syllabus Python.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1f4fd8",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
