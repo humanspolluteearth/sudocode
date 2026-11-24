@@ -18,10 +18,12 @@ const PAGES = [
 
 const browser = await chromium.launch();
 try {
-  const page = await browser.newPage();
+  // Scripts are not run (JavaScript off) and are removed from the DOM, so no regex has to clean the HTML.
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
   for (const [id, file] of PAGES) {
     const html = readFileSync(`reference/prototype/design/${file}`, "utf8");
-    await page.setContent(html.replace(/<script[^>]*>[\s\S]*?<\/script>/g, ""));
+    await page.setContent(html);
     const tree = await page.evaluate(() => {
       const walk = (node) => {
         if (node.nodeType === 3) return node.textContent;
@@ -35,6 +37,7 @@ try {
         return out;
       };
       // The page's outer div holds the breadcrumb bar and the body; the theme class is set by the app.
+      for (const el of document.querySelectorAll("script")) el.remove();
       const root = document.querySelector("div.th");
       return { title: document.title, root: walk(root) };
     });

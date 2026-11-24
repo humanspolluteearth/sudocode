@@ -21,10 +21,29 @@ const decode = (s: string): string =>
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
     .replace(/&amp;/g, "&");
-const plain = (html: string): string =>
-  decode(html.replace(/<[^>]*>/g, ""))
-    .replace(/\s+/g, " ")
-    .trim();
+// Text outside tags, by scanning characters (no regex, so nothing is half-sanitised).
+const stripTags = (html: string): string => {
+  let out = "";
+  let inTag = false;
+  for (const ch of html) {
+    if (ch === "<") inTag = true;
+    else if (ch === ">" && inTag) inTag = false;
+    else if (!inTag) out += ch;
+  }
+  return out;
+};
+// Cuts every <script>…</script> block, matched without regard to case.
+const dropScripts = (html: string): string => {
+  let out = html;
+  for (;;) {
+    const start = out.toLowerCase().indexOf("<script");
+    if (start < 0) return out;
+    const end = out.toLowerCase().indexOf("</script", start);
+    const close = end < 0 ? -1 : out.indexOf(">", end);
+    out = out.slice(0, start) + (close < 0 ? "" : out.slice(close + 1));
+  }
+};
+const plain = (html: string): string => decode(stripTags(html)).replace(/\s+/g, " ").trim();
 const walk = (n: Node | string, visit: (n: Node) => void): void => {
   if (typeof n === "string") return;
   visit(n);
@@ -35,7 +54,8 @@ const walk = (n: Node | string, visit: (n: Node) => void): void => {
 const text = (n: Node | string): string => (typeof n === "string" ? n : (n.c ?? []).map(text).join(""));
 
 describe.each(PAGES)("MISC %s guide page", (id, file) => {
-  const design = readFileSync(`reference/prototype/design/${file}`, "utf8").replace(/<script[\s\S]*?<\/script>/g, "");
+  const raw = readFileSync(`reference/prototype/design/${file}`, "utf8");
+  const design = dropScripts(raw);
   const root = JSON.parse(readFileSync(`packages/ui/src/guides/${id}.json`, "utf8")) as Node;
   const nodes: Node[] = [];
   walk(root, (n) => nodes.push(n));
@@ -67,9 +87,7 @@ describe.each(PAGES)("MISC %s guide page", (id, file) => {
     for (const tag of ["table", "tr", "th", "td", "pre", "code", "li", "section", "p"]) {
       expect(count(tag), tag).toBe(inDesign(tag));
     }
-    const samples = [...design.matchAll(/<pre[^>]*>([\s\S]*?)<\/pre>/g)].map((m) =>
-      decode(m[1] ?? "").replace(/<[^>]*>/g, ""),
-    );
+    const samples = [...design.matchAll(/<pre[^>]*>([\s\S]*?)<\/pre>/g)].map((m) => decode(stripTags(m[1] ?? "")));
     expect(nodes.filter((n) => n.t === "pre").map(text)).toEqual(samples);
   });
 });
