@@ -33,3 +33,7 @@ toolbar, side panel). Each PR reports its measured size. Earlier milestones (M7,
 - The design's 26px buttons are below the 44px touch target in `.claude/rules/ui.md`. The goal says to match the design, so the 26px size is kept.
 - "Stop" is now "Reset", and the "Examples" label is "Example" (design wording). Tests edited for that text only: `components.browser.test.tsx` (2 lines), `apps/web/e2e/app.spec.ts` (line 24).
 - `pnpm check` printed `FAIL test` twice during this work and passed on rerun (four more green runs in a row). The failing test was not captured; not reproduced.
+
+## U4 Editor gutter
+
+The gutter is 62px wide with the design's number padding and 11px numbers, and the code uses 13px / 19px with ligatures off (console 12px / 18px, from the design's non-compact values). The design's per-line arrow marker for the paused line is not drawn in the gutter; the app keeps its existing paused-line highlight. Left as is: it changes no behaviour and the highlight already shows where the debugger is.

@@ -1,3 +1,6 @@
+import { createRef } from "react";
+import { userEvent } from "vitest/browser";
+import { Editor, type EditorHandle } from "./Editor.tsx";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { axeViolations } from "./axe.ts";
@@ -146,5 +149,28 @@ describe("MISC Toolbar layout", () => {
     const screen = await render(bar({ language: "edexcel", onLanguage: () => undefined }));
     await expect.element(screen.getByRole("toolbar")).toBeVisible();
     expect(await axeViolations(screen.container)).toEqual([]);
+  });
+});
+
+describe("MISC Editor gutter", () => {
+  it("MISC the gutter is 62px wide and Clear breakpoints removes every breakpoint", async () => {
+    const onBreakpointsChange = vi.fn();
+    const ref = createRef<EditorHandle>();
+    const screen = await render(
+      <Editor
+        ref={ref}
+        value={"a\nb\nc\n"}
+        onChange={() => undefined}
+        diagnostics={[]}
+        onBreakpointsChange={onBreakpointsChange}
+      />,
+    );
+    const gutters = screen.container.querySelector(".cm-gutters");
+    expect(gutters?.getBoundingClientRect().width).toBe(62);
+    await screen.getByRole("textbox").click();
+    await userEvent.keyboard("{F9}");
+    expect(onBreakpointsChange).toHaveBeenLastCalledWith([3]);
+    ref.current?.clearBreakpoints();
+    expect(onBreakpointsChange).toHaveBeenLastCalledWith([]);
   });
 });

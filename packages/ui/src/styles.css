@@ -274,7 +274,7 @@ body {
   overflow: auto;
   padding: 4px 8px;
   background: var(--bg);
-  font: calc(13px * var(--zoom, 1)) / 1.5 var(--code-font);
+  font: calc(12px * var(--zoom, 1)) / calc(18px * var(--zoom, 1)) var(--code-font);
 }
 .sc-out {
   white-space: pre-wrap;

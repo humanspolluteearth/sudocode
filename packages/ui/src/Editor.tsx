@@ -40,8 +40,22 @@ const languageExtension = (language: "edexcel" | "cie" | "python") =>
 
 const theme = EditorView.theme({
   "&": { height: "100%", color: "var(--fg)", backgroundColor: "var(--bg)" },
-  ".cm-scroller": { fontFamily: "var(--code-font)", fontSize: "calc(14px * var(--zoom, 1))", lineHeight: "1.5" },
-  ".cm-gutters": { backgroundColor: "var(--gutter)", color: "var(--lnum)", borderRight: "1px solid var(--line2)" },
+  ".cm-scroller": {
+    fontFamily: "var(--code-font)",
+    fontSize: "calc(13px * var(--zoom, 1))",
+    lineHeight: "calc(19px * var(--zoom, 1))",
+  },
+  ".cm-content": { fontVariantLigatures: "none" },
+  ".cm-line": { padding: "0 12px" },
+  ".cm-lineNumbers": { flex: "1 1 auto" },
+  ".cm-lineNumbers .cm-gutterElement": { padding: "0 8px 0 5px", fontSize: "calc(11px * var(--zoom, 1))" },
+  ".cm-gutters": {
+    width: "62px",
+    boxSizing: "border-box",
+    backgroundColor: "var(--gutter)",
+    color: "var(--lnum)",
+    borderRight: "1px solid var(--line2)",
+  },
   ".cm-activeLine": { backgroundColor: "var(--cur)" },
   ".cm-activeLineGutter": { backgroundColor: "var(--cur)" },
   ".cm-cursor": { borderLeftColor: "var(--fg)" },
@@ -49,7 +63,7 @@ const theme = EditorView.theme({
   ".cm-tooltip": { backgroundColor: "var(--bg)", color: "var(--fg)", border: "1px solid var(--field)" },
   ".cm-diagnostic": { padding: "3px 6px" },
   ".sc-paused-line": { backgroundColor: "var(--paused)", outline: "1px solid var(--paused-edge)" },
-  ".sc-bp-gutter": { width: "14px", cursor: "pointer" },
+  ".sc-bp-gutter": { width: "20px", cursor: "pointer" },
   ".sc-bp-gutter .cm-gutterElement": { display: "flex", alignItems: "center", justifyContent: "center" },
   ".sc-bp-dot": {
     display: "inline-block",
@@ -150,7 +164,9 @@ export const Editor = forwardRef<EditorHandle, EditorProps>(function Editor(
       const v = view.current;
       if (v === null) return;
       // Toggling a line that has a breakpoint removes it; the update listener reports the new (empty) list.
-      v.dispatch({ effects: breakpointLines(v.state).map((line) => toggleBreakpoint.of(line)) });
+      // toggleBreakpoint takes the document position of the line start, not the line number.
+      const effects = breakpointLines(v.state).map((n) => toggleBreakpoint.of(v.state.doc.line(n).from));
+      v.dispatch({ effects });
     },
     goTo(line, column) {
       const v = view.current;
