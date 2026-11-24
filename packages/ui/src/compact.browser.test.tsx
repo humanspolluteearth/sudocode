@@ -223,6 +223,31 @@ describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc
     expect(await axeViolations(screen.container)).toEqual([]);
   });
 
+  for (const [width, zoomed] of [
+    [390, false],
+    [834, true],
+  ] as const) {
+    it(`MISC at ${String(width)}px the gutter is narrower than 62px and still fits 4-digit line numbers`, async () => {
+      await page.viewport(width, 800);
+      localStorage.setItem("sudocode.preferences", JSON.stringify({ zoom: zoomed ? 150 : 100 }));
+      await render(<App />);
+      const editor = page.getByRole("textbox", { name: "Program editor" });
+      await editor.click();
+      await userEvent.keyboard("{Control>}a{/Control}");
+      await userEvent.keyboard("{Enter}".repeat(1100));
+      const gutters = document.querySelector<HTMLElement>(".sc-compact .cm-gutters");
+      expect(gutters).not.toBeNull();
+      const numbers = [...document.querySelectorAll<HTMLElement>(".cm-lineNumbers .cm-gutterElement")];
+      const four = numbers.find((n) => /^\d{4}$/.test(n.textContent));
+      expect(four, "a 4-digit line number is rendered").toBeDefined();
+      const box = four?.getBoundingClientRect();
+      const bar = gutters?.getBoundingClientRect();
+      expect(box?.left ?? 0).toBeGreaterThanOrEqual(bar?.left ?? 0);
+      expect(box?.right ?? 0).toBeLessThanOrEqual(bar?.right ?? 0);
+      expect(bar?.width ?? 99).toBeLessThan(62 + (zoomed ? 24 : 0));
+    });
+  }
+
   for (const [width, layout] of [
     [699, "phone"],
     [700, "tablet"],

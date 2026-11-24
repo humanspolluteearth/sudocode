@@ -1283,3 +1283,18 @@ button.sc-section-head:hover {
 .sc-tablet .sc-key {
   min-height: 40px;
 }
+
+/* Compact layouts: the gutter sizes to its content instead of the desktop's fixed 62px, with room for 4-digit line
+   numbers at any text size (4ch is relative to the gutter's own font, so it follows the zoom). */
+.sc-compact .sc-editor .cm-gutters {
+  width: auto;
+}
+.sc-compact .sc-editor .cm-lineNumbers {
+  flex: none;
+}
+.sc-compact .sc-editor .cm-lineNumbers .cm-gutterElement {
+  box-sizing: content-box;
+  min-width: 4ch;
+  padding: 0 4px 0 2px;
+  text-align: right;
+}
