@@ -15,6 +15,7 @@ import { arith, compareOp, negate, unaryPlus } from "./numbers.ts";
 import { pyStr, pyTypeName } from "./repr.ts";
 import { containsWithEq, prepare, userCompare } from "./class-calls.ts";
 import { getAttr, setAttr } from "./classes.ts";
+import { fileMethod } from "./files.ts";
 import { contains, indexValue, iterate, repr, sliceValue, sortPairs, truthy } from "./seq.ts";
 
 const MUTATING = new Set([
@@ -168,6 +169,9 @@ function* method(e: Extract<PyExpr, { kind: "pyMethod" }>, env: Env): Run<Value>
       break;
     case "set":
       result = setMethod(target, e.name, ca, e.span);
+      break;
+    case "file":
+      result = fileMethod(target, e.name, ca, env.machine, e.span);
       break;
     case "instance":
     case "class":

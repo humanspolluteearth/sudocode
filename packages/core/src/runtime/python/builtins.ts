@@ -10,11 +10,13 @@ import { arith, asBig, compareOrder, isNumeric, pyRound, toFloat } from "./numbe
 import { pyStr, pyTypeName } from "./repr.ts";
 import { iterate, lengthOf, repr, sortPairs, truthy } from "./seq.ts";
 import { setOrder } from "./hash.ts";
+import { openFile } from "./files.ts";
 import { prepare } from "./class-calls.ts";
 import { baseInitialise, isClassSubclass } from "./classes.ts";
 
 export const BUILTIN_FUNCTIONS = new Set([
   "print",
+  "open",
   "input",
   "len",
   "abs",
@@ -140,6 +142,8 @@ export function* callBuiltin(name: string, args: Value[], kwargs: Kwargs, env: E
       env.machine.output(text + (end === undefined || end.kind === "none" ? "\n" : pyStr(end, setOrder)), span);
       return NONE;
     }
+    case "open":
+      return openFile(args, kwargs, env.machine, span);
     case "input": {
       const prompt = a0 === undefined ? "" : pyStr(a0, setOrder);
       const line = (yield { type: "input", prompt, device: null, span }) as Value | undefined;

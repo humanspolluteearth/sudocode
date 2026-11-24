@@ -146,11 +146,7 @@ class StatementParser extends ExprParser {
       case "class":
         return this.classStatement();
       case "with":
-        return this.unsupported(
-          t.span,
-          "with statements",
-          "with statements are not in the Python subset yet. Use plain statements instead.",
-        );
+        return this.withStatement();
       case "if":
         return this.ifStatement();
       case "while":
@@ -162,6 +158,19 @@ class StatementParser extends ExprParser {
       default:
         return this.tryStatement();
     }
+  }
+
+  /** `with open(...) as f:` (PY-21). Lowering turns it into try/finally so the file closes even after an error. */
+  private withStatement(): SStmt {
+    const first = this.next();
+    const items: { expr: SExpr; target: SExpr | null }[] = [];
+    do {
+      const expr = this.expression();
+      items.push({ expr, target: this.acceptWord("as") ? this.expression() : null });
+    } while (this.acceptOp(","));
+    this.colon();
+    const body = this.block("'with' statement", first.span.line);
+    return { kind: "with", items, body, span: this.since(first.span) };
   }
 
   private ifStatement(): SStmt {

@@ -231,6 +231,15 @@ export function runProgram(options: DriverOptions): EngineRun {
         if (f.mode !== null && f.openedAt !== null) return { file: f.name, span: f.openedAt };
       return null;
     },
+    fileText: (name) => store.get(name.toLowerCase())?.text,
+    storeFile: (name, text) => {
+      const key = name.toLowerCase();
+      const f = store.get(key) ?? fresh(name, "", true);
+      f.text = text;
+      f.written = true;
+      store.set(key, f);
+      pendingFiles.set(f.name, text);
+    },
     assigned: (name, value, span) => {
       if (tracing && !name.startsWith("$")) {
         // `$` names are the front end's hidden variables

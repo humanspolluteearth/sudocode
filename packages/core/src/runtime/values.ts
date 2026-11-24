@@ -66,6 +66,8 @@ export type Value =
   | { kind: "bound"; fn: Value; self: Value }
   /** What `super()` gives: attribute lookup starts after `cls` in the MRO of `self`'s class. */
   | { kind: "super"; cls: Extract<Value, { kind: "class" }>; self: Value }
+  /** A text file from `open()` (PY-21): reading walks `pos` through `text`; writing goes straight to the virtual file. */
+  | { kind: "file"; name: string; mode: "r" | "w" | "a"; text: string; pos: number; closed: boolean }
   /** One call frame's variables, used to build closures; never visible to the student. */
   | { kind: "env"; locals: Map<string, Value>; parent: Value | null };
 

@@ -1,6 +1,7 @@
 // Sequences and containers: iteration, indexing, slicing, membership, sorting (PY-12, PY-33, PY-34).
 import type { Span } from "../../diagnostics.ts";
 import { list, pyint, str, tuple, type Value } from "../values.ts";
+import { fileLines } from "./files.ts";
 import { pyError, typeError } from "./errors.ts";
 import { hashKey, pyEq, setOrder } from "./hash.ts";
 import { asBig, compareOrder } from "./numbers.ts";
@@ -22,6 +23,8 @@ export function iterate(v: Value, span: Span): Value[] {
     case "str":
     case "char":
       return Array.from(v.value, (c) => str(c));
+    case "file":
+      return fileLines(v, span);
     case "dict":
       return [...v.map.values()].map((e) => e.key);
     case "set":

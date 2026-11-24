@@ -67,6 +67,12 @@ export class FuncScope {
             this.bind(t);
           });
           break;
+        case "with":
+          s.items.forEach((i) => {
+            if (i.target !== null) this.bind(i.target);
+          });
+          this.scan(s.body);
+          break;
         case "try":
           this.scan(s.body);
           for (const h of s.handlers) {

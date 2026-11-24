@@ -39,6 +39,10 @@ export interface Machine {
   putRecord(file: string, value: Value, span: Span): void;
   /** The first OPENFILE of a file still open now (CIE-96), or null. */
   leftOpen(): { file: string; span: Span } | null;
+  /** Python's `open()` (PY-21): the whole text of a virtual file, or undefined when it does not exist. */
+  fileText(name: string): string | undefined;
+  /** Python's `open()` (PY-21): creates the file or replaces its whole contents. */
+  storeFile(name: string, text: string): void;
   /** A variable was given a value (SH-17 trace table). For an element change, `value` is the whole array. */
   assigned(name: string, value: Value, span: Span): void;
   /** A runtime info note (e.g. I-EDX-ARRAY-GROWS). The driver decides how often it is shown. */
