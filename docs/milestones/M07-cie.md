@@ -6,11 +6,11 @@ Read first: `CLAUDE.md`, `docs/AUTONOMOUS.md`, `docs/TEST-PLAN.md`, `docs/DECISI
 
 ## Checklist
 
-- [ ] Add to `scope.json`: every CIE ID except CIE-32 and CIE-33 (NOT done: CIE-81 and CIE-10 are not in scope.json, see Q46)
+- [x] Add to `scope.json`: every CIE ID except CIE-32 and CIE-33 (#84, #85, #86; CIE-81 and CIE-10 added by #85/#86, answered in #83)
 - [x] Tests PR(s) first (pending), then code; split into several tests/code PR pairs if large (e.g. core syntax; types/records/enums; procedures/BYREF; files incl. random files; exceptions; classes; built-ins and DATE) (#67-#81)
 - [x] CIE lexer/parser/checker lowering into the SAME core IR and runtime (no second runtime); declarations required (CIE-11), CALL required (CIE-71), floor DIV/MOD (SH-10) (#67-#80)
-- [x] Records, enumerated types, CASE OF, all loops, BYREF/BYVAL, text and random files, TRY/EXCEPT (no FINALLY), classes with PRIVATE/PUBLIC and inheritance, DATE and every built-in in 3.13 (#67-#80; CIE-81 open, Q46)
-- [ ] CIE highlighting, examples and Quick reference content (port and correct the prototype's Cambridge guide) (NOT done: content and highlighter modules exist (#81) but the UI has no language switch or Quick reference panel)
+- [x] Records, enumerated types, CASE OF, all loops, BYREF/BYVAL, text and random files, TRY/EXCEPT (no FINALLY), classes with PRIVATE/PUBLIC and inheritance, DATE and every built-in in 3.13 (#67-#80; CIE-81 and CIE-10 in #85, #86)
+- [x] CIE highlighting, examples and Quick reference content (port and correct the prototype's Cambridge guide) (modules #81; language switch, highlighting, examples, Quick reference, axe and E2E tests #90)
 - [x] Equivalence tests Edexcel <-> CIE; CIE fuzz and property runs; CIE exam-style corpus (at least 3 per topic) (#81)
 
 ## Out of scope

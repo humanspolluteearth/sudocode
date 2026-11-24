@@ -1,8 +1,9 @@
 // Per-viewer settings kept in the browser (theme and zoom). Storage can be missing or blocked (private windows,
 // tests), so every read and write is wrapped: the app works the same without it.
-export type PseudocodeLanguage = "edexcel" | "cie";
-
 import { ZOOM_MAX, ZOOM_MIN, type ThemeChoice } from "./Toolbar.tsx";
+
+/** The two pseudocodes the editor offers (a subset of core's `Language`; Python comes later). */
+export type PseudocodeLanguage = "edexcel" | "cie";
 
 const KEY = "sudocode.preferences";
 
