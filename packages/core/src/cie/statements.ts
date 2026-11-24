@@ -10,6 +10,7 @@ import type { Token } from "../edexcel/tokens.ts";
 import { Abandon, CIE_RESERVED, joinSpans, type CieCursor } from "./cursor.ts";
 import type { Env, Variable } from "./env.ts";
 import { arrayType } from "./arrays.ts";
+import { placeOf } from "./byref.ts";
 import { startingValue, typeDeclaration } from "./records.ts";
 import { Expressions, type Typed } from "./expressions.ts";
 import { SCALAR_TYPES, fits, isUnknown, typeName, withArticle, UNKNOWN, type Ty } from "./types.ts";
@@ -669,7 +670,22 @@ export class Statements {
       return [];
     }
     this.x.checkArgs(sig.name, sig.params, args, name);
-    return [{ kind: "callStatement", callee: name.text, args: args.map((a) => a.ir), span: c.spanFrom(first) }];
+    // CIE-76: a BYREF argument must be a place (variable, array item, record field) to write the result back to.
+    const outs: (AssignTarget | null)[] = args.map((a, k) => {
+      if (sig.params[k]?.byRef !== true) return null;
+      const place = placeOf(a.ir);
+      if (place === null && !isUnknown(a.ty)) c.report("E-CHK-BYREF-ARG", a.span);
+      return place;
+    });
+    return [
+      {
+        kind: "callStatement",
+        callee: name.text,
+        args: this.x.argIrs(sig.params, args),
+        ...(outs.some((o) => o !== null) ? { outs } : {}),
+        span: c.spanFrom(first),
+      },
+    ];
   }
 
   private returnStatement(first: Token): Ir[] {

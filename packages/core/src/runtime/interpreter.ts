@@ -25,7 +25,7 @@ import {
 import { formatValue } from "./format.ts";
 import { convertInput } from "./input.ts";
 import { RunError } from "./run-error.ts";
-import { char, characters, int, real, type Value } from "./values.ts";
+import { array, char, characters, int, real, type Value } from "./values.ts";
 
 export type { Body, Machine, Request } from "./evaluate.ts";
 
@@ -156,7 +156,15 @@ function* statement(s: Stmt, env: Env): Run<Returned | undefined> {
       return yield* forEach(s, env);
     case "callStatement": {
       const args = yield* evaluateAll(s.args, env);
-      yield { type: "call", callee: s.callee, args, span: s.span };
+      const back = (yield { type: "call", callee: s.callee, args, span: s.span }) as Value | undefined;
+      if (s.outs !== undefined && back !== undefined && back.kind === "array") {
+        let k = 0;
+        for (const place of s.outs) {
+          if (place === null) continue;
+          const final = back.elements[k++];
+          if (final !== undefined) yield* assign(place, final, env);
+        }
+      }
       return undefined;
     }
     case "return":
@@ -240,6 +248,11 @@ export function* runSubprogram(
   const done = yield* block(sub.body, { machine, locals });
   if (sub.kind === "function" && done?.value === undefined) {
     throw new RunError("E-RUN-NO-RETURN", sub.span, { name: sub.name });
+  }
+  if (sub.kind === "procedure" && sub.byRef?.includes(true) === true) {
+    // BYREF copy-out (CIE-73): hand the final values of the BYREF parameters back, in parameter order.
+    const finals = sub.params.flatMap((p, i) => (sub.byRef?.[i] === true ? [locals.get(p)] : []));
+    return array(finals);
   }
   return done?.value;
 }

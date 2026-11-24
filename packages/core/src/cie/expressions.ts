@@ -413,7 +413,11 @@ export class Expressions {
       return typed({ kind: "call", callee: t.text, args: args.map((a) => a.ir), span }, UNKNOWN, span);
     }
     this.checkArgs(sig.name, sig.params, args, t);
-    return typed({ kind: "call", callee: t.text, args: args.map((a) => a.ir), span }, sig.returns ?? UNKNOWN, span);
+    return typed(
+      { kind: "call", callee: t.text, args: this.argIrs(sig.params, args), span },
+      sig.returns ?? UNKNOWN,
+      span,
+    );
   }
 
   /** A call of a built-in function (CIE-120 to CIE-129): check the argument count and kinds, then type the result. */
@@ -465,6 +469,15 @@ export class Expressions {
   }
 
   /** CIE-74: the number and types of the arguments must match the parameters. */
+  /** BYVAL array and record arguments are copied in, so the procedure cannot change the caller's (CIE-73). */
+  argIrs(params: { ty: Ty; byRef: boolean }[], args: Typed[]): Ir[] {
+    return args.map((a, k) => {
+      const p = params[k];
+      const shared = p !== undefined && !p.byRef && (p.ty.kind === "ARRAY" || p.ty.kind === "RECORD");
+      return shared ? { kind: "copyArray", source: a.ir, span: a.span } : a.ir;
+    });
+  }
+
   checkArgs(name: string, params: { name: string; ty: Ty }[], args: Typed[], at: Token): void {
     if (args.length !== params.length) {
       const n = (k: number): string => (k === 1 ? "1 argument" : `${String(k)} arguments`);

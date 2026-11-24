@@ -12,8 +12,6 @@
     "golden/cie/CIE-110-class-counter",
     "golden/cie/CIE-110-inheritance-polymorphism",
     "golden/cie/CIE-115-private-from-outside",
-    "golden/cie/CIE-73-byref-carries-on",
-    "golden/cie/CIE-76-byref-needs-variable",
     "golden/cie/CIE-90-write-append-read",
     "golden/cie/CIE-91-write-loses-old-data",
     "golden/cie/CIE-93-read-a-file-open-for-write",

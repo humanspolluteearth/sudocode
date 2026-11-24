@@ -27,8 +27,8 @@ export function installSubprograms(s: Statements, out: Record<string, Subprogram
       c.next();
       return list;
     }
+    let byRef = false; // CIE-73: a mode keyword carries on to the parameters after it
     for (;;) {
-      let byRef = false;
       const mode = c.peek();
       const upper = mode.kind === "word" ? mode.text.toUpperCase() : "";
       if (upper === "BYVAL" || upper === "BYVALUE" || upper === "BYREF") {
@@ -89,6 +89,7 @@ export function installSubprograms(s: Statements, out: Record<string, Subprogram
       name: name.text,
       kind,
       params: ps.map((p) => p.name),
+      ...(ps.some((p) => p.byRef) ? { byRef: ps.map((p) => p.byRef) } : {}),
       body: body.stmts,
       span: c.spanFrom(first),
     };

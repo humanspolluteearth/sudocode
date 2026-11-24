@@ -1,0 +1,13 @@
+TYPE Pupil
+  DECLARE Score : INTEGER
+ENDTYPE
+PROCEDURE Change(BYVAL N : INTEGER, P : Pupil)
+  N <- 99
+  P.Score <- 99
+ENDPROCEDURE
+DECLARE X : INTEGER
+DECLARE Q : Pupil
+X <- 1
+Q.Score <- 1
+CALL Change(X, Q)
+OUTPUT X, " ", Q.Score
