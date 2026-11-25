@@ -49,6 +49,7 @@ export function MenuBar({ menus }: { menus: readonly MenuDef[] }) {
               type="button"
               role="menuitem"
               className={`sc-menu-btn${open === m.id ? " open" : ""}`}
+              data-menu={m.id}
               aria-haspopup="menu"
               aria-expanded={open === m.id}
               onClick={() => {

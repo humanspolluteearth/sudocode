@@ -48,6 +48,8 @@ export interface MenuActions {
   /** Help > Welcome and disclaimer, and Report a bug (opens the mail link). */
   onWelcome?: () => void;
   onReportBug?: () => void;
+  /** Help > Author (opens the author dialog). */
+  onAuthor?: () => void;
   /** View > Side panel (tablet layout only): given with `sidePanelShown`, the entry has a tick while the panel shows. */
   onToggleSidePanel?: () => void;
   sidePanelShown?: boolean;
@@ -206,7 +208,7 @@ export function buildMenus(a: MenuActions): MenuDef[] {
         ...(a.onSettings === undefined ? [] : [{ sep: true as const }, { label: "Settings…", onSelect: a.onSettings }]),
       ],
     },
-    ...(a.onWelcome === undefined || a.onReportBug === undefined
+    ...(a.onWelcome === undefined || a.onReportBug === undefined || a.onAuthor === undefined
       ? []
       : [
           {
@@ -215,6 +217,7 @@ export function buildMenus(a: MenuActions): MenuDef[] {
             items: [
               { label: "Welcome and disclaimer", onSelect: a.onWelcome },
               { label: "Report a bug", onSelect: a.onReportBug },
+              { label: "Author", onSelect: a.onAuthor },
             ],
           },
         ]),
