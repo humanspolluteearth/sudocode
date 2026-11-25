@@ -1,0 +1,10 @@
+// Production Worker, shared with students at https://sudocode.learnc.xyz. Staging stays in wrangler.jsonc
+// (sudocode-staging). Same built site (./dist) and same compatibility date, so what was tested on staging is what ships.
+// `custom_domain: true` makes Cloudflare create the DNS record and certificate; learnc.xyz must be an active zone
+// in the same Cloudflare account as the API token. Deployed only by .github/workflows/deploy-production.yml.
+{
+  "name": "sudocode",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "./dist" },
+  "routes": [{ "pattern": "sudocode.learnc.xyz", "custom_domain": true }]
+}
