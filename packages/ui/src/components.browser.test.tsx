@@ -156,6 +156,13 @@ describe("MISC Editor language", () => {
 });
 
 describe("MISC Status bar wording and cursor", () => {
+  it("MISC the status bar has a Report a bug mailto link with the email", async () => {
+    const screen = await render(<StatusBar state="idle" diagnostics={[]} languageName="Python" />);
+    const link = screen.getByRole("link", { name: "Report a bug: saysayeem.edu@gmail.com" });
+    await expect.element(link).toHaveAttribute("href", "mailto:saysayeem.edu@gmail.com");
+    expect(await axeViolations(screen.container)).toEqual([]);
+  });
+
   it.each([
     ["idle", null, "Ready"],
     ["waiting", null, "Waiting for input"],

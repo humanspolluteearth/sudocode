@@ -1,5 +1,6 @@
 // The bottom status bar: run state, problem counts, cursor position and language.
 import type { Diagnostic } from "@sudocode/core";
+import { BUG_EMAIL, BUG_MAILTO } from "./bug-report.ts";
 
 export type RunState = "idle" | "checking" | "running" | "paused" | "waiting" | "finished" | "stopped" | "error";
 
@@ -58,6 +59,11 @@ export function StatusBar({
       <span className="sc-grow" />
       <span>{`Ln ${String(cursor.line)}, Col ${String(cursor.column)}`}</span>
       <span className="sc-hide-compact">{languageName}</span>
+      <span className="sc-report">
+        <a href={BUG_MAILTO}>
+          Report a bug<span className="sc-hide-compact">{`: ${BUG_EMAIL}`}</span>
+        </a>
+      </span>
     </div>
   );
 }

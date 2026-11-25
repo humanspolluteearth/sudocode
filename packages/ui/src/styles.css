@@ -428,6 +428,16 @@ button.sc-section-head:hover {
   padding: 0 10px;
   border-right: 1px solid var(--line);
 }
+.sc-statusbar .sc-report {
+  padding: 0;
+}
+.sc-statusbar .sc-report a {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  color: inherit;
+  text-decoration: underline;
+}
 .sc-statusbar .sc-grow {
   flex: 1;
   border-right: 0;
@@ -1241,6 +1251,15 @@ button.sc-section-head:hover {
     box-sizing: border-box;
     min-height: 44px;
   }
+}
+/* The bug-report link is a touch target; the bar stays on one row (the long text drops first, see .sc-hide-compact). */
+.sc-compact .sc-statusbar {
+  flex-wrap: nowrap;
+}
+.sc-compact .sc-statusbar .sc-report a {
+  min-width: var(--touch);
+  min-height: var(--touch);
+  white-space: nowrap;
 }
 .sc-compact .sc-tb {
   min-width: var(--touch);

@@ -190,11 +190,31 @@ describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc
       await page.viewport(width, 800);
       await render(<App />);
       const bar = document.querySelector<HTMLElement>(".sc-statusbar");
-      expect(bar?.getBoundingClientRect().height).toBeLessThan(30);
+      // One row: the bug-report link is a 44px touch target, so the bar is 44px; a wrapped bar would be twice that.
+      expect(bar?.getBoundingClientRect().height).toBeLessThanOrEqual(48);
       expect(bar?.scrollWidth).toBeLessThanOrEqual(width);
       const language = document.querySelector(".sc-statusbar .sc-hide-compact");
       expect(language).not.toBeNull();
       expect(language === null ? "" : getComputedStyle(language).display).toBe("none");
+    });
+  }
+
+  for (const [width, min] of [
+    [390, 44],
+    [360, 44],
+    [834, 40],
+  ] as const) {
+    it(`MISC at ${String(width)}px the status bar has a Report a bug mailto link of at least ${String(min)}px`, async () => {
+      await page.viewport(width, 800);
+      const screen = await render(<App />);
+      const link = screen.getByRole("link", { name: "Report a bug" });
+      await expect.element(link).toHaveAttribute("href", "mailto:saysayeem.edu@gmail.com");
+      const rect = link.element().getBoundingClientRect();
+      expect(rect.height).toBeGreaterThanOrEqual(min - 0.5);
+      expect(rect.width).toBeGreaterThanOrEqual(min - 0.5);
+      const bar = document.querySelector<HTMLElement>(".sc-statusbar");
+      expect(bar?.scrollWidth).toBeLessThanOrEqual(width);
+      expect(rect.right).toBeLessThanOrEqual(width);
     });
   }
 
