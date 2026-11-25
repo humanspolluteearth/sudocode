@@ -31,6 +31,7 @@ import "./styles.css";
 // The app opens with a blank untitled file in the remembered language (no sample program).
 // Dialogs are only needed when opened, so they load on demand and stay out of the first download (the 2 GB device target).
 const SettingsDialog = lazy(() => import("./SettingsDialog.tsx").then((m) => ({ default: m.SettingsDialog })));
+const AuthorDialog = lazy(() => import("./AuthorDialog.tsx").then((m) => ({ default: m.AuthorDialog })));
 const WelcomeDialog = lazy(() => import("./WelcomeDialog.tsx").then((m) => ({ default: m.WelcomeDialog })));
 const SaveDialog = lazy(() => import("./SaveDialog.tsx").then((m) => ({ default: m.SaveDialog })));
 
@@ -49,6 +50,7 @@ export function App({ workers }: AppProps) {
   const [note, setNote] = useState<Note | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   // The startup dialog shows on every launch until "Don't show this again" was ticked; Help reopens it.
+  const [authorOpen, setAuthorOpen] = useState(false);
   const [welcomeOpen, setWelcomeOpen] = useState(() => !loadPreferences().welcomeDone);
   const [breakpoints, setBreakpoints] = useState<number[]>([]);
   const [cursor, setCursor] = useState<CursorPosition>({ line: 1, column: 1 });
@@ -295,6 +297,9 @@ export function App({ workers }: AppProps) {
     onReportBug: () => {
       globalThis.location.href = BUG_MAILTO;
     },
+    onAuthor: () => {
+      setAuthorOpen(true);
+    },
   });
 
   if (guide !== null) return <GuidePage guide={guide} onNavigate={openGuide} themeClass={themeClass(prefs.theme)} />;
@@ -505,6 +510,13 @@ export function App({ workers }: AppProps) {
             }}
             onClose={() => {
               setSettingsOpen(false);
+            }}
+          />
+        )}
+        {authorOpen && (
+          <AuthorDialog
+            onClose={() => {
+              setAuthorOpen(false);
             }}
           />
         )}

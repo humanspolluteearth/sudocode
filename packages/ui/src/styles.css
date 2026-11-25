@@ -1395,6 +1395,11 @@ button.sc-section-head:hover {
   .sc-welcome .sc-check {
     min-height: 44px;
   }
+  .sc-author a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
 }
 
 /* Phones: line numbers are smaller and tighter (they are the widest thing in the gutter), still fitting 4 digits. */
