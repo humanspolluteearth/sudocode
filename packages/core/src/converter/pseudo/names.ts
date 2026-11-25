@@ -96,7 +96,8 @@ export class Names {
       names.taken.add(out.toLowerCase());
       names.map.set(key, out);
     }
-    // Edexcel names are case-sensitive: a spelling that is not the first one (CIE source) maps through its lower-case key.
+    // `of` looks a name up by its lower-case key first, so every spelling of a Cambridge name (any case) reaches the
+    // same entry; an Edexcel name has one spelling here, because two spellings were refused above for a Cambridge target.
     return names;
   }
 }

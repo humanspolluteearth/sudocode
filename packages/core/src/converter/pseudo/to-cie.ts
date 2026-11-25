@@ -37,7 +37,12 @@ function scanSizes(body: Stmt[], sub: string, cx: Cx): void {
   }
 }
 
-function declares(vars: [string, string][], sub: string, cx: Cx, at: Stmt | Subprogram): Lines {
+function declares(
+  vars: [string, string][],
+  sub: string,
+  cx: Cx,
+  at: { span: { line: number; column: number } },
+): Lines {
   const out: Lines = [];
   for (const [name, ty] of vars) {
     const shown = cx.names.of(name);
@@ -202,7 +207,7 @@ export function printProgramCie(program: Program, cx: Cx, c: Comments): string {
     [...cx.types.globalVars(), ...cx.extra.map(([n, t]) => [n, t === "INTEGER" ? "int" : "str"] as [string, string])],
     "",
     cx,
-    program.main[0] ?? ({ span: { line: 1, column: 1 } } as Stmt),
+    program.main[0] ?? { span: { line: 1, column: 1 } }, // an empty program: nothing to point at, so line 1,
   );
   const subs = Object.values(program.subprograms).map((s) => printSub(s, cx, c).join("\n"));
   const top = [...decls, ...(subs.length > 0 && decls.length > 0 ? [""] : [])].join("\n");
