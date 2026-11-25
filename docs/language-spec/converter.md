@@ -6,49 +6,49 @@ Python to pseudocode is NOT offered (decided 25 Nov 2026: "I dont need python to
 
 ## General
 
-| ID | Rule | Status |
-| --- | --- | --- |
-| CNV-01 | A conversion has two outcomes only: converted text, or a refusal. A converted program analyses with no errors in the target language, runs in Sudocode, and prints exactly the same output as the original (SH-03 and SH-04 differences for Python are the only allowed exception, see CNV-60) | DECIDED |
-| CNV-02 | Directions offered: Edexcel to CIE, CIE to Edexcel, Edexcel to Python, CIE to Python. The Convert menu and toolbar list the two OTHER languages, never the current one, and never offer Python as a target from Python | DECIDED (25 Nov 2026) |
-| CNV-03 | A refusal names the construct and the line in plain words a child can follow, and says what to do instead. It never produces partial output | DECIDED |
-| CNV-04 | The result opens in a NEW tab named after the source file, in the target language. A refusal shows its message and opens no tab | DECIDED |
-| CNV-05 | The new tab shows a note banner listing the notable changes in plain words (for example "Arrays start at 0 here") | DECIDED |
-| CNV-06 | A source with analysis errors is not converted: the student sees the first error | DECIDED |
-| CNV-07 | Comments are kept, attached to the statement that follows them. The converted file starts with a header comment naming the source language | DECIDED |
-| CNV-08 | When a name clashes with a keyword or builtin of the target language, it gets a trailing `_`. When two names differ only by case and the target ignores case (CIE), the conversion is refused | DECIDED |
-| CNV-09 | Constructs with no faithful translation are refused, never approximated. Classes are refused in every direction | DECIDED |
+| ID     | Rule                                                                                                                                                                                                                                                                                           | Status                |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| CNV-01 | A conversion has two outcomes only: converted text, or a refusal. A converted program analyses with no errors in the target language, runs in Sudocode, and prints exactly the same output as the original (SH-03 and SH-04 differences for Python are the only allowed exception, see CNV-60) | DECIDED               |
+| CNV-02 | Directions offered: Edexcel to CIE, CIE to Edexcel, Edexcel to Python, CIE to Python. The Convert menu and toolbar list the two OTHER languages, never the current one, and never offer Python as a target from Python                                                                         | DECIDED (25 Nov 2026) |
+| CNV-03 | A refusal names the construct and the line in plain words a child can follow, and says what to do instead. It never produces partial output                                                                                                                                                    | DECIDED               |
+| CNV-04 | The result opens in a NEW tab named after the source file, in the target language. A refusal shows its message and opens no tab                                                                                                                                                                | DECIDED               |
+| CNV-05 | The new tab shows a note banner listing the notable changes in plain words (for example "Arrays start at 0 here")                                                                                                                                                                              | DECIDED               |
+| CNV-06 | A source with analysis errors is not converted: the student sees the first error                                                                                                                                                                                                               | DECIDED               |
+| CNV-07 | Comments are kept, attached to the statement that follows them. The converted file starts with a header comment naming the source language                                                                                                                                                     | DECIDED               |
+| CNV-08 | When a name clashes with a keyword or builtin of the target language, it gets a trailing `_`. When two names differ only by case and the target ignores case (CIE), the conversion is refused                                                                                                  | DECIDED               |
+| CNV-09 | Constructs with no faithful translation are refused, never approximated. Classes are refused in every direction                                                                                                                                                                                | DECIDED               |
 
 ## Edexcel to Cambridge
 
-| ID | Rule | Status |
-| --- | --- | --- |
-| CNV-10 | CIE needs types, so every variable gets a `DECLARE` at the top of its scope with the type found by static inference. If a variable's type cannot be inferred the conversion is refused and names the variable | DECIDED |
-| CNV-11 | `SEND x TO DISPLAY` becomes `OUTPUT x`; `RECEIVE x FROM (STRING) KEYBOARD` becomes `INPUT x` (no prompt, so the output is the same) | DECIDED |
-| CNV-12 | An Edexcel array with a known size becomes `ARRAY[0:n-1]`, so every index stays the same. An array that grows by writing past its end (EDX-27) is refused | DECIDED |
+| ID     | Rule                                                                                                                                                                                                                              | Status                    |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| CNV-10 | CIE needs types, so every variable gets a `DECLARE` at the top of its scope with the type found by static inference. If a variable's type cannot be inferred the conversion is refused and names the variable                     | DECIDED                   |
+| CNV-11 | `SEND x TO DISPLAY` becomes `OUTPUT x`; `RECEIVE x FROM (STRING) KEYBOARD` becomes `INPUT x` (Edexcel has no prompt, so the output is the same)                                                                                   | DECIDED                   |
+| CNV-12 | An Edexcel array with a known size becomes `ARRAY[0:n-1]`, so every index stays the same. An array that grows by writing past its end (EDX-27) is refused                                                                         | DECIDED                   |
 | CNV-13 | `a & b` where an operand is a number becomes `a & NUM_TO_STR(b)` for an INTEGER. A BOOLEAN operand is written with an `IF` into a fresh STRING variable. A REAL operand is refused, because the text of a REAL may differ (SH-03) | DECIDED (Q1, 25 Nov 2026) |
-| CNV-14 | `REPEAT n TIMES` and `FOR EACH` have no CIE form. They become a `FOR` over a fresh counter variable (`i_1`, `i_2`, ...) and the banner says so | DECIDED |
-| CNV-15 | `RANDOM(n)` becomes `INT(RAND(n + 1))`, the same whole numbers 0 to n | DECIDED |
-| CNV-16 | Edexcel `PROCEDURE` and `FUNCTION` become CIE `PROCEDURE` and `FUNCTION` with declared parameter and return types. `BYREF` is kept; files, TRY, records, enums, dates and devices are refused | DECIDED |
+| CNV-14 | `REPEAT n TIMES` and `FOR EACH` have no CIE form. They become a `FOR` over a fresh counter variable (`i_1`, `i_2`, ...) and the banner says so                                                                                    | DECIDED                   |
+| CNV-15 | `RANDOM(n)` becomes `INT(RAND(n + 1))`, the same whole numbers 0 to n                                                                                                                                                             | DECIDED                   |
+| CNV-16 | Edexcel `PROCEDURE` and `FUNCTION` become CIE `PROCEDURE` and `FUNCTION` with declared parameter and return types. `BYREF` is kept; files, TRY, records, enums, dates and devices are refused                                     | DECIDED                   |
 
 ## Cambridge to Edexcel
 
-| ID | Rule | Status |
-| --- | --- | --- |
-| CNV-20 | `DECLARE` lines are dropped; the declared types still guide the checks in CNV-23 | DECIDED |
-| CNV-21 | `OUTPUT a, b` becomes `SEND a & b TO DISPLAY`, numbers joined without a helper. `INPUT x` with no prompt becomes `RECEIVE x FROM (type) KEYBOARD`. `INPUT` with a prompt (CIE-81) becomes a `SEND` of the prompt followed by the `RECEIVE` | DECIDED |
+| ID     | Rule                                                                                                                                                                                                                                                                                                                               | Status                    |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| CNV-20 | `DECLARE` lines are dropped; the declared types still guide the checks in CNV-23                                                                                                                                                                                                                                                   | DECIDED                   |
+| CNV-21 | `OUTPUT a, b` becomes `SEND a & b TO DISPLAY`, numbers joined without a helper. `INPUT x` becomes `RECEIVE x FROM (type) KEYBOARD`. `INPUT` with a prompt (CIE-81) is refused: the prompt prints with no newline (CIE-81) but a `SEND` always ends the line, so the output would differ                                            | DECIDED                   |
 | CNV-22 | A CIE array `ARRAY[l:u]` becomes `SET Name TO [v, v, ...]`, a literal filled with the type's default value (0, "", FALSE), and every index is shifted by `l` so element `l` becomes index 0. The banner says arrays start at 0 and start filled. Bounds that are not constants and arrays with more than one dimension are refused | DECIDED (Q3, 25 Nov 2026) |
-| CNV-23 | Edexcel has only `LENGTH` and `RANDOM`. Any other builtin is refused, except `NUM_TO_STR` of an INTEGER inside a concatenation, which is dropped (Edexcel `&` converts numbers itself). `NUM_TO_STR` of a REAL is refused | DECIDED |
-| CNV-24 | `REPEAT ... UNTIL`, `WHILE`, `FOR` with `STEP`, `IF` and `CASE` map to the Edexcel form of the same loop. Anything Edexcel lacks (files, TRY, records, enums, pointers, DATE, classes) is refused | DECIDED |
+| CNV-23 | Edexcel has only `LENGTH` and `RANDOM`. Any other builtin is refused, except `NUM_TO_STR` of an INTEGER inside a concatenation, which is dropped (Edexcel `&` converts numbers itself). `NUM_TO_STR` of a REAL is refused                                                                                                          | DECIDED                   |
+| CNV-24 | `REPEAT ... UNTIL`, `WHILE`, `FOR` with `STEP`, `IF` and `CASE` map to the Edexcel form of the same loop. Anything Edexcel lacks (files, TRY, records, enums, pointers, DATE, classes) is refused                                                                                                                                  | DECIDED                   |
 
 ## To Python
 
-| ID | Rule | Status |
-| --- | --- | --- |
+| ID     | Rule                                                                                                                                                                                                                                                                                            | Status        |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | CNV-60 | Both pseudocodes convert to Python with the existing printer (M10). Python output differs from pseudocode only where SH-03 and SH-04 say CPython differs (`3.0`, `True`); the converter keeps the program's meaning, and `_show` helpers are used where the printed text would otherwise differ | DECIDED (M10) |
-| CNV-61 | Python integers are unbounded while pseudocode INTEGER stops at the JS safe range (SH-07); the converter does not add overflow checks | DECIDED (M10) |
+| CNV-61 | Python integers are unbounded while pseudocode INTEGER stops at the JS safe range (SH-07); the converter does not add overflow checks                                                                                                                                                           | DECIDED (M10) |
 
 ## Round-trip and matrix
 
-| ID | Rule | Status |
-| --- | --- | --- |
+| ID     | Rule                                                                                                                                                                                                                                                                                                        | Status  |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | CNV-70 | For every golden program that runs without an error and without RANDOM, and every target other than its own language, the verdict is either "converted, analyses with no errors in the target, and prints identical output" or "refused for a listed reason". Python output is checked against CPython 3.12 | DECIDED |
