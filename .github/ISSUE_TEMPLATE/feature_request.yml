@@ -1,0 +1,22 @@
+name: Idea or feature request
+description: Suggest something new or better.
+labels: ["idea"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: Tell us about the situation, not the solution. For example "In class, I want to show..."
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+    validations:
+      required: true
+  - type: textarea
+    id: other
+    attributes:
+      label: Anything else?
+      description: Screenshots, links, other apps that do it well.

@@ -1,0 +1,39 @@
+name: Language rule question
+description: Sudocode behaves differently from your syllabus or teacher.
+labels: ["language rules"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for checking us! Please describe the rule in your own words.
+        **Do not paste mark schemes or past-paper text.** Mark schemes are the source of truth, not Sudocode.
+  - type: dropdown
+    id: language
+    attributes:
+      label: Which language?
+      options:
+        - Edexcel pseudocode
+        - Cambridge 9618 pseudocode
+        - Python
+    validations:
+      required: true
+  - type: textarea
+    id: program
+    attributes:
+      label: Your small program
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: sudocode
+    attributes:
+      label: What does Sudocode do?
+    validations:
+      required: true
+  - type: textarea
+    id: syllabus
+    attributes:
+      label: What do you think it should do, and why?
+      description: Name the syllabus document and section if you can. No copied text, please.
+    validations:
+      required: true

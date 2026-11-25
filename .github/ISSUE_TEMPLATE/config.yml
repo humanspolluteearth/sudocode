@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question
+    url: https://github.com/humanspolluteearth/sudocode/discussions
+    about: Not sure how something works? Ask here.
+  - name: Email the author
+    url: mailto:saysayeem.edu@gmail.com
+    about: Prefer email? Bug reports and questions are welcome.
+  - name: Report a security problem (privately)
+    url: https://github.com/humanspolluteearth/sudocode/blob/main/SECURITY.md
+    about: Please do not post security problems in public. Email instead.

@@ -1,24 +1,22 @@
-<!-- Title: Conventional Commits, e.g. "feat(edexcel): FOR loops with STEP" or "tests(edexcel): FOR loops" -->
+<!-- Title: start with feat:, fix:, tests:, docs: or chore: (for example "docs: fix a typo in the User guide") -->
 
-## What and why
-<!-- One or two sentences. Link the issue: Closes #... -->
+## What did you change, and why?
 
-## Spec IDs covered
-<!-- e.g. EDX-52, EDX-53, EDX-54 -->
+<!-- One or two plain sentences. If it fixes an issue, write "Closes #123". -->
 
-## New or changed expected files (reviewer checks each one against its spec row)
-<!-- e.g. packages/core/tests/golden/edexcel/EDX-54-step-zero.expected.json -->
+## How did you check it?
 
-## Design and concept
-<!-- For packages/core: how it works, and the compiler concept it uses -->
+<!-- For code: the output of `pnpm check`. For a screen change: a screenshot. For docs: say that you read it. -->
 
-## How it was verified
-<!-- `pnpm check` output; screenshots for UI changes -->
+## Language rules and tests (only if you changed how the interpreter behaves)
+
+- Spec IDs covered (for example EDX-54):
+- New or changed `.expected.json` files:
+- Which compiler idea does it use, in simple words:
 
 ## Checklist
-- [ ] Spec rows exist for every new behaviour (`docs/language-spec/`)
-- [ ] Core: tests merged in an earlier `tests:` PR and not modified here
-- [ ] Exact-value assertions; at least one negative case per feature
-- [ ] Bug fixes include a regression test that failed on `main`
-- [ ] Commits signed off (`git commit -s`)
-- [ ] CI green
+
+- [ ] This is one small change
+- [ ] I did not edit existing tests or expected files to make something pass
+- [ ] My commits are signed off (`git commit -s`)
+- [ ] CI is green
