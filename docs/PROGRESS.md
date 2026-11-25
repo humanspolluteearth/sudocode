@@ -163,3 +163,8 @@ Newest entry first. Updated at the end of each milestone (and each session).
 - UI iteration 1 done (#118-#123): full guides, Quick reference Find/Insert, View/Run menus and zoom ladder, Escape-then-Tab editor exit, status bar Ln/Col and wording, note banner.
 - UI-3 done (#149-#151): startup dialog and Help menu, blank untitled file (no example programs), tablet side-panel toggle with a remembered choice and an attention dot.
 - Next step: M0 (`docs/milestones/M00-bootstrap.md`).
+
+## 26 Nov 2026: converter Edexcel <-> Cambridge
+
+- Edexcel to Cambridge and Cambridge to Edexcel printers written (`packages/core/src/converter/pseudo/`); text tests pass except `CNV-23-refused` (Q60). `cie-to-edexcel` matrix passes; `edexcel-to-cie` matrix pending on the SH-03 REAL formatter (see `docs/review/CONVERT.md`).
+- Next: Convert menu and toolbar for the other two languages (UI PR).

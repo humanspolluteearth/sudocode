@@ -5,26 +5,7 @@
     "converter/conformance/edexcel/SH-03-real-large-shortest-form",
     "converter/conformance/edexcel/SH-13-recursion-1000-calls-deep",
     "converter/MISC-refuse-types",
-    "converter/text/CNV-10",
-    "converter/text/CNV-11",
-    "converter/text/CNV-12",
-    "converter/text/CNV-12-grow",
-    "converter/text/CNV-13",
-    "converter/text/CNV-13-real",
-    "converter/text/CNV-14",
-    "converter/text/CNV-15",
-    "converter/text/CNV-08",
-    "converter/text/CNV-09",
-    "converter/text/CNV-20",
-    "converter/text/CNV-21",
-    "converter/text/CNV-21-prompt",
-    "converter/text/CNV-22",
-    "converter/text/CNV-22-two-dimensions",
-    "converter/text/CNV-23",
     "converter/text/CNV-23-refused",
-    "converter/text/CNV-24",
-    "converter/text/CNV-24-refused",
-    "converter/matrix/edexcel-to-cie",
-    "converter/matrix/cie-to-edexcel"
+    "converter/matrix/edexcel-to-cie"
   ]
 }

@@ -11,8 +11,9 @@ import type { Language } from "../language.ts";
 import { Unprintable } from "./expr.ts";
 import { Types } from "./types.ts";
 import { newCx, preamble } from "./helpers.ts";
-import { findRefusal, refusalWords, type RefusedFeature } from "./refuse.ts";
+import { findRefusal, refusalWords, type PseudoFeature, type RefusedFeature } from "./refuse.ts";
 import { printProgram } from "./stmt.ts";
+import { convertToPseudocode } from "./pseudo/index.ts";
 
 export type ConvertFrom = Extract<Language, "edexcel" | "cie">;
 export type { RefusedFeature };
@@ -22,7 +23,7 @@ export type ConvertResult =
   | {
       ok: false;
       code: "E-CONV-UNSUPPORTED";
-      feature: RefusedFeature;
+      feature: PseudoFeature;
       line: number;
       column: number;
       message: string;
@@ -69,5 +70,6 @@ export type ConvertTarget = Language;
  */
 export function convert(source: string, from: ConvertFrom, to: ConvertTarget): ConvertResult {
   if (to === "python") return convertToPython(source, from);
-  throw new Error(`converting ${from} to ${to} is not written yet`);
+  if (to === from) throw new Error("converting a language to itself is not offered");
+  return convertToPseudocode(source, from, to);
 }

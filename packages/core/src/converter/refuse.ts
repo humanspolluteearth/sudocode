@@ -7,13 +7,26 @@ import type { Program } from "../ir/ir.ts";
 
 export type RefusedFeature = "files" | "types" | "classes" | "errors" | "byref" | "dates" | "devices" | "problems";
 
+/** Only the pseudocode-to-pseudocode printers (converter/pseudo/) refuse the extra ones. */
+export type PseudoFeature =
+  | RefusedFeature
+  | "builtins"
+  | "prompt"
+  | "multi-array"
+  | "growing-array"
+  | "real-in-text"
+  | "unknown-type"
+  | "name-clash";
+
 export interface Refusal {
   feature: RefusedFeature;
   line: number;
   column: number;
 }
 
-const WORDS: Record<RefusedFeature, { message: string; hint: string }> = {
+type Words = { message: string; hint: string };
+
+const WORDS: Record<PseudoFeature, Words> = {
   files: {
     message: "This program reads or writes files, and Sudocode can't turn that into Python yet.",
     hint: "Python opens and closes files in its own way, so this needs a person to do it. Everything else could be converted if you take the file lines out.",
@@ -48,9 +61,50 @@ const WORDS: Record<RefusedFeature, { message: string; hint: string }> = {
     message: "This program has errors, so it can't be converted.",
     hint: "Fix the problems shown in red first, then convert again.",
   },
+  builtins: {
+    message: "This program uses a built-in function that the other language doesn't have.",
+    hint: "Write the same job with your own lines, then convert again.",
+  },
+  prompt: {
+    message: "This INPUT shows a prompt. The other language can't ask a question and wait on the same line.",
+    hint: "Put the question in its own OUTPUT or SEND line, and make the input a plain INPUT or RECEIVE.",
+  },
+  "multi-array": {
+    message: "This program uses a table (an array with two dimensions), and Sudocode can't convert those yet.",
+    hint: "A list with one dimension converts fine. Try that, or rewrite this part by hand.",
+  },
+  "growing-array": {
+    message: "This array changes its size or is used in a way the other language can't copy.",
+    hint: "Make the array as big as you need when you create it, then only change the items inside it.",
+  },
+  "real-in-text": {
+    message: "A decimal number (REAL) is joined to text here. The other language might print it differently.",
+    hint: "Print the number on its own line instead of joining it to text.",
+  },
+  "unknown-type": {
+    message: "Sudocode can't tell what kind of value this name holds, and the other language needs to know.",
+    hint: "Give the name a value near the top of the program, such as 0, '' or FALSE, then convert again.",
+  },
+  "name-clash": {
+    message: "Two names here differ only by capital letters, and the other language treats them as the same name.",
+    hint: "Rename one of them so they look different, then convert again.",
+  },
 };
 
-export const refusalWords = (feature: RefusedFeature): { message: string; hint: string } => WORDS[feature];
+/** The words for a refusal. `detail` names the construct (a builtin, a variable) when the message should say it. */
+export function refusalWords(feature: PseudoFeature, detail?: string): Words {
+  const words = WORDS[feature];
+  if (detail === undefined) return words;
+  if (feature === "builtins")
+    return { message: `${detail} is a built-in function that the other language doesn't have.`, hint: words.hint };
+  if (feature === "unknown-type")
+    return {
+      message: `Sudocode can't tell what kind of value ${detail} holds, and the other language needs to know.`,
+      hint: words.hint,
+    };
+  if (feature === "name-clash") return { message: detail, hint: words.hint };
+  return words;
+}
 
 const DATE_BUILTINS = new Set(["day", "month", "year", "dayIndex", "setDate", "today"]);
 
