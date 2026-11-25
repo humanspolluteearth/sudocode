@@ -1,5 +1,6 @@
 // What each menu holds. Everything here is reachable from the toolbar too, except what the design puts only in
 // menus (zoom, theme, language). Items for features that don't exist yet are disabled with a reason.
+import { CONVERT_TARGETS } from "./convert-targets.ts";
 import { ALL_TOOLS, type ToolFlags } from "./tools.ts";
 import type { MenuDef } from "./MenuBar.tsx";
 import type { PseudocodeLanguage } from "./preferences.ts";
@@ -7,12 +8,6 @@ import type { SideTab } from "./SidePanel.tsx";
 import { nextZoom, ZOOM_MAX, ZOOM_MIN, type ThemeChoice } from "./Toolbar.tsx";
 
 const ZOOM_PRESETS = [100, 110, 125, 150] as const;
-
-const CONVERT_TARGETS = [
-  { id: "edexcel", label: "Edexcel pseudocode" },
-  { id: "cie", label: "Cambridge 9618 pseudocode" },
-  { id: "python", label: "Python" },
-] as const;
 
 export interface MenuActions {
   running: boolean;
@@ -46,7 +41,7 @@ export interface MenuActions {
   onSaveAll: () => void;
   /** The converter is an Advanced tool (docs/PRODUCT.md); in Simple mode the Convert menu isn't shown. */
   advanced: boolean;
-  onConvert: (to: "edexcel" | "cie" | "python") => void;
+  onConvert: (to: PseudocodeLanguage) => void;
   /** Which tools are on (Settings and mode); every tool is on when missing. */
   tools?: ToolFlags;
   /** View > Settings… */

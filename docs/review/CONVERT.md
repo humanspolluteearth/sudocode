@@ -70,3 +70,10 @@ files, types, classes, errors, byref, dates, devices (as before); builtins (no e
 - The two pending IDs are explained above (Q60 and the SH-03 formatter); both are in the PR description.
 - Merged-test looseness, NOT changed because merged tests are read-only: `matrix.test.ts` `REASONS` (`types` matches the `SET` statement, `builtins` matches any `word(`, `real-in-text` matches any `&`, `unknown-type`/`name-clash`/`problems` accept anything) and `roundtrip.test.ts` `REFUSALS.types` (matches every `DECLARE x : INTEGER`). A wrong-reason refusal could therefore pass. Proposal for you: tighten these in a tests PR. I checked by hand that today's refusals are for real reasons.
 - Spec rows without a text test (CNV-05, 06, 07, 10, 12, 13 BOOLEAN, 14 FOR EACH, 16, 22 other bounds, 24 other loops): to add in a follow-up tests-first PR.
+
+### UI (26 Nov 2026)
+
+- Size: converter chunk 125.77 kB, **38.20 kB gzipped**, loaded on the first conversion only. Size budget not changed.
+- Python files have nothing to convert to (Python to pseudocode is not offered, CNV-02): the Convert menu shows one disabled "Convert from Python" item and the toolbar select is disabled. The label is mine, not from a spec; tell me if you want other wording.
+- Not done: screenshots of the banner and menu on desktop, tablet and phone, and a keyboard-only test of the Convert menu (needs a Playwright pass; the menu bar's keyboard behaviour is already covered in `chrome.browser.test.tsx`).
+- Reviewers: architecture-reviewer found no MUST FIX; its 5 SHOULD items are fixed in the follow-up PR (shared `CONVERT_TARGETS`, `PseudocodeLanguage` type, banner text join, `.catch` on the chunk load, comment order). test-reviewer MUST FIX items (exact refusal text, Cambridge to Edexcel at App level, toolbar select) are fixed; compact-menu Python case and keyboard test are left.

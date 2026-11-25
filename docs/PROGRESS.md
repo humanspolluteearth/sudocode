@@ -168,3 +168,5 @@ Newest entry first. Updated at the end of each milestone (and each session).
 
 - Edexcel to Cambridge and Cambridge to Edexcel printers written (`packages/core/src/converter/pseudo/`); text tests pass except `CNV-23-refused` (Q60). `cie-to-edexcel` matrix passes; `edexcel-to-cie` matrix pending on the SH-03 REAL formatter (see `docs/review/CONVERT.md`).
 - Next: Convert menu and toolbar for the other two languages (UI PR).
+
+- UI: Convert menu, toolbar select and compact menu list the two other languages; result opens in a new tab with a banner of notable changes; refusals show the message and open no tab (#162). Converter chunk 125.77 kB, 38.20 kB gzipped, lazy-loaded; budget unchanged.

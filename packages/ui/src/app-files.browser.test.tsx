@@ -59,14 +59,46 @@ describe("MISC files in the app: tabs and Convert", () => {
     await expect.poll(() => screen.getByRole("textbox").first().element().textContent).toContain("OUTPUT 1");
   });
 
-  it("MISC a refused conversion shows the message and opens no new tab", async () => {
+  it("CNV-12 a refused conversion shows the reason and leaves only the original tab", async () => {
     advanced();
     const screen = await render(<App />);
     await screen.getByRole("textbox").first().click();
     await userEvent.keyboard("SET a TO [[1, 2]{Enter}SET a[[5] TO 9");
     await menu(screen, "Convert", "Convert to Cambridge 9618 pseudocode");
-    await expect.element(screen.getByRole("main").getByRole("status")).toBeVisible();
-    await expect.element(screen.getByRole("tab", { name: /untitled\.cpc/ })).not.toBeInTheDocument();
+    await expect
+      .element(screen.getByRole("main").getByRole("status"))
+      .toHaveTextContent(
+        "This array changes its size or is used in a way the other language can't copy. Make the array as big as you need when you create it, then only change the items inside it.Dismiss",
+      );
+    await expect.element(screen.getByRole("tab")).toHaveLength(1);
+    await expect.element(screen.getByRole("tab", { name: /untitled\.epc/ })).toBeVisible();
+  });
+
+  it("CNV-20 the Convert to select converts a Cambridge file to Edexcel and lists only the other two languages", async () => {
+    advanced();
+    const screen = await render(<App />);
+    await screen.getByRole("combobox", { name: /Language/ }).selectOptions("cie");
+    await screen.getByRole("textbox").first().click();
+    await userEvent.keyboard("OUTPUT 1");
+    const select = screen.getByLabelText("Convert to");
+    await expect.element(select.getByRole("option", { name: "Cambridge 9618 pseudocode" })).not.toBeInTheDocument();
+    await expect.element(select.getByRole("option", { name: "Python" })).toBeInTheDocument();
+    await select.selectOptions("edexcel");
+    await expect.element(screen.getByRole("tab", { name: /untitled\.epc/ })).toHaveAttribute("aria-selected", "true");
+    await expect
+      .element(screen.getByRole("main").getByRole("status"))
+      .toHaveTextContent(
+        "Converted from Cambridge 9618 pseudocode to Edexcel pseudocode. DECLAREs are gone, array indexes now start at 0, and OUTPUT/INPUT became SEND/RECEIVE. Your original is still open in its own tab. Run it to check it does the same.Dismiss",
+      );
+    await expect.poll(() => screen.getByRole("textbox").first().element().textContent).toContain("SEND 1 TO DISPLAY");
+    await expect.element(screen.getByRole("tab", { name: /untitled\.cpc/ })).toBeVisible();
+  });
+
+  it("CNV-02 the Convert to select is disabled for a Python file", async () => {
+    advanced();
+    const screen = await render(<App />);
+    await screen.getByRole("combobox", { name: /Language/ }).selectOptions("python");
+    await expect.element(screen.getByLabelText("Convert to")).toBeDisabled();
   });
 
   it("MISC Simple mode has no Convert menu", async () => {
