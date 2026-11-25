@@ -77,3 +77,10 @@ files, types, classes, errors, byref, dates, devices (as before); builtins (no e
 - Python files have nothing to convert to (Python to pseudocode is not offered, CNV-02): the Convert menu shows one disabled "Convert from Python" item and the toolbar select is disabled. The label is mine, not from a spec; tell me if you want other wording.
 - Not done: screenshots of the banner and menu on desktop, tablet and phone, and a keyboard-only test of the Convert menu (needs a Playwright pass; the menu bar's keyboard behaviour is already covered in `chrome.browser.test.tsx`).
 - Reviewers: architecture-reviewer found no MUST FIX; its 5 SHOULD items are fixed in the follow-up PR (shared `CONVERT_TARGETS`, `PseudocodeLanguage` type, banner text join, `.catch` on the chunk load, comment order). test-reviewer MUST FIX items (exact refusal text, Cambridge to Edexcel at App level, toolbar select) are fixed; compact-menu Python case and keyboard test are left.
+
+### Wrap-up (26 Nov 2026)
+
+- More text tests merged (#164, `pseudocode-text-gaps.test.ts`, hand-written from the spec rows): text arrays, BOOLEAN via IF, two counters, base-5 arrays, non-constant bounds, WHILE, REPEAT/UNTIL, STEP, IF/ELSE, CASE. All pass, nothing added to `pending.json`. CASE has no Edexcel form, so it becomes the same IF chain (CNV-24 says it maps across); say if you would rather it were refused.
+- Not covered by a text test yet: CNV-10 "names the variable" (I could not write a program whose type cannot be inferred that the checker accepts), CNV-16 BYREF and subprogram signatures, CNV-14 FOR EACH.
+- Architecture SHOULD items: four fixed in #165. Left: `name-clash` reports line 1; shared `childBlocks(stmt)` helper; `never` check in `expr()` (its default is a deliberate refusal because `Expr` includes every Python node).
+- Still open for you: Q60, the SH-03 REAL formatter (blocks the `edexcel-to-cie` matrix), tightening the loose `REASONS` patterns in `matrix.test.ts`, the screenshots and keyboard-only Convert-menu test, and a "Convert from Python" item in the compact menu.
