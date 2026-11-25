@@ -28,6 +28,13 @@ jobs:
         env:
           CI: "true"
           E2E_BROWSERS: firefox
+      # When a screenshot baseline is missing, Playwright writes the new image into the snapshots folder; keep it.
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: failure()
+        with:
+          name: e2e-firefox-snapshots
+          path: apps/web/e2e/*-snapshots/*-firefox-linux.png
+          if-no-files-found: ignore
 
   e2e-webkit:
     runs-on: ubuntu-latest
@@ -42,6 +49,13 @@ jobs:
         env:
           CI: "true"
           E2E_BROWSERS: webkit
+      # When a screenshot baseline is missing, Playwright writes the new image into the snapshots folder; keep it.
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: failure()
+        with:
+          name: e2e-webkit-snapshots
+          path: apps/web/e2e/*-snapshots/*-webkit-linux.png
+          if-no-files-found: ignore
 
   # M8, PY-01: every Python program with an expected file is run through CPython 3.12 and compared.
   python-full:
@@ -64,7 +78,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
-      - run: pnpm --filter @sudocode/core test -- tests/property/fuzz
+      - run: pnpm --filter @sudocode/core exec vitest run tests/property/fuzz
         env:
           SUDOCODE_RUNS: "20000"
 
@@ -76,7 +90,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
-      - run: pnpm --filter @sudocode/core test -- tests/property/properties
+      - run: pnpm --filter @sudocode/core exec vitest run tests/property/properties
         env:
           SUDOCODE_RUNS: "20000"
 
@@ -88,7 +102,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
-      - run: pnpm --filter @sudocode/core test -- tests/perf
+      - run: pnpm --filter @sudocode/core exec vitest run tests/perf
 
   # Runs the whole test suite and the spec-coverage report on main; on failure it opens (or comments on) one
   # issue labelled `nightly`, so a broken night is never missed.
@@ -106,6 +120,10 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
+      # The converter round-trip tests run each converted program in CPython 3.12 (same as the PR workflow).
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
       - name: All tests
         run: pnpm test
       - name: Spec coverage
