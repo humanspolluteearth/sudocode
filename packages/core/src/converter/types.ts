@@ -64,7 +64,14 @@ export class Types {
   private readonly returns = new Map<string, Ty>();
   private changes = 0; // counts every time a type moves up the lattice
 
-  constructor(private readonly program: Program) {
+  /**
+   * `precisePow`: say `int` for `int ^ non-negative literal` (EDX-30) instead of `unknown`. The Python printer keeps
+   * the looser answer, so its merged golden text does not change; the pseudocode printers want the exact one.
+   */
+  constructor(
+    private readonly program: Program,
+    private readonly precisePow = false,
+  ) {
     for (const [name, d] of Object.entries(program.declared ?? {})) this.globals.set(name, DECLARED[d]);
     for (const sub of Object.values(program.subprograms)) {
       const table: Table = new Map();
@@ -83,6 +90,27 @@ export class Types {
   /** The type of an expression inside `sub` (null for the main program); "unknown" when nothing is certain. */
   typeOf(e: Expr, sub: string | null): Ty {
     return this.exprType(e, sub === null ? null : (this.program.subprograms[sub] ?? null)) || UNKNOWN;
+  }
+
+  /** Every global variable with its inferred type, in the order the program first gives it a value. */
+  globalVars(): [string, Ty][] {
+    return [...this.globals];
+  }
+
+  /** The local variables of a subprogram (not its parameters), in order of first assignment. */
+  localVars(sub: string): [string, Ty][] {
+    const params = new Set(this.program.subprograms[sub]?.params ?? []);
+    return [...(this.locals.get(sub) ?? [])].filter(([name]) => !params.has(name));
+  }
+
+  /** What a parameter holds, from the declared type or from the calls that pass it a value. */
+  paramType(sub: string, name: string): Ty {
+    return this.locals.get(sub)?.get(name) ?? "";
+  }
+
+  /** What a function gives back ("" for a procedure or a function that never returns a value). */
+  returnType(sub: string): Ty {
+    return this.returns.get(sub) ?? "";
   }
 
   private table(sub: Subprogram | null, scope: "global" | "local"): Table {
@@ -128,8 +156,15 @@ export class Types {
           case "gt":
           case "ge":
             return "bool";
-          case "powIntIfNonNegative":
-            return UNKNOWN; // INTEGER or REAL depending on the exponent's sign at run time
+          case "powIntIfNonNegative": {
+            if (!this.precisePow) return UNKNOWN; // INTEGER or REAL depending on the exponent's sign at run time
+            const l = t(e.left);
+            t(e.right); // visit the exponent too, so its variables are typed
+            if (l === "real") return "real";
+            return l === "int" && e.right.kind === "literal" && e.right.value.kind === "int" && e.right.value.value >= 0
+              ? "int"
+              : UNKNOWN;
+          }
           case "add":
           case "sub":
           case "mul": {
