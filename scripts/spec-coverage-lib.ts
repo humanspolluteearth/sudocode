@@ -21,7 +21,7 @@ export interface CoverageRow {
   inScope: boolean;
 }
 
-const ROW = /^\|\s*((?:SH|EDX|CIE|PY)-\d+)\s*\|(.*)\|\s*$/;
+const ROW = /^\|\s*((?:SH|EDX|CIE|PY|CNV)-\d+)\s*\|(.*)\|\s*$/;
 
 /** Every spec ID that starts a table row, in file order. Status is the row's last cell. */
 export function extractSpecRows(files: readonly { file: string; text: string }[]): SpecRow[] {
