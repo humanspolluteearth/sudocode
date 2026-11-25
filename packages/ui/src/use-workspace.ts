@@ -40,9 +40,8 @@ export interface WorkspaceHook {
   cancelSave: () => void;
 }
 
-/** `beforeChange` runs when the active file changes (stop a run, clear breakpoints); `setNote` shows messages. */
 /** The notable changes of each conversion, in plain words, for the banner. */
-const CHANGES: Record<"edexcel" | "cie", Partial<Record<PseudocodeLanguage, string>>> = {
+const CHANGES: Record<Exclude<PseudocodeLanguage, "python">, Partial<Record<PseudocodeLanguage, string>>> = {
   edexcel: {
     cie: "Variables are now declared with their type, arrays start at 0 with a fixed size, and SEND/RECEIVE became OUTPUT/INPUT.",
     python: "Arrays are lists, and SEND/RECEIVE became print/input.",
@@ -53,6 +52,7 @@ const CHANGES: Record<"edexcel" | "cie", Partial<Record<PseudocodeLanguage, stri
   },
 };
 
+/** `beforeChange` runs when the active file changes (stop a run, clear breakpoints); `setNote` shows messages. */
 export function useWorkspace(
   first: { language: PseudocodeLanguage; source: string },
   beforeChange: () => void,
@@ -131,18 +131,25 @@ export function useWorkspace(
       if (from === "python" || from === to) return;
       const { name, source } = current;
       // The converter is loaded only now (a dynamic import), so the first page load stays small.
-      void import("@sudocode/core/converter").then(({ convert }) => {
-        const result = convert(source, from, to);
-        if (!result.ok) {
-          setNote({ text: `${result.message} ${result.hint}`, error: true });
-          return;
-        }
-        beforeChange();
-        update(openTab(latest.current, { name, language: to, source: result.code }));
-        setNote({
-          text: `Converted from ${NAMES[from]} to ${NAMES[to]}. ${CHANGES[from][to] ?? ""} Your original is still open in its own tab. Run it to check it does the same.`,
+      void import("@sudocode/core/converter")
+        .then(({ convert }) => {
+          const result = convert(source, from, to);
+          if (!result.ok) {
+            setNote({ text: `${result.message} ${result.hint}`, error: true });
+            return;
+          }
+          beforeChange();
+          update(openTab(latest.current, { name, language: to, source: result.code }));
+          const text = [
+            `Converted from ${NAMES[from]} to ${NAMES[to]}.`,
+            CHANGES[from][to],
+            "Your original is still open in its own tab. Run it to check it does the same.",
+          ];
+          setNote({ text: text.filter((t) => t !== undefined).join(" ") });
+        })
+        .catch(() => {
+          setNote({ text: "The converter could not be loaded. Check your connection and try again.", error: true });
         });
-      });
     },
     dialog,
     finishSave: (name, type) => {

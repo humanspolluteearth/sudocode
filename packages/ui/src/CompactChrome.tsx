@@ -1,5 +1,6 @@
 // The extra controls of the compact layout (design: Tablet.dc.html, Mobile.dc.html): a bottom view switcher, the
 // "Insert keyword" key bar, the "1 problem" chip and the "File and convert actions" overflow menu.
+import { CONVERT_TARGETS } from "./convert-targets.ts";
 import type { Diagnostic } from "@sudocode/core";
 import { useState } from "react";
 import { KEYSETS, type CompactView } from "./compact.ts";
@@ -14,12 +15,6 @@ const VIEWS: readonly { id: CompactView; label: string }[] = [
   { id: "debug", label: "Debug" },
   { id: "guide", label: "Guide" },
 ];
-
-const CONVERT_TARGETS = [
-  { id: "edexcel", label: "Edexcel pseudocode" },
-  { id: "cie", label: "Cambridge 9618 pseudocode" },
-  { id: "python", label: "Python" },
-] as const;
 
 export function ViewSwitcher(p: { view: CompactView; onView: (v: CompactView) => void; problems: number }) {
   return (
@@ -95,9 +90,9 @@ export interface OverflowProps {
   onSave: () => void;
   onSaveAs: () => void;
   /** Present only when the converter is on and the language can be converted. */
-  onConvert?: ((to: "edexcel" | "cie" | "python") => void) | undefined;
+  onConvert?: ((to: PseudocodeLanguage) => void) | undefined;
   /** The active file's language, so only the other two targets are listed. */
-  language?: "edexcel" | "cie" | "python";
+  language?: PseudocodeLanguage;
   onCloseTab: () => void;
   canCloseTab: boolean;
   zoom: number;

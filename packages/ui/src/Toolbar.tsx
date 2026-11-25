@@ -1,4 +1,5 @@
 // The toolbar: Run, the debugger buttons (Continue, Step over, Pause), Stop, zoom and theme. Buttons are real <button>s with visible text for screen readers.
+import { CONVERT_TARGETS } from "./convert-targets.ts";
 import { ALL_TOOLS, type ToolFlags } from "./tools.ts";
 import type { PseudocodeLanguage } from "./preferences.ts";
 export type ThemeChoice = "system" | "light" | "dark";
@@ -40,7 +41,7 @@ export interface ToolbarProps {
   /** Save the active file; the button is disabled while this is missing. */
   onSave?: () => void;
   /** Open the converted program in a new tab. Missing in Simple mode (the converter is an Advanced tool). */
-  onConvert?: ((target: "edexcel" | "cie" | "python") => void) | undefined;
+  onConvert?: ((target: PseudocodeLanguage) => void) | undefined;
   /** False when the active file is already Python, so there is nothing to convert to. */
   canConvert?: boolean;
   /** Which tools are on (Settings and mode); every tool is on when missing. */
@@ -167,16 +168,18 @@ export function Toolbar(p: ToolbarProps) {
               p.canConvert === false ? "Python can't be converted to pseudocode" : "Open a converted copy in a new tab"
             }
             onChange={(e) => {
-              const v = e.target.value;
-              if (v === "edexcel" || v === "cie" || v === "python") p.onConvert?.(v);
+              const v = CONVERT_TARGETS.find((t) => t.id === e.target.value);
+              if (v !== undefined) p.onConvert?.(v.id);
             }}
           >
             <option value="" disabled>
               Choose…
             </option>
-            {p.language !== "edexcel" && <option value="edexcel">Edexcel pseudocode</option>}
-            {p.language !== "cie" && <option value="cie">Cambridge 9618 pseudocode</option>}
-            {p.language !== "python" && <option value="python">Python</option>}
+            {CONVERT_TARGETS.filter((t) => t.id !== p.language).map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.label}
+              </option>
+            ))}
           </select>
         </label>
       )}
