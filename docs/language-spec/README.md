@@ -10,6 +10,7 @@ These files are the source of truth for how Sudocode behaves. Claude must not fi
 | `edexcel.md` | Edexcel IGCSE 4CP0 pseudocode (EDX-) |
 | `cie-9618.md` | Cambridge 9618 pseudocode (CIE-) |
 | `python-subset.md` | The Python subset, matching CPython 3.12 (PY-) |
+| `converter.md` | How programs are converted between the languages (CNV-) |
 
 ## Status tags
 
@@ -24,7 +25,7 @@ Tests name the ID they prove, for example `it("EDX-54 STEP 0 is a runtime error"
 
 ## Converter scope
 
-v1 converts Edexcel to Python and CIE to Python. Other directions come later.
+Edexcel to Python, CIE to Python, Edexcel to Cambridge and Cambridge to Edexcel (see `converter.md`). Python to pseudocode is not offered.
 
 ## Resolved questions
 
