@@ -170,3 +170,5 @@ Newest entry first. Updated at the end of each milestone (and each session).
 - Next: Convert menu and toolbar for the other two languages (UI PR).
 
 - UI: Convert menu, toolbar select and compact menu list the two other languages; result opens in a new tab with a banner of notable changes; refusals show the message and open no tab (#162). Converter chunk 125.77 kB, 38.20 kB gzipped, lazy-loaded; budget unchanged.
+
+- Wrap-up: extra converter text tests (#164) and review cleanups (#165). Open items are listed under "Wrap-up" in `docs/review/CONVERT.md`.
