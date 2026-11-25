@@ -39,6 +39,7 @@ export function convertToPseudocode(source: string, from: PseudoTarget, to: Pseu
   const { diagnostics, program } = from === "edexcel" ? analyseEdexcel(source) : analyseCie(source);
   if (program === null) {
     const first = diagnostics.find((d) => d.severity === "error");
+    // `first` is only missing if the checker gave no program and no error; point at line 1 rather than crash.
     return refused("problems", first?.line ?? 1, first?.column ?? 1);
   }
   const found = findRefusal(program);

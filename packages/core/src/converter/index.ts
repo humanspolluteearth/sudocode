@@ -70,6 +70,7 @@ export type ConvertTarget = Language;
  */
 export function convert(source: string, from: ConvertFrom, to: ConvertTarget): ConvertResult {
   if (to === "python") return convertToPython(source, from);
-  if (to === from) throw new Error("converting a language to itself is not offered");
+  // A caller bug, not a student mistake: the menu never lists the current language (CNV-02).
+  if (to === from) throw new RangeError("converting a language to itself is not offered");
   return convertToPseudocode(source, from, to);
 }
