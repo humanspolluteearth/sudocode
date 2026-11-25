@@ -2,6 +2,19 @@
 
 Newest entry first. Updated at the end of each milestone (and each session).
 
+## 25 Nov 2026: five fixes (nightly, bug link, Author, Save dialog, console input)
+
+- **PRs (squash-merged, CI green):** #153 nightly fix, #154 "Report a bug" link in the status bar, #155 Help > Author dialog, #156 Save and Settings dialog layout, #157 console input underline and caret.
+- **Nightly:** two causes, both fixed without touching a test: (1) the jobs ran `vitest run -- <path>`, which ignores the path, so the whole suite ran and the converter test failed for lack of `python3.12` (config bug; also a timeout-free fix, setup-python added to the report job); (2) Firefox and WebKit had no linux screenshot baselines (missing files). The nightly was dispatched on `main` after all five merges: green, 7 of 7 jobs (run 45624306087).
+- **Real bug found on the way:** on a phone, a program that asked for input did not focus the input (it ran while the Console view was hidden). Fixed in #157.
+- **No fix hit the stop rule**, so `docs/review/FIXES.md` was not needed. One test edit: the merged "status bar fits one row at 390/360px" bound changed from `< 30` to `<= 48` (the bar now holds a 44px touch link), listed in #154.
+- **Check by hand:**
+  - The 40 Firefox and WebKit baselines (`apps/web/e2e/*-snapshots/*-{firefox,webkit}-linux.png`) were rendered by the CI runner, not by you. Skim them once.
+  - Real phone: the caret blinks in the console input; with the keyboard open, File > Save is fully visible and scrolls inside itself.
+  - Reduced motion: `caret-animation: manual` needs a recent Chromium; Firefox and Safari keep their own caret behaviour.
+  - On this machine two UI tests (`compact.browser.test.tsx` gutter, 390 and 834px) time out at 15 s and two core tests (`driver`, `perf`) can time out when the machine is busy; they pass in CI and alone. I changed no timeout.
+- **For CLAUDE.md:** `pnpm --filter @sudocode/core test -- <pattern>` ignores the pattern; use `pnpm --filter @sudocode/core exec vitest run <path>`.
+
 ## 25 Nov 2026: mobile and tablet fidelity pass done (#138-#147); decisions in docs/review/UI-mobile.md
 
 ## 25 Nov 2026: converter follow-up, Part A (cleaner Python output)
