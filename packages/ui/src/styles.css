@@ -547,12 +547,30 @@ button.sc-section-head:hover {
   z-index: 40;
 }
 .sc-dialog {
-  max-width: 420px;
+  box-sizing: border-box;
+  width: min(420px, calc(100vw - 32px));
+  /* A short screen (phone with the keyboard open) scrolls inside the dialog instead of cutting off its top. */
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
   margin: 16px;
   padding: 16px 20px;
   background: var(--bg);
   color: var(--fg);
   border: 1px solid var(--line);
+}
+/* .sc-field is the toolbar's inline label (indented, centred); inside a dialog each field is a full-width column. */
+.sc-dialog .sc-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  margin: 0 0 12px;
+}
+.sc-dialog .sc-field input:not([type="checkbox"], [type="radio"]),
+.sc-dialog .sc-field select {
+  box-sizing: border-box;
+  width: 100%;
 }
 .sc-dialog h2 {
   margin: 0 0 8px;
