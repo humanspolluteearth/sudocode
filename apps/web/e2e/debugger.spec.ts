@@ -92,3 +92,30 @@ test("SH-05 RECEIVE waits for a line typed in the console input box", async ({ p
   await expect(page.getByRole("log")).toContainText("42");
   await expect(page.getByRole("log")).toContainText("Finished.");
 });
+
+for (const [name, width, height] of [
+  ["phone", 390, 844],
+  ["tablet", 834, 1112],
+  ["desktop", 1440, 900],
+] as const) {
+  for (const scheme of ["light", "dark"] as const) {
+    test(`SH-05 the input is focused and underlined when a program asks for input (${name}, ${scheme})`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ colorScheme: scheme });
+      await page.setViewportSize({ width, height });
+      await page.goto("/");
+      await typeProgram(page, "RECEIVE n FROM (INTEGER) KEYBOARD\nSEND n * 2 TO DISPLAY");
+      await page.getByRole("button", { name: "Run" }).click();
+      const input = page.getByRole("textbox", { name: "Input" });
+      await expect(input).toBeFocused();
+      await expect(input).toBeVisible();
+      await expect(input).toHaveCSS("border-bottom-style", "solid");
+      await expect(input).toHaveCSS("border-bottom-width", "2px");
+      await expect(input).toHaveCSS("outline-style", "none");
+      // Clicking the console text must not take the caret away.
+      await page.getByRole("log").click({ position: { x: 4, y: 4 } });
+      await expect(input).toBeFocused();
+    });
+  }
+}
