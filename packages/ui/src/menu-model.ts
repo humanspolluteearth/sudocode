@@ -8,6 +8,12 @@ import { nextZoom, ZOOM_MAX, ZOOM_MIN, type ThemeChoice } from "./Toolbar.tsx";
 
 const ZOOM_PRESETS = [100, 110, 125, 150] as const;
 
+const CONVERT_TARGETS = [
+  { id: "edexcel", label: "Edexcel pseudocode" },
+  { id: "cie", label: "Cambridge 9618 pseudocode" },
+  { id: "python", label: "Python" },
+] as const;
+
 export interface MenuActions {
   running: boolean;
   paused: boolean;
@@ -40,7 +46,7 @@ export interface MenuActions {
   onSaveAll: () => void;
   /** The converter is an Advanced tool (docs/PRODUCT.md); in Simple mode the Convert menu isn't shown. */
   advanced: boolean;
-  onConvertToPython: () => void;
+  onConvert: (to: "edexcel" | "cie" | "python") => void;
   /** Which tools are on (Settings and mode); every tool is on when missing. */
   tools?: ToolFlags;
   /** View > Settings… */
@@ -114,16 +120,15 @@ export function buildMenus(a: MenuActions): MenuDef[] {
           {
             id: "convert",
             label: "Convert",
-            items: [
+            items:
               a.language === "python"
-                ? { label: "Convert to Python", disabled: true, title: "This file is already Python" }
-                : { label: "Convert to Python", onSelect: a.onConvertToPython },
-              {
-                label: "Convert to Cambridge 9618 pseudocode",
-                disabled: true,
-                title: "Only conversion to Python is available",
-              },
-            ],
+                ? [{ label: "Convert from Python", disabled: true, title: "Python can't be converted to pseudocode" }]
+                : CONVERT_TARGETS.filter((t) => t.id !== a.language).map((t) => ({
+                    label: `Convert to ${t.label}`,
+                    onSelect: () => {
+                      a.onConvert(t.id);
+                    },
+                  })),
           },
         ]
       : []),

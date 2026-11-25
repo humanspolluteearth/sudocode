@@ -15,6 +15,12 @@ const VIEWS: readonly { id: CompactView; label: string }[] = [
   { id: "guide", label: "Guide" },
 ];
 
+const CONVERT_TARGETS = [
+  { id: "edexcel", label: "Edexcel pseudocode" },
+  { id: "cie", label: "Cambridge 9618 pseudocode" },
+  { id: "python", label: "Python" },
+] as const;
+
 export function ViewSwitcher(p: { view: CompactView; onView: (v: CompactView) => void; problems: number }) {
   return (
     <nav className="sc-views" aria-label="Views">
@@ -89,7 +95,9 @@ export interface OverflowProps {
   onSave: () => void;
   onSaveAs: () => void;
   /** Present only when the converter is on and the language can be converted. */
-  onConvert?: (() => void) | undefined;
+  onConvert?: ((to: "edexcel" | "cie" | "python") => void) | undefined;
+  /** The active file's language, so only the other two targets are listed. */
+  language?: "edexcel" | "cie" | "python";
   onCloseTab: () => void;
   canCloseTab: boolean;
   zoom: number;
@@ -167,11 +175,12 @@ export function OverflowMenu(p: OverflowProps) {
           <button type="button" role="menuitem" onClick={run(p.onSaveAs)}>
             Save as…
           </button>
-          {p.onConvert !== undefined && (
-            <button type="button" role="menuitem" onClick={run(p.onConvert)}>
-              Convert to Python
-            </button>
-          )}
+          {p.onConvert !== undefined &&
+            CONVERT_TARGETS.filter((t) => t.id !== p.language).map((t) => (
+              <button key={t.id} type="button" role="menuitem" onClick={run(() => p.onConvert?.(t.id))}>
+                Convert to {t.label}
+              </button>
+            ))}
           <button type="button" role="menuitem" disabled={!p.canCloseTab} onClick={run(p.onCloseTab)}>
             Close tab
           </button>

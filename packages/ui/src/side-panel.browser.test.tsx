@@ -36,7 +36,7 @@ const actions = (over: Partial<MenuActions> = {}): MenuActions => ({
   onSaveAs: () => undefined,
   onSaveAll: () => undefined,
   advanced: true,
-  onConvertToPython: () => undefined,
+  onConvert: () => undefined,
   ...over,
 });
 

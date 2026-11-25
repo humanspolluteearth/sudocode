@@ -67,12 +67,16 @@ describe("MISC compact layout (tablet 834 and phone 390, design Tablet/Mobile.dc
     await page.viewport(390, 800);
     const simple = await render(<App />);
     await simple.getByRole("button", { name: "File and convert actions" }).click();
-    await expect.element(simple.getByRole("menuitem", { name: "Convert to Python" })).not.toBeInTheDocument();
+    await expect
+      .element(simple.getByRole("menuitem", { name: "Convert to Cambridge 9618 pseudocode" }))
+      .not.toBeInTheDocument();
     await simple.unmount();
     localStorage.setItem("sudocode.preferences", JSON.stringify({ advanced: true }));
     const advanced = await render(<App />);
     await advanced.getByRole("button", { name: "File and convert actions" }).click();
-    await expect.element(advanced.getByRole("menuitem", { name: "Convert to Python" })).toBeVisible();
+    await expect
+      .element(advanced.getByRole("menuitem", { name: "Convert to Cambridge 9618 pseudocode" }))
+      .toBeVisible();
   });
 
   it("MISC a problem shows the chip and a dot on Debug, and the chip jumps back to the code", async () => {

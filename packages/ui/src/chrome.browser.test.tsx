@@ -43,7 +43,7 @@ const actions = (over: Partial<MenuActions> = {}): MenuActions => ({
   onSaveAs: () => undefined,
   onSaveAll: () => undefined,
   advanced: true,
-  onConvertToPython: () => undefined,
+  onConvert: () => undefined,
   ...over,
 });
 
@@ -143,16 +143,27 @@ describe("MISC menu bar", () => {
     }
   });
 
-  it("MISC Convert menu converts to Python, is disabled for Python files and is hidden in Simple mode", async () => {
-    const onConvertToPython = vi.fn();
-    const screen = await render(<MenuBar menus={buildMenus(actions({ onConvertToPython }))} />);
+  it("MISC Convert menu lists the two other languages, is disabled for Python files and is hidden in Simple mode", async () => {
+    const onConvert = vi.fn();
+    const screen = await render(<MenuBar menus={buildMenus(actions({ onConvert }))} />);
     await screen.getByRole("menuitem", { name: "Convert", exact: true }).click();
-    await screen.getByRole("menuitem", { name: "Convert to Python" }).click();
-    expect(onConvertToPython).toHaveBeenCalledOnce();
+    await expect
+      .element(screen.getByRole("menuitem", { name: "Convert to Edexcel pseudocode" }))
+      .not.toBeInTheDocument();
+    await screen.getByRole("menuitem", { name: "Convert to Cambridge 9618 pseudocode" }).click();
+    expect(onConvert).toHaveBeenCalledExactlyOnceWith("cie");
     await screen.unmount();
+    const cie = await render(<MenuBar menus={buildMenus(actions({ language: "cie", onConvert }))} />);
+    await cie.getByRole("menuitem", { name: "Convert", exact: true }).click();
+    await cie.getByRole("menuitem", { name: "Convert to Python" }).click();
+    expect(onConvert).toHaveBeenLastCalledWith("python");
+    await expect
+      .element(cie.getByRole("menuitem", { name: "Convert to Cambridge 9618 pseudocode" }))
+      .not.toBeInTheDocument();
+    await cie.unmount();
     const py = await render(<MenuBar menus={buildMenus(actions({ language: "python" }))} />);
     await py.getByRole("menuitem", { name: "Convert", exact: true }).click();
-    await expect.element(py.getByRole("menuitem", { name: "Convert to Python" })).toBeDisabled();
+    await expect.element(py.getByRole("menuitem", { name: "Convert from Python" })).toBeDisabled();
     await py.unmount();
     const simple = await render(<MenuBar menus={buildMenus(actions({ advanced: false }))} />);
     await expect.element(simple.getByRole("menuitem", { name: "Convert", exact: true })).not.toBeInTheDocument();
