@@ -59,3 +59,15 @@ export function convertToPython(source: string, from: ConvertFrom): ConvertResul
     throw error;
   }
 }
+
+/** Where a program can be converted to. Python is a target only: Python to pseudocode is not offered (CNV-02). */
+export type ConvertTarget = Language;
+
+/**
+ * Convert between any two of the three languages (CNV-02). Edexcel and Cambridge go to each other and to Python.
+ * Not written yet for the pseudocode targets: the tests in tests/converter/ are pending until it is.
+ */
+export function convert(source: string, from: ConvertFrom, to: ConvertTarget): ConvertResult {
+  if (to === "python") return convertToPython(source, from);
+  throw new Error(`converting ${from} to ${to} is not written yet`);
+}
