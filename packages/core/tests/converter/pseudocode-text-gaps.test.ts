@@ -89,3 +89,22 @@ describe("CNV-22..24 Cambridge to Edexcel, more rows", () => {
     ).toBe(`${HEAD_EDX}SET n TO 1\nIF n = 1 THEN\n    SEND 1 TO DISPLAY\nELSE\n    SEND 2 TO DISPLAY\nEND IF\n`);
   });
 });
+
+describe("CNV-07 converting a converted file again", () => {
+  it("CNV-07 Edexcel to Cambridge and back keeps one header, not two", () => {
+    const there = ok("edexcel>cie", "SET n TO 3\nSEND n TO DISPLAY\n");
+    const back = ok("cie>edexcel", there);
+    expect(back).toBe(`${HEAD_EDX}SET n TO 3\nSEND n TO DISPLAY\n`);
+  });
+
+  it("CNV-07 a comment of the student's next to the old header survives", () => {
+    const there = ok("edexcel>cie", "# the total\nSET n TO 3\n");
+    expect(ok("cie>edexcel", there)).toBe(`${HEAD_EDX}# the total\nSET n TO 3\n`);
+  });
+
+  it("CNV-07 Cambridge to Python drops an old Sudocode header too", () => {
+    const there = ok("edexcel>cie", "SET n TO 3\n");
+    const r = convert(there, "cie", "python");
+    expect(r.ok && r.code.match(/Converted from/g)?.length).toBe(1);
+  });
+});
