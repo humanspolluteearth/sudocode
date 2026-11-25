@@ -69,6 +69,19 @@ export type ConvertTarget = Language;
  * Not written yet for the pseudocode targets: the tests in tests/converter/ are pending until it is.
  */
 export function convert(source: string, from: ConvertFrom, to: ConvertTarget): ConvertResult {
+  return convertClean(withoutHeader(source), from, to);
+}
+
+/**
+ * A file we converted earlier starts with "Converted from ... by Sudocode." Converting it again would keep that line as
+ * a comment and add a new header, so the notes would pile up on every round trip. The old header is blanked (not
+ * deleted) so every line number in a refusal still matches the student's editor.
+ */
+export function withoutHeader(source: string): string {
+  return source.replace(/^(?:#|\/\/) Converted from [A-Za-z ]+ by Sudocode\.(?=\r?\n|$)/, "");
+}
+
+function convertClean(source: string, from: ConvertFrom, to: ConvertTarget): ConvertResult {
   if (to === "python") return convertToPython(source, from);
   // A caller bug, not a student mistake: the menu never lists the current language (CNV-02).
   if (to === from) throw new RangeError("converting a language to itself is not offered");
