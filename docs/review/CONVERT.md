@@ -64,3 +64,9 @@ files, types, classes, errors, byref, dates, devices (as before); builtins (no e
 - Real literals are printed as plain decimals (no `1e-7`; Cambridge cannot lex it).
 - `LENGTH(a)` of a Cambridge array becomes its declared size.
 - `CNV-23-refused` (merged test) is pending: its program `UCASE(s)` with a STRING is a checker error (CIE-121: UCASE takes a CHAR), so the source is rejected before conversion. See Q60.
+
+### Test-reviewer notes (26 Nov 2026)
+
+- The two pending IDs are explained above (Q60 and the SH-03 formatter); both are in the PR description.
+- Merged-test looseness, NOT changed because merged tests are read-only: `matrix.test.ts` `REASONS` (`types` matches the `SET` statement, `builtins` matches any `word(`, `real-in-text` matches any `&`, `unknown-type`/`name-clash`/`problems` accept anything) and `roundtrip.test.ts` `REFUSALS.types` (matches every `DECLARE x : INTEGER`). A wrong-reason refusal could therefore pass. Proposal for you: tighten these in a tests PR. I checked by hand that today's refusals are for real reasons.
+- Spec rows without a text test (CNV-05, 06, 07, 10, 12, 13 BOOLEAN, 14 FOR EACH, 16, 22 other bounds, 24 other loops): to add in a follow-up tests-first PR.
