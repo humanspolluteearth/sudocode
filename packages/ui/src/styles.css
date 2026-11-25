@@ -529,12 +529,29 @@ button.sc-section-head:hover {
   min-width: 8ch;
   max-width: 100%;
   padding: 0;
+  /* The input is a terminal-style underline, always: 1px in the text colour, 2px in the link colour when focused. */
   border: 0;
+  border-bottom: 1px solid var(--fg);
   outline: 0;
   background: transparent;
   color: var(--fg);
   font: inherit;
   caret-color: var(--fg);
+}
+/* The underline is the focus indicator, so the design's dotted ring (.sc-root input:focus-visible) is switched off here.
+   The extra pixel is pulled back with a negative margin so focusing never moves the text. */
+.sc-root .sc-input-inline:focus,
+.sc-root .sc-input-inline:focus-visible {
+  border-bottom-width: 2px;
+  border-bottom-color: var(--link);
+  margin-bottom: -1px;
+  outline: none;
+}
+/* Reduced motion stops only the blink (the caret stays visible and keeps its colour). */
+@media (prefers-reduced-motion: reduce) {
+  .sc-input-inline {
+    caret-animation: manual;
+  }
 }
 .sc-dialog-backdrop {
   position: fixed;
