@@ -172,9 +172,9 @@ describe("CNV-20..24 Cambridge to Edexcel", () => {
       );
     });
     check("CNV-23-refused", () => {
-      const r = refusal("cie>edexcel", 'DECLARE s : STRING\ns <- "ab"\nOUTPUT UCASE(s)\n');
+      const r = refusal("cie>edexcel", 'DECLARE s : STRING\ns <- "ab"\nOUTPUT TO_UPPER(s)\n');
       expect(r.line).toBe(3);
-      expect(r.message).toMatch(/UCASE/);
+      expect(r.message).toMatch(/TO_UPPER/);
     });
   });
 

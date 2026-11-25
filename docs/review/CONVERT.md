@@ -83,4 +83,6 @@ files, types, classes, errors, byref, dates, devices (as before); builtins (no e
 - More text tests merged (#164, `pseudocode-text-gaps.test.ts`, hand-written from the spec rows): text arrays, BOOLEAN via IF, two counters, base-5 arrays, non-constant bounds, WHILE, REPEAT/UNTIL, STEP, IF/ELSE, CASE. All pass, nothing added to `pending.json`. CASE has no Edexcel form, so it becomes the same IF chain (CNV-24 says it maps across); say if you would rather it were refused.
 - Not covered by a text test yet: CNV-10 "names the variable" (I could not write a program whose type cannot be inferred that the checker accepts), CNV-16 BYREF and subprogram signatures, CNV-14 FOR EACH.
 - Architecture SHOULD items: four fixed in #165. Left: `name-clash` reports line 1; shared `childBlocks(stmt)` helper; `never` check in `expr()` (its default is a deliberate refusal because `Expr` includes every Python node).
-- Still open for you: Q60, the SH-03 REAL formatter (blocks the `edexcel-to-cie` matrix), tightening the loose `REASONS` patterns in `matrix.test.ts`, the screenshots and keyboard-only Convert-menu test, and a "Convert from Python" item in the compact menu.
+- Still open for you: the SH-03 REAL formatter (blocks the `edexcel-to-cie` matrix), tightening the loose `REASONS` patterns in `matrix.test.ts`, the screenshots and keyboard-only Convert-menu test, and a "Convert from Python" item in the compact menu.
+
+**Update:** Q60 was answered (use `TO_UPPER`); `CNV-23-refused` now runs and passes.

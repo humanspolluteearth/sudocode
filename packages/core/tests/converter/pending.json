@@ -5,7 +5,6 @@
     "converter/conformance/edexcel/SH-03-real-large-shortest-form",
     "converter/conformance/edexcel/SH-13-recursion-1000-calls-deep",
     "converter/MISC-refuse-types",
-    "converter/text/CNV-23-refused",
     "converter/matrix/edexcel-to-cie"
   ]
 }

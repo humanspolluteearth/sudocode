@@ -331,3 +331,5 @@ Recommended: A. Nothing is marked pending and the checker is unchanged; this pas
 
 `tests/converter/pseudocode-text.test.ts` `CNV-23-refused` converts `DECLARE s : STRING ... OUTPUT UCASE(s)` and expects a refusal naming UCASE on line 3. But CIE-121 says `UCASE` takes a CHAR, so the checker rejects the program first (`E-CHK-ARG-TYPE`) and no conversion happens.
 **Proposal:** change the program to `DECLARE s : STRING` / `s <- "ab"` / `OUTPUT TO_UPPER(s)` and the message check to `/TO_UPPER/`. I did not edit the merged test; it stays in `tests/converter/pending.json`.
+
+**Answered (26 Nov 2026):** use `TO_UPPER`, as proposed. The test program and message check are changed and `CNV-23-refused` is out of `pending.json`.
