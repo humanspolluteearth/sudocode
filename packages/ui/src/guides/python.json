@@ -1,1 +1,2544 @@
-{"t":"div","a":{"class":"th {{themeClass}}","style":"min-height: 100vh; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.55"},"c":["\n\n",{"t":"div","a":{"style":"border-bottom: 1px solid var(--line); background: var(--chrome)"},"c":["\n  ",{"t":"div","a":{"style":"max-width: 1080px; margin: 0 auto; padding: 8px 24px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 12px; color: var(--fg4)"},"c":["\n    ",{"t":"a","a":{"href":"Main.dc.html"},"c":["IDE"]},{"t":"span","a":{"aria-hidden":"true"},"c":["/"]},{"t":"span","c":["Python guide"]},"\n    ",{"t":"nav","a":{"aria-label":"Guide language","style":"margin-left: auto; display: flex; border: 1px solid var(--line); background: var(--chrome)"},"c":[{"t":"a","a":{"href":"Guide.dc.html","style":"padding: 3px 10px; border-left: 0; text-decoration: none"},"c":["Edexcel"]},{"t":"a","a":{"href":"CambridgeGuide.dc.html","style":"padding: 3px 10px; border-left: 1px solid var(--line); text-decoration: none"},"c":["Cambridge"]},{"t":"span","a":{"aria-current":"page","style":"padding: 3px 10px; background: var(--bg); color: var(--fg); font-weight: 600; border-left: 1px solid var(--line)"},"c":["Python"]}]},"\n  "]},"\n"]},"\n\n",{"t":"div","a":{"style":"max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start"},"c":["\n\n  ",{"t":"nav","a":{"aria-label":"Contents","style":"flex: 1 1 180px; max-width: 220px; font-size: 13px"},"c":["\n    ",{"t":"div","a":{"style":"font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--fg); margin-bottom: 6px"},"c":["Contents"]},"\n    ",{"t":"ol","a":{"style":"margin: 0; padding-left: 20px; line-height: 1.9"},"c":["\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s1"},"c":["Variables and data types"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s2"},"c":["Input and output"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s3"},"c":["Selection"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s4"},"c":["Iteration"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s5"},"c":["Functions"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s6"},"c":["Lists and strings"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s7"},"c":["Dictionaries"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s8"},"c":["Validation with try and except"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s9"},"c":["Built-in functions and modules"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s10"},"c":["What the simulator supports"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s11"},"c":["Debugger"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s12"},"c":["Error messages"]}]},"\n    "]},"\n  "]},"\n\n  ",{"t":"main","a":{"style":"flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 36px"},"c":["\n    ",{"t":"header","a":{"style":"display: flex; flex-direction: column; gap: 8px"},"c":["\n      ",{"t":"h1","a":{"style":"margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600"},"c":["Python reference"]},"\n      ",{"t":"p","a":{"style":"margin: 0; color: var(--fg3); max-width: 660px"},"c":["The Python 3 the IDE runs, with the error messages you will see and what usually causes them. Blocks are marked by a colon and four spaces of indentation."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s1","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["1. Variables and data types"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["score = 0\nprice = 2.5\nname = \"Sam\"\nfound = False\nscores = [12, 18, 9]\nages = {\"Ama\": 15, \"Ben\": 16}"]},"\n",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 16%"},"c":["Type"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["Holds"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%"},"c":["Example"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["int"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Whole numbers, any size"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["42   -7   10 ** 30"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["float"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Numbers with a decimal part"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["3.5   7 / 2"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["str"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Text"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["\"Hello\"   'A'"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["bool"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["True or False"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["True"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["list"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["An ordered, changeable sequence"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["[1, 2, 3]"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["tuple"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["An ordered sequence that cannot change"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["(3, 4)"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["dict"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Key and value pairs"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["{\"a\": 1}"]}]},"\n"]},"\n"]},"\n"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["A variable is created the first time you assign it. Names are case-sensitive, so ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["Score"]}," and ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["score"]}," are different. ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["/"]}," always gives a float, so ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["6 / 2"]}," is ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["3.0"]},". Use ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["//"]}," for whole-number division."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s2","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["2. Input and output"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["name = input(\"Name: \")\nage = int(input(\"Age: \"))\nheight = float(input(\"Height in m: \"))\n\nprint(\"Hello\", name)\nprint(\"Next year you will be\", age + 1)\nprint(f\"{name} is {height:.2f} m tall\")\nprint(\"a\", \"b\", sep=\"-\", end=\"!\\n\")"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":[{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["input()"]}," always returns text. Convert it with ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["int()"]}," or ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["float()"]}," before doing maths or comparing with numbers. In the IDE, ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["input()"]}," shows its prompt in the console and waits for you to type a value and press Enter."]},"\n",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%"},"c":["f-string format"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%"},"c":["Result"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["Meaning"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["f\"{3.14159:.2f}\""]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["3.14"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Two decimal places"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["f\"{42:5}\""]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["   42"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Width 5, numbers line up right"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["f\"{'hi':<6}|\""]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["hi    |"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Width 6, aligned left"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["f\"{1234567:,}\""]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["1,234,567"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Thousands separators"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["f\"{7:03d}\""]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["007"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Pad with zeros"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["f\"{0.25:.0%}\""]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["25%"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["As a percentage"]}]},"\n"]},"\n"]},"\n"]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s3","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["3. Selection"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["if mark >= 70:\n    grade = \"A\"\nelif mark >= 50:\n    grade = \"B\"\nelse:\n    grade = \"C\"\n\nif 0 <= age <= 120 and name != \"\":\n    print(\"Valid\")"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Lines that start a block end with a colon, and the block is indented by four spaces. Compare with ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["=="]}," and ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["!="]},", combine conditions with ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["and"]},", ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["or"]}," and ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["not"]},". Python allows chained comparisons such as ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["0 <= age <= 120"]},"."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s4","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["4. Iteration"]},"\n      ",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 20%"},"c":["Loop"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["Form"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 36%"},"c":["Notes"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Count-controlled"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"},"c":["for i in range(1, 11):\n    print(i)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":[{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["range(1, 11)"]}," counts 1 to 10: the end value is not included. ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["range(10, 0, -1)"]}," counts down."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Over a sequence"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"},"c":["for name in names:\n    print(name)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Works for lists, strings, tuples, dictionary keys and ranges."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Condition-controlled"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"},"c":["while guess != secret:\n    guess = int(input())"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Checked before each pass. ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["while True:"]}," with ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["break"]}," gives a check-last loop."]}]},"\n"]},"\n"]},"\n"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":[{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["break"]}," leaves the loop straight away. ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["continue"]}," skips to the next pass. ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["for i, item in enumerate(items):"]}," gives each index with its item."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s5","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["5. Functions"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["def square(n):\n    return n * n\n\ndef greet(name, greeting=\"Hello\"):\n    print(greeting, name)\n\narea = square(4)\ngreet(\"Ava\")\ngreet(\"Ben\", \"Hi\")"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["A function without ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["return"]}," gives back ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["None"]},". Parameters can have default values. Variables assigned inside a function are local to it."]},"\n",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["count = 0\n\ndef add_one():\n    global count\n    count += 1"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Without ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["global count"]},", the line ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["count += 1"]}," would make ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["count"]}," local to the function and fail with UnboundLocalError. Passing values in and returning results is usually clearer than using global."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s6","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["6. Lists and strings"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["scores = [12, 18, 9]\nscores.append(20)        # [12, 18, 9, 20]\nscores.insert(0, 5)      # [5, 12, 18, 9, 20]\nscores.remove(18)        # removes the first 18\nlast = scores.pop()      # removes and returns 20\nprint(scores[0], scores[-1], len(scores))\n\ngrid = [[1, 2], [3, 4]]\nprint(grid[1][0])        # 3\n\nword = \"Python\"\nprint(word[0:3], word[::-1], word.upper())"]},"\n",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 38%"},"c":["Method"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["Result"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["s.upper()  s.lower()"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A new string in upper or lower case"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["s.strip()"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Removes spaces from both ends"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["s.split(\",\")"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A list of the parts between commas"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["\", \".join(items)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Joins a list of strings into one"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["s.replace(\"a\", \"b\")"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Every \"a\" changed to \"b\""]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["s.find(\"x\")"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Position of \"x\", or -1"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["s.isdigit()  s.isalpha()"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["True if every character is a digit or a letter"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["items.sort()  sorted(items)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Sort in place, or get a new sorted list"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["items.index(x)  items.count(x)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Position of x, and how many times it appears"]}]},"\n"]},"\n"]},"\n"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Indexes start at 0, and negative indexes count from the end. Slices ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["[start:end]"]}," stop before ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["end"]},". Strings cannot be changed in place: string methods return a new string."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s7","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["7. Dictionaries"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["ages = {\"Ama\": 15, \"Ben\": 16}\nages[\"Chen\"] = 15\nprint(ages[\"Ama\"], ages.get(\"Dan\", 0))\n\nfor name, age in ages.items():\n    print(name, age)\n\nif \"Ben\" in ages:\n    del ages[\"Ben\"]"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Reading a missing key with ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["[]"]}," raises KeyError. ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["get()"]}," returns a default instead. ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["in"]}," checks the keys."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s8","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["8. Validation with try and except"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["while True:\n    try:\n        age = int(input(\"Age: \"))\n    except ValueError:\n        print(\"Please type a whole number\")\n        continue\n    if 0 <= age <= 120:\n        break\n    print(\"Out of range\")"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["The ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["except"]}," block runs only when the matching error happens inside ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["try"]},". ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["except ValueError as e:"]}," also gives you the message as ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["e"]},"."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s9","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["9. Built-in functions and modules"]},"\n      ",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 42%"},"c":["Name"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["What it does"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["print  input"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Output and input"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["int  float  str  bool"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Convert between types"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["len  range"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Length of a sequence, and number sequences for loops"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["abs  round  min  max  sum"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Maths on numbers and lists. round(2.5) is 2, as in real Python."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["sorted  reversed  enumerate  zip"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Work with sequences"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["list  tuple  dict  set"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Make collections"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["ord  chr  bin  hex"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Character codes and number bases"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["type  isinstance"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Check a value's type"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["random.randint(a, b)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A random whole number from a to b, both included"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["random.choice(seq)  random.shuffle(list)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Pick or shuffle"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["math.sqrt  math.floor  math.ceil  math.pi"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Maths functions and constants"]}]},"\n"]},"\n"]},"\n"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":[{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["import random"]},", ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["import math"]}," and ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["import time"]}," work, as does ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["from random import randint"]},". ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["time.sleep"]}," returns straight away."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s10","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["10. What the simulator supports"]},"\n      ",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["The IDE runs the parts of Python 3 used in GCSE and International GCSE courses: variables, all the control structures above, functions with default and keyword arguments, lambda, lists, tuples, dictionaries, sets, list comprehensions, f-strings, ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["str.format"]}," and ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["%"]}," formatting, ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["try"]}," / ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["except"]}," / ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["finally"]},", and the random, math and time modules. Whole numbers have no size limit."]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Not supported: classes, ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["with"]}," and file access, generators and ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["yield"]},", ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["*args"]}," and ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["**kwargs"]}," in definitions, and other modules. Using one of these is reported as an error on its line."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s11","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["11. Debugger"]},"\n      ",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%"},"c":["Command"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 14%"},"c":["Key"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["What it does"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Run"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["F5"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Starts from the top. Stops at the end or at a breakpoint."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Step"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["F10"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Runs one line. The yellow line is the one that runs next."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Continue"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["F8"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["While paused, runs to the next breakpoint or the end."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Reset"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["Shift+F5"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Stops the program so you can edit and start again."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Breakpoint"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["click"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Click a line number to add or remove a red breakpoint dot."]}]},"\n"]},"\n"]},"\n"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Each program opens in its own editor tab. Convert to (in the toolbar and the Convert menu) translates the current program into one of the other two languages and opens the result in a new tab, so the original stays as it was. Statements with no direct equivalent, such as Python dictionaries or Cambridge record types, are kept as TODO comments for you to finish by hand."]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Save and Save as use the ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":[".py"]}," extension for this language, or plain ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":[".txt"]},". Ctrl+S saves the current tab."]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["While paused, Variables lists each value with its Python type and repr, so text shows in quotes. Functions and imported modules are hidden. A value that changed on the last step is shown in red. Inside a function, local variables are marked and the Call stack shows the calls back to ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["<module>"]},"."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s12","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["12. Error messages"]},"\n      ",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 42%"},"c":["Message"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 32%"},"c":["Usual cause"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["Fix"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["TypeError: can only concatenate str (not \"int\") to str"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Text and a number joined with +."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["f\"Total: {total}\""]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["TypeError: '>' not supported between instances of 'str' and 'int'"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["input() was not converted to a number."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["age = int(input())"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["NameError: name 'totl' is not defined"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A typo, wrong capitals, or used before it was assigned."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["Match the name exactly"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["IndexError: list index out of range"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A loop goes one past the end of the list."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["range(len(items))"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["ValueError: invalid literal for int() with base 10: 'abc'"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["The input is not a whole number."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["try / except ValueError"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["UnboundLocalError: cannot access local variable 'count'"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A global changed inside a function."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["global count"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["SyntaxError: expected ':'"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["An if, for, while or def line has no colon."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["if x > 5:"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["SyntaxError: invalid syntax. Maybe you meant '=='"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["One = used in a condition."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["if x == 5:"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["IndentationError: expected an indented block"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["The body of a block is not indented."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["Indent by 4 spaces"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["ZeroDivisionError: division by zero"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A divisor that can be 0."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["if count > 0:"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["AttributeError: 'list' object has no attribute 'push'"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A method name from another language."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["items.append(x)"]}]},"\n"]},"\n"]},"\n"]},"\n    "]},"\n\n    ",{"t":"p","a":{"style":"margin: 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted)"},"c":["The simulator follows Python 3.12 behaviour and messages for the features it supports. Programs that use unsupported features need a full Python install."]},"\n  "]},"\n"]},"\n"]}
+{
+  "t": "div",
+  "a": {
+    "class": "th {{themeClass}}",
+    "style": "min-height: 100vh; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.55"
+  },
+  "c": [
+    "\n\n",
+    {
+      "t": "div",
+      "a": { "style": "border-bottom: 1px solid var(--line); background: var(--chrome)" },
+      "c": [
+        "\n  ",
+        {
+          "t": "div",
+          "a": {
+            "style": "max-width: 1080px; margin: 0 auto; padding: 8px 24px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 12px; color: var(--fg4)"
+          },
+          "c": [
+            "\n    ",
+            { "t": "a", "a": { "href": "Main.dc.html" }, "c": ["IDE"] },
+            { "t": "span", "a": { "aria-hidden": "true" }, "c": ["/"] },
+            { "t": "span", "c": ["Python guide"] },
+            "\n    ",
+            {
+              "t": "nav",
+              "a": {
+                "aria-label": "Guide language",
+                "style": "margin-left: auto; display: flex; border: 1px solid var(--line); background: var(--chrome)"
+              },
+              "c": [
+                {
+                  "t": "a",
+                  "a": { "href": "Guide.dc.html", "style": "padding: 3px 10px; border-left: 0; text-decoration: none" },
+                  "c": ["Edexcel"]
+                },
+                {
+                  "t": "a",
+                  "a": {
+                    "href": "CambridgeGuide.dc.html",
+                    "style": "padding: 3px 10px; border-left: 1px solid var(--line); text-decoration: none"
+                  },
+                  "c": ["Cambridge"]
+                },
+                {
+                  "t": "span",
+                  "a": {
+                    "aria-current": "page",
+                    "style": "padding: 3px 10px; background: var(--bg); color: var(--fg); font-weight: 600; border-left: 1px solid var(--line)"
+                  },
+                  "c": ["Python"]
+                }
+              ]
+            },
+            "\n  "
+          ]
+        },
+        "\n"
+      ]
+    },
+    "\n\n",
+    {
+      "t": "div",
+      "a": {
+        "style": "max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start"
+      },
+      "c": [
+        "\n\n  ",
+        {
+          "t": "nav",
+          "a": { "aria-label": "Contents", "style": "flex: 1 1 180px; max-width: 220px; font-size: 13px" },
+          "c": [
+            "\n    ",
+            {
+              "t": "div",
+              "a": {
+                "style": "font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--fg); margin-bottom: 6px"
+              },
+              "c": ["Contents"]
+            },
+            "\n    ",
+            {
+              "t": "ol",
+              "a": { "style": "margin: 0; padding-left: 20px; line-height: 1.9" },
+              "c": [
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s1" }, "c": ["Variables and data types"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s2" }, "c": ["Input and output"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s3" }, "c": ["Selection"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s4" }, "c": ["Iteration"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s5" }, "c": ["Functions"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s6" }, "c": ["Lists and strings"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s7" }, "c": ["Dictionaries"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s8" }, "c": ["Validation with try and except"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s9" }, "c": ["Built-in functions and modules"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s10" }, "c": ["What the simulator supports"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s11" }, "c": ["Debugger"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s12" }, "c": ["Error messages"] }] },
+                "\n    "
+              ]
+            },
+            "\n  "
+          ]
+        },
+        "\n\n  ",
+        {
+          "t": "main",
+          "a": { "style": "flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 36px" },
+          "c": [
+            "\n    ",
+            {
+              "t": "header",
+              "a": { "style": "display: flex; flex-direction: column; gap: 8px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h1",
+                  "a": { "style": "margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600" },
+                  "c": ["Python reference"]
+                },
+                "\n      ",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3); max-width: 660px" },
+                  "c": [
+                    "The Python 3 the IDE runs, with the error messages you will see and what usually causes them. Blocks are marked by a colon and four spaces of indentation."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s1", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["1. Variables and data types"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "score = 0\nprice = 2.5\nname = \"Sam\"\nfound = False\nscores = [12, 18, 9]\nages = {\"Ama\": 15, \"Ben\": 16}"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 16%"
+                                  },
+                                  "c": ["Type"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["Holds"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%"
+                                  },
+                                  "c": ["Example"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["int"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Whole numbers, any size"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["42   -7   10 ** 30"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["float"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Numbers with a decimal part"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["3.5   7 / 2"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["str"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Text"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["\"Hello\"   'A'"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["bool"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["True or False"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["True"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["list"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["An ordered, changeable sequence"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["[1, 2, 3]"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["tuple"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["An ordered sequence that cannot change"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["(3, 4)"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["dict"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Key and value pairs"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["{\"a\": 1}"]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "A variable is created the first time you assign it. Names are case-sensitive, so ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["Score"]
+                    },
+                    " and ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["score"]
+                    },
+                    " are different. ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["/"]
+                    },
+                    " always gives a float, so ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["6 / 2"]
+                    },
+                    " is ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["3.0"]
+                    },
+                    ". Use ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["//"]
+                    },
+                    " for whole-number division."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s2", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["2. Input and output"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "name = input(\"Name: \")\nage = int(input(\"Age: \"))\nheight = float(input(\"Height in m: \"))\n\nprint(\"Hello\", name)\nprint(\"Next year you will be\", age + 1)\nprint(f\"{name} is {height:.2f} m tall\")\nprint(\"a\", \"b\", sep=\"-\", end=\"!\\n\")"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["input()"]
+                    },
+                    " always returns text. Convert it with ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["int()"]
+                    },
+                    " or ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["float()"]
+                    },
+                    " before doing maths or comparing with numbers. In the IDE, ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["input()"]
+                    },
+                    " shows its prompt in the console and waits for you to type a value and press Enter."
+                  ]
+                },
+                "\n",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%"
+                                  },
+                                  "c": ["f-string format"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%"
+                                  },
+                                  "c": ["Result"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["Meaning"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["f\"{3.14159:.2f}\""]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["3.14"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Two decimal places"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["f\"{42:5}\""]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["   42"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Width 5, numbers line up right"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["f\"{'hi':<6}|\""]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["hi    |"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Width 6, aligned left"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["f\"{1234567:,}\""]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["1,234,567"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Thousands separators"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["f\"{7:03d}\""]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["007"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Pad with zeros"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["f\"{0.25:.0%}\""]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["25%"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["As a percentage"]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s3", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["3. Selection"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "if mark >= 70:\n    grade = \"A\"\nelif mark >= 50:\n    grade = \"B\"\nelse:\n    grade = \"C\"\n\nif 0 <= age <= 120 and name != \"\":\n    print(\"Valid\")"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Lines that start a block end with a colon, and the block is indented by four spaces. Compare with ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["=="]
+                    },
+                    " and ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["!="]
+                    },
+                    ", combine conditions with ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["and"]
+                    },
+                    ", ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["or"]
+                    },
+                    " and ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["not"]
+                    },
+                    ". Python allows chained comparisons such as ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["0 <= age <= 120"]
+                    },
+                    "."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s4", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["4. Iteration"]
+                },
+                "\n      ",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 20%"
+                                  },
+                                  "c": ["Loop"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["Form"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 36%"
+                                  },
+                                  "c": ["Notes"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Count-controlled"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"
+                                  },
+                                  "c": ["for i in range(1, 11):\n    print(i)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": [
+                                    {
+                                      "t": "code",
+                                      "a": {
+                                        "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"
+                                      },
+                                      "c": ["range(1, 11)"]
+                                    },
+                                    " counts 1 to 10: the end value is not included. ",
+                                    {
+                                      "t": "code",
+                                      "a": {
+                                        "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"
+                                      },
+                                      "c": ["range(10, 0, -1)"]
+                                    },
+                                    " counts down."
+                                  ]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Over a sequence"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"
+                                  },
+                                  "c": ["for name in names:\n    print(name)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Works for lists, strings, tuples, dictionary keys and ranges."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Condition-controlled"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"
+                                  },
+                                  "c": ["while guess != secret:\n    guess = int(input())"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": [
+                                    "Checked before each pass. ",
+                                    {
+                                      "t": "code",
+                                      "a": {
+                                        "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"
+                                      },
+                                      "c": ["while True:"]
+                                    },
+                                    " with ",
+                                    {
+                                      "t": "code",
+                                      "a": {
+                                        "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"
+                                      },
+                                      "c": ["break"]
+                                    },
+                                    " gives a check-last loop."
+                                  ]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["break"]
+                    },
+                    " leaves the loop straight away. ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["continue"]
+                    },
+                    " skips to the next pass. ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["for i, item in enumerate(items):"]
+                    },
+                    " gives each index with its item."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s5", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["5. Functions"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "def square(n):\n    return n * n\n\ndef greet(name, greeting=\"Hello\"):\n    print(greeting, name)\n\narea = square(4)\ngreet(\"Ava\")\ngreet(\"Ben\", \"Hi\")"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "A function without ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["return"]
+                    },
+                    " gives back ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["None"]
+                    },
+                    ". Parameters can have default values. Variables assigned inside a function are local to it."
+                  ]
+                },
+                "\n",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": ["count = 0\n\ndef add_one():\n    global count\n    count += 1"]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Without ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["global count"]
+                    },
+                    ", the line ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["count += 1"]
+                    },
+                    " would make ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["count"]
+                    },
+                    " local to the function and fail with UnboundLocalError. Passing values in and returning results is usually clearer than using global."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s6", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["6. Lists and strings"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "scores = [12, 18, 9]\nscores.append(20)        # [12, 18, 9, 20]\nscores.insert(0, 5)      # [5, 12, 18, 9, 20]\nscores.remove(18)        # removes the first 18\nlast = scores.pop()      # removes and returns 20\nprint(scores[0], scores[-1], len(scores))\n\ngrid = [[1, 2], [3, 4]]\nprint(grid[1][0])        # 3\n\nword = \"Python\"\nprint(word[0:3], word[::-1], word.upper())"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 38%"
+                                  },
+                                  "c": ["Method"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["Result"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["s.upper()  s.lower()"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A new string in upper or lower case"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["s.strip()"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Removes spaces from both ends"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["s.split(\",\")"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A list of the parts between commas"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["\", \".join(items)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Joins a list of strings into one"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["s.replace(\"a\", \"b\")"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Every \"a\" changed to \"b\""]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["s.find(\"x\")"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Position of \"x\", or -1"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["s.isdigit()  s.isalpha()"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["True if every character is a digit or a letter"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["items.sort()  sorted(items)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Sort in place, or get a new sorted list"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["items.index(x)  items.count(x)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Position of x, and how many times it appears"]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Indexes start at 0, and negative indexes count from the end. Slices ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["[start:end]"]
+                    },
+                    " stop before ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["end"]
+                    },
+                    ". Strings cannot be changed in place: string methods return a new string."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s7", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["7. Dictionaries"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "ages = {\"Ama\": 15, \"Ben\": 16}\nages[\"Chen\"] = 15\nprint(ages[\"Ama\"], ages.get(\"Dan\", 0))\n\nfor name, age in ages.items():\n    print(name, age)\n\nif \"Ben\" in ages:\n    del ages[\"Ben\"]"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Reading a missing key with ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["[]"]
+                    },
+                    " raises KeyError. ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["get()"]
+                    },
+                    " returns a default instead. ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["in"]
+                    },
+                    " checks the keys."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s8", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["8. Validation with try and except"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "while True:\n    try:\n        age = int(input(\"Age: \"))\n    except ValueError:\n        print(\"Please type a whole number\")\n        continue\n    if 0 <= age <= 120:\n        break\n    print(\"Out of range\")"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "The ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["except"]
+                    },
+                    " block runs only when the matching error happens inside ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["try"]
+                    },
+                    ". ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["except ValueError as e:"]
+                    },
+                    " also gives you the message as ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["e"]
+                    },
+                    "."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s9", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["9. Built-in functions and modules"]
+                },
+                "\n      ",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 42%"
+                                  },
+                                  "c": ["Name"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["What it does"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["print  input"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Output and input"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["int  float  str  bool"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Convert between types"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["len  range"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Length of a sequence, and number sequences for loops"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["abs  round  min  max  sum"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Maths on numbers and lists. round(2.5) is 2, as in real Python."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["sorted  reversed  enumerate  zip"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Work with sequences"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["list  tuple  dict  set"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Make collections"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["ord  chr  bin  hex"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Character codes and number bases"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["type  isinstance"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Check a value's type"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["random.randint(a, b)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A random whole number from a to b, both included"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["random.choice(seq)  random.shuffle(list)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Pick or shuffle"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["math.sqrt  math.floor  math.ceil  math.pi"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Maths functions and constants"]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["import random"]
+                    },
+                    ", ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["import math"]
+                    },
+                    " and ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["import time"]
+                    },
+                    " work, as does ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["from random import randint"]
+                    },
+                    ". ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["time.sleep"]
+                    },
+                    " returns straight away."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s10", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["10. What the simulator supports"]
+                },
+                "\n      ",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "The IDE runs the parts of Python 3 used in GCSE and International GCSE courses: variables, all the control structures above, functions with default and keyword arguments, lambda, lists, tuples, dictionaries, sets, list comprehensions, f-strings, ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["str.format"]
+                    },
+                    " and ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["%"]
+                    },
+                    " formatting, ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["try"]
+                    },
+                    " / ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["except"]
+                    },
+                    " / ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["finally"]
+                    },
+                    ", and the random, math and time modules. Whole numbers have no size limit."
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Not supported: classes, ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["with"]
+                    },
+                    " and file access, generators and ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["yield"]
+                    },
+                    ", ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["*args"]
+                    },
+                    " and ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["**kwargs"]
+                    },
+                    " in definitions, and other modules. Using one of these is reported as an error on its line."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s11", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["11. Debugger"]
+                },
+                "\n      ",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%"
+                                  },
+                                  "c": ["Command"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 14%"
+                                  },
+                                  "c": ["Key"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["What it does"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Run"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["F5"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Starts from the top. Stops at the end or at a breakpoint."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Step"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["F10"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Runs one line. The yellow line is the one that runs next."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Continue"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["F8"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["While paused, runs to the next breakpoint or the end."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Reset"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["Shift+F5"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Stops the program so you can edit and start again."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Breakpoint"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["click"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Click a line number to add or remove a red breakpoint dot."]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Each program opens in its own editor tab. Convert to (in the toolbar and the Convert menu) translates the current program into one of the other two languages and opens the result in a new tab, so the original stays as it was. Statements with no direct equivalent, such as Python dictionaries or Cambridge record types, are kept as TODO comments for you to finish by hand."
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Save and Save as use the ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": [".py"]
+                    },
+                    " extension for this language, or plain ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": [".txt"]
+                    },
+                    ". Ctrl+S saves the current tab."
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "While paused, Variables lists each value with its Python type and repr, so text shows in quotes. Functions and imported modules are hidden. A value that changed on the last step is shown in red. Inside a function, local variables are marked and the Call stack shows the calls back to ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["<module>"]
+                    },
+                    "."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s12", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["12. Error messages"]
+                },
+                "\n      ",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 42%"
+                                  },
+                                  "c": ["Message"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 32%"
+                                  },
+                                  "c": ["Usual cause"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["Fix"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["TypeError: can only concatenate str (not \"int\") to str"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Text and a number joined with +."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["f\"Total: {total}\""]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["TypeError: '>' not supported between instances of 'str' and 'int'"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["input() was not converted to a number."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["age = int(input())"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["NameError: name 'totl' is not defined"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A typo, wrong capitals, or used before it was assigned."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["Match the name exactly"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["IndexError: list index out of range"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A loop goes one past the end of the list."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["range(len(items))"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["ValueError: invalid literal for int() with base 10: 'abc'"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["The input is not a whole number."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["try / except ValueError"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["UnboundLocalError: cannot access local variable 'count'"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A global changed inside a function."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["global count"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["SyntaxError: expected ':'"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["An if, for, while or def line has no colon."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["if x > 5:"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["SyntaxError: invalid syntax. Maybe you meant '=='"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["One = used in a condition."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["if x == 5:"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["IndentationError: expected an indented block"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["The body of a block is not indented."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["Indent by 4 spaces"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["ZeroDivisionError: division by zero"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A divisor that can be 0."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["if count > 0:"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["AttributeError: 'list' object has no attribute 'push'"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A method name from another language."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["items.append(x)"]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "p",
+              "a": {
+                "style": "margin: 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted)"
+              },
+              "c": [
+                "The simulator follows Python 3.12 behaviour and messages for the features it supports. Programs that use unsupported features need a full Python install."
+              ]
+            },
+            "\n  "
+          ]
+        },
+        "\n"
+      ]
+    },
+    "\n"
+  ]
+}

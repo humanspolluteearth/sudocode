@@ -285,7 +285,7 @@ export function App({ workers }: AppProps) {
     onSaveAs: files$.saveAs,
     onSaveAll: files$.saveAll,
     advanced: prefs.advanced,
-    onConvertToPython: files$.convertToPython,
+    onConvert: files$.convert,
     tools,
     onSettings: () => {
       setSettingsOpen(true);
@@ -337,13 +337,7 @@ export function App({ workers }: AppProps) {
         language={language}
         onLanguage={changeLanguage}
         onSave={files$.save}
-        onConvert={
-          prefs.advanced && tools.converter
-            ? () => {
-                files$.convertToPython();
-              }
-            : undefined
-        }
+        onConvert={prefs.advanced && tools.converter ? files$.convert : undefined}
         canConvert={language !== "python"}
         extra={
           compact ? (
@@ -352,9 +346,8 @@ export function App({ workers }: AppProps) {
                 onNew={files$.newFile}
                 onSave={files$.save}
                 onSaveAs={files$.saveAs}
-                onConvert={
-                  prefs.advanced && tools.converter && language !== "python" ? files$.convertToPython : undefined
-                }
+                onConvert={prefs.advanced && tools.converter && language !== "python" ? files$.convert : undefined}
+                language={language}
                 onCloseTab={() => {
                   files$.close(files$.ws.activeId);
                 }}

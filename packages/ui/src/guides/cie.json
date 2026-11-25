@@ -1,1 +1,2250 @@
-{"t":"div","a":{"class":"th {{themeClass}}","style":"min-height: 100vh; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.55"},"c":["\n\n",{"t":"div","a":{"style":"border-bottom: 1px solid var(--line); background: var(--chrome)"},"c":["\n  ",{"t":"div","a":{"style":"max-width: 1080px; margin: 0 auto; padding: 8px 24px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 12px; color: var(--fg4)"},"c":["\n    ",{"t":"a","a":{"href":"Main.dc.html"},"c":["IDE"]},{"t":"span","a":{"aria-hidden":"true"},"c":["/"]},{"t":"span","c":["Cambridge guide"]},"\n    ",{"t":"nav","a":{"aria-label":"Guide language","style":"margin-left: auto; display: flex; border: 1px solid var(--line); background: var(--chrome)"},"c":[{"t":"a","a":{"href":"Guide.dc.html","style":"padding: 3px 10px; border-left: 0; text-decoration: none"},"c":["Edexcel"]},{"t":"span","a":{"aria-current":"page","style":"padding: 3px 10px; background: var(--bg); color: var(--fg); font-weight: 600; border-left: 1px solid var(--line)"},"c":["Cambridge"]},{"t":"a","a":{"href":"PythonGuide.dc.html","style":"padding: 3px 10px; border-left: 1px solid var(--line); text-decoration: none"},"c":["Python"]}]},"\n  "]},"\n"]},"\n\n",{"t":"div","a":{"style":"max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start"},"c":["\n\n  ",{"t":"nav","a":{"aria-label":"Contents","style":"flex: 1 1 180px; max-width: 220px; font-size: 13px"},"c":["\n    ",{"t":"div","a":{"style":"font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--fg); margin-bottom: 6px"},"c":["Contents"]},"\n    ",{"t":"ol","a":{"style":"margin: 0; padding-left: 20px; line-height: 1.9"},"c":["\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s1"},"c":["Variables and data types"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s2"},"c":["Input and output"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s3"},"c":["Selection"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s4"},"c":["Iteration"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s5"},"c":["Arrays"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s6"},"c":["Procedures and functions"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s7"},"c":["Records and text files (9618)"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s8"},"c":["Operators"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s9"},"c":["Built-in functions"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s10"},"c":["Debugger"]}]},"\n      ",{"t":"li","c":[{"t":"a","a":{"href":"#s11"},"c":["Error messages"]}]},"\n    "]},"\n  "]},"\n\n  ",{"t":"main","a":{"style":"flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 36px"},"c":["\n    ",{"t":"header","a":{"style":"display: flex; flex-direction: column; gap: 8px"},"c":["\n      ",{"t":"h1","a":{"style":"margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600"},"c":["Cambridge pseudocode reference"]},"\n      ",{"t":"p","a":{"style":"margin: 0; color: var(--fg3); max-width: 660px"},"c":["What the IDE accepts for Cambridge IGCSE (0478), O Level (2210) and International AS & A Level (9618). Keywords and built-in functions are in capitals, variables are declared with a type, and assignment uses ←."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s1","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["1. Variables and data types"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["DECLARE Total : INTEGER\nDECLARE Price : REAL\nDECLARE Initial : CHAR\nDECLARE Name : STRING\nDECLARE Found : BOOLEAN\nDECLARE Today : DATE\n\nTotal ← 0\nName ← \"Sam\"\nCONSTANT VAT ← 0.2"]},"\n",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 18%"},"c":["Type"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["Holds"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 30%"},"c":["Literal"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["INTEGER"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Whole numbers"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["42   -7"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["REAL"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Numbers with a decimal part"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["3.5   -0.25"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["CHAR"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Exactly one character"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["'A'"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["STRING"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Text of any length"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["\"Hello\""]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["BOOLEAN"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["TRUE or FALSE"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["TRUE"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["DATE"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["A calendar date"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["SETDATE(25, 12, 2025)"]}]},"\n"]},"\n"]},"\n"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Assign with the arrow ←. You can type ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["<-"]}," instead; the IDE treats them the same. 0478/2210 writes constants with ←, 9618 with =, and both are accepted. Names are not case-sensitive in Cambridge pseudocode, so ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["Total"]}," and ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["TOTAL"]}," are the same variable, but keep one spelling. A value must match the declared type: storing 3.5 in an INTEGER is an error."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s2","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["2. Input and output"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["OUTPUT \"Enter your name\"\nINPUT Name\nOUTPUT \"Hello \", Name, \", you are \", Age\n// a comment runs to the end of the line"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["OUTPUT prints the items you list, joined with no spaces added. When INPUT runs, the console waits for you to type a value and press Enter, then converts it to the variable's declared type. To show a prompt, OUTPUT it on the line before INPUT."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s3","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["3. Selection"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["IF Mark >= 50\n  THEN\n    OUTPUT \"Pass\"\n  ELSE\n    OUTPUT \"Fail\"\nENDIF\n\nIF Mark >= 70 THEN\n    Grade ← 'A'\nENDIF"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["THEN can sit on its own line (the Cambridge layout) or at the end of the IF line. There is no ELSE IF. For more outcomes, put another IF with its own ENDIF inside the ELSE, or use CASE."]},"\n",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["CASE OF Choice\n    1 : OUTPUT \"Add\"\n    2 : OUTPUT \"Delete\"\n    3 TO 5 : OUTPUT \"Other\"\n    OTHERWISE : OUTPUT \"Invalid choice\"\nENDCASE"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Each branch is a value or a range with TO, then a colon and a statement. A branch may continue on the following lines. OTHERWISE is optional and must be last."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s4","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["4. Iteration"]},"\n      ",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 20%"},"c":["Loop"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["Form"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%"},"c":["Notes"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Count-controlled"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"},"c":["FOR Count ← 1 TO 10\n    OUTPUT Count\nNEXT Count"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Add ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["STEP 2"]}," or ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":["STEP -1"]}," after the end value. NEXT names the loop variable."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Pre-condition"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"},"c":["WHILE Total < 100 DO\n    Total ← Total + 10\nENDWHILE"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Checked first, so the body may not run at all. DO is optional: 9618 leaves it out."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Post-condition"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"},"c":["REPEAT\n    INPUT Age\nUNTIL Age >= 0"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Checked last, so the body always runs at least once."]}]},"\n"]},"\n"]},"\n"]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s5","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["5. Arrays"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["DECLARE Scores : ARRAY[1:5] OF INTEGER\nScores[1] ← 12\n\nDECLARE Grid : ARRAY[1:3, 1:4] OF CHAR\nGrid[2, 3] ← 'X'\n\nTotal ← 0\nFOR i ← 1 TO 5\n    Total ← Total + Scores[i]\nNEXT i"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["The bounds are set in the DECLARE, as lower:upper. Cambridge arrays usually start at 1. A 2D array takes the row, then the column, separated by a comma. Every element starts with no value: reading one before you assign it is reported as an error, which catches loops that miss an element."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s6","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["6. Procedures and functions"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["PROCEDURE ShowLine(Size : INTEGER, Symbol : CHAR)\n    DECLARE i : INTEGER\n    FOR i ← 1 TO Size\n        OUTPUT Symbol\n    NEXT i\nENDPROCEDURE\n\nFUNCTION Square(N : INTEGER) RETURNS INTEGER\n    RETURN N * N\nENDFUNCTION\n\nCALL ShowLine(3, '*')\nArea ← Square(4)"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Run a procedure with CALL. A function states its RETURNS type, must reach a RETURN, and its result has to be used. Each parameter has a type. Variables declared inside a subroutine are local to it."]},"\n",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["PROCEDURE Swap(BYREF X : INTEGER, Y : INTEGER)\n    DECLARE Temp : INTEGER\n    Temp ← X\n    X ← Y\n    Y ← Temp\nENDPROCEDURE"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["BYVAL (the default) passes a copy. BYREF passes the variable itself, so changes are seen by the caller. A BYREF or BYVAL keyword applies to every parameter after it until the other keyword appears, so both X and Y above are BYREF. The arguments for BYREF parameters must be variables."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s7","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["7. Records and text files (9618)"]},"\n      ",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["TYPE Student\n    DECLARE Name : STRING\n    DECLARE Score : INTEGER\nENDTYPE\n\nDECLARE Class : ARRAY[1:30] OF Student\nClass[1].Name ← \"Ama\"\nClass[1].Score ← 61"]},"\n",{"t":"pre","a":{"style":"margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"},"c":["OPENFILE \"scores.txt\" FOR WRITE\nWRITEFILE \"scores.txt\", \"Ama,61\"\nCLOSEFILE \"scores.txt\"\n\nOPENFILE \"scores.txt\" FOR READ\nWHILE NOT EOF(\"scores.txt\")\n    READFILE \"scores.txt\", LineOfText\n    OUTPUT LineOfText\nENDWHILE\nCLOSEFILE \"scores.txt\""]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Modes are READ, WRITE (starts an empty file) and APPEND. In this IDE files live in memory while the program runs, and each one appears in the Variables pane with its lines. Enumerated and pointer types, and random-access files, are not supported."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s8","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["8. Operators"]},"\n      ",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%"},"c":["Kind"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 30%"},"c":["Operators"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["Notes"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Arithmetic"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["+ - * / ^"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["/ always gives a REAL. ^ is power."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Integer division"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["DIV(17, 5)  MOD(17, 5)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Give 3 and 2. 17 DIV 5 and 17 MOD 5 also work."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Comparison"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["= <> < <= > >="]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["One = compares. <> means not equal. == and != are rejected."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Logic"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["AND OR NOT"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Write a full comparison on each side: Age > 12 AND Age < 20."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Strings"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["&"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Joins STRING and CHAR values. Convert numbers with NUM_TO_STR first."]}]},"\n"]},"\n"]},"\n"]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s9","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["9. Built-in functions"]},"\n      ",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 32%"},"c":["Function"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 15%"},"c":["Syllabus"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["Result"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["LENGTH(S)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Both"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Number of characters in S. LENGTH(\"Happy\") is 5."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["UCASE(S)  LCASE(S)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Both"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Upper or lower case. 0478/2210 uses them on strings, 9618 on a CHAR."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["SUBSTRING(S, Start, Len)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["0478 / 2210"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Len characters from position Start (from 1). SUBSTRING(\"Happy Days\", 1, 5) is \"Happy\"."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["ROUND(X, Places)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["0478 / 2210"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["X rounded to Places decimal places. ROUND(6.97354, 2) is 6.97."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["RANDOM()"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["0478 / 2210"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A random REAL from 0 to 1."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["DIV(X, Y)  MOD(X, Y)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Both"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Whole-number quotient and remainder."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["LEFT(S, N)  RIGHT(S, N)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["The first or last N characters."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["MID(S, Start, Len)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Len characters from position Start. MID(\"ABCDEF\", 2, 3) is \"BCD\"."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["TO_UPPER(X)  TO_LOWER(X)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Change case of a STRING or CHAR."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["NUM_TO_STR(X)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A number as a STRING."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["STR_TO_NUM(S)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A STRING such as \"42\" as a number. Check it with IS_NUM first."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["IS_NUM(S)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["TRUE if S holds a valid number."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["ASC(C)  CHR(X)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Character code and back. ASC('A') is 65, CHR(66) is 'B'."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["INT(X)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["The whole-number part. INT(7.9) is 7."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["RAND(X)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A random REAL from 0 up to, but not including, X."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["SETDATE(D, M, Y)  NOW()"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Make a DATE, or get today's date."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["DAY(D)  MONTH(D)  YEAR(D)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Parts of a DATE."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["DAYINDEX(D)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Day of the week: 1 is Sunday, 7 is Saturday."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["EOF(FileName)"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["9618"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["TRUE when a file open for READ has no more lines."]}]},"\n"]},"\n"]},"\n"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Built-in names are written in capitals. The IDE accepts every function in both lists whichever syllabus you follow, so check which list your exam uses."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s10","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["10. Debugger"]},"\n      ",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%"},"c":["Command"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 14%"},"c":["Key"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["What it does"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Run"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["F5"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Starts from the top. Stops at the end or at a breakpoint."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Step"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["F10"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Runs one line. The yellow line is the one that runs next."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Continue"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["F8"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["While paused, runs to the next breakpoint or the end."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Reset"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["Shift+F5"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Stops the program so you can edit and start again."]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Breakpoint"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["click"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Click a line number to add or remove a red breakpoint dot."]}]},"\n"]},"\n"]},"\n"]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Each program opens in its own editor tab. Convert to (in the toolbar and the Convert menu) translates the current program into one of the other two languages and opens the result in a new tab, so the original stays as it was. Statements with no direct equivalent, such as Python dictionaries or Cambridge record types, are kept as TODO comments for you to finish by hand."]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["Save and Save as use the ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":[".cpc"]}," extension for this language, or plain ",{"t":"code","a":{"style":"font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"},"c":[".txt"]},". Ctrl+S saves the current tab."]},"\n",{"t":"p","a":{"style":"margin: 0; color: var(--fg3)"},"c":["While paused, Variables lists each value with its declared type. Elements with no value yet show as —. A value that changed on the last step is shown in red. Inside a procedure or function, local variables are marked and the Call stack shows where it was called from."]},"\n    "]},"\n\n    ",{"t":"section","a":{"id":"s11","style":"display: flex; flex-direction: column; gap: 10px"},"c":["\n      ",{"t":"h2","a":{"style":"margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"},"c":["11. Error messages"]},"\n      ",{"t":"div","a":{"style":"overflow-x: auto"},"c":["\n",{"t":"table","a":{"style":"width: 100%; border-collapse: collapse; font-size: 13px"},"c":["\n",{"t":"thead","c":[{"t":"tr","a":{"style":"background: var(--chrome)"},"c":[{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 36%"},"c":["Message"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%"},"c":["Usual cause"]},{"t":"th","a":{"scope":"col","style":"text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"},"c":["Fix"]}]}]},"\n",{"t":"tbody","c":["\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Index 0 is outside Temps[1:4]"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A loop starts at 0 or ends one past the upper bound."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["FOR i ← 1 TO 4"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Total has no value yet"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["The variable was declared but never assigned."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["Total ← 0 before the loop"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Use ← to assign, not ="]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Python or Edexcel habits."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["Total ← Total + 1"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["& joins strings, but 5 is INTEGER"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A number joined to text with &."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["OUTPUT \"Total: \", Total"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["Cannot store REAL 3.5 in N, which is INTEGER"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["The value does not match the declared type."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["DECLARE N : REAL"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["N is an INTEGER, but the input was \"abc\""]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["The value typed in the console is the wrong kind."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["Type a whole number"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["ENDFOR is not Cambridge pseudocode"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["FOR loops close with NEXT."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["NEXT i"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["NEXT i does not match FOR j"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Nested loops closed in the wrong order."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["Close the inner loop first"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["To run a procedure, start the line with CALL"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A procedure name used on its own."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["CALL ShowMenu()"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["ELSE IF is not Cambridge pseudocode"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["Several conditions chained on one ELSE line."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["Nested IF, or CASE OF"]}]},"\n",{"t":"tr","c":[{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"},"c":["FUNCTION F ended without a RETURN"]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"},"c":["A path through the function misses RETURN."]},{"t":"td","a":{"style":"padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"},"c":["RETURN after the loop"]}]},"\n"]},"\n"]},"\n"]},"\n    "]},"\n\n    ",{"t":"p","a":{"style":"margin: 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted)"},"c":["Based on the pseudocode guides published for Cambridge IGCSE and O Level Computer Science (0478, 2210) and International AS & A Level Computer Science (9618). Check the guide for your own syllabus year."]},"\n  "]},"\n"]},"\n"]}
+{
+  "t": "div",
+  "a": {
+    "class": "th {{themeClass}}",
+    "style": "min-height: 100vh; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.55"
+  },
+  "c": [
+    "\n\n",
+    {
+      "t": "div",
+      "a": { "style": "border-bottom: 1px solid var(--line); background: var(--chrome)" },
+      "c": [
+        "\n  ",
+        {
+          "t": "div",
+          "a": {
+            "style": "max-width: 1080px; margin: 0 auto; padding: 8px 24px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 12px; color: var(--fg4)"
+          },
+          "c": [
+            "\n    ",
+            { "t": "a", "a": { "href": "Main.dc.html" }, "c": ["IDE"] },
+            { "t": "span", "a": { "aria-hidden": "true" }, "c": ["/"] },
+            { "t": "span", "c": ["Cambridge guide"] },
+            "\n    ",
+            {
+              "t": "nav",
+              "a": {
+                "aria-label": "Guide language",
+                "style": "margin-left: auto; display: flex; border: 1px solid var(--line); background: var(--chrome)"
+              },
+              "c": [
+                {
+                  "t": "a",
+                  "a": { "href": "Guide.dc.html", "style": "padding: 3px 10px; border-left: 0; text-decoration: none" },
+                  "c": ["Edexcel"]
+                },
+                {
+                  "t": "span",
+                  "a": {
+                    "aria-current": "page",
+                    "style": "padding: 3px 10px; background: var(--bg); color: var(--fg); font-weight: 600; border-left: 1px solid var(--line)"
+                  },
+                  "c": ["Cambridge"]
+                },
+                {
+                  "t": "a",
+                  "a": {
+                    "href": "PythonGuide.dc.html",
+                    "style": "padding: 3px 10px; border-left: 1px solid var(--line); text-decoration: none"
+                  },
+                  "c": ["Python"]
+                }
+              ]
+            },
+            "\n  "
+          ]
+        },
+        "\n"
+      ]
+    },
+    "\n\n",
+    {
+      "t": "div",
+      "a": {
+        "style": "max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start"
+      },
+      "c": [
+        "\n\n  ",
+        {
+          "t": "nav",
+          "a": { "aria-label": "Contents", "style": "flex: 1 1 180px; max-width: 220px; font-size: 13px" },
+          "c": [
+            "\n    ",
+            {
+              "t": "div",
+              "a": {
+                "style": "font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--fg); margin-bottom: 6px"
+              },
+              "c": ["Contents"]
+            },
+            "\n    ",
+            {
+              "t": "ol",
+              "a": { "style": "margin: 0; padding-left: 20px; line-height: 1.9" },
+              "c": [
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s1" }, "c": ["Variables and data types"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s2" }, "c": ["Input and output"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s3" }, "c": ["Selection"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s4" }, "c": ["Iteration"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s5" }, "c": ["Arrays"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s6" }, "c": ["Procedures and functions"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s7" }, "c": ["Records and text files (9618)"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s8" }, "c": ["Operators"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s9" }, "c": ["Built-in functions"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s10" }, "c": ["Debugger"] }] },
+                "\n      ",
+                { "t": "li", "c": [{ "t": "a", "a": { "href": "#s11" }, "c": ["Error messages"] }] },
+                "\n    "
+              ]
+            },
+            "\n  "
+          ]
+        },
+        "\n\n  ",
+        {
+          "t": "main",
+          "a": { "style": "flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 36px" },
+          "c": [
+            "\n    ",
+            {
+              "t": "header",
+              "a": { "style": "display: flex; flex-direction: column; gap: 8px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h1",
+                  "a": { "style": "margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600" },
+                  "c": ["Cambridge pseudocode reference"]
+                },
+                "\n      ",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3); max-width: 660px" },
+                  "c": [
+                    "What the IDE accepts for Cambridge IGCSE (0478), O Level (2210) and International AS & A Level (9618). Keywords and built-in functions are in capitals, variables are declared with a type, and assignment uses ←."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s1", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["1. Variables and data types"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "DECLARE Total : INTEGER\nDECLARE Price : REAL\nDECLARE Initial : CHAR\nDECLARE Name : STRING\nDECLARE Found : BOOLEAN\nDECLARE Today : DATE\n\nTotal ← 0\nName ← \"Sam\"\nCONSTANT VAT ← 0.2"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 18%"
+                                  },
+                                  "c": ["Type"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["Holds"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 30%"
+                                  },
+                                  "c": ["Literal"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["INTEGER"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Whole numbers"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["42   -7"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["REAL"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Numbers with a decimal part"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["3.5   -0.25"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["CHAR"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Exactly one character"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["'A'"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["STRING"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Text of any length"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["\"Hello\""]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["BOOLEAN"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["TRUE or FALSE"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["TRUE"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["DATE"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["A calendar date"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["SETDATE(25, 12, 2025)"]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Assign with the arrow ←. You can type ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["<-"]
+                    },
+                    " instead; the IDE treats them the same. 0478/2210 writes constants with ←, 9618 with =, and both are accepted. Names are not case-sensitive in Cambridge pseudocode, so ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["Total"]
+                    },
+                    " and ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": ["TOTAL"]
+                    },
+                    " are the same variable, but keep one spelling. A value must match the declared type: storing 3.5 in an INTEGER is an error."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s2", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["2. Input and output"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "OUTPUT \"Enter your name\"\nINPUT Name\nOUTPUT \"Hello \", Name, \", you are \", Age\n// a comment runs to the end of the line"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "OUTPUT prints the items you list, joined with no spaces added. When INPUT runs, the console waits for you to type a value and press Enter, then converts it to the variable's declared type. To show a prompt, OUTPUT it on the line before INPUT."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s3", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["3. Selection"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "IF Mark >= 50\n  THEN\n    OUTPUT \"Pass\"\n  ELSE\n    OUTPUT \"Fail\"\nENDIF\n\nIF Mark >= 70 THEN\n    Grade ← 'A'\nENDIF"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "THEN can sit on its own line (the Cambridge layout) or at the end of the IF line. There is no ELSE IF. For more outcomes, put another IF with its own ENDIF inside the ELSE, or use CASE."
+                  ]
+                },
+                "\n",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "CASE OF Choice\n    1 : OUTPUT \"Add\"\n    2 : OUTPUT \"Delete\"\n    3 TO 5 : OUTPUT \"Other\"\n    OTHERWISE : OUTPUT \"Invalid choice\"\nENDCASE"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Each branch is a value or a range with TO, then a colon and a statement. A branch may continue on the following lines. OTHERWISE is optional and must be last."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s4", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["4. Iteration"]
+                },
+                "\n      ",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 20%"
+                                  },
+                                  "c": ["Loop"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["Form"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%"
+                                  },
+                                  "c": ["Notes"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Count-controlled"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"
+                                  },
+                                  "c": ["FOR Count ← 1 TO 10\n    OUTPUT Count\nNEXT Count"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": [
+                                    "Add ",
+                                    {
+                                      "t": "code",
+                                      "a": {
+                                        "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"
+                                      },
+                                      "c": ["STEP 2"]
+                                    },
+                                    " or ",
+                                    {
+                                      "t": "code",
+                                      "a": {
+                                        "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px"
+                                      },
+                                      "c": ["STEP -1"]
+                                    },
+                                    " after the end value. NEXT names the loop variable."
+                                  ]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Pre-condition"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"
+                                  },
+                                  "c": ["WHILE Total < 100 DO\n    Total ← Total + 10\nENDWHILE"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": [
+                                    "Checked first, so the body may not run at all. DO is optional: 9618 leaves it out."
+                                  ]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Post-condition"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; white-space: pre"
+                                  },
+                                  "c": ["REPEAT\n    INPUT Age\nUNTIL Age >= 0"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Checked last, so the body always runs at least once."]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s5", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["5. Arrays"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "DECLARE Scores : ARRAY[1:5] OF INTEGER\nScores[1] ← 12\n\nDECLARE Grid : ARRAY[1:3, 1:4] OF CHAR\nGrid[2, 3] ← 'X'\n\nTotal ← 0\nFOR i ← 1 TO 5\n    Total ← Total + Scores[i]\nNEXT i"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "The bounds are set in the DECLARE, as lower:upper. Cambridge arrays usually start at 1. A 2D array takes the row, then the column, separated by a comma. Every element starts with no value: reading one before you assign it is reported as an error, which catches loops that miss an element."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s6", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["6. Procedures and functions"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "PROCEDURE ShowLine(Size : INTEGER, Symbol : CHAR)\n    DECLARE i : INTEGER\n    FOR i ← 1 TO Size\n        OUTPUT Symbol\n    NEXT i\nENDPROCEDURE\n\nFUNCTION Square(N : INTEGER) RETURNS INTEGER\n    RETURN N * N\nENDFUNCTION\n\nCALL ShowLine(3, '*')\nArea ← Square(4)"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Run a procedure with CALL. A function states its RETURNS type, must reach a RETURN, and its result has to be used. Each parameter has a type. Variables declared inside a subroutine are local to it."
+                  ]
+                },
+                "\n",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "PROCEDURE Swap(BYREF X : INTEGER, Y : INTEGER)\n    DECLARE Temp : INTEGER\n    Temp ← X\n    X ← Y\n    Y ← Temp\nENDPROCEDURE"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "BYVAL (the default) passes a copy. BYREF passes the variable itself, so changes are seen by the caller. A BYREF or BYVAL keyword applies to every parameter after it until the other keyword appears, so both X and Y above are BYREF. The arguments for BYREF parameters must be variables."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s7", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["7. Records and text files (9618)"]
+                },
+                "\n      ",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "TYPE Student\n    DECLARE Name : STRING\n    DECLARE Score : INTEGER\nENDTYPE\n\nDECLARE Class : ARRAY[1:30] OF Student\nClass[1].Name ← \"Ama\"\nClass[1].Score ← 61"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "pre",
+                  "a": {
+                    "style": "margin: 0; padding: 10px 12px; background: var(--gutter); border: 1px solid var(--line2); overflow-x: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 20px"
+                  },
+                  "c": [
+                    "OPENFILE \"scores.txt\" FOR WRITE\nWRITEFILE \"scores.txt\", \"Ama,61\"\nCLOSEFILE \"scores.txt\"\n\nOPENFILE \"scores.txt\" FOR READ\nWHILE NOT EOF(\"scores.txt\")\n    READFILE \"scores.txt\", LineOfText\n    OUTPUT LineOfText\nENDWHILE\nCLOSEFILE \"scores.txt\""
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Modes are READ, WRITE (starts an empty file) and APPEND. In this IDE files live in memory while the program runs, and each one appears in the Variables pane with its lines. Enumerated and pointer types, and random-access files, are not supported."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s8", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["8. Operators"]
+                },
+                "\n      ",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%"
+                                  },
+                                  "c": ["Kind"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 30%"
+                                  },
+                                  "c": ["Operators"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["Notes"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Arithmetic"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["+ - * / ^"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["/ always gives a REAL. ^ is power."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Integer division"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["DIV(17, 5)  MOD(17, 5)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Give 3 and 2. 17 DIV 5 and 17 MOD 5 also work."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Comparison"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["= <> < <= > >="]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["One = compares. <> means not equal. == and != are rejected."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Logic"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["AND OR NOT"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Write a full comparison on each side: Age > 12 AND Age < 20."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Strings"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["&"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Joins STRING and CHAR values. Convert numbers with NUM_TO_STR first."]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s9", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["9. Built-in functions"]
+                },
+                "\n      ",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 32%"
+                                  },
+                                  "c": ["Function"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 15%"
+                                  },
+                                  "c": ["Syllabus"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["Result"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["LENGTH(S)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Both"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Number of characters in S. LENGTH(\"Happy\") is 5."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["UCASE(S)  LCASE(S)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Both"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Upper or lower case. 0478/2210 uses them on strings, 9618 on a CHAR."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["SUBSTRING(S, Start, Len)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["0478 / 2210"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": [
+                                    "Len characters from position Start (from 1). SUBSTRING(\"Happy Days\", 1, 5) is \"Happy\"."
+                                  ]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["ROUND(X, Places)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["0478 / 2210"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["X rounded to Places decimal places. ROUND(6.97354, 2) is 6.97."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["RANDOM()"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["0478 / 2210"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A random REAL from 0 to 1."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["DIV(X, Y)  MOD(X, Y)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Both"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Whole-number quotient and remainder."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["LEFT(S, N)  RIGHT(S, N)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["The first or last N characters."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["MID(S, Start, Len)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Len characters from position Start. MID(\"ABCDEF\", 2, 3) is \"BCD\"."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["TO_UPPER(X)  TO_LOWER(X)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Change case of a STRING or CHAR."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["NUM_TO_STR(X)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A number as a STRING."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["STR_TO_NUM(S)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A STRING such as \"42\" as a number. Check it with IS_NUM first."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["IS_NUM(S)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["TRUE if S holds a valid number."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["ASC(C)  CHR(X)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Character code and back. ASC('A') is 65, CHR(66) is 'B'."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["INT(X)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["The whole-number part. INT(7.9) is 7."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["RAND(X)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A random REAL from 0 up to, but not including, X."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["SETDATE(D, M, Y)  NOW()"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Make a DATE, or get today's date."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["DAY(D)  MONTH(D)  YEAR(D)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Parts of a DATE."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["DAYINDEX(D)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Day of the week: 1 is Sunday, 7 is Saturday."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["EOF(FileName)"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["9618"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["TRUE when a file open for READ has no more lines."]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Built-in names are written in capitals. The IDE accepts every function in both lists whichever syllabus you follow, so check which list your exam uses."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s10", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["10. Debugger"]
+                },
+                "\n      ",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 22%"
+                                  },
+                                  "c": ["Command"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 14%"
+                                  },
+                                  "c": ["Key"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["What it does"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Run"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["F5"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Starts from the top. Stops at the end or at a breakpoint."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Step"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["F10"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Runs one line. The yellow line is the one that runs next."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Continue"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["F8"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["While paused, runs to the next breakpoint or the end."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Reset"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["Shift+F5"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Stops the program so you can edit and start again."]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Breakpoint"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["click"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Click a line number to add or remove a red breakpoint dot."]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Each program opens in its own editor tab. Convert to (in the toolbar and the Convert menu) translates the current program into one of the other two languages and opens the result in a new tab, so the original stays as it was. Statements with no direct equivalent, such as Python dictionaries or Cambridge record types, are kept as TODO comments for you to finish by hand."
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "Save and Save as use the ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": [".cpc"]
+                    },
+                    " extension for this language, or plain ",
+                    {
+                      "t": "code",
+                      "a": { "style": "font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px" },
+                      "c": [".txt"]
+                    },
+                    ". Ctrl+S saves the current tab."
+                  ]
+                },
+                "\n",
+                {
+                  "t": "p",
+                  "a": { "style": "margin: 0; color: var(--fg3)" },
+                  "c": [
+                    "While paused, Variables lists each value with its declared type. Elements with no value yet show as —. A value that changed on the last step is shown in red. Inside a procedure or function, local variables are marked and the Call stack shows where it was called from."
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "section",
+              "a": { "id": "s11", "style": "display: flex; flex-direction: column; gap: 10px" },
+              "c": [
+                "\n      ",
+                {
+                  "t": "h2",
+                  "a": {
+                    "style": "margin: 0; font-size: 18px; font-weight: 600; padding-bottom: 4px; border-bottom: 1px solid var(--line)"
+                  },
+                  "c": ["11. Error messages"]
+                },
+                "\n      ",
+                {
+                  "t": "div",
+                  "a": { "style": "overflow-x: auto" },
+                  "c": [
+                    "\n",
+                    {
+                      "t": "table",
+                      "a": { "style": "width: 100%; border-collapse: collapse; font-size: 13px" },
+                      "c": [
+                        "\n",
+                        {
+                          "t": "thead",
+                          "c": [
+                            {
+                              "t": "tr",
+                              "a": { "style": "background: var(--chrome)" },
+                              "c": [
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 36%"
+                                  },
+                                  "c": ["Message"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line); width: 34%"
+                                  },
+                                  "c": ["Usual cause"]
+                                },
+                                {
+                                  "t": "th",
+                                  "a": {
+                                    "scope": "col",
+                                    "style": "text-align: left; font-weight: 600; padding: 6px 10px; border: 1px solid var(--line)"
+                                  },
+                                  "c": ["Fix"]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "\n",
+                        {
+                          "t": "tbody",
+                          "c": [
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Index 0 is outside Temps[1:4]"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A loop starts at 0 or ends one past the upper bound."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["FOR i ← 1 TO 4"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Total has no value yet"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["The variable was declared but never assigned."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["Total ← 0 before the loop"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Use ← to assign, not ="]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Python or Edexcel habits."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["Total ← Total + 1"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["& joins strings, but 5 is INTEGER"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A number joined to text with &."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["OUTPUT \"Total: \", Total"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["Cannot store REAL 3.5 in N, which is INTEGER"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["The value does not match the declared type."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["DECLARE N : REAL"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["N is an INTEGER, but the input was \"abc\""]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["The value typed in the console is the wrong kind."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["Type a whole number"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["ENDFOR is not Cambridge pseudocode"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["FOR loops close with NEXT."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["NEXT i"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["NEXT i does not match FOR j"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Nested loops closed in the wrong order."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["Close the inner loop first"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["To run a procedure, start the line with CALL"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A procedure name used on its own."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["CALL ShowMenu()"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["ELSE IF is not Cambridge pseudocode"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["Several conditions chained on one ELSE line."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["Nested IF, or CASE OF"]
+                                }
+                              ]
+                            },
+                            "\n",
+                            {
+                              "t": "tr",
+                              "c": [
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top"
+                                  },
+                                  "c": ["FUNCTION F ended without a RETURN"]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; color: var(--fg3)"
+                                  },
+                                  "c": ["A path through the function misses RETURN."]
+                                },
+                                {
+                                  "t": "td",
+                                  "a": {
+                                    "style": "padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px"
+                                  },
+                                  "c": ["RETURN after the loop"]
+                                }
+                              ]
+                            },
+                            "\n"
+                          ]
+                        },
+                        "\n"
+                      ]
+                    },
+                    "\n"
+                  ]
+                },
+                "\n    "
+              ]
+            },
+            "\n\n    ",
+            {
+              "t": "p",
+              "a": {
+                "style": "margin: 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted)"
+              },
+              "c": [
+                "Based on the pseudocode guides published for Cambridge IGCSE and O Level Computer Science (0478, 2210) and International AS & A Level Computer Science (9618). Check the guide for your own syllabus year."
+              ]
+            },
+            "\n  "
+          ]
+        },
+        "\n"
+      ]
+    },
+    "\n"
+  ]
+}

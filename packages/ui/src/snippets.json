@@ -1,527 +1,527 @@
 {
- "edexcel": [
-  {
-   "section": "Variables and input/output",
-   "items": [
+  "edexcel": [
     {
-     "title": "Assign a variable",
-     "code": "SET score TO 0\nSET name TO \"Sam\"",
-     "note": "SET creates or updates a variable. Names are case-sensitive: Score and score are different."
+      "section": "Variables and input/output",
+      "items": [
+        {
+          "title": "Assign a variable",
+          "code": "SET score TO 0\nSET name TO \"Sam\"",
+          "note": "SET creates or updates a variable. Names are case-sensitive: Score and score are different."
+        },
+        {
+          "title": "Output",
+          "code": "SEND \"Hello \" & name TO DISPLAY",
+          "note": "Use & to join text and values into one line."
+        },
+        {
+          "title": "Input",
+          "code": "RECEIVE age FROM (INTEGER) KEYBOARD",
+          "note": "Types: INTEGER, REAL, STRING, BOOLEAN, CHARACTER. When RECEIVE runs, the console waits for you to type a value."
+        },
+        {
+          "title": "Comment",
+          "code": "# This line is ignored",
+          "note": "Everything after # on a line is a comment."
+        }
+      ]
     },
     {
-     "title": "Output",
-     "code": "SEND \"Hello \" & name TO DISPLAY",
-     "note": "Use & to join text and values into one line."
+      "section": "Selection",
+      "items": [
+        {
+          "title": "IF ... ELSE",
+          "code": "IF mark >= 50 THEN\n    SEND \"Pass\" TO DISPLAY\nELSE\n    SEND \"Fail\" TO DISPLAY\nEND IF",
+          "note": "ELSE is optional. Every IF needs its own END IF."
+        },
+        {
+          "title": "More than two choices",
+          "code": "IF mark >= 70 THEN\n    SET grade TO \"A\"\nELSE\n    IF mark >= 50 THEN\n        SET grade TO \"B\"\n    ELSE\n        SET grade TO \"C\"\n    END IF\nEND IF",
+          "note": "Nest a second IF inside ELSE."
+        }
+      ]
     },
     {
-     "title": "Input",
-     "code": "RECEIVE age FROM (INTEGER) KEYBOARD",
-     "note": "Types: INTEGER, REAL, STRING, BOOLEAN, CHARACTER. When RECEIVE runs, the console waits for you to type a value."
+      "section": "Iteration",
+      "items": [
+        {
+          "title": "FOR (count-controlled)",
+          "code": "FOR i FROM 1 TO 10 DO\n    SEND i TO DISPLAY\nEND FOR",
+          "note": "Add STEP 2 or STEP -1 after the end value to change the step."
+        },
+        {
+          "title": "WHILE (check first)",
+          "code": "SET count TO 0\nWHILE count < 5 DO\n    SET count TO count + 1\nEND WHILE",
+          "note": "Checked before each pass, so the body may run zero times."
+        },
+        {
+          "title": "REPEAT ... UNTIL (check last)",
+          "code": "REPEAT\n    RECEIVE guess FROM (INTEGER) KEYBOARD\nUNTIL guess = 7",
+          "note": "The body always runs at least once."
+        },
+        {
+          "title": "REPEAT n TIMES",
+          "code": "REPEAT 3 TIMES\n    SEND \"Hello\" TO DISPLAY\nEND REPEAT",
+          "note": ""
+        },
+        {
+          "title": "FOR EACH",
+          "code": "FOR EACH item FROM [\"a\", \"b\"] DO\n    SEND item TO DISPLAY\nEND FOREACH",
+          "note": "Visits every element of an array, or every character of a string."
+        }
+      ]
     },
     {
-     "title": "Comment",
-     "code": "# This line is ignored",
-     "note": "Everything after # on a line is a comment."
+      "section": "Subprograms",
+      "items": [
+        {
+          "title": "Procedure",
+          "code": "PROCEDURE greet(name)\nBEGIN PROCEDURE\n    SEND \"Hi \" & name TO DISPLAY\nEND PROCEDURE\n\ngreet(\"Ava\")",
+          "note": "Call it on its own line. A procedure does not return a value."
+        },
+        {
+          "title": "Function",
+          "code": "FUNCTION square(n)\nBEGIN FUNCTION\n    RETURN n * n\nEND FUNCTION\n\nSET area TO square(4)",
+          "note": "A function must RETURN a value. Use it inside an expression."
+        }
+      ]
+    },
+    {
+      "section": "Arrays and strings",
+      "items": [
+        {
+          "title": "Create and read",
+          "code": "SET scores TO [12, 18, 9]\nSEND scores[0] TO DISPLAY",
+          "note": "Indexes start at 0. The last index is LENGTH(scores) - 1."
+        },
+        {
+          "title": "Change an element",
+          "code": "SET scores[1] TO 20",
+          "note": ""
+        },
+        {
+          "title": "Loop over an array",
+          "code": "FOR i FROM 0 TO LENGTH(scores) - 1 DO\n    SEND scores[i] TO DISPLAY\nEND FOR",
+          "note": ""
+        },
+        {
+          "title": "2D array",
+          "code": "SET grid TO [[1, 2], [3, 4]]\nSEND grid[1][0] TO DISPLAY",
+          "note": "Row first, then column. This shows 3."
+        },
+        {
+          "title": "Characters of a string",
+          "code": "SET word TO \"code\"\nSEND word[0] TO DISPLAY",
+          "note": "Strings index like arrays. LENGTH(word) is 4."
+        }
+      ]
+    },
+    {
+      "section": "Operators",
+      "items": [
+        {
+          "title": "Arithmetic",
+          "code": "+  -  *  /  ^\n7 DIV 2    is 3\n7 MOD 2    is 1",
+          "note": "/ gives a real result. DIV is whole-number division, MOD the remainder.",
+          "noInsert": true
+        },
+        {
+          "title": "Comparison",
+          "code": "=  <>  <  <=  >  >=",
+          "note": "Use = to compare and <> for not equal. == and != are not Edexcel.",
+          "noInsert": true
+        },
+        {
+          "title": "Logic and text",
+          "code": "AND  OR  NOT\n\"Total: \" & total",
+          "note": "& joins text. TRUE and FALSE are written in capitals.",
+          "noInsert": true
+        }
+      ]
+    },
+    {
+      "section": "Built-in functions",
+      "items": [
+        {
+          "title": "LENGTH(x)",
+          "code": "SET n TO LENGTH(\"hello\")",
+          "note": "Number of items in an array, or characters in a string."
+        },
+        {
+          "title": "RANDOM(n)",
+          "code": "SET roll TO RANDOM(5) + 1",
+          "note": "A random whole number from 0 to n inclusive."
+        },
+        {
+          "title": "INT(x) and STR(x)",
+          "code": "SET n TO INT(\"42\")\nSET s TO STR(3.5)",
+          "note": "Conversion helpers supported by this IDE."
+        }
+      ]
     }
-   ]
-  },
-  {
-   "section": "Selection",
-   "items": [
+  ],
+  "cie": [
     {
-     "title": "IF ... ELSE",
-     "code": "IF mark >= 50 THEN\n    SEND \"Pass\" TO DISPLAY\nELSE\n    SEND \"Fail\" TO DISPLAY\nEND IF",
-     "note": "ELSE is optional. Every IF needs its own END IF."
+      "section": "Variables and input/output",
+      "items": [
+        {
+          "title": "Declare",
+          "code": "DECLARE Total : INTEGER\nDECLARE Name : STRING",
+          "note": "Types: INTEGER, REAL, CHAR, STRING, BOOLEAN, DATE. Declare a variable before you use it."
+        },
+        {
+          "title": "Assign",
+          "code": "Total ← 0\nName ← \"Sam\"",
+          "note": "Type <- for the arrow. Both work in this IDE."
+        },
+        {
+          "title": "Constant",
+          "code": "CONSTANT VAT ← 0.2",
+          "note": "0478/2210 writes ←, 9618 writes =. Both are accepted."
+        },
+        {
+          "title": "Input and output",
+          "code": "OUTPUT \"Enter your name\"\nINPUT Name\nOUTPUT \"Hello \", Name",
+          "note": "OUTPUT joins the items you list with commas. No spaces are added."
+        },
+        {
+          "title": "Comment",
+          "code": "// This line is ignored",
+          "note": ""
+        }
+      ]
     },
     {
-     "title": "More than two choices",
-     "code": "IF mark >= 70 THEN\n    SET grade TO \"A\"\nELSE\n    IF mark >= 50 THEN\n        SET grade TO \"B\"\n    ELSE\n        SET grade TO \"C\"\n    END IF\nEND IF",
-     "note": "Nest a second IF inside ELSE."
+      "section": "Selection",
+      "items": [
+        {
+          "title": "IF ... ENDIF",
+          "code": "IF Mark >= 50\n  THEN\n    OUTPUT \"Pass\"\n  ELSE\n    OUTPUT \"Fail\"\nENDIF",
+          "note": "THEN can go at the end of the IF line or on the next line. There is no ELSE IF: put another IF inside ELSE."
+        },
+        {
+          "title": "CASE OF",
+          "code": "CASE OF Choice\n    1 : OUTPUT \"Add\"\n    2 : OUTPUT \"Delete\"\n    3 TO 5 : OUTPUT \"Other\"\n    OTHERWISE : OUTPUT \"Invalid\"\nENDCASE",
+          "note": "A branch can be a single value or a range with TO. OTHERWISE is optional and goes last."
+        }
+      ]
+    },
+    {
+      "section": "Iteration",
+      "items": [
+        {
+          "title": "FOR ... NEXT",
+          "code": "FOR Count ← 1 TO 10\n    OUTPUT Count\nNEXT Count",
+          "note": "Add STEP 2 or STEP -1 after the end value."
+        },
+        {
+          "title": "WHILE ... ENDWHILE",
+          "code": "WHILE Total < 100 DO\n    Total ← Total + 10\nENDWHILE",
+          "note": "Checked first, so the body may run zero times. DO is optional (9618 leaves it out)."
+        },
+        {
+          "title": "REPEAT ... UNTIL",
+          "code": "REPEAT\n    INPUT Age\nUNTIL Age >= 0 AND Age <= 120",
+          "note": "The body always runs at least once."
+        }
+      ]
+    },
+    {
+      "section": "Arrays",
+      "items": [
+        {
+          "title": "1D array",
+          "code": "DECLARE Scores : ARRAY[1:5] OF INTEGER\nScores[1] ← 12",
+          "note": "You choose the bounds. Cambridge arrays usually start at 1."
+        },
+        {
+          "title": "2D array",
+          "code": "DECLARE Grid : ARRAY[1:3, 1:4] OF CHAR\nGrid[2, 3] ← 'X'",
+          "note": "Row first, then column, separated by a comma."
+        },
+        {
+          "title": "Loop over an array",
+          "code": "Total ← 0\nFOR i ← 1 TO 5\n    Total ← Total + Scores[i]\nNEXT i",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "section": "Procedures and functions",
+      "items": [
+        {
+          "title": "Procedure",
+          "code": "PROCEDURE Greet(Name : STRING)\n    OUTPUT \"Hi \", Name\nENDPROCEDURE\n\nCALL Greet(\"Ava\")",
+          "note": "Run a procedure with CALL."
+        },
+        {
+          "title": "Function",
+          "code": "FUNCTION Square(N : INTEGER) RETURNS INTEGER\n    RETURN N * N\nENDFUNCTION\n\nOUTPUT Square(4)",
+          "note": "A function states its RETURNS type and gives back a value."
+        },
+        {
+          "title": "BYREF (9618)",
+          "code": "PROCEDURE AddOne(BYREF N : INTEGER)\n    N ← N + 1\nENDPROCEDURE",
+          "note": "BYREF changes the caller's variable. BYVAL (the default) works on a copy. BYREF applies to every parameter after it, until BYVAL."
+        }
+      ]
+    },
+    {
+      "section": "Records and files (9618)",
+      "items": [
+        {
+          "title": "Record type",
+          "code": "TYPE Book\n    DECLARE Title : STRING\n    DECLARE Pages : INTEGER\nENDTYPE\n\nDECLARE B : Book\nB.Title ← \"Dune\"",
+          "note": ""
+        },
+        {
+          "title": "Text file",
+          "code": "OPENFILE \"data.txt\" FOR WRITE\nWRITEFILE \"data.txt\", \"first line\"\nCLOSEFILE \"data.txt\"",
+          "note": "Modes: READ, WRITE, APPEND. Files live in memory until the program ends and show in Variables."
+        },
+        {
+          "title": "Read to the end",
+          "code": "OPENFILE \"data.txt\" FOR READ\nWHILE NOT EOF(\"data.txt\")\n    READFILE \"data.txt\", Line\n    OUTPUT Line\nENDWHILE\nCLOSEFILE \"data.txt\"",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "section": "Operators",
+      "items": [
+        {
+          "title": "Arithmetic",
+          "code": "+  -  *  /  ^\nDIV(17, 5)  is 3\nMOD(17, 5)  is 2",
+          "note": "/ always gives a REAL. 17 DIV 5 and 17 MOD 5 also work.",
+          "noInsert": true
+        },
+        {
+          "title": "Comparison and logic",
+          "code": "=  <>  <  <=  >  >=\nAND  OR  NOT",
+          "note": "One = compares. <> means not equal.",
+          "noInsert": true
+        },
+        {
+          "title": "Joining strings",
+          "code": "FullName ← First & \" \" & Last",
+          "note": "& joins STRING and CHAR values. Convert numbers with NUM_TO_STR.",
+          "noInsert": true
+        }
+      ]
+    },
+    {
+      "section": "Built-in functions: 0478 / 2210",
+      "items": [
+        {
+          "title": "LENGTH, UCASE, LCASE",
+          "code": "N ← LENGTH(\"Happy\")\nU ← UCASE(\"Happy\")\nL ← LCASE(\"Happy\")",
+          "note": "LENGTH counts characters. UCASE and LCASE change the case."
+        },
+        {
+          "title": "SUBSTRING",
+          "code": "S ← SUBSTRING(\"Happy Days\", 1, 5)",
+          "note": "Start position (from 1) and length. Gives \"Happy\"."
+        },
+        {
+          "title": "ROUND and RANDOM",
+          "code": "R ← ROUND(6.97354, 2)\nX ← RANDOM()",
+          "note": "ROUND to a number of decimal places. RANDOM gives a REAL from 0 to 1."
+        }
+      ]
+    },
+    {
+      "section": "Built-in functions: 9618",
+      "items": [
+        {
+          "title": "LEFT, RIGHT, MID",
+          "code": "L ← LEFT(\"ABCDEF\", 3)\nR ← RIGHT(\"ABCDEF\", 2)\nM ← MID(\"ABCDEF\", 2, 3)",
+          "note": "Gives \"ABC\", \"EF\" and \"BCD\"."
+        },
+        {
+          "title": "TO_UPPER, TO_LOWER",
+          "code": "U ← TO_UPPER(\"Hello\")",
+          "note": "Work on a STRING or CHAR. UCASE and LCASE work on a CHAR."
+        },
+        {
+          "title": "NUM_TO_STR, STR_TO_NUM, IS_NUM",
+          "code": "S ← NUM_TO_STR(3.5)\nN ← STR_TO_NUM(\"42\")\nOK ← IS_NUM(\"42a\")",
+          "note": "Check text with IS_NUM before converting it."
+        },
+        {
+          "title": "ASC and CHR",
+          "code": "Code ← ASC('A')\nC ← CHR(66)",
+          "note": "Character codes: 65 and 'B'."
+        },
+        {
+          "title": "INT and RAND",
+          "code": "Whole ← INT(7.9)\nDice ← INT(RAND(6)) + 1",
+          "note": "INT drops the decimal part. RAND(x) gives a REAL from 0 up to (not including) x."
+        },
+        {
+          "title": "Dates",
+          "code": "D ← SETDATE(25, 12, 2025)\nOUTPUT DAY(D), MONTH(D), YEAR(D), DAYINDEX(D)\nToday ← NOW()",
+          "note": "DAYINDEX gives 1 for Sunday to 7 for Saturday."
+        }
+      ]
     }
-   ]
-  },
-  {
-   "section": "Iteration",
-   "items": [
+  ],
+  "python": [
     {
-     "title": "FOR (count-controlled)",
-     "code": "FOR i FROM 1 TO 10 DO\n    SEND i TO DISPLAY\nEND FOR",
-     "note": "Add STEP 2 or STEP -1 after the end value to change the step."
+      "section": "Variables and input/output",
+      "items": [
+        {
+          "title": "Assign",
+          "code": "score = 0\nname = \"Sam\"",
+          "note": "Python creates the variable when you first assign it. Names are case-sensitive."
+        },
+        {
+          "title": "Output",
+          "code": "print(\"Hello\", name)\nprint(\"Total: \" + str(total))\nprint(f\"Total: {total}\")",
+          "note": "print puts a space between items. + only joins text to text, so convert numbers with str() or use an f-string."
+        },
+        {
+          "title": "Input",
+          "code": "name = input(\"Name: \")\nage = int(input(\"Age: \"))",
+          "note": "input() always gives text. Convert with int() or float(). When input() runs, the console waits for you to type a value and press Enter."
+        },
+        {
+          "title": "Comment",
+          "code": "# This line is ignored",
+          "note": ""
+        }
+      ]
     },
     {
-     "title": "WHILE (check first)",
-     "code": "SET count TO 0\nWHILE count < 5 DO\n    SET count TO count + 1\nEND WHILE",
-     "note": "Checked before each pass, so the body may run zero times."
+      "section": "Selection",
+      "items": [
+        {
+          "title": "if / elif / else",
+          "code": "if mark >= 70:\n    grade = \"A\"\nelif mark >= 50:\n    grade = \"B\"\nelse:\n    grade = \"C\"",
+          "note": "Each line that starts a block ends with a colon. The block is indented by 4 spaces."
+        },
+        {
+          "title": "Comparison and logic",
+          "code": "==  !=  <  <=  >  >=\nand  or  not\nif 0 <= age <= 120:",
+          "note": "Use == to compare and = to assign.",
+          "noInsert": true
+        }
+      ]
     },
     {
-     "title": "REPEAT ... UNTIL (check last)",
-     "code": "REPEAT\n    RECEIVE guess FROM (INTEGER) KEYBOARD\nUNTIL guess = 7",
-     "note": "The body always runs at least once."
+      "section": "Iteration",
+      "items": [
+        {
+          "title": "for with range",
+          "code": "for i in range(1, 11):\n    print(i)",
+          "note": "range(1, 11) counts 1 to 10. The end value is not included."
+        },
+        {
+          "title": "for over a list",
+          "code": "for name in names:\n    print(name)",
+          "note": ""
+        },
+        {
+          "title": "while",
+          "code": "count = 0\nwhile count < 5:\n    count += 1",
+          "note": "Checked before each pass. break leaves the loop, continue skips to the next pass."
+        }
+      ]
     },
     {
-     "title": "REPEAT n TIMES",
-     "code": "REPEAT 3 TIMES\n    SEND \"Hello\" TO DISPLAY\nEND REPEAT",
-     "note": ""
+      "section": "Functions",
+      "items": [
+        {
+          "title": "Function with return",
+          "code": "def square(n):\n    return n * n\n\narea = square(4)",
+          "note": "A function without return gives back None."
+        },
+        {
+          "title": "Procedure-style function",
+          "code": "def greet(name):\n    print(\"Hi\", name)\n\ngreet(\"Ava\")",
+          "note": ""
+        },
+        {
+          "title": "Changing a global",
+          "code": "count = 0\ndef add():\n    global count\n    count += 1",
+          "note": "Without global, assigning inside a function makes a new local variable."
+        }
+      ]
     },
     {
-     "title": "FOR EACH",
-     "code": "FOR EACH item FROM [\"a\", \"b\"] DO\n    SEND item TO DISPLAY\nEND FOREACH",
-     "note": "Visits every element of an array, or every character of a string."
+      "section": "Lists and strings",
+      "items": [
+        {
+          "title": "Create and index",
+          "code": "scores = [12, 18, 9]\nprint(scores[0], scores[-1])",
+          "note": "Indexes start at 0. -1 is the last item."
+        },
+        {
+          "title": "Change a list",
+          "code": "scores.append(20)\nscores.insert(0, 5)\nscores.remove(18)\nlast = scores.pop()",
+          "note": ""
+        },
+        {
+          "title": "Slicing",
+          "code": "word = \"Python\"\nprint(word[0:3], word[::-1])",
+          "note": "[start:end] stops before end. [::-1] reverses."
+        },
+        {
+          "title": "2D list",
+          "code": "grid = [[1, 2], [3, 4]]\nprint(grid[1][0])",
+          "note": "Row first, then column. This shows 3."
+        },
+        {
+          "title": "String methods",
+          "code": "text.upper()  text.lower()  text.strip()\ntext.split(\",\")  \", \".join(items)\ntext.replace(\"a\", \"b\")  len(text)",
+          "note": "Strings cannot be changed in place. Methods return a new string.",
+          "noInsert": true
+        }
+      ]
+    },
+    {
+      "section": "Dictionaries",
+      "items": [
+        {
+          "title": "Create and use",
+          "code": "ages = {\"Ama\": 15, \"Ben\": 16}\nages[\"Chen\"] = 15\nprint(ages.get(\"Dan\", 0))",
+          "note": "get() gives a default instead of a KeyError."
+        },
+        {
+          "title": "Loop over items",
+          "code": "for name, age in ages.items():\n    print(name, age)",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "section": "Validation and errors",
+      "items": [
+        {
+          "title": "try / except",
+          "code": "try:\n    age = int(input(\"Age: \"))\nexcept ValueError:\n    print(\"Not a whole number\")",
+          "note": "The except block runs when int() cannot convert the text."
+        }
+      ]
+    },
+    {
+      "section": "Built-ins and modules",
+      "items": [
+        {
+          "title": "Common built-ins",
+          "code": "len(x)  range(n)  int(x)  float(x)  str(x)\nround(x, 2)  abs(x)  min(a)  max(a)  sum(a)\nsorted(a)  ord(\"A\")  chr(65)",
+          "note": "",
+          "noInsert": true
+        },
+        {
+          "title": "random",
+          "code": "import random\ndice = random.randint(1, 6)\npick = random.choice(names)",
+          "note": "randint includes both ends."
+        },
+        {
+          "title": "math",
+          "code": "import math\nprint(math.sqrt(16), math.floor(2.7), math.pi)",
+          "note": "The random, math and time modules are available."
+        }
+      ]
     }
-   ]
-  },
-  {
-   "section": "Subprograms",
-   "items": [
-    {
-     "title": "Procedure",
-     "code": "PROCEDURE greet(name)\nBEGIN PROCEDURE\n    SEND \"Hi \" & name TO DISPLAY\nEND PROCEDURE\n\ngreet(\"Ava\")",
-     "note": "Call it on its own line. A procedure does not return a value."
-    },
-    {
-     "title": "Function",
-     "code": "FUNCTION square(n)\nBEGIN FUNCTION\n    RETURN n * n\nEND FUNCTION\n\nSET area TO square(4)",
-     "note": "A function must RETURN a value. Use it inside an expression."
-    }
-   ]
-  },
-  {
-   "section": "Arrays and strings",
-   "items": [
-    {
-     "title": "Create and read",
-     "code": "SET scores TO [12, 18, 9]\nSEND scores[0] TO DISPLAY",
-     "note": "Indexes start at 0. The last index is LENGTH(scores) - 1."
-    },
-    {
-     "title": "Change an element",
-     "code": "SET scores[1] TO 20",
-     "note": ""
-    },
-    {
-     "title": "Loop over an array",
-     "code": "FOR i FROM 0 TO LENGTH(scores) - 1 DO\n    SEND scores[i] TO DISPLAY\nEND FOR",
-     "note": ""
-    },
-    {
-     "title": "2D array",
-     "code": "SET grid TO [[1, 2], [3, 4]]\nSEND grid[1][0] TO DISPLAY",
-     "note": "Row first, then column. This shows 3."
-    },
-    {
-     "title": "Characters of a string",
-     "code": "SET word TO \"code\"\nSEND word[0] TO DISPLAY",
-     "note": "Strings index like arrays. LENGTH(word) is 4."
-    }
-   ]
-  },
-  {
-   "section": "Operators",
-   "items": [
-    {
-     "title": "Arithmetic",
-     "code": "+  -  *  /  ^\n7 DIV 2    is 3\n7 MOD 2    is 1",
-     "note": "/ gives a real result. DIV is whole-number division, MOD the remainder.",
-     "noInsert": true
-    },
-    {
-     "title": "Comparison",
-     "code": "=  <>  <  <=  >  >=",
-     "note": "Use = to compare and <> for not equal. == and != are not Edexcel.",
-     "noInsert": true
-    },
-    {
-     "title": "Logic and text",
-     "code": "AND  OR  NOT\n\"Total: \" & total",
-     "note": "& joins text. TRUE and FALSE are written in capitals.",
-     "noInsert": true
-    }
-   ]
-  },
-  {
-   "section": "Built-in functions",
-   "items": [
-    {
-     "title": "LENGTH(x)",
-     "code": "SET n TO LENGTH(\"hello\")",
-     "note": "Number of items in an array, or characters in a string."
-    },
-    {
-     "title": "RANDOM(n)",
-     "code": "SET roll TO RANDOM(5) + 1",
-     "note": "A random whole number from 0 to n inclusive."
-    },
-    {
-     "title": "INT(x) and STR(x)",
-     "code": "SET n TO INT(\"42\")\nSET s TO STR(3.5)",
-     "note": "Conversion helpers supported by this IDE."
-    }
-   ]
-  }
- ],
- "cie": [
-  {
-   "section": "Variables and input/output",
-   "items": [
-    {
-     "title": "Declare",
-     "code": "DECLARE Total : INTEGER\nDECLARE Name : STRING",
-     "note": "Types: INTEGER, REAL, CHAR, STRING, BOOLEAN, DATE. Declare a variable before you use it."
-    },
-    {
-     "title": "Assign",
-     "code": "Total ← 0\nName ← \"Sam\"",
-     "note": "Type <- for the arrow. Both work in this IDE."
-    },
-    {
-     "title": "Constant",
-     "code": "CONSTANT VAT ← 0.2",
-     "note": "0478/2210 writes ←, 9618 writes =. Both are accepted."
-    },
-    {
-     "title": "Input and output",
-     "code": "OUTPUT \"Enter your name\"\nINPUT Name\nOUTPUT \"Hello \", Name",
-     "note": "OUTPUT joins the items you list with commas. No spaces are added."
-    },
-    {
-     "title": "Comment",
-     "code": "// This line is ignored",
-     "note": ""
-    }
-   ]
-  },
-  {
-   "section": "Selection",
-   "items": [
-    {
-     "title": "IF ... ENDIF",
-     "code": "IF Mark >= 50\n  THEN\n    OUTPUT \"Pass\"\n  ELSE\n    OUTPUT \"Fail\"\nENDIF",
-     "note": "THEN can go at the end of the IF line or on the next line. There is no ELSE IF: put another IF inside ELSE."
-    },
-    {
-     "title": "CASE OF",
-     "code": "CASE OF Choice\n    1 : OUTPUT \"Add\"\n    2 : OUTPUT \"Delete\"\n    3 TO 5 : OUTPUT \"Other\"\n    OTHERWISE : OUTPUT \"Invalid\"\nENDCASE",
-     "note": "A branch can be a single value or a range with TO. OTHERWISE is optional and goes last."
-    }
-   ]
-  },
-  {
-   "section": "Iteration",
-   "items": [
-    {
-     "title": "FOR ... NEXT",
-     "code": "FOR Count ← 1 TO 10\n    OUTPUT Count\nNEXT Count",
-     "note": "Add STEP 2 or STEP -1 after the end value."
-    },
-    {
-     "title": "WHILE ... ENDWHILE",
-     "code": "WHILE Total < 100 DO\n    Total ← Total + 10\nENDWHILE",
-     "note": "Checked first, so the body may run zero times. DO is optional (9618 leaves it out)."
-    },
-    {
-     "title": "REPEAT ... UNTIL",
-     "code": "REPEAT\n    INPUT Age\nUNTIL Age >= 0 AND Age <= 120",
-     "note": "The body always runs at least once."
-    }
-   ]
-  },
-  {
-   "section": "Arrays",
-   "items": [
-    {
-     "title": "1D array",
-     "code": "DECLARE Scores : ARRAY[1:5] OF INTEGER\nScores[1] ← 12",
-     "note": "You choose the bounds. Cambridge arrays usually start at 1."
-    },
-    {
-     "title": "2D array",
-     "code": "DECLARE Grid : ARRAY[1:3, 1:4] OF CHAR\nGrid[2, 3] ← 'X'",
-     "note": "Row first, then column, separated by a comma."
-    },
-    {
-     "title": "Loop over an array",
-     "code": "Total ← 0\nFOR i ← 1 TO 5\n    Total ← Total + Scores[i]\nNEXT i",
-     "note": ""
-    }
-   ]
-  },
-  {
-   "section": "Procedures and functions",
-   "items": [
-    {
-     "title": "Procedure",
-     "code": "PROCEDURE Greet(Name : STRING)\n    OUTPUT \"Hi \", Name\nENDPROCEDURE\n\nCALL Greet(\"Ava\")",
-     "note": "Run a procedure with CALL."
-    },
-    {
-     "title": "Function",
-     "code": "FUNCTION Square(N : INTEGER) RETURNS INTEGER\n    RETURN N * N\nENDFUNCTION\n\nOUTPUT Square(4)",
-     "note": "A function states its RETURNS type and gives back a value."
-    },
-    {
-     "title": "BYREF (9618)",
-     "code": "PROCEDURE AddOne(BYREF N : INTEGER)\n    N ← N + 1\nENDPROCEDURE",
-     "note": "BYREF changes the caller's variable. BYVAL (the default) works on a copy. BYREF applies to every parameter after it, until BYVAL."
-    }
-   ]
-  },
-  {
-   "section": "Records and files (9618)",
-   "items": [
-    {
-     "title": "Record type",
-     "code": "TYPE Book\n    DECLARE Title : STRING\n    DECLARE Pages : INTEGER\nENDTYPE\n\nDECLARE B : Book\nB.Title ← \"Dune\"",
-     "note": ""
-    },
-    {
-     "title": "Text file",
-     "code": "OPENFILE \"data.txt\" FOR WRITE\nWRITEFILE \"data.txt\", \"first line\"\nCLOSEFILE \"data.txt\"",
-     "note": "Modes: READ, WRITE, APPEND. Files live in memory until the program ends and show in Variables."
-    },
-    {
-     "title": "Read to the end",
-     "code": "OPENFILE \"data.txt\" FOR READ\nWHILE NOT EOF(\"data.txt\")\n    READFILE \"data.txt\", Line\n    OUTPUT Line\nENDWHILE\nCLOSEFILE \"data.txt\"",
-     "note": ""
-    }
-   ]
-  },
-  {
-   "section": "Operators",
-   "items": [
-    {
-     "title": "Arithmetic",
-     "code": "+  -  *  /  ^\nDIV(17, 5)  is 3\nMOD(17, 5)  is 2",
-     "note": "/ always gives a REAL. 17 DIV 5 and 17 MOD 5 also work.",
-     "noInsert": true
-    },
-    {
-     "title": "Comparison and logic",
-     "code": "=  <>  <  <=  >  >=\nAND  OR  NOT",
-     "note": "One = compares. <> means not equal.",
-     "noInsert": true
-    },
-    {
-     "title": "Joining strings",
-     "code": "FullName ← First & \" \" & Last",
-     "note": "& joins STRING and CHAR values. Convert numbers with NUM_TO_STR.",
-     "noInsert": true
-    }
-   ]
-  },
-  {
-   "section": "Built-in functions: 0478 / 2210",
-   "items": [
-    {
-     "title": "LENGTH, UCASE, LCASE",
-     "code": "N ← LENGTH(\"Happy\")\nU ← UCASE(\"Happy\")\nL ← LCASE(\"Happy\")",
-     "note": "LENGTH counts characters. UCASE and LCASE change the case."
-    },
-    {
-     "title": "SUBSTRING",
-     "code": "S ← SUBSTRING(\"Happy Days\", 1, 5)",
-     "note": "Start position (from 1) and length. Gives \"Happy\"."
-    },
-    {
-     "title": "ROUND and RANDOM",
-     "code": "R ← ROUND(6.97354, 2)\nX ← RANDOM()",
-     "note": "ROUND to a number of decimal places. RANDOM gives a REAL from 0 to 1."
-    }
-   ]
-  },
-  {
-   "section": "Built-in functions: 9618",
-   "items": [
-    {
-     "title": "LEFT, RIGHT, MID",
-     "code": "L ← LEFT(\"ABCDEF\", 3)\nR ← RIGHT(\"ABCDEF\", 2)\nM ← MID(\"ABCDEF\", 2, 3)",
-     "note": "Gives \"ABC\", \"EF\" and \"BCD\"."
-    },
-    {
-     "title": "TO_UPPER, TO_LOWER",
-     "code": "U ← TO_UPPER(\"Hello\")",
-     "note": "Work on a STRING or CHAR. UCASE and LCASE work on a CHAR."
-    },
-    {
-     "title": "NUM_TO_STR, STR_TO_NUM, IS_NUM",
-     "code": "S ← NUM_TO_STR(3.5)\nN ← STR_TO_NUM(\"42\")\nOK ← IS_NUM(\"42a\")",
-     "note": "Check text with IS_NUM before converting it."
-    },
-    {
-     "title": "ASC and CHR",
-     "code": "Code ← ASC('A')\nC ← CHR(66)",
-     "note": "Character codes: 65 and 'B'."
-    },
-    {
-     "title": "INT and RAND",
-     "code": "Whole ← INT(7.9)\nDice ← INT(RAND(6)) + 1",
-     "note": "INT drops the decimal part. RAND(x) gives a REAL from 0 up to (not including) x."
-    },
-    {
-     "title": "Dates",
-     "code": "D ← SETDATE(25, 12, 2025)\nOUTPUT DAY(D), MONTH(D), YEAR(D), DAYINDEX(D)\nToday ← NOW()",
-     "note": "DAYINDEX gives 1 for Sunday to 7 for Saturday."
-    }
-   ]
-  }
- ],
- "python": [
-  {
-   "section": "Variables and input/output",
-   "items": [
-    {
-     "title": "Assign",
-     "code": "score = 0\nname = \"Sam\"",
-     "note": "Python creates the variable when you first assign it. Names are case-sensitive."
-    },
-    {
-     "title": "Output",
-     "code": "print(\"Hello\", name)\nprint(\"Total: \" + str(total))\nprint(f\"Total: {total}\")",
-     "note": "print puts a space between items. + only joins text to text, so convert numbers with str() or use an f-string."
-    },
-    {
-     "title": "Input",
-     "code": "name = input(\"Name: \")\nage = int(input(\"Age: \"))",
-     "note": "input() always gives text. Convert with int() or float(). When input() runs, the console waits for you to type a value and press Enter."
-    },
-    {
-     "title": "Comment",
-     "code": "# This line is ignored",
-     "note": ""
-    }
-   ]
-  },
-  {
-   "section": "Selection",
-   "items": [
-    {
-     "title": "if / elif / else",
-     "code": "if mark >= 70:\n    grade = \"A\"\nelif mark >= 50:\n    grade = \"B\"\nelse:\n    grade = \"C\"",
-     "note": "Each line that starts a block ends with a colon. The block is indented by 4 spaces."
-    },
-    {
-     "title": "Comparison and logic",
-     "code": "==  !=  <  <=  >  >=\nand  or  not\nif 0 <= age <= 120:",
-     "note": "Use == to compare and = to assign.",
-     "noInsert": true
-    }
-   ]
-  },
-  {
-   "section": "Iteration",
-   "items": [
-    {
-     "title": "for with range",
-     "code": "for i in range(1, 11):\n    print(i)",
-     "note": "range(1, 11) counts 1 to 10. The end value is not included."
-    },
-    {
-     "title": "for over a list",
-     "code": "for name in names:\n    print(name)",
-     "note": ""
-    },
-    {
-     "title": "while",
-     "code": "count = 0\nwhile count < 5:\n    count += 1",
-     "note": "Checked before each pass. break leaves the loop, continue skips to the next pass."
-    }
-   ]
-  },
-  {
-   "section": "Functions",
-   "items": [
-    {
-     "title": "Function with return",
-     "code": "def square(n):\n    return n * n\n\narea = square(4)",
-     "note": "A function without return gives back None."
-    },
-    {
-     "title": "Procedure-style function",
-     "code": "def greet(name):\n    print(\"Hi\", name)\n\ngreet(\"Ava\")",
-     "note": ""
-    },
-    {
-     "title": "Changing a global",
-     "code": "count = 0\ndef add():\n    global count\n    count += 1",
-     "note": "Without global, assigning inside a function makes a new local variable."
-    }
-   ]
-  },
-  {
-   "section": "Lists and strings",
-   "items": [
-    {
-     "title": "Create and index",
-     "code": "scores = [12, 18, 9]\nprint(scores[0], scores[-1])",
-     "note": "Indexes start at 0. -1 is the last item."
-    },
-    {
-     "title": "Change a list",
-     "code": "scores.append(20)\nscores.insert(0, 5)\nscores.remove(18)\nlast = scores.pop()",
-     "note": ""
-    },
-    {
-     "title": "Slicing",
-     "code": "word = \"Python\"\nprint(word[0:3], word[::-1])",
-     "note": "[start:end] stops before end. [::-1] reverses."
-    },
-    {
-     "title": "2D list",
-     "code": "grid = [[1, 2], [3, 4]]\nprint(grid[1][0])",
-     "note": "Row first, then column. This shows 3."
-    },
-    {
-     "title": "String methods",
-     "code": "text.upper()  text.lower()  text.strip()\ntext.split(\",\")  \", \".join(items)\ntext.replace(\"a\", \"b\")  len(text)",
-     "note": "Strings cannot be changed in place. Methods return a new string.",
-     "noInsert": true
-    }
-   ]
-  },
-  {
-   "section": "Dictionaries",
-   "items": [
-    {
-     "title": "Create and use",
-     "code": "ages = {\"Ama\": 15, \"Ben\": 16}\nages[\"Chen\"] = 15\nprint(ages.get(\"Dan\", 0))",
-     "note": "get() gives a default instead of a KeyError."
-    },
-    {
-     "title": "Loop over items",
-     "code": "for name, age in ages.items():\n    print(name, age)",
-     "note": ""
-    }
-   ]
-  },
-  {
-   "section": "Validation and errors",
-   "items": [
-    {
-     "title": "try / except",
-     "code": "try:\n    age = int(input(\"Age: \"))\nexcept ValueError:\n    print(\"Not a whole number\")",
-     "note": "The except block runs when int() cannot convert the text."
-    }
-   ]
-  },
-  {
-   "section": "Built-ins and modules",
-   "items": [
-    {
-     "title": "Common built-ins",
-     "code": "len(x)  range(n)  int(x)  float(x)  str(x)\nround(x, 2)  abs(x)  min(a)  max(a)  sum(a)\nsorted(a)  ord(\"A\")  chr(65)",
-     "note": "",
-     "noInsert": true
-    },
-    {
-     "title": "random",
-     "code": "import random\ndice = random.randint(1, 6)\npick = random.choice(names)",
-     "note": "randint includes both ends."
-    },
-    {
-     "title": "math",
-     "code": "import math\nprint(math.sqrt(16), math.floor(2.7), math.pi)",
-     "note": "The random, math and time modules are available."
-    }
-   ]
-  }
- ]
+  ]
 }

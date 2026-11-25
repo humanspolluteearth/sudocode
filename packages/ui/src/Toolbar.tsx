@@ -40,7 +40,7 @@ export interface ToolbarProps {
   /** Save the active file; the button is disabled while this is missing. */
   onSave?: () => void;
   /** Open the converted program in a new tab. Missing in Simple mode (the converter is an Advanced tool). */
-  onConvert?: ((target: "python") => void) | undefined;
+  onConvert?: ((target: "edexcel" | "cie" | "python") => void) | undefined;
   /** False when the active file is already Python, so there is nothing to convert to. */
   canConvert?: boolean;
   /** Which tools are on (Settings and mode); every tool is on when missing. */
@@ -163,15 +163,20 @@ export function Toolbar(p: ToolbarProps) {
             aria-label="Convert to"
             value=""
             disabled={p.canConvert === false}
-            title={p.canConvert === false ? "This file is already Python" : "Open a converted copy in a new tab"}
+            title={
+              p.canConvert === false ? "Python can't be converted to pseudocode" : "Open a converted copy in a new tab"
+            }
             onChange={(e) => {
-              if (e.target.value === "python") p.onConvert?.("python");
+              const v = e.target.value;
+              if (v === "edexcel" || v === "cie" || v === "python") p.onConvert?.(v);
             }}
           >
             <option value="" disabled>
               Choose…
             </option>
-            <option value="python">Python</option>
+            {p.language !== "edexcel" && <option value="edexcel">Edexcel pseudocode</option>}
+            {p.language !== "cie" && <option value="cie">Cambridge 9618 pseudocode</option>}
+            {p.language !== "python" && <option value="python">Python</option>}
           </select>
         </label>
       )}

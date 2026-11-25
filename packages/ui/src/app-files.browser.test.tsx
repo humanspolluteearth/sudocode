@@ -36,12 +36,37 @@ describe("MISC files in the app: tabs and Convert", () => {
     await expect
       .element(screen.getByRole("main").getByRole("status"))
       .toHaveTextContent(
-        "Converted from Edexcel pseudocode to Python. Your original is still open in its own tab. Run it to check it does the same.Dismiss",
+        "Converted from Edexcel pseudocode to Python. Arrays are lists, and SEND/RECEIVE became print/input. Your original is still open in its own tab. Run it to check it does the same.Dismiss",
       );
     // The new tab holds Python, not the original pseudocode.
     await expect.poll(() => screen.getByRole("textbox").first().element().textContent).toContain("print(");
     // The original is still there, in its own tab.
     await expect.element(screen.getByRole("tab", { name: /untitled\.epc/ })).toBeVisible();
+  });
+
+  it("MISC Convert to Cambridge opens a .cpc tab with a note, and a refusal opens no tab", async () => {
+    advanced();
+    const screen = await render(<App />);
+    await screen.getByRole("textbox").first().click();
+    await userEvent.keyboard("SEND 1 TO DISPLAY");
+    await menu(screen, "Convert", "Convert to Cambridge 9618 pseudocode");
+    await expect.element(screen.getByRole("tab", { name: /untitled\.cpc/ })).toHaveAttribute("aria-selected", "true");
+    await expect
+      .element(screen.getByRole("main").getByRole("status"))
+      .toHaveTextContent(
+        "Converted from Edexcel pseudocode to Cambridge 9618 pseudocode. Variables are now declared with their type, arrays start at 0 with a fixed size, and SEND/RECEIVE became OUTPUT/INPUT. Your original is still open in its own tab. Run it to check it does the same.Dismiss",
+      );
+    await expect.poll(() => screen.getByRole("textbox").first().element().textContent).toContain("OUTPUT 1");
+  });
+
+  it("MISC a refused conversion shows the message and opens no new tab", async () => {
+    advanced();
+    const screen = await render(<App />);
+    await screen.getByRole("textbox").first().click();
+    await userEvent.keyboard("SET a TO [[1, 2]{Enter}SET a[[5] TO 9");
+    await menu(screen, "Convert", "Convert to Cambridge 9618 pseudocode");
+    await expect.element(screen.getByRole("main").getByRole("status")).toBeVisible();
+    await expect.element(screen.getByRole("tab", { name: /untitled\.cpc/ })).not.toBeInTheDocument();
   });
 
   it("MISC Simple mode has no Convert menu", async () => {

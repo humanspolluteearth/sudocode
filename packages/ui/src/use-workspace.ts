@@ -32,7 +32,8 @@ export interface WorkspaceHook {
   saveAs: () => void;
   saveAll: () => void;
   openFiles: () => void;
-  convertToPython: () => void;
+  /** Open a converted copy in a new tab, in `to` (never the current language). */
+  convert: (to: PseudocodeLanguage) => void;
   /** Set while the Save dialog is on screen. */
   dialog: { name: string; type: SaveType } | null;
   finishSave: (name: string, type: SaveType) => void;
@@ -40,6 +41,18 @@ export interface WorkspaceHook {
 }
 
 /** `beforeChange` runs when the active file changes (stop a run, clear breakpoints); `setNote` shows messages. */
+/** The notable changes of each conversion, in plain words, for the banner. */
+const CHANGES: Record<"edexcel" | "cie", Partial<Record<PseudocodeLanguage, string>>> = {
+  edexcel: {
+    cie: "Variables are now declared with their type, arrays start at 0 with a fixed size, and SEND/RECEIVE became OUTPUT/INPUT.",
+    python: "Arrays are lists, and SEND/RECEIVE became print/input.",
+  },
+  cie: {
+    edexcel: "DECLAREs are gone, array indexes now start at 0, and OUTPUT/INPUT became SEND/RECEIVE.",
+    python: "Arrays are lists, and OUTPUT/INPUT became print/input.",
+  },
+};
+
 export function useWorkspace(
   first: { language: PseudocodeLanguage; source: string },
   beforeChange: () => void,
@@ -113,21 +126,21 @@ export function useWorkspace(
         if (picked.length > 0) changed(next);
       });
     },
-    convertToPython: () => {
+    convert: (to) => {
       const from = current.language;
-      if (from === "python") return;
+      if (from === "python" || from === to) return;
       const { name, source } = current;
       // The converter is loaded only now (a dynamic import), so the first page load stays small.
-      void import("@sudocode/core/converter").then(({ convertToPython }) => {
-        const result = convertToPython(source, from);
+      void import("@sudocode/core/converter").then(({ convert }) => {
+        const result = convert(source, from, to);
         if (!result.ok) {
           setNote({ text: `${result.message} ${result.hint}`, error: true });
           return;
         }
         beforeChange();
-        update(openTab(latest.current, { name, language: "python", source: result.code }));
+        update(openTab(latest.current, { name, language: to, source: result.code }));
         setNote({
-          text: `Converted from ${NAMES[from]} to Python. Your original is still open in its own tab. Run it to check it does the same.`,
+          text: `Converted from ${NAMES[from]} to ${NAMES[to]}. ${CHANGES[from][to] ?? ""} Your original is still open in its own tab. Run it to check it does the same.`,
         });
       });
     },
